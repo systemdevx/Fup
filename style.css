@@ -1,0 +1,87 @@
+:root {
+    --bg: #f8f7f7; /* Branco levemente acinzentado (off-white) para destacar o ouro */
+    --gold: #d4af37;
+    --silver: #a8a9ad;
+    --text-sec: #666;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+body {
+    background: var(--bg);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main { z-index: 10; animation: fadeIn 2s ease forwards; }
+
+h1 {
+    font-family: 'Times New Roman', Times, serif; /* Fonte Clássica (Relíquia) */
+    font-size: 5.5rem; /* Levemente maior */
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    
+    /* Efeito de Ouro Metálico no Texto */
+    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    background-size: 200% auto;
+    color: transparent; /* Deixa transparente para mostrar o fundo dourado */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    animation: shine 4s linear infinite; /* O brilho do ouro se move */
+    
+    /* Sombra suave para destacar do fundo */
+    filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.2));
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-sec);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+/* Link Minimalista */
+.link {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    border-bottom: 1px solid var(--gold); /* Linha dourada fina */
+    padding-bottom: 5px;
+    transition: 0.4s;
+}
+
+.link:hover {
+    color: var(--gold);
+    letter-spacing: 6px; /* Abre um pouco ao passar o mouse */
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Animação do brilho no texto */
+@keyframes shine { to { background-position: 200% center; } }
+
+/* --- FORMAS (Quadrados Metálicos) --- */
+.square {
+    position: absolute;
+    background: transparent;
+    border: 1px solid; /* A cor será definida pelo JS */
+    opacity: 0;
+    bottom: -60px;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.5; }
+    100% { transform: translateY(-110vh) rotate(180deg); opacity: 0; }
+}
