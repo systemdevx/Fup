@@ -1,10 +1,11 @@
 :root {
-    --navy: #0f204b;      /* Azul Corporativo */
-    --gold: #d4af37;      /* Identidade FUP */
-    --gray-bg: #f4f6f8;   /* Fundo descanso */
+    --navy: #0f204b;
+    --navy-dark: #0a1635;
+    --gold: #d4af37;
     --white: #ffffff;
-    --text: #333333;
-    --border: #e0e0e0;
+    --gray-bg: #eef2f6;
+    --text-main: #333;
+    --text-light: #777;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
@@ -17,117 +18,145 @@ body {
     align-items: center;
 }
 
-main {
-    width: 100%;
+.login-wrapper {
     display: flex;
-    justify-content: center;
-}
-
-/* Container Sólido e Sério */
-.login-container {
+    width: 900px;
+    height: 550px;
     background: var(--white);
-    width: 800px;
-    height: 500px;
-    display: flex;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Sombra suave, não flutuante */
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(15, 32, 75, 0.15);
     overflow: hidden;
-    border: 1px solid var(--border);
 }
 
-/* Lado Esquerdo - Marca */
-.brand-side {
-    background: var(--navy);
-    width: 40%;
+/* --- Lado Esquerdo (Marca) --- */
+.brand-section {
+    width: 45%;
+    background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+    color: var(--white);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    color: var(--white);
-    border-right: 4px solid var(--gold);
+    padding: 50px;
+    position: relative;
 }
 
-.brand-side h1 {
+.brand-content h1 {
     font-family: 'Times New Roman', serif;
-    font-size: 4rem;
+    font-size: 4.5rem;
     color: var(--gold);
+    line-height: 1;
     margin-bottom: 10px;
 }
 
-.brand-side p {
+.subtitle {
     font-size: 0.9rem;
-    opacity: 0.8;
     text-transform: uppercase;
     letter-spacing: 2px;
+    opacity: 0.9;
 }
 
-/* Lado Direito - Formulário */
-.form-side {
-    width: 60%;
-    padding: 50px;
+.divider-gold {
+    width: 50px;
+    height: 3px;
+    background: var(--gold);
+    margin: 25px 0;
+}
+
+.description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.8;
+    max-width: 80%;
+}
+
+.copyright {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    font-size: 0.7rem;
+    opacity: 0.5;
+}
+
+/* --- Lado Direito (Form) --- */
+.form-section {
+    width: 55%;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.form-side h2 {
+.form-header { margin-bottom: 40px; }
+
+.form-header h2 {
     color: var(--navy);
-    margin-bottom: 30px;
-    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
 }
 
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
+.form-header p { color: var(--text-light); font-size: 0.9rem; }
+
+.input-group { margin-bottom: 25px; }
 
 .input-group label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 5px;
     font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 8px;
 }
 
-input {
+.input-group input {
     width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 1rem;
-    outline: none;
-    transition: 0.2s;
+    transition: 0.3s;
     background: #fdfdfd;
 }
 
-input:focus {
+.input-group input:focus {
     border-color: var(--navy);
     background: #fff;
+    box-shadow: 0 0 0 3px rgba(15, 32, 75, 0.1);
+    outline: none;
 }
 
-.btn-primary {
+.btn-login {
+    width: 100%;
+    padding: 15px;
     background: var(--navy);
     color: white;
     border: none;
-    padding: 14px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 1rem;
-    cursor: pointer;
     font-weight: 600;
-    transition: 0.2s;
-    margin-top: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.3s;
 }
 
-.btn-primary:hover {
-    background: #1a3a6e;
+.btn-login:hover {
+    background: var(--navy-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(15, 32, 75, 0.2);
 }
 
-.link-back {
+.support-link {
     margin-top: 20px;
-    font-size: 0.8rem;
-    color: #888;
-    text-decoration: none;
     text-align: center;
 }
 
-.link-back:hover { color: var(--navy); }
+.support-link a {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.support-link a:hover { color: var(--navy); text-decoration: underline; }
