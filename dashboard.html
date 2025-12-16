@@ -5,21 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FUP | Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div id="animation-bg"></div>
 
     <main>
-        <div class="dashboard-card">
-            <h1>Bem-vindo, <span id="user-display" class="gold-accent">Usuário</span></h1>
-            <p>Sistema FUP Conectado</p>
+        <div class="glass-container">
+            <aside class="sidebar">
+                <div class="logo">
+                    <h2>FUP</h2>
+                </div>
+                
+                <nav>
+                    <a href="#" class="nav-item active"><i class='bx bxs-dashboard'></i> Início</a>
+                    <a href="#" class="nav-item"><i class='bx bxs-user-detail'></i> Perfil</a>
+                    <a href="#" class="nav-item"><i class='bx bxs-cog'></i> Config</a>
+                </nav>
 
-            <button onclick="handleLogout()" class="logout-btn">Sair</button>
+                <div class="logout-area">
+                    <button onclick="handleLogout()" class="logout-btn">
+                        <i class='bx bx-log-out'></i> Sair
+                    </button>
+                </div>
+            </aside>
+
+            <section class="content">
+                <header>
+                    <h1>Bem-vindo, <span id="user-display" class="gold-text">Usuário</span></h1>
+                    <p>Visão Geral do Sistema</p>
+                </header>
+
+                <div class="widgets-grid">
+                    <div class="card-widget">
+                        <div class="icon-box"><i class='bx bx-stats'></i></div>
+                        <h3>Acessos</h3>
+                        <p class="number">1,204</p>
+                    </div>
+
+                    <div class="card-widget">
+                        <div class="icon-box"><i class='bx bx-wallet'></i></div>
+                        <h3>Saldo</h3>
+                        <p class="number gold-text">R$ 450,00</p>
+                    </div>
+
+                    <div class="card-widget">
+                        <div class="icon-box"><i class='bx bx-time'></i></div>
+                        <h3>Tempo</h3>
+                        <p class="number">12h</p>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h3>Status do Sistema</h3>
+                    <p>Todos os serviços estão operando normalmente na rede FUP.</p>
+                </div>
+            </section>
         </div>
     </main>
 
     <script src="script.js"></script>
     <script src="auth.js"></script>
+    
+    <script>
+        // Adiciona um tom de azul ao array de cores do script.js original sem precisar editar o arquivo original
+        if(typeof colors !== 'undefined') {
+            colors.push('#0f204b', '#1e3a8a');
+        }
+    </script>
 </body>
 </html>

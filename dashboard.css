@@ -1,4 +1,12 @@
-:root { --bg: #f8f7f7; --gold: #d4af37; --silver: #a8a9ad; --text-sec: #666; }
+:root {
+    --bg: #f0f4f8; /* Branco gelo azulado */
+    --gold: #d4af37;
+    --navy: #0f204b; /* Azul Marinho Profundo */
+    --blue-soft: #eef2ff;
+    --text-main: #333;
+    --text-sec: #64748b;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
 body {
@@ -8,93 +16,205 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
 }
+
+/* Fundo Animado (Quadrados) - Ajuste de visibilidade */
+.square { z-index: 1; }
 
 main { 
     z-index: 10; 
-    animation: fadeIn 2s ease forwards;
     width: 100%;
-    display: flex; /* Centraliza o card */
-    justify-content: center;
-    align-items: center;
+    max-width: 1000px;
+    height: 85vh;
     padding: 20px;
+    animation: fadeIn 1.5s ease forwards;
 }
 
-/* --- ESTILO DO CARD (DASHBOARD) --- */
-.dashboard-card {
-    background: rgba(255, 255, 255, 0.65); /* Um pouco mais transparente que o login */
-    backdrop-filter: blur(15px); /* Desfoque um pouco mais forte */
-    -webkit-backdrop-filter: blur(15px);
-    
-    padding: 60px 40px; /* Mais espaço interno */
-    border-radius: 25px;
+/* --- O CONTAINER DE VIDRO (Layout Principal) --- */
+.glass-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    height: 100%;
     width: 100%;
-    max-width: 600px; /* Mais largo que o login para acomodar futuros widgets */
-    
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 
-                0 5px 15px rgba(0, 0, 0, 0.05);
-    
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.3); /* Leve toque dourado embaixo */
-    
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 20px 50px rgba(15, 32, 75, 0.15); /* Sombra azulada */
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    overflow: hidden;
 }
 
-.dashboard-card:hover {
-    transform: translateY(-5px); /* Flutua levemente ao passar o mouse */
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+/* --- SIDEBAR (Barra Lateral Azul) --- */
+.sidebar {
+    width: 80px; /* Recolhido por padrão em telas pequenas ou estilo minimalista */
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    transition: 0.4s;
+    border-right: 1px solid var(--gold);
+    color: white;
 }
 
-/* Tipografia Ajustada para o Card */
-h1 {
+/* Expande sidebar em telas maiores (opcional, aqui mantive ícones para elegância) */
+@media (min-width: 768px) {
+    .sidebar { width: 220px; align-items: flex-start; padding-left: 30px; }
+}
+
+.logo h2 {
     font-family: 'Times New Roman', serif;
-    font-size: 3.5rem;
-    color: #333;
-    font-weight: 400;
-    margin-bottom: 15px;
+    color: var(--gold);
+    margin-bottom: 50px;
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+nav { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+
+.nav-item {
+    text-decoration: none;
+    color: rgba(255,255,255, 0.6);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: 0.3s;
+    padding: 10px 0;
+}
+
+.nav-item i { font-size: 1.4rem; }
+
+.nav-item:hover, .nav-item.active {
+    color: white;
+    border-right: 3px solid var(--gold); /* Marcador dourado */
+}
+
+.logout-area { margin-top: auto; width: 100%; }
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.gold-accent { 
-    color: var(--gold); 
-    font-style: italic; /* Dá um toque de assinatura */
-    text-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+.logout-btn:hover { color: var(--gold); }
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
-p { 
-    font-size: 1.2rem; 
-    color: var(--text-sec); 
-    font-weight: 300; 
-    letter-spacing: 2px;
-    margin-bottom: 50px; /* Espaço para o botão */
-    text-transform: uppercase;
-    font-size: 0.8rem;
+header { margin-bottom: 40px; }
+
+h1 {
+    font-family: 'Times New Roman', serif;
+    font-size: 2.5rem;
+    color: var(--navy);
+    font-weight: 400;
 }
 
-/* Botão de Sair Estilizado */
-.logout-btn {
-    background: transparent;
-    border: 1px solid var(--text-sec);
-    color: var(--text-sec);
-    padding: 10px 30px;
-    border-radius: 50px; /* Botão estilo "Pílula" */
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    cursor: pointer;
-    transition: all 0.4s ease;
+.gold-text {
+    color: transparent;
+    background: linear-gradient(45deg, #bf953f, #b38728, #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-style: italic;
+    font-weight: 600;
 }
 
-.logout-btn:hover {
+header p { color: var(--text-sec); letter-spacing: 1px; font-size: 0.9rem; text-transform: uppercase; }
+
+/* --- WIDGETS GRID --- */
+.widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.card-widget {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(15, 32, 75, 0.05);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-widget:hover {
+    transform: translateY(-5px);
     border-color: var(--gold);
-    color: white;
-    background: var(--gold);
-    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    letter-spacing: 5px;
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
 }
 
-/* Quadrados e Animações (Mantidos) */
-.square { position: absolute; background: transparent; border: 1px solid; opacity: 0; bottom: -60px; animation: floatUp linear forwards; pointer-events: none; z-index: 1; }
+.icon-box {
+    width: 45px;
+    height: 45px;
+    background: var(--blue-soft);
+    color: var(--navy);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.card-widget h3 {
+    font-size: 0.9rem;
+    color: var(--text-sec);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-widget .number {
+    font-size: 1.8rem;
+    color: var(--navy);
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* Painel Informativo */
+.info-panel {
+    background: linear-gradient(135deg, var(--navy), #162a5c);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--gold);
+    position: relative;
+}
+
+.info-panel h3 {
+    font-family: 'Times New Roman', serif;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+.info-panel p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Animações (Mantidas do original) */
+.square { position: absolute; background: transparent; border: 1px solid; opacity: 0; bottom: -60px; animation: floatUp linear forwards; pointer-events: none; }
 @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 20% { opacity: 0.5; } 100% { transform: translateY(-110vh) rotate(180deg); opacity: 0; } }
