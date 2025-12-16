@@ -1,30 +1,21 @@
 const container = document.getElementById('animation-bg');
 
-// Cores metálicas
-const colors = [
-    '#d4af37', // Ouro Clássico
-    '#aa771c', // Ouro Escuro
-    '#a8a9ad', // Prata
-    '#e0e0e0'  // Platina
-];
+const colors = ['#d4af37', '#aa771c', '#a8a9ad', '#e0e0e0'];
 
 function createSquare() {
+    // Verificação de segurança: Se o container não existir, para a função.
+    if (!container) return;
+
     const el = document.createElement('div');
     el.className = 'square';
-
-    // Sorteia a cor da borda
     el.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
 
-    // Tamanho aleatório (quadrados finos e elegantes)
     const size = Math.random() * 40 + 15;
     el.style.width = size + 'px';
     el.style.height = size + 'px';
-
-    // Posição
     el.style.left = Math.random() * 100 + 'vw';
 
-    // Duração lenta (Elegância)
-    const duration = Math.random() * 10 + 15; // 15s a 25s
+    const duration = Math.random() * 10 + 15; 
     el.style.animationDuration = duration + 's';
     
     container.appendChild(el);
@@ -34,5 +25,7 @@ function createSquare() {
     }, duration * 1000);
 }
 
-// Cria shapes constantemente
-setInterval(createSquare, 500);
+// Inicia apenas se o container existir
+if (container) {
+    setInterval(createSquare, 500);
+}

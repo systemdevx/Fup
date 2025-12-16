@@ -17,15 +17,24 @@ body {
     text-align: center;
 }
 
-main { z-index: 10; animation: fadeIn 2s ease forwards; width: 100%; max-width: 400px; padding: 20px; }
+main { 
+    z-index: 10; 
+    animation: fadeIn 2s ease forwards;
+    width: 100%;
+    max-width: 400px; /* Limita largura no login */
+    padding: 20px;
+}
 
+/* --- TIPOGRAFIA --- */
 h1 {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 4rem; /* Um pouco menor para o Login */
+    font-size: 4rem; /* Tamanho ajustado para funcionar em ambas as telas */
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    
+    /* Efeito Ouro */
     background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
     background-size: 200% auto;
     color: transparent;
@@ -35,11 +44,38 @@ h1 {
     filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.2));
 }
 
-/* --- FORMULÁRIO --- */
+p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-sec);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+/* --- LINKS --- */
+.link {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 5px;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: var(--gold);
+    letter-spacing: 6px;
+}
+
+/* --- FORMULÁRIOS (Login) --- */
 .form-container {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    margin-bottom: 30px;
 }
 
 input {
@@ -51,7 +87,8 @@ input {
     color: #333;
     outline: none;
     transition: 0.3s;
-    text-align: center; /* Centralizado para combinar com o design */
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 input::placeholder { color: #bbb; font-weight: 300; letter-spacing: 1px; }
@@ -82,25 +119,13 @@ input:focus {
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
 }
 
-#message { margin-top: 15px; font-size: 0.8rem; min-height: 20px; }
+#message { margin-top: 15px; font-size: 0.8rem; min-height: 20px; color: var(--text-sec); }
 
-/* Mantendo as animações originais */
-.link {
-    text-decoration: none;
-    color: var(--text-sec);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top: 30px;
-    display: inline-block;
-    transition: 0.3s;
-}
-.link:hover { color: var(--gold); }
-
+/* --- ANIMAÇÕES --- */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shine { to { background-position: 200% center; } }
 
-/* Fundo animado (quadrados) */
+/* Quadrados Metálicos */
 .square {
     position: absolute;
     background: transparent;
@@ -108,7 +133,9 @@ input:focus {
     opacity: 0;
     bottom: -60px;
     animation: floatUp linear forwards;
+    z-index: 1; /* Fica atrás do conteúdo principal */
 }
+
 @keyframes floatUp {
     0% { transform: translateY(0) rotate(0deg); opacity: 0; }
     20% { opacity: 0.5; }
