@@ -2,55 +2,21 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP | Login</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login | FUP</title>
     <link rel="stylesheet" href="login.css">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="user-logged-out">
-    <!-- Navbar Superior -->
-    <nav class="navbar">
-        <div class="logo">
-            <span class="logo-text">FUP</span>
-            <span class="logo-sub">ENTERPRISE</span>
+<body>
+    <div class="login-box">
+        <h2>Entrar no FUP</h2>
+        <div class="input-group">
+            <input type="email" id="email" placeholder="E-mail Corporativo">
+            <input type="password" id="password" placeholder="Senha">
         </div>
-        <ul class="nav-links">
-            <li><a href="index.html"><i class='bx bx-home'></i> Início</a></li>
-            <li><a href="login.html" class="active"><i class='bx bx-log-in'></i> Acesso</a></li>
-            <li><a href="index.html#features"><i class='bx bx-star'></i> Funcionalidades</a></li>
-            <li><a href="index.html#contact"><i class='bx bx-envelope'></i> Contato</a></li>
-        </ul>
-    </nav>
-
-    <div class="login-container">
-        <div class="side-info">
-            <h2>FUP</h2>
-            <p>Conectando Comex e Logística com inteligência.</p>
-        </div>
-        <div class="login-form">
-            <h3>Acesso ao Painel</h3>
-            <div class="input-field">
-                <i class='bx bx-user'></i>
-                <input type="email" id="email" placeholder="E-mail Corporativo">
-            </div>
-            <div class="input-field">
-                <i class='bx bx-lock-alt'></i>
-                <input type="password" id="password" placeholder="Senha">
-            </div>
-            <button onclick="handleLogin()" class="btn-primary">
-                <i class='bx bx-log-in'></i> Entrar
-            </button>
-            <div id="message"></div>
-            <p class="mt-2 text-center">
-                <a href="index.html" style="color: #0ea5e9; text-decoration: none;">
-                    <i class='bx bx-arrow-back'></i> Voltar para Início
-                </a>
-            </p>
-        </div>
+        <button onclick="handleLogin()">Acessar Sistema</button>
+        <p id="message"></p>
+        <a href="index.html" class="back">Voltar</a>
     </div>
-    
     <script src="auth.js"></script>
 </body>
 </html>

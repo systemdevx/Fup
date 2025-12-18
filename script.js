@@ -1,14 +1,14 @@
-// Seleciona o container de animação de fundo
+// Seleciona o container de animação de fundo (opcional para manter os quadrados azuis)
 const container = document.getElementById('animation-bg');
-const colors = ['#d4af37', '#aa771c', '#a8a9ad', '#e0e0e0'];
+// Cores atualizadas para a paleta azul e branca
+const colors = ['#0284c7', '#38bdf8', '#0369a1', '#e0f2fe'];
 
-// Função para criar quadrados animados
 function createSquare() {
-    // Verificação de segurança: Se o container não existir, para a função.
     if (!container) return;
 
     const el = document.createElement('div');
     el.className = 'square';
+    // Define a cor da borda baseada na nova paleta azul
     el.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
 
     const size = Math.random() * 40 + 15;
@@ -26,111 +26,26 @@ function createSquare() {
     }, duration * 1000);
 }
 
-// Função para rolar suavemente até seções
-function smoothScrollTo(targetId) {
-    const target = document.getElementById(targetId);
-    if (target) {
-        window.scrollTo({
-            top: target.offsetTop - 80, // Ajusta para a navbar
-            behavior: 'smooth'
-        });
-    }
-}
-
-// Função para ativar links da navbar baseado na rolagem
-function activateNavOnScroll() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    if (sections.length === 0 || navLinks.length === 0) return;
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.clientHeight;
-        
-        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-}
-
-// Função para animação de entrada dos elementos
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.feature-card, .hero-content');
-    
-    elements.forEach(element => {
-        const elementTop = element.getAttribute('data-animated') ? 
-            element.getBoundingClientRect().top + 100 : 
-            element.getBoundingClientRect().top;
-        
-        if (elementTop < window.innerHeight - 100 && !element.getAttribute('data-animated')) {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
-            element.style.transition = 'all 0.6s ease-out';
-            
-            setTimeout(() => {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-                element.setAttribute('data-animated', 'true');
-            }, 100);
-        }
-    });
-}
-
-// Inicializa animações apenas se o container existir
-if (container) {
-    setInterval(createSquare, 500);
-}
-
-// Adiciona eventos de scroll para ativação de links
-window.addEventListener('scroll', () => {
-    activateNavOnScroll();
-    animateOnScroll();
-});
-
-// Inicializa animações quando a página carrega
+// Suporte para rolagem suave em links internos
 document.addEventListener('DOMContentLoaded', () => {
-    // Adiciona evento de clique para links internos
+    // Inicializa quadrados flutuantes se o container existir
+    if (container) {
+        setInterval(createSquare, 600);
+    }
+
+    // Gerenciador de cliques para navegação interna
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
             
-            if (href !== '#') {
+            if (targetElement) {
                 e.preventDefault();
-                const targetId = href.substring(1);
-                smoothScrollTo(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
             }
-        });
-    });
-    
-    // Inicializa animações
-    setTimeout(animateOnScroll, 500);
-    
-    // Atualiza navbar baseada no estado de login (chama função do auth.js)
-    if (typeof updateNavbar === 'function') {
-        updateNavbar();
-    }
-    
-    // Adiciona efeito hover nas cards de funcionalidades
-    const featureCards = document.querySelectorAll('.feature-card');
-    featureCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px)';
-            card.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.1)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
-            card.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
         });
     });
 });

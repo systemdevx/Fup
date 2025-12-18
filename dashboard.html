@@ -1,106 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP | Enterprise Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard | FUP</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <!-- Navbar Superior -->
-    <nav class="navbar user-logged-in">
-        <div class="logo">
-            <span class="logo-text">FUP</span>
-            <span class="logo-sub">ENTERPRISE</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html"><i class='bx bx-home'></i> Início</a></li>
-            <li><a href="dashboard.html" class="active"><i class='bx bx-grid-alt'></i> Dashboard</a></li>
-            <li><a href="#"><i class='bx bx-bar-chart-alt-2'></i> Análises</a></li>
-            <li><a href="#"><i class='bx bx-cog'></i> Configurações</a></li>
-            <li>
-                <button onclick="handleLogout()" class="btn-logout-nav">
-                    <i class='bx bx-log-out'></i> Sair
-                </button>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="dashboard-container">
-        <nav class="sidebar">
-            <div class="logo-section">
-                <span class="logo-text">FUP</span>
-                <span class="logo-sub">ENTERPRISE</span>
-            </div>
-            
-            <ul class="nav-links">
-                <li class="active"><i class='bx bx-grid-alt'></i> Dashboard</li>
-                <li><i class='bx bx-bar-chart-alt-2'></i> Análises</li>
-                <li><i class='bx bx-task'></i> Processos</li>
-                <li><i class='bx bx-cog'></i> Configurações</li>
-            </ul>
-
-            <div class="sidebar-footer">
-                <button onclick="handleLogout()" class="btn-logout">
-                    <i class='bx bx-log-out'></i> Terminar Sessão
-                </button>
-            </div>
+    <aside class="sidebar">
+        <div class="brand">FUP</div>
+        <nav>
+            <a href="#" class="active"><i class='bx bx-home'></i> Início</a>
+            <a href="#"><i class='bx bx-bar-chart'></i> Relatórios</a>
+            <button onclick="handleLogout()" class="logout"><i class='bx bx-log-out'></i> Sair</button>
         </nav>
-
-        <main class="content">
-            <header>
-                <div class="header-welcome">
-                    <h1 id="current-date">Carregando...</h1>
-                    <p>Bem-vindo de volta, <span id="user-display" class="highlight">utilizador</span></p>
-                </div>
-                <div class="header-actions">
-                    <button class="btn-icon"><i class='bx bx-bell'></i></button>
-                    <div class="profile-avatar"></div>
-                </div>
-            </header>
-
-            <section class="grid-stats">
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class='bx bx-trending-up'></i></div>
-                    <div class="stat-data">
-                        <span class="label">Vendas Anuais</span>
-                        <h3 class="value">1.2M€</h3>
-                        <span class="trend positive">+12% vs mês ant.</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green"><i class='bx bx-wallet'></i></div>
-                    <div class="stat-data">
-                        <span class="label">Lucro Mensal</span>
-                        <h3 class="value">80K€</h3>
-                        <span class="trend positive">+5% vs mês ant.</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon orange"><i class='bx bx-briefcase-alt-2'></i></div>
-                    <div class="stat-data">
-                        <span class="label">Projetos Ativos</span>
-                        <h3 class="value">15</h3>
-                        <span class="trend">Estável</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="recent-activity">
-                <div class="card-header">
-                    <h2>Processos Recentes</h2>
-                    <button class="btn-text">Ver todos</button>
-                </div>
-                <div class="table-placeholder">
-                    <p>Nenhum processo pendente para revisão.</p>
-                </div>
-            </section>
-        </main>
-    </div>
-
+    </aside>
+    <main class="content">
+        <header>
+            <h1 id="welcome">Painel de Controle</h1>
+            <div id="date"></div>
+        </header>
+        <div class="grid">
+            <div class="card"><h3>Processos</h3><p>12 Ativos</p></div>
+            <div class="card"><h3>Financeiro</h3><p>R$ 45.000,00</p></div>
+        </div>
+    </main>
     <script src="auth.js"></script>
     <script src="dashboard.js"></script>
 </body>
