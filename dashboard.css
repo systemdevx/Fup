@@ -1,16 +1,37 @@
 :root {
-    /* Paleta Renovada: Azul Profissional e Branco Puro */
-    --navy-dark: #0f172a;        /* Azul quase preto para sidebar */
-    --navy-primary: #1e293b;     /* Azul marinho para cabeçalhos */
-    --accent-blue: #3b82f6;      /* Azul vibrante para links/botões */
-    --accent-hover: #2563eb;
-    
-    --bg-body: #f8fafc;          /* Branco acinzentado (fundo) */
-    --bg-white: #ffffff;         /* Branco puro (cartões) */
-    --border: #e2e8f0;           /* Bordas sutis */
-    
-    --text-main: #334155;        /* Cinza escuro para leitura */
-    --text-muted: #64748b;       /* Cinza para detalhes */
-    
-    --gold: #fbbf24;             /* Dourado mais vivo para alertas/destaques */
+    --sidebar-bg: #ffffff;
+    --main-bg: #f8fafc;
+    --accent-blue: #0ea5e9;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+}
+
+.sidebar {
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+}
+
+.sidebar .active {
+    background: var(--light-blue);
+    color: var(--accent-blue);
+    border-right: 3px solid var(--accent-blue);
+}
+
+.kpi-icon.gold { background: #e0f2fe; color: #0ea5e9; } /* Ajustado de Ouro para Azul */
+.kpi-icon.blue { background: #e0f2fe; color: #0ea5e9; }
+.kpi-icon.green { background: #dcfce7; color: #15803d; }
+
+.btn-action {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--accent-blue);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-action:hover {
+    background: var(--accent-blue);
+    color: white;
 }

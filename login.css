@@ -1,162 +1,54 @@
-:root {
-    --navy: #0f204b;
-    --navy-dark: #0a1635;
-    --gold: #d4af37;
-    --white: #ffffff;
-    --gray-bg: #eef2f6;
-    --text-main: #333;
-    --text-light: #777;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-
 body {
-    background-color: var(--gray-bg);
+    background-color: #f0f9ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Inter', sans-serif;
 }
 
-.login-wrapper {
+.login-container {
     display: flex;
-    width: 900px;
-    height: 550px;
-    background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 15px 40px rgba(15, 32, 75, 0.15);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
     overflow: hidden;
+    width: 850px;
 }
 
-/* --- Lado Esquerdo (Marca) --- */
-.brand-section {
-    width: 45%;
-    background: linear-gradient(135deg, var(--navy), var(--navy-dark));
-    color: var(--white);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 50px;
-    position: relative;
-}
-
-.brand-content h1 {
-    font-family: 'Times New Roman', serif;
-    font-size: 4.5rem;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.9;
-}
-
-.divider-gold {
-    width: 50px;
-    height: 3px;
-    background: var(--gold);
-    margin: 25px 0;
-}
-
-.description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    opacity: 0.8;
-    max-width: 80%;
-}
-
-.copyright {
-    position: absolute;
-    bottom: 30px;
-    left: 50px;
-    font-size: 0.7rem;
-    opacity: 0.5;
-}
-
-/* --- Lado Direito (Form) --- */
-.form-section {
-    width: 55%;
+.side-info {
+    background: #0ea5e9;
+    color: white;
     padding: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 40%;
 }
 
-.form-header { margin-bottom: 40px; }
-
-.form-header h2 {
-    color: var(--navy);
-    font-size: 1.8rem;
-    margin-bottom: 5px;
+.login-form {
+    padding: 60px;
+    width: 60%;
 }
 
-.form-header p { color: var(--text-light); font-size: 0.9rem; }
-
-.input-group { margin-bottom: 25px; }
-
-.input-group label {
+.input-field {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--navy);
-    margin-bottom: 8px;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: 0.3s;
-    background: #fdfdfd;
-}
+.input-field i { color: #0ea5e9; margin-right: 10px; }
+.input-field input { border: none; outline: none; width: 100%; }
 
-.input-group input:focus {
-    border-color: var(--navy);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(15, 32, 75, 0.1);
-    outline: none;
-}
-
-.btn-login {
-    width: 100%;
-    padding: 15px;
-    background: var(--navy);
+.btn-primary {
+    background: #0ea5e9;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 700;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: 0.3s;
 }
 
-.btn-login:hover {
-    background: var(--navy-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(15, 32, 75, 0.2);
-}
-
-.support-link {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.support-link a {
-    color: var(--text-light);
-    font-size: 0.85rem;
-    text-decoration: none;
-}
-
-.support-link a:hover { color: var(--navy); text-decoration: underline; }
+#message { margin-top: 15px; text-align: center; font-size: 0.9rem; }

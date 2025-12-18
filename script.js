@@ -1,31 +1,19 @@
 const container = document.getElementById('animation-bg');
-
-const colors = ['#d4af37', '#aa771c', '#a8a9ad', '#e0e0e0'];
+const colors = ['#0ea5e9', '#38bdf8', '#7dd3fc', '#e0f2fe'];
 
 function createSquare() {
-    // Verificação de segurança: Se o container não existir, para a função.
     if (!container) return;
-
     const el = document.createElement('div');
     el.className = 'square';
     el.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
-
-    const size = Math.random() * 40 + 15;
+    const size = Math.random() * 40 + 20;
     el.style.width = size + 'px';
     el.style.height = size + 'px';
     el.style.left = Math.random() * 100 + 'vw';
-
-    const duration = Math.random() * 10 + 15; 
+    const duration = Math.random() * 15 + 10;
     el.style.animationDuration = duration + 's';
-    
     container.appendChild(el);
-
-    setTimeout(() => {
-        el.remove();
-    }, duration * 1000);
+    setTimeout(() => el.remove(), duration * 1000);
 }
 
-// Inicia apenas se o container existir
-if (container) {
-    setInterval(createSquare, 500);
-}
+if (container) setInterval(createSquare, 600);

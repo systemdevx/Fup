@@ -3,57 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP | Corporate Login</title>
+    <title>FUP | Login</title>
     <link rel="stylesheet" href="login.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    
-    <main>
-        <div class="login-wrapper">
-            <div class="brand-section">
-                <div class="brand-content">
-                    <h1>FUP</h1>
-                    <p class="subtitle">Enterprise Resource Planning</p>
-                    <div class="divider-gold"></div>
-                    <p class="description">Gestão Integrada de Comex, Qualidade e Logística.</p>
-                </div>
-                <div class="copyright">
-                    &copy; 2025 FUP System. Todos os direitos reservados.
-                </div>
-            </div>
-            
-            <div class="form-section">
-                <div class="form-header">
-                    <h2>Acesso Restrito</h2>
-                    <p>Entre com suas credenciais corporativas.</p>
-                </div>
-
-                <div class="input-group">
-                    <label><i class='bx bx-envelope'></i> E-mail Corporativo</label>
-                    <input type="email" id="email" placeholder="nome.sobrenome@fup.com" autocomplete="off">
-                </div>
-                
-                <div class="input-group">
-                    <label><i class='bx bx-lock-alt'></i> Senha de Acesso</label>
-                    <input type="password" id="password" placeholder="••••••••">
-                </div>
-
-                <button onclick="handleLogin()" class="btn-login">
-                    <span>Entrar no Sistema</span>
-                    <i class='bx bx-right-arrow-alt'></i>
-                </button>
-
-                <div id="message"></div>
-                
-                <div class="support-link">
-                    <a href="#">Esqueceu a senha? Contate o TI.</a>
-                </div>
-            </div>
+    <div class="login-container">
+        <div class="side-info">
+            <h2>FUP</h2>
+            <p>Conectando Comex e Logística com inteligência.</p>
         </div>
-    </main>
-
+        <div class="login-form">
+            <h3>Acesso ao Painel</h3>
+            <div class="input-field">
+                <i class='bx bx-user'></i>
+                <input type="email" id="email" placeholder="E-mail Corporativo">
+            </div>
+            <div class="input-field">
+                <i class='bx bx-lock-alt'></i>
+                <input type="password" id="password" placeholder="Senha">
+            </div>
+            <button onclick="handleLogin()" class="btn-primary">Entrar</button>
+            <div id="message"></div>
+        </div>
+    </div>
     <script src="auth.js"></script>
 </body>
 </html>

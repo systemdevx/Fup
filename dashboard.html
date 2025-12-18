@@ -2,141 +2,31 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP | Dashboard Corporativo</title>
-    
+    <title>FUP | Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    
-    <div class="admin-wrapper">
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-icon"><i class='bx bxs-layer'></i></div>
-                <div class="logo-text">
-                    <h2>FUP</h2>
-                    <span>Enterprise ERP</span>
-                </div>
-            </div>
-
-            <ul class="menu-items">
-                <li class="section-label">Geral</li>
-                <li><a href="#" class="active"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                
-                <li class="section-label">Fiscal</li>
-                <li><a href="#"><i class='bx bx-cart'></i> Pedidos</a></li>
-                <li><a href="#"><i class='bx bx-file-blank'></i> Notas Fiscais</a></li>
-                
-                <li class="section-label">Logística</li>
-                <li><a href="#"><i class='bx bx-globe'></i> Importação DI</a></li>
-                <li><a href="#"><i class='bx bx-package'></i> Materiais</a></li>
-            </ul>
-
-            <div class="sidebar-footer">
-                <div class="user-card">
-                    <div class="user-avatar">AD</div>
-                    <div class="user-info">
-                        <span id="sidebar-user">Administrador</span>
-                        <small>Gerente</small>
-                    </div>
-                </div>
-                <button onclick="handleLogout()" class="btn-logout" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-size:1.2rem;"><i class='bx bx-log-out'></i></button>
-            </div>
-        </nav>
-
-        <main class="main-content">
-            <header class="top-header">
-                <div class="header-left">
-                    <h1 class="page-title">Painel de Controle</h1>
-                    <p class="current-date" id="current-date">Carregando...</p>
-                </div>
-
-                <div class="search-bar">
-                    <i class='bx bx-search'></i>
-                    <input type="text" placeholder="Procurar processos...">
-                </div>
-
-                <div class="header-right">
-                    <button class="icon-btn" style="position:relative; background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--text-muted);">
-                        <i class='bx bx-bell'></i>
-                        <span style="position:absolute; top:0; right:0; background:var(--danger); width:8px; height:8px; border-radius:50%;"></span>
-                    </button>
-                </div>
-            </header>
-
-            <div class="content-scroll">
-                <section class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-header">
-                            <span class="kpi-label">Pedidos Pendentes</span>
-                            <div class="kpi-icon blue"><i class='bx bx-cart'></i></div>
-                        </div>
-                        <h3 class="kpi-value">12</h3>
-                    </div>
-
-                    <div class="kpi-card">
-                        <div class="kpi-header">
-                            <span class="kpi-label">NF-e Emitidas</span>
-                            <div class="kpi-icon gold"><i class='bx bx-spreadsheet'></i></div>
-                        </div>
-                        <h3 class="kpi-value">45</h3>
-                    </div>
-
-                    <div class="kpi-card">
-                        <div class="kpi-header">
-                            <span class="kpi-label">DIs em Aberto</span>
-                            <div class="kpi-icon navy"><i class='bx bx-anchor'></i></div>
-                        </div>
-                        <h3 class="kpi-value">02</h3>
-                    </div>
-
-                    <div class="kpi-card">
-                        <div class="kpi-header">
-                            <span class="kpi-label">Qualidade</span>
-                            <div class="kpi-icon green"><i class='bx bx-check-shield'></i></div>
-                        </div>
-                        <h3 class="kpi-value">98.5%</h3>
-                    </div>
-                </section>
-
-                <h3 style="margin-bottom: 20px; font-weight: 700;">Atividades Recentes</h3>
-                <div class="table-wrapper">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Processo</th>
-                                <th>Departamento</th>
-                                <th>Status</th>
-                                <th>Data</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight: 600;">#PED-9021</td>
-                                <td>Comercial</td>
-                                <td><span class="badge-status warning">Pendente</span></td>
-                                <td>10:30</td>
-                                <td><button class="btn-action">Gerenciar</button></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: 600;">#DI-0442</td>
-                                <td>Importação</td>
-                                <td><span class="badge-status success">Concluído</span></td>
-                                <td>Ontem</td>
-                                <td><button class="btn-action">Gerenciar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-    </div>
-
+    <nav class="sidebar">
+        <div class="logo">FUP</div>
+        <ul class="nav-links">
+            <li><i class='bx bx-grid-alt'></i> Dashboard</li>
+            <li><i class='bx bx-file'></i> Processos</li>
+            <li onclick="handleLogout()"><i class='bx bx-log-out'></i> Sair</li>
+        </ul>
+    </nav>
+    <main class="content">
+        <header>
+            <h1 id="current-date">Data</h1>
+            <div class="user-pill"><i class='bx bx-user-circle'></i> <span id="user-display">Usuário</span></div>
+        </header>
+        <div class="stats">
+            <div class="card"><h3>12</h3><p>Pendentes</p></div>
+            <div class="card"><h3>45</h3><p>Concluídos</p></div>
+            <div class="card"><h3>98%</h3><p>Eficiência</p></div>
+        </div>
+    </main>
     <script src="auth.js"></script>
     <script src="dashboard.js"></script>
 </body>
