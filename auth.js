@@ -17,6 +17,7 @@ async function handleLogin() {
             msg.style.color = "#ef4444";
         } else {
             msg.innerText = "Bem-vindo!";
+            // Conexão: Redireciona para o Dashboard após login sucesso
             setTimeout(() => window.location.href = "dashboard.html", 500);
         }
     } catch (e) {
@@ -25,6 +26,7 @@ async function handleLogin() {
 }
 
 async function handleLogout() {
+    // Conexão: Limpa sessão e volta para o login
     await sb.auth.signOut();
     window.location.href = "login.html";
 }

@@ -1,23 +1,22 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Verificar se o Supabase (sb) existe (carregado via auth.js)
     if (typeof sb === 'undefined') {
-        console.error("Erro: Supabase não inicializado. Verifique o auth.js");
+        console.error("Erro: Supabase não inicializado.");
         return;
     }
 
-    // 2. Proteção de Rota: Só entra se estiver logado
-    const { data: { user } } = await sb.auth.getUser(); [cite: 1]
+    // Conexão de Segurança: Verifica se o usuário está logado 
+    const { data: { user } } = await sb.auth.getUser();
     
     if (!user) {
-        window.location.href = "login.html"; [cite: 1]
+        // Se não estiver conectado, volta para o login 
+        window.location.href = "login.html";
         return;
     }
 
-    // 3. Exibir dados do usuário
+    // Exibe o e-mail do usuário logado 
     const userDisplay = document.getElementById('user-display');
     if (userDisplay) userDisplay.innerText = user.email;
 
-    // 4. Atualizar Data Atual
     const dateEl = document.getElementById('current-date');
     if (dateEl) {
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
