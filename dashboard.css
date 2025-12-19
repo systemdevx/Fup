@@ -2,22 +2,18 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-    /* Cores extraídas da Imagem */
     --header-bg: #E49B76; 
-    --header-text: #ffffff;
-    
+    --header-text: #1044ff;
     --google-blue: #1967d2;
     --bg-gray-tabs: #f5f5f5; 
     --text-inactive: #5f6368;
-    --border-color: #dadce0; 
-    
+    --border-color: #b5bbcb; 
     --bg-main: #ffffff;
     --text-dark: #202124;
 }
 
 body {
     background-color: var(--bg-main);
-    /* MUDANÇA 1: Fonte base menor para efeito de "Zoom Out" */
     font-size: 14px; 
     font-family: 'Roboto', Arial, sans-serif;
     color: var(--text-dark);
@@ -27,11 +23,10 @@ body {
     overflow: hidden;
 }
 
-/* --- 1. Cabeçalho Principal (Mais fino) --- */
+/* --- 1. Cabeçalho Principal --- */
 .main-header {
     background-color: var(--header-bg);
     color: var(--header-text);
-    /* Reduzido de 64px para 52px */
     height: 52px;
     display: flex;
     align-items: center;
@@ -43,21 +38,19 @@ body {
 .corporate-brand {
     font-family: serif;
     font-weight: 700;
-    /* Reduzido de 2rem para 1.5rem */
     font-size: 1.5rem;
     letter-spacing: 1px;
-    color: white;
+    color: rgb(7, 7, 7);
 }
 
 .header-nav { display: flex; align-items: center; height: 100%; gap: 24px; }
 
 .header-link {
-    color: rgba(255,255,255,0.9);
+    color: rgba(0, 0, 0, 0.9);
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Fonte menor */
     font-size: 0.7rem;
     gap: 2px;
     font-weight: 500;
@@ -69,7 +62,7 @@ body {
 .header-link i { font-size: 1.2rem; margin-bottom: 0; }
 
 .user-profile-circle {
-    width: 32px; height: 32px; /* Menor */
+    width: 32px; height: 32px;
     background: rgba(255,255,255,0.3);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
@@ -77,7 +70,7 @@ body {
     margin-left: 12px;
 }
 
-/* --- 2. BARRA DE FILTROS (Mais compacta) --- */
+/* --- 2. BARRA DE FILTROS --- */
 .custom-filter-bar {
     display: flex;
     flex-direction: column;
@@ -85,20 +78,18 @@ body {
     background: white;
 }
 
-/* LINHA 1: ABAS */
 .tabs-row {
     display: flex;
     align-items: flex-end;
     background-color: var(--bg-gray-tabs);
     border-bottom: 1px solid var(--border-color);
     padding: 0 24px;
-    /* Reduzido de 48px para 40px */
     height: 40px;
     gap: 4px;
 }
 
 .tab-item {
-    padding: 8px 16px; /* Menos padding vertical */
+    padding: 8px 16px;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-inactive);
@@ -127,13 +118,12 @@ body {
 .tab-item i { font-size: 1rem; }
 
 
-/* LINHA 2: FILTROS E AÇÕES */
+/* LINHA DE FILTROS */
 .filters-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start; /* Mudado para start já que não tem mais item na direita */
     padding: 8px 24px;
-    /* Reduzido de 68px para 56px */
     height: 56px; 
     background: #fff;
     border-bottom: 1px solid var(--border-color);
@@ -141,12 +131,10 @@ body {
 
 .filters-left { display: flex; align-items: center; gap: 12px; }
 
-/* Botões de Filtro (Compactos e Arredondados) */
 .filter-pill {
     background: white;
     border: 1px solid #dadce0; 
     color: var(--google-blue);
-    /* Padding reduzido */
     padding: 6px 14px; 
     border-radius: 8px; 
     font-size: 0.85rem;
@@ -164,47 +152,85 @@ body {
 }
 .filter-pill i { font-size: 1rem; }
 
-/* Ícones de Ação */
-.icon-group {
+
+/* --- MENU DROP DOWN (Três Pontinhos) --- */
+.menu-container {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-left: 12px;
+    margin-left: 8px;
 }
 
-.icon-action {
+/* Botão de Gatilho */
+.icon-trigger {
     background: none;
     border: none;
     color: var(--text-inactive);
-    width: 32px;  /* Reduzido de 40px */
+    width: 32px;
     height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background 0.2s;
+}
+.icon-trigger:hover, .icon-trigger.active {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--text-dark);
+}
+.icon-trigger i { font-size: 1.2rem; }
+
+/* O Menu Flutuante */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%; 
+    left: 0;
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 8px;
+    flex-direction: row;
+    gap: 8px;
+    z-index: 100;
+    min-width: 120px;
+    justify-content: center;
 }
 
-.icon-action i { font-size: 1.2rem; }
+.dropdown-menu.show { display: flex; }
 
-.icon-action:hover { 
-    color: var(--text-dark); 
-    background-color: rgba(0,0,0,0.05); 
+/* Ícones dentro do menu */
+.menu-item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: none;
+    background: none;
+    color: var(--text-inactive);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
 }
+.menu-item-icon:hover {
+    background-color: #f1f3f4;
+    color: var(--google-blue);
+}
+.menu-item-icon i { font-size: 1.2rem; }
 
-/* --- Conteúdo Principal e Tabelas --- */
+
+/* --- Conteúdo e Tabelas --- */
 .app-body { display: flex; flex: 1; overflow: hidden; }
 .main-content { flex: 1; padding: 20px; overflow-y: auto; }
 
 .content-header {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
 }
-/* Títulos menores */
 .content-header h2 { font-size: 1.1rem; font-weight: 400; color: var(--text-dark); }
 .pagination-stub { font-size: 0.8rem; color: var(--text-inactive); }
 
-/* Grid de KPIs (Mais compactos) */
+/* KPIs */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -213,11 +239,11 @@ body {
 }
 .kpi-card {
     background: white; border: 1px solid var(--border-color); 
-    padding: 16px; /* Menos espaçamento interno */
+    padding: 16px;
     border-radius: 8px; display: flex; align-items: center;
 }
 .kpi-icon {
-    width: 40px; height: 40px; /* Ícone menor */
+    width: 40px; height: 40px;
     border-radius: 50%; display: flex; 
     align-items: center; justify-content: center; 
     font-size: 1.2rem; margin-right: 12px;
@@ -225,11 +251,10 @@ body {
 .icon-blue { background: #e8f0fe; color: var(--google-blue); }
 .icon-warning { background: #fef7e0; color: #ea8600; }
 .icon-success { background: #e6f4ea; color: #137333; }
-
 .kpi-info h3 { font-size: 1.4rem; font-weight: 400; margin-bottom: 2px; }
 .kpi-info p { color: var(--text-inactive); font-size: 0.75rem; font-weight: 500; }
 
-/* Tabela Limpa (Compacta) */
+/* Tabela */
 .data-table-container {
     border: 1px solid var(--border-color);
     border-radius: 8px; overflow: hidden;
@@ -240,7 +265,7 @@ body {
     font-size: 0.8rem; color: var(--text-inactive); font-weight: 500; border-bottom: 1px solid var(--border-color);
 }
 .corporate-table td { 
-    padding: 12px 14px; /* Células mais baixas */
+    padding: 12px 14px; 
     border-bottom: 1px solid var(--border-color); 
     color: var(--text-dark); 
     font-size: 0.85rem;

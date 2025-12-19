@@ -1,42 +1,20 @@
-// --- Função de Logout ---
-function logout() {
-    if(confirm("Deseja realmente encerrar sua sessão no FUP?")) {
-        window.location.href = "login.html";
-    }
-}
+<div class="menu-container">
+    <button class="icon-trigger" id="moreOptionsBtn" title="Mais Opções">
+        <i class="ri-more-2-fill"></i>
+    </button>
 
-// --- Lógica das Abas ---
-const tabs = document.querySelectorAll('.tab-item');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        // Remove a classe 'active' de todas as abas
-        tabs.forEach(t => t.classList.remove('active'));
-
-        // Adiciona a classe 'active' na aba clicada
-        tab.classList.add('active');
+    <div class="dropdown-menu" id="actionsMenu">
+        <button class="menu-item" title="Novo Registro">
+            <i class="ri-add-line"></i> 
+            <span>Novo Registro</span>
+        </button>
         
-        console.log(`Aba selecionada: ${tab.innerText}`);
-    });
-});
-
-// --- Feedback Visual nos Botões ---
-const filters = document.querySelectorAll('.filter-pill');
-
-filters.forEach(filter => {
-    filter.addEventListener('click', () => {
-        console.log(`Filtro clicado: ${filter.innerText}`);
-    });
-});
-
-// --- Feedback Visual nos Ícones ---
-const actionButtons = document.querySelectorAll('.icon-action');
-
-actionButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const title = btn.getAttribute('title');
-        if(title) {
-            console.log(`Ação acionada: ${title}`);
-        }
-    });
-});
+        <button class="menu-item" title="Limpar Filtro">
+            <i class="ri-delete-bin-line"></i> 
+            <span>Limpar Filtro</span>
+        </button>
+        
+        <button class="menu-item" title="Salvar Filtro">
+            <i class="ri-save-3-line"></i> 
+            <span>Salvar Filtro</span>
+        </button>

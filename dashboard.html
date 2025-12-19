@@ -14,21 +14,11 @@
             <h1 class="corporate-brand">FUP</h1>
         </div>
         <nav class="header-nav">
-            <a href="#" class="header-link active">
-                <i class="ri-dashboard-line"></i> Dashboard
-            </a>
-            <a href="#" class="header-link">
-                <i class="ri-fire-line"></i> Pedido Gases
-            </a>
-            <a href="#" class="header-link">
-                <i class="ri-file-text-line"></i> Registros Fiscais
-            </a>
-            <a href="#" class="header-link">
-                <i class="ri-database-2-line"></i> Registros Ativos
-            </a>
-            <a href="#" class="header-link" onclick="logout()">
-                <i class="ri-logout-box-r-line"></i> Sair
-            </a>
+            <a href="#" class="header-link active"><i class="ri-dashboard-line"></i> Dashboard</a>
+            <a href="#" class="header-link"><i class="ri-fire-line"></i> Pedido Gases</a>
+            <a href="#" class="header-link"><i class="ri-file-text-line"></i> Registros Fiscais</a>
+            <a href="#" class="header-link"><i class="ri-database-2-line"></i> Registros Ativos</a>
+            <a href="#" class="header-link" onclick="logout()"><i class="ri-logout-box-r-line"></i> Sair</a>
             <div class="user-profile-circle">UC</div> 
         </nav>
     </header>
@@ -54,15 +44,17 @@
                     Criado em: Todo período <i class="ri-arrow-down-s-line"></i>
                 </button>
                 
-                <div class="icon-group">
-                    <button class="icon-action" title="Novo"><i class="ri-add-line"></i></button>
-                    <button class="icon-action" title="Excluir"><i class="ri-delete-bin-line"></i></button>
-                    <button class="icon-action" title="Salvar"><i class="ri-save-line"></i></button>
+                <div class="menu-container">
+                    <button class="icon-trigger" id="moreOptionsBtn" title="Mais Opções">
+                        <i class="ri-more-2-fill"></i>
+                    </button>
+
+                    <div class="dropdown-menu" id="actionsMenu">
+                        <button class="menu-item-icon" title="Novo"><i class="ri-add-line"></i></button>
+                        <button class="menu-item-icon" title="Excluir"><i class="ri-delete-bin-line"></i></button>
+                        <button class="menu-item-icon" title="Salvar"><i class="ri-save-line"></i></button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="filters-right">
-                <button class="icon-action"><i class="ri-more-2-fill"></i></button>
             </div>
         </div>
     </section>
