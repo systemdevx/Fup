@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP - Dashboard Corporativo</title>
+    <title>FUP - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
@@ -14,77 +14,105 @@
             <h1 class="corporate-brand">FUP</h1>
         </div>
         <nav class="header-nav">
-            <a href="#" class="header-link active"><i class="ri-dashboard-3-line"></i> Dashboard</a>
-            <a href="#" class="header-link"><i class="ri-exchange-dollar-line"></i> Pedido Gases</a>
-            <a href="#" class="header-link"><i class="ri-store-2-line"></i> Registros Fiscais</a>
-            <a href="#" class="header-link"><i class="ri-store-2-line"></i> Registros Ativos</a>
-            <div class="user-profile-circle">UC</div> </nav>
+            <a href="#" class="header-link active">
+                <i class="ri-dashboard-line"></i> Dashboard
+            </a>
+            <a href="#" class="header-link">
+                <i class="ri-fire-line"></i> Pedido Gases
+            </a>
+            <a href="#" class="header-link">
+                <i class="ri-file-text-line"></i> Registros Fiscais
+            </a>
+            <a href="#" class="header-link">
+                <i class="ri-database-2-line"></i> Registros Ativos
+            </a>
+            <a href="#" class="header-link" onclick="logout()">
+                <i class="ri-logout-box-r-line"></i> Sair
+            </a>
+            <div class="user-profile-circle">UC</div> 
+        </nav>
     </header>
 
-    <section class="action-bar">
-        <div class="action-left">
-            <button class="btn-hamburger"><i class="ri-menu-line"></i></button>
-            <button class="btn-primary-action">
-                 <i class="ri-add-line"></i> Nova Operação
-            </button>
-        </div>
-        <div class="action-right">
-            <div class="search-container">
-                <i class="ri-search-line"></i>
-                <input type="text" placeholder="Pesquisar...">
+    <section class="custom-filter-bar">
+        
+        <div class="tabs-row">
+            <div class="tab-item active">
+                Aprovações e Requisições <i class="ri-arrow-down-s-line"></i>
             </div>
-            <button class="btn-filter"><i class="ri-filter-3-line"></i> Filtros</button>
+            <div class="tab-item">
+                Painel de compras <i class="ri-arrow-down-s-line"></i>
+            </div>
+        </div>
+
+        <div class="filters-row">
+            <div class="filters-left">
+                <button class="filter-pill">
+                    Todos Processos <i class="ri-arrow-down-s-line"></i>
+                </button>
+                
+                <button class="filter-pill">
+                    Criado em: Todo período <i class="ri-arrow-down-s-line"></i>
+                </button>
+                
+                <div class="icon-group">
+                    <button class="icon-action" title="Novo"><i class="ri-add-line"></i></button>
+                    <button class="icon-action" title="Excluir"><i class="ri-delete-bin-line"></i></button>
+                    <button class="icon-action" title="Salvar"><i class="ri-save-line"></i></button>
+                </div>
+            </div>
+            
+            <div class="filters-right">
+                <button class="icon-action"><i class="ri-more-2-fill"></i></button>
+            </div>
         </div>
     </section>
 
     <div class="app-body">
-        <aside class="sidebar">
-            <nav class="sidebar-menu">
-                <div class="menu-group">
-                    <p class="menu-title">PENDÊNCIAS</p>                
-        </aside>
         <main class="main-content">
             <div class="content-header">
-                <h2>Módulos Operacionais</h2>
-                <div class="pagination-stub"></div>
+                <h2>Visão Geral</h2>
+                <div class="pagination-stub">Atualizado agora</div>
             </div>
-
-           <div class="data-table-container">
-               <table class="corporate-table">
-                   <thead>
-                       <tr>
-                           <th style="width: 40px;"><input type="checkbox"></th>
-                           <th>Módulo</th>
-                           <th>Descrição</th>
-                           <th>Status</th>
-                           <th>Ação</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       <tr onclick="alert('Abrindo Central Fiscal...')">
-                           <td><input type="checkbox"></td>
-                           <td class="primary-text"><i class="ri-folder-shield-2-line table-icon"></i></td>
-                           <td class="secondary-text"></td>
-                           <td><span class="badge badge-green"></span></td>
-                           <td><button class="btn-table-action"></button></td>
-                       </tr>
-                       <tr onclick="alert('Módulo em desenvolvimento')">
-                           <td><input type="checkbox"></td>
-                           <td class="primary-text"><i class="ri-computer-line table-icon"></i></td>
-                           <td class="secondary-text"></td>
-                           <td><span class="badge badge-yellow"></span></td>
-                           <td><button class="btn-table-action disabled"></button></td>
-                       </tr>
-                        <tr onclick="alert('Módulo em desenvolvimento')">
-                           <td><input type="checkbox"></td>
-                           <td class="primary-text"><i class="ri-fire-line table-icon"></i></td>
-                           <td class="secondary-text"></td>
-                           <td><span class="badge badge-yellow"> </span></td>
-                           <td><button class="btn-table-action disabled"></button></td>
-                       </tr>
-                   </tbody>
-               </table>
-           </div>
+        
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-blue"><i class="ri-fire-line"></i></div>
+                    <div class="kpi-info"><h3>0</h3><p>Pedidos de Gases</p></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-warning"><i class="ri-file-warning-line"></i></div>
+                    <div class="kpi-info"><h3>0</h3><p>Pendências Fiscais</p></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon icon-success"><i class="ri-database-2-line"></i></div>
+                    <div class="kpi-info"><h3>0</h3><p>Ativos Registrados</p></div>
+                </div>
+            </div>
+        
+            <div class="content-header" style="margin-top: 32px;">
+                <h2>Últimas Movimentações</h2>
+            </div>
+            <div class="data-table-container">
+                <table class="corporate-table">
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Módulo</th>
+                            <th>Descrição</th>
+                            <th>Usuário</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: #999;">
+                                <i class="ri-inbox-line" style="font-size: 2rem; display: block; margin-bottom: 8px;"></i>
+                                Nenhum registro encontrado.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
     <script src="dashboard.js"></script>

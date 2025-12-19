@@ -1,25 +1,44 @@
+// --- Função de Logout ---
 function logout() {
-    [cite_start]// Mantém a mesma lógica de confirmação [cite: 2]
-    if(confirm("Deseja realmente sair do sistema FUP?")) {
-        // Redireciona para login (assumindo que existe login.html)
+    if(confirm("Deseja realmente encerrar sua sessão no FUP?")) {
+        // Redireciona para login
         window.location.href = "login.html";
     }
 }
 
-// Lógica para alternar o link ativo na nova sidebar
-const sideLinks = document.querySelectorAll('.side-link');
+// --- Lógica das Abas (Alternar estilo) ---
+const tabs = document.querySelectorAll('.tab-item');
 
-sideLinks.forEach(item => {
-    item.addEventListener('click', (e) => {
-        // Remove a classe 'active' de todos os links
-        document.querySelectorAll('.side-link.active').forEach(activeItem => {
-            activeItem.classList.remove('active');
-        });
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Remove a classe 'active' de todas as abas
+        tabs.forEach(t => t.classList.remove('active'));
+
+        // Adiciona a classe 'active' na aba clicada
+        tab.classList.add('active');
         
-        // Adiciona a classe 'active' ao link clicado
-        item.classList.add('active');
+        console.log(`Aba selecionada: ${tab.innerText}`);
     });
 });
 
-// Os alertas inline no HTML (onclick="alert(...)") continuarão funcionando
-// nas linhas da tabela, simulando a navegação anterior dos cards.
+// --- Feedback Visual nos Botões de Filtro ---
+const filters = document.querySelectorAll('.filter-pill');
+
+filters.forEach(filter => {
+    filter.addEventListener('click', () => {
+        console.log(`Filtro clicado: ${filter.innerText}`);
+        // Aqui você pode adicionar lógica futura de abrir menus suspensos
+    });
+});
+
+// --- Feedback Visual nos Ícones ---
+const actionButtons = document.querySelectorAll('.icon-action');
+
+actionButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const title = btn.getAttribute('title');
+        if(title) {
+            console.log(`Ação acionada: ${title}`);
+        }
+    });
+});
