@@ -1,12 +1,11 @@
 // --- Função de Logout ---
 function logout() {
     if(confirm("Deseja realmente encerrar sua sessão no FUP?")) {
-        // Redireciona para login
         window.location.href = "login.html";
     }
 }
 
-// --- Lógica das Abas (Alternar estilo) ---
+// --- Lógica das Abas ---
 const tabs = document.querySelectorAll('.tab-item');
 
 tabs.forEach(tab => {
@@ -21,13 +20,12 @@ tabs.forEach(tab => {
     });
 });
 
-// --- Feedback Visual nos Botões de Filtro ---
+// --- Feedback Visual nos Botões ---
 const filters = document.querySelectorAll('.filter-pill');
 
 filters.forEach(filter => {
     filter.addEventListener('click', () => {
         console.log(`Filtro clicado: ${filter.innerText}`);
-        // Aqui você pode adicionar lógica futura de abrir menus suspensos
     });
 });
 

@@ -3,13 +3,13 @@
 
 :root {
     /* Cores extraídas da Imagem */
-    --header-bg: #E49B76; /* Tom salmão exato */
+    --header-bg: #E49B76; 
     --header-text: #ffffff;
     
-    --google-blue: #1967d2; /* Azul padrão Google */
-    --bg-gray-tabs: #f5f5f5; /* Fundo cinza das abas */
-    --text-inactive: #5f6368; /* Cinza dos textos inativos */
-    --border-color: #dadce0; /* Cinza das linhas */
+    --google-blue: #1967d2;
+    --bg-gray-tabs: #f5f5f5; 
+    --text-inactive: #5f6368;
+    --border-color: #dadce0; 
     
     --bg-main: #ffffff;
     --text-dark: #202124;
@@ -17,6 +17,8 @@
 
 body {
     background-color: var(--bg-main);
+    /* MUDANÇA 1: Fonte base menor para efeito de "Zoom Out" */
+    font-size: 14px; 
     font-family: 'Roboto', Arial, sans-serif;
     color: var(--text-dark);
     height: 100vh;
@@ -25,11 +27,12 @@ body {
     overflow: hidden;
 }
 
-/* --- 1. Cabeçalho Principal (Salmão) --- */
+/* --- 1. Cabeçalho Principal (Mais fino) --- */
 .main-header {
     background-color: var(--header-bg);
     color: var(--header-text);
-    height: 64px;
+    /* Reduzido de 64px para 52px */
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,12 +43,13 @@ body {
 .corporate-brand {
     font-family: serif;
     font-weight: 700;
-    font-size: 2rem;
+    /* Reduzido de 2rem para 1.5rem */
+    font-size: 1.5rem;
     letter-spacing: 1px;
     color: white;
 }
 
-.header-nav { display: flex; align-items: center; height: 100%; gap: 32px; }
+.header-nav { display: flex; align-items: center; height: 100%; gap: 24px; }
 
 .header-link {
     color: rgba(255,255,255,0.9);
@@ -53,26 +57,27 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.75rem;
-    gap: 4px;
+    /* Fonte menor */
+    font-size: 0.7rem;
+    gap: 2px;
     font-weight: 500;
     cursor: pointer;
     opacity: 0.8;
     transition: opacity 0.2s;
 }
 .header-link:hover, .header-link.active { opacity: 1; font-weight: 600; }
-.header-link i { font-size: 1.4rem; margin-bottom: 2px; }
+.header-link i { font-size: 1.2rem; margin-bottom: 0; }
 
 .user-profile-circle {
-    width: 40px; height: 40px;
+    width: 32px; height: 32px; /* Menor */
     background: rgba(255,255,255,0.3);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 1rem;
-    margin-left: 16px;
+    font-weight: 700; font-size: 0.85rem;
+    margin-left: 12px;
 }
 
-/* --- 2. BARRA DE FILTROS (Refinada) --- */
+/* --- 2. BARRA DE FILTROS (Mais compacta) --- */
 .custom-filter-bar {
     display: flex;
     flex-direction: column;
@@ -87,17 +92,18 @@ body {
     background-color: var(--bg-gray-tabs);
     border-bottom: 1px solid var(--border-color);
     padding: 0 24px;
-    height: 48px;
-    gap: 2px;
+    /* Reduzido de 48px para 40px */
+    height: 40px;
+    gap: 4px;
 }
 
 .tab-item {
-    padding: 10px 16px;
-    font-size: 0.9rem;
+    padding: 8px 16px; /* Menos padding vertical */
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-inactive);
     cursor: pointer;
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -118,7 +124,7 @@ body {
     background-color: #e8eaed;
     color: var(--text-dark);
 }
-.tab-item i { font-size: 1.1rem; }
+.tab-item i { font-size: 1rem; }
 
 
 /* LINHA 2: FILTROS E AÇÕES */
@@ -126,22 +132,24 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
-    height: 68px; /* Altura confortável */
+    padding: 8px 24px;
+    /* Reduzido de 68px para 56px */
+    height: 56px; 
     background: #fff;
     border-bottom: 1px solid var(--border-color);
 }
 
-.filters-left { display: flex; align-items: center; gap: 16px; }
+.filters-left { display: flex; align-items: center; gap: 12px; }
 
-/* Botões de Filtro (Arredondados e Elegantes) */
+/* Botões de Filtro (Compactos e Arredondados) */
 .filter-pill {
     background: white;
-    border: 1px solid #dadce0; /* Borda cinza suave padrão */
+    border: 1px solid #dadce0; 
     color: var(--google-blue);
-    padding: 8px 16px; 
-    border-radius: 8px; /* Canto arredondado conforme pedido */
-    font-size: 0.9rem;
+    /* Padding reduzido */
+    padding: 6px 14px; 
+    border-radius: 8px; 
+    font-size: 0.85rem;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -154,23 +162,23 @@ body {
     background: #f0f7ff; 
     border-color: var(--google-blue); 
 }
-.filter-pill i { font-size: 1.1rem; }
+.filter-pill i { font-size: 1rem; }
 
-/* Ícones de Ação (Circulares e sem divisão) */
+/* Ícones de Ação */
 .icon-group {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-left: 16px;
+    gap: 4px;
+    margin-left: 12px;
 }
 
 .icon-action {
     background: none;
     border: none;
     color: var(--text-inactive);
-    width: 40px;  /* Largura fixa */
-    height: 40px; /* Altura fixa */
-    border-radius: 50%; /* Círculo perfeito */
+    width: 32px;  /* Reduzido de 40px */
+    height: 32px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,52 +186,62 @@ body {
     transition: background-color 0.2s, color 0.2s;
 }
 
-.icon-action i { font-size: 1.3rem; }
+.icon-action i { font-size: 1.2rem; }
 
 .icon-action:hover { 
     color: var(--text-dark); 
-    background-color: rgba(0,0,0,0.05); /* Fundo cinza circular no hover */
+    background-color: rgba(0,0,0,0.05); 
 }
 
 /* --- Conteúdo Principal e Tabelas --- */
 .app-body { display: flex; flex: 1; overflow: hidden; }
-.main-content { flex: 1; padding: 24px; overflow-y: auto; }
+.main-content { flex: 1; padding: 20px; overflow-y: auto; }
 
 .content-header {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
 }
-.content-header h2 { font-size: 1.2rem; font-weight: 400; color: var(--text-dark); }
-.pagination-stub { font-size: 0.85rem; color: var(--text-inactive); }
+/* Títulos menores */
+.content-header h2 { font-size: 1.1rem; font-weight: 400; color: var(--text-dark); }
+.pagination-stub { font-size: 0.8rem; color: var(--text-inactive); }
 
-/* Grid de KPIs */
+/* Grid de KPIs (Mais compactos) */
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
 }
 .kpi-card {
-    background: white; border: 1px solid var(--border-color); padding: 24px;
+    background: white; border: 1px solid var(--border-color); 
+    padding: 16px; /* Menos espaçamento interno */
     border-radius: 8px; display: flex; align-items: center;
 }
 .kpi-icon {
-    width: 48px; height: 48px; border-radius: 50%; display: flex; 
-    align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 16px;
+    width: 40px; height: 40px; /* Ícone menor */
+    border-radius: 50%; display: flex; 
+    align-items: center; justify-content: center; 
+    font-size: 1.2rem; margin-right: 12px;
 }
 .icon-blue { background: #e8f0fe; color: var(--google-blue); }
 .icon-warning { background: #fef7e0; color: #ea8600; }
 .icon-success { background: #e6f4ea; color: #137333; }
-.kpi-info h3 { font-size: 1.8rem; font-weight: 400; }
-.kpi-info p { color: var(--text-inactive); font-size: 0.85rem; font-weight: 500; }
 
-/* Tabela Limpa */
+.kpi-info h3 { font-size: 1.4rem; font-weight: 400; margin-bottom: 2px; }
+.kpi-info p { color: var(--text-inactive); font-size: 0.75rem; font-weight: 500; }
+
+/* Tabela Limpa (Compacta) */
 .data-table-container {
     border: 1px solid var(--border-color);
     border-radius: 8px; overflow: hidden;
 }
 .corporate-table { width: 100%; border-collapse: collapse; }
 .corporate-table th {
-    background: #fafafa; padding: 12px 16px; text-align: left;
-    font-size: 0.85rem; color: var(--text-inactive); font-weight: 500; border-bottom: 1px solid var(--border-color);
+    background: #fafafa; padding: 10px 14px; text-align: left;
+    font-size: 0.8rem; color: var(--text-inactive); font-weight: 500; border-bottom: 1px solid var(--border-color);
 }
-.corporate-table td { padding: 16px; border-bottom: 1px solid var(--border-color); color: var(--text-dark); font-size: 0.9rem;}
+.corporate-table td { 
+    padding: 12px 14px; /* Células mais baixas */
+    border-bottom: 1px solid var(--border-color); 
+    color: var(--text-dark); 
+    font-size: 0.85rem;
+}
