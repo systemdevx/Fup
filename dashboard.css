@@ -1,0 +1,225 @@
+/* Reset e Variáveis Corporativas */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    /* Cores baseadas na referência Vivara */
+    --header-bg: #E89A72; /* Tom pêssego/laranja do cabeçalho */
+    --header-text: #ffffff;
+    --primary-blue: #0056b3; [cite_start]/* Mantido o azul original para ações principais [cite: 3] */
+    --bg-main: #F4F6F8; /* Fundo cinza claro para o corpo */
+    --bg-white: #ffffff;
+    --text-dark: #333333;
+    --text-gray: #666666;
+    --border-color: #E0E0E0;
+    --accent-selected: #EDF4FC; /* Fundo azul claro para itens selecionados na sidebar */
+    
+    --sidebar-width: 240px;
+}
+
+body {
+    background-color: var(--bg-main);
+    /* Mudança para Roboto ou similar para um ar mais técnico */
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif; 
+    color: var(--text-dark);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- 1. Cabeçalho Principal (Laranja) --- */
+.main-header {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.corporate-brand {
+    font-family: serif; /* Visual mais clássico para a marca */
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+.header-nav { display: flex; align-items: center; height: 100%; gap: 24px; }
+.header-link {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    gap: 4px;
+    transition: color 0.2s;
+}
+.header-link i { font-size: 1.2rem; }
+.header-link:hover, .header-link.active { color: white; }
+
+.user-profile-circle {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+}
+
+/* --- 2. Barra de Ações Secundária (Branca) --- */
+.action-bar {
+    background: var(--bg-white);
+    height: 56px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.action-left, .action-right { display: flex; align-items: center; gap: 12px; }
+.btn-hamburger, .btn-filter {
+    background: none; border: none; font-size: 1.2rem; color: var(--text-gray); cursor: pointer;
+}
+.btn-primary-action {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px; /* Cantos mais quadrados */
+    font-weight: 500; font-size: 0.9rem;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+}
+
+.search-container {
+    display: flex; align-items: center;
+    background: var(--bg-main);
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+.search-container i { color: var(--text-gray); margin-right: 8px; }
+.search-container input { border: none; background: none; outline: none; font-size: 0.9rem; }
+
+/* --- 3. Corpo da Aplicação (Sidebar + Main) --- */
+.app-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar Corporativa */
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-white);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+}
+
+.menu-group { margin-bottom: 24px; }
+.menu-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    font-weight: 700;
+    padding: 0 16px;
+    margin-bottom: 8px;
+}
+
+.side-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 3px solid transparent; /* Indicador lateral */
+}
+
+.side-link i { font-size: 1.1rem; margin-right: 12px; color: var(--text-gray); }
+
+/* Estilo de item ativo similar à referência */
+.side-link:hover, .side-link.active {
+    background-color: var(--accent-selected);
+    color: var(--primary-blue);
+    border-left-color: var(--primary-blue);
+}
+.side-link.active i { color: var(--primary-blue); }
+
+.sidebar-footer { margin-top: auto; padding: 16px; border-top: 1px solid var(--border-color); }
+.btn-logout {
+    width: 100%; padding: 8px; border: 1px solid var(--border-color); background: white;
+    color: #d32f2f; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    border-radius: 4px;
+}
+
+/* Conteúdo Principal - Estilo Tabela */
+.main-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.content-header {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.content-header h2 { font-size: 1.2rem; font-weight: 500; color: var(--text-dark); }
+.pagination-stub { font-size: 0.85rem; color: var(--text-gray); }
+
+.data-table-container {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: 4px; /* Cantos pouco arredondados */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.corporate-table { width: 100%; border-collapse: collapse; text-align: left; }
+.corporate-table th {
+    background: #F8FAFC;
+    padding: 12px 16px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+.corporate-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+.corporate-table tr:hover { background-color: #f9fafb; cursor: pointer; }
+
+.table-icon { margin-right: 8px; color: var(--text-gray); }
+.primary-text { font-weight: 500; color: var(--text-dark); }
+.secondary-text { color: var(--text-gray); font-size: 0.85rem; }
+
+/* Badges e Botões da Tabela */
+.badge {
+    padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;
+}
+.badge-green { background: #DEF7EC; color: #03543F; }
+.badge-yellow { background: #FDF6B2; color: #723B13; }
+
+.btn-table-action {
+    padding: 6px 12px;
+    border: 1px solid var(--primary-blue);
+    background: white;
+    color: var(--primary-blue);
+    border-radius: 4px;
+    cursor: pointer; font-size: 0.8rem; font-weight: 500;
+}
+.btn-table-action:hover { background: var(--accent-selected); }
+.btn-table-action.disabled {
+    border-color: var(--border-color); color: var(--text-gray); cursor: not-allowed; background: none;
+}
