@@ -6,7 +6,10 @@
     <title>FUP - Cadastros</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css"> <link rel="stylesheet" href="cadastros.css"> </head>
+    
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="cadastros.css">
+</head>
 <body>
     <header class="main-header">
         <div class="header-left">
@@ -24,39 +27,63 @@
     </header>
 
     <section class="custom-filter-bar">
-        <div class="tabs-row">
-            <div class="tab-item active">
-                Gestão de Pessoas <i class="ri-arrow-down-s-line"></i>
-            </div>
-            <div class="tab-item">
-                Histórico <i class="ri-arrow-down-s-line"></i>
-            </div>
-        </div>
-
         <div class="filters-row">
+            <button class="sidebar-toggle" id="sidebarToggle" title="Ocultar/Mostrar Menu">
+                <i class="ri-more-2-fill"></i>
+            </button>
+
             <div class="filters-left">
                 <button class="filter-pill btn-primary" onclick="openModal()">
                     <i class="ri-add-circle-line"></i> Novo Cadastro
                 </button>
-
-                <button class="filter-pill">
-                    Status: Ativos <i class="ri-arrow-down-s-line"></i>
-                </button>
-                
-                <div class="menu-container">
-                    <button class="icon-trigger" id="moreOptionsBtn" title="Mais Opções">
-                        <i class="ri-more-2-fill"></i>
-                    </button>
-                    <div class="dropdown-menu" id="actionsMenu">
-                        <button class="menu-item-icon" title="Exportar"><i class="ri-file-excel-line"></i></button>
-                        <button class="menu-item-icon" title="Imprimir"><i class="ri-printer-line"></i></button>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
     <div class="app-body">
+        
+        <aside class="app-sidebar" id="sidebar">
+            <div class="sidebar-search-container">
+                <div class="search-box">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="menuSearch" placeholder="Buscar no menu...">
+                </div>
+            </div>
+
+            <ul class="sidebar-menu" id="sidebarMenu">
+                <li>
+                    <a href="#" class="active">
+                        <i class="ri-user-star-line"></i>
+                        <span>Colaboradores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="ri-truck-line"></i>
+                        <span>Fornecedores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="ri-shopping-bag-3-line"></i>
+                        <span>Produtos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="ri-building-4-line"></i>
+                        <span>Unidades</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="ri-settings-3-line"></i>
+                        <span>Configurações</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
         <main class="main-content">
             <div class="content-header">
                 <h2>Lista de Colaboradores</h2>
@@ -89,20 +116,22 @@
             </div>
             <div class="modal-body">
                 <form id="formCadastro">
-                    <input type="hidden" id="editId"> <div class="form-group">
+                    <input type="hidden" id="editId">
+                    
+                    <div class="form-group">
                         <label>Nome Completo</label>
-                        <input type="text" id="nome" required placeholder="Ex: João Silva">
+                        <input type="text" id="nome" required placeholder="Ex: Maria Oliveira">
                     </div>
                     
                     <div class="form-group">
                         <label>E-mail Corporativo</label>
-                        <input type="email" id="email" required placeholder="joao@fup.com">
+                        <input type="email" id="email" required placeholder="maria@fup.com">
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label>Cargo</label>
-                            <input type="text" id="cargo" required placeholder="Ex: Analista">
+                            <input type="text" id="cargo" required placeholder="Ex: Gerente">
                         </div>
                         <div class="form-group">
                             <label>Status</label>

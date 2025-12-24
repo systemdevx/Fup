@@ -1,7 +1,4 @@
-/* Importa estilos base se necessário, mas como está linkado no HTML, 
-   apenas adicionamos o específico aqui */
-
-/* Botão Novo Cadastro (Destaque) */
+/* --- BOTÕES E ELEMENTOS GERAIS --- */
 .btn-primary {
     background-color: var(--google-blue);
     color: white;
@@ -10,112 +7,130 @@
 .btn-primary:hover {
     background-color: #155db5;
     color: white;
+    border-color: #155db5;
 }
 
-/* --- ESTILOS DO MODAL --- */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+/* --- SIDEBAR & TOGGLE (Botão Três Pontinhos) --- */
+.sidebar-toggle {
+    background: none;
+    border: none;
+    color: var(--text-inactive);
+    font-size: 1.5rem; /* Tamanho ajustado para os pontinhos ficarem visíveis */
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    margin-right: 16px;
+}
+.sidebar-toggle:hover { 
+    background-color: rgba(0,0,0,0.05);
+    color: var(--text-dark);
+}
+
+/* Container Principal do Sidebar */
+.app-sidebar {
+    width: 260px;
+    background-color: #f8f9fa;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+/* Classe para ocultar o sidebar (movendo para a esquerda) */
+.app-sidebar.closed {
+    margin-left: -260px;
+}
+
+/* --- CAMPO DE BUSCA NO MENU --- */
+.sidebar-search-container {
+    padding: 20px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus-within {
+    border-color: var(--google-blue);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+.search-box i { color: var(--text-inactive); margin-right: 8px; font-size: 1.1rem; }
+.search-box input { border: none; outline: none; width: 100%; font-size: 0.9rem; color: var(--text-dark); background: transparent; }
+
+/* --- ITENS DO MENU --- */
+.sidebar-menu { list-style: none; padding: 16px 8px; overflow-y: auto; }
+.sidebar-menu li { margin-bottom: 4px; }
+.sidebar-menu a {
+    display: flex; align-items: center; padding: 10px 16px;
+    color: var(--text-dark); text-decoration: none;
+    border-radius: 0 24px 24px 0;
+    font-size: 0.95rem; transition: background-color 0.2s;
+}
+.sidebar-menu a:hover { background-color: rgba(0, 0, 0, 0.04); }
+.sidebar-menu a.active { background-color: #e8f0fe; color: var(--google-blue); font-weight: 500; }
+.sidebar-menu a i { margin-right: 12px; font-size: 1.2rem; color: var(--text-inactive); }
+.sidebar-menu a.active i { color: var(--google-blue); }
+
+
+/* --- MODAL (POP-UP) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000; opacity: 0; visibility: hidden;
     transition: all 0.3s ease;
 }
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
+.modal-overlay.active { opacity: 1; visibility: visible; }
 
 .modal-content {
-    background: white;
-    width: 100%;
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
+    background: white; width: 100%; max-width: 500px;
+    border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transform: translateY(-20px); transition: transform 0.3s ease;
     overflow: hidden;
 }
-
-.modal-overlay.active .modal-content {
-    transform: translateY(0);
-}
+.modal-overlay.active .modal-content { transform: translateY(0); }
 
 .modal-header {
-    background: var(--bg-gray-tabs);
-    padding: 16px 24px;
+    background: var(--bg-gray-tabs); padding: 16px 24px;
     border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
 }
-
-.modal-header h3 { font-weight: 500; color: var(--text-dark); }
-
-.close-modal {
-    background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-inactive);
-}
+.modal-header h3 { font-weight: 500; color: var(--text-dark); margin: 0; }
+.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-inactive); }
 
 .modal-body { padding: 24px; }
-
-/* Formulário */
 .form-group { margin-bottom: 16px; }
 .form-row { display: flex; gap: 16px; }
 .form-row .form-group { flex: 1; }
-
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 0.85rem;
-    color: var(--text-inactive);
-    font-weight: 500;
-}
-
+.form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-inactive); font-weight: 500; }
 .form-group input, .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 0.95rem;
-    color: var(--text-dark);
+    width: 100%; padding: 10px; border: 1px solid var(--border-color);
+    border-radius: 4px; font-size: 0.95rem; color: var(--text-dark);
 }
-.form-group input:focus, .form-group select:focus {
-    outline: none;
-    border-color: var(--google-blue);
-}
+.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--google-blue); box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
 
-.modal-footer {
-    display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;
-}
-
-.btn-cancel {
-    background: white; border: 1px solid var(--border-color);
-    padding: 8px 16px; border-radius: 4px; cursor: pointer; color: var(--text-dark);
-}
-.btn-save {
-    background: var(--google-blue); border: none;
-    padding: 8px 24px; border-radius: 4px; cursor: pointer; color: white; font-weight: 500;
-}
+.modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+.btn-cancel { background: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 4px; cursor: pointer; color: var(--text-dark); }
+.btn-save { background: var(--google-blue); border: none; padding: 8px 24px; border-radius: 4px; cursor: pointer; color: white; font-weight: 500; }
 .btn-save:hover { background: #1660c2; }
 
-/* Ações na Tabela */
-.action-btn {
-    background: none; border: none; cursor: pointer;
-    font-size: 1.2rem; color: var(--text-inactive); margin-left: 8px;
-    transition: color 0.2s;
-}
-.action-btn.edit:hover { color: var(--google-blue); }
-.action-btn.delete:hover { color: #d93025; }
-
-/* Status Badges */
-.status-badge {
-    padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;
-}
+/* --- STATUS E AÇÕES --- */
+.status-badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 500; }
 .status-ativo { background: #e6f4ea; color: #137333; }
 .status-inativo { background: #fce8e6; color: #c5221f; }
 .status-ferias { background: #fef7e0; color: #ea8600; }
+
+.action-btn { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-inactive); margin-left: 8px; }
+.action-btn.edit:hover { color: var(--google-blue); }
+.action-btn.delete:hover { color: #d93025; }
