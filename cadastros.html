@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP - Cadastros</title>
+    <title>FUP - Gerenciamento</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="cadastros.css">
 </head>
 <body>
@@ -26,130 +24,90 @@
         </nav>
     </header>
 
-    <section class="custom-filter-bar">
-        <div class="filters-row">
-            <button class="sidebar-toggle" id="sidebarToggle" title="Ocultar/Mostrar Menu">
-                <i class="ri-more-2-fill"></i>
-            </button>
+    <section class="toolbar-container">
+        <button class="btn-primary" onclick="window.location.href='novo_cadastro.html'">
+            <i class="ri-add-line"></i> Novo Cadastro
+        </button>
 
-            <div class="filters-left">
-                <button class="filter-pill btn-primary" onclick="openModal()">
-                    <i class="ri-add-circle-line"></i> Novo Cadastro
-                </button>
+        <div class="toolbar-actions">
+            <div class="search-box simplified">
+                <i class="ri-search-line"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar..." onkeyup="filtrarTabela()">
             </div>
         </div>
     </section>
 
     <div class="app-body">
-        
-        <aside class="app-sidebar" id="sidebar">
-            <div class="sidebar-search-container">
-                <div class="search-box">
-                    <i class="ri-search-line"></i>
-                    <input type="text" id="menuSearch" placeholder="Buscar no menu...">
+        <main class="main-content full-width">
+            
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchTab('ativos')">
+                    Ativos <span id="count-ativos" class="counter-badge">0</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('fornecedores')">
+                    Fornecedores <span id="count-fornecedores" class="counter-badge">0</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('itens')">
+                    Itens <span id="count-itens" class="counter-badge">0</span>
+                </button>
+            </div>
+
+            <div id="view-ativos" class="data-view">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th width="10%"><div class="th-content">ID <i class="ri-filter-fill filter-icon" title="Filtrar"></i></div></th>
+                                <th width="30%"><div class="th-content">Nome do Equipamento <i class="ri-filter-fill filter-icon" title="Filtrar"></i></div></th>
+                                <th width="20%"><div class="th-content">Marca <i class="ri-filter-fill filter-icon" title="Filtrar"></i></div></th>
+                                <th width="15%"><div class="th-content">Data <i class="ri-arrow-up-down-line filter-icon" title="Ordenar"></i></div></th>
+                                <th width="15%"><div class="th-content">Usuário <i class="ri-filter-fill filter-icon" title="Filtrar"></i></div></th>
+                                <th width="10%" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-ativos"></tbody>
+                    </table>
                 </div>
             </div>
 
-            <ul class="sidebar-menu" id="sidebarMenu">
-                <li>
-                    <a href="#" class="active">
-                        <i class="ri-user-star-line"></i>
-                        <span>Colaboradores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-truck-line"></i>
-                        <span>Fornecedores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-shopping-bag-3-line"></i>
-                        <span>Produtos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-building-4-line"></i>
-                        <span>Unidades</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="ri-settings-3-line"></i>
-                        <span>Configurações</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+            <div id="view-fornecedores" class="data-view hidden">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th width="35%"><div class="th-content">Razão Social <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="25%"><div class="th-content">CNPJ <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="15%"><div class="th-content">Data <i class="ri-arrow-up-down-line filter-icon"></i></div></th>
+                                <th width="15%"><div class="th-content">Usuário <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="10%" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-fornecedores"></tbody>
+                    </table>
+                </div>
+            </div>
 
-        <main class="main-content">
-            <div class="content-header">
-                <h2>Lista de Colaboradores</h2>
-                <div class="pagination-stub" id="totalRecords">Carregando...</div>
+            <div id="view-itens" class="data-view hidden">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th width="8%"><div class="th-content">ID <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="8%"><div class="th-content">Grupo <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="12%"><div class="th-content">Código <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="32%"><div class="th-content">Descrição <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="8%"><div class="th-content">Un. <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="12%"><div class="th-content">Data <i class="ri-arrow-up-down-line filter-icon"></i></div></th>
+                                <th width="10%"><div class="th-content">Usuário <i class="ri-filter-fill filter-icon"></i></div></th>
+                                <th width="10%" class="text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-itens"></tbody>
+                    </table>
+                </div>
             </div>
-        
-            <div class="data-table-container">
-                <table class="corporate-table" id="tabelaCadastros">
-                    <thead>
-                        <tr>
-                            <th>Nome Completo</th>
-                            <th>E-mail</th>
-                            <th>Cargo</th>
-                            <th>Status</th>
-                            <th style="text-align: right;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
+
         </main>
-    </div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Novo Cadastro</h3>
-                <button class="close-modal" onclick="closeModal()"><i class="ri-close-line"></i></button>
-            </div>
-            <div class="modal-body">
-                <form id="formCadastro">
-                    <input type="hidden" id="editId">
-                    
-                    <div class="form-group">
-                        <label>Nome Completo</label>
-                        <input type="text" id="nome" required placeholder="Ex: Maria Oliveira">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>E-mail Corporativo</label>
-                        <input type="email" id="email" required placeholder="maria@fup.com">
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cargo</label>
-                            <input type="text" id="cargo" required placeholder="Ex: Gerente">
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select id="status">
-                                <option value="Ativo">Ativo</option>
-                                <option value="Inativo">Inativo</option>
-                                <option value="Férias">Férias</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
-                        <button type="submit" class="btn-save">Salvar Registro</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="cadastros.js"></script>

@@ -1,0 +1,135 @@
+/* --- BASE --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    color: #202124;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+/* --- CONTAINER --- */
+.fullscreen-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen-content {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.center-content { display: flex; align-items: center; justify-content: center; }
+.hidden { display: none !important; }
+
+/* Animações */
+.fade-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.slide-up { animation: slideUp 0.4s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- BOTÕES FIXOS --- */
+.close-btn-fixed {
+    position: absolute;
+    top: 30px; right: 40px;
+    font-size: 2rem; color: #5f6368;
+    z-index: 100; transition: 0.2s;
+}
+.close-btn-fixed:hover { color: #000; transform: rotate(90deg); }
+
+.back-btn-corner {
+    position: absolute;
+    top: 32px; left: 40px;
+    background: transparent; border: none;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1rem; font-weight: 500; color: #5f6368;
+    cursor: pointer; padding: 8px 12px; border-radius: 8px;
+    z-index: 100; transition: 0.2s;
+}
+.back-btn-corner:hover { background-color: #f1f3f4; color: #202124; }
+
+/* --- TELA SELEÇÃO --- */
+.selection-container { text-align: center; }
+.selection-header h2 { font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; }
+.selection-header p { font-size: 1.1rem; color: #5f6368; margin-bottom: 50px; }
+
+.cards-container { display: flex; gap: 30px; justify-content: center; padding: 20px; }
+
+.type-card-large {
+    width: 240px; height: 280px;
+    background: #fff; border: 1px solid #dadce0; border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s;
+}
+.type-card-large:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-color: #1a73e8;
+}
+.icon-wrapper {
+    width: 80px; height: 80px; background: #f8f9fa; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+    transition: 0.3s;
+}
+.icon-wrapper i { font-size: 2.5rem; color: #5f6368; }
+.type-card-large:hover .icon-wrapper { background: #e8f0fe; }
+.type-card-large:hover .icon-wrapper i { color: #1a73e8; }
+.type-card-large h3 { font-size: 1.3rem; font-weight: 500; }
+.type-card-large p { color: #5f6368; font-size: 0.95rem; margin-top: 5px; }
+
+/* --- TELA FORMULÁRIO --- */
+.form-container-scroll {
+    height: 100%; overflow-y: auto; padding-top: 100px;
+    display: flex; justify-content: center;
+}
+.form-content-wrapper { width: 100%; max-width: 800px; padding: 0 24px 60px 24px; }
+
+.form-header { text-align: center; margin-bottom: 30px; }
+.form-header h2 { font-size: 2rem; font-weight: 400; margin-bottom: 8px; }
+.form-header p { color: #5f6368; font-size: 1rem; }
+.divider { border: 0; height: 1px; background: #eee; margin: 30px 0; }
+
+.form-row { display: flex; gap: 24px; margin-bottom: 24px; }
+.form-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+label { font-size: 0.85rem; font-weight: 700; color: #5f6368; text-transform: uppercase; }
+
+input, select, textarea {
+    width: 100%; padding: 14px 16px;
+    border: 1px solid #dadce0; border-radius: 6px;
+    font-size: 1rem; color: #202124;
+    background-color: #fff; outline: none;
+    transition: 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: #1a73e8; }
+
+/* Estilo para campos automáticos (Readonly) */
+input[readonly] {
+    background-color: #f1f3f4;
+    color: #5f6368;
+    cursor: default;
+    border-color: #eee;
+}
+
+/* Rodapé */
+.form-actions {
+    margin-top: 50px; padding-top: 24px; border-top: 1px solid #eee;
+    display: flex; justify-content: flex-end; gap: 16px;
+}
+.btn-cancel {
+    background: none; border: 1px solid transparent; padding: 12px 24px;
+    color: #5f6368; font-weight: 500; cursor: pointer; border-radius: 4px;
+}
+.btn-cancel:hover { background: #f8f9fa; color: #000; }
+
+.btn-save {
+    background-color: #1a73e8; color: white; border: none; padding: 12px 36px;
+    font-weight: 500; border-radius: 4px; cursor: pointer; transition: 0.2s;
+}
+.btn-save:hover { background-color: #1557b0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
