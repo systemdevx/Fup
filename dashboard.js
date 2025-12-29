@@ -1,46 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Exibir Data Atual no formato corporativo
+    // 1. DATA ATUAL NO HEADER
     const dateDisplay = document.getElementById('date-display');
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const today = new Date();
-    
-    // Capitalizar a primeira letra do dia
-    let dateString = today.toLocaleDateString('pt-BR', options);
-    dateString = dateString.charAt(0).toUpperCase() + dateString.slice(1);
-    
-    dateDisplay.textContent = dateString;
+    if (dateDisplay) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const today = new Date();
+        // Capitaliza a primeira letra do dia
+        let dateString = today.toLocaleDateString('pt-BR', options);
+        dateString = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+        dateDisplay.textContent = dateString;
+    }
 
-    // 2. Animação de contagem dos números (Efeito de carregamento de dados)
+    // 2. ANIMAÇÃO DE CONTAGEM (KPIs)
     const counters = document.querySelectorAll('.card-value');
-    const speed = 200; // Quanto menor, mais rápido
+    const speed = 150; // Ajuste para mais rápido ou devagar
 
     counters.forEach(counter => {
+        // Verifica se o texto original contém "R$" para formatar como moeda
+        const isCurrency = counter.innerText.includes('R$');
+        // Pega o alvo (target) dos dados HTML
+        const target = +counter.getAttribute('data-target');
+        
         const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText.replace(/\D/g, ''); // Remove formatação para cálculo
+            // Pega valor atual animado (ou 0)
+            const currentVal = +counter.getAttribute('data-current') || 0;
             
-            // Incremento suave
+            // Define o incremento
             const inc = target / speed;
 
-            if (count < target) {
-                // Formatação condicional
-                let displayValue = Math.ceil(count + inc);
+            if (currentVal < target) {
+                const newVal = Math.ceil(currentVal + inc);
+                counter.setAttribute('data-current', newVal);
                 
-                // Se o target for o valor monetário grande
-                if(target > 1000000) {
-                     counter.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(displayValue);
+                // Formatação Visual
+                if (isCurrency) {
+                    counter.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(newVal);
                 } else {
-                     counter.innerText = displayValue;
+                    counter.innerText = newVal;
                 }
                 
-                setTimeout(updateCount, 15);
+                // Chama a função novamente (loop de animação)
+                setTimeout(updateCount, 10);
             } else {
-                // Valor final exato com formatação
-                if(target > 1000000) {
-                     counter.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(target);
+                // Finaliza com o valor exato limpo
+                if (isCurrency) {
+                    counter.innerText = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(target);
                 } else {
-                     counter.innerText = target;
+                    counter.innerText = target;
                 }
             }
         };
@@ -48,15 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCount();
     });
 
-    // 3. Simulação de interação no menu (Apenas visual)
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(item => {
+    // 3. MENU ATIVO (Visual)
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Remove active de todos
-            menuItems.forEach(i => i.classList.remove('active'));
-            // Adiciona no clicado
+            e.preventDefault(); 
+            navItems.forEach(nav => nav.classList.remove('active'));
             item.classList.add('active');
         });
     });
+
+    // 4. LOGOUT
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }
 });

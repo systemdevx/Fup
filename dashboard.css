@@ -1,22 +1,22 @@
 :root {
-    /* Cores Base */
-    --bg-body: #f3f4f6;       /* Cinza Fundo */
-    --bg-surface: #ffffff;    /* Branco Elementos */
-    --text-primary: #111827;  /* Preto Suave */
-    --text-secondary: #6b7280;/* Cinza Texto */
-    --border-color: #e5e7eb;  /* Cinza Borda */
+    /* --- CORES DO TEMA --- */
+    --bg-body: #f3f4f6;       /* Cinza de fundo */
+    --bg-surface: #ffffff;    /* Branco dos cards */
+    --text-primary: #111827;  /* Preto suave */
+    --text-secondary: #6b7280;/* Cinza texto */
+    --border-color: #e5e7eb;  /* Bordas finas */
 
-    /* Paleta de Destaque */
+    /* --- PALETA DE DESTAQUE --- */
     --blue: #2563eb;
     --blue-light: #eff6ff;
     
-    --yellow: #ca8a04;        /* Amarelo Ouro (mais sério que amarelo limão) */
+    --yellow: #ca8a04;        /* Amarelo Ouro Escuro (Profissional) */
     --yellow-light: #fefce8;
     
     --red: #dc2626;
     --red-light: #fef2f2;
 
-    /* Estilo */
+    /* --- TIPOGRAFIA E SOMBRAS --- */
     --font-stack: 'Inter', sans-serif;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -31,7 +31,13 @@ body {
     min-height: 100vh;
 }
 
-/* --- 1. Top Navbar (A Faixa Superior) --- */
+/* Ícones SVG */
+svg { display: block; }
+.icon-nav { width: 20px; height: 20px; color: var(--text-secondary); transition: 0.2s; }
+.icon-btn { width: 18px; height: 18px; margin-right: 8px; }
+.icon-sm { width: 20px; height: 20px; opacity: 0.8; }
+
+/* --- 1. TOP NAVBAR (Menu Horizontal) --- */
 .top-navbar {
     background-color: var(--bg-surface);
     border-bottom: 1px solid var(--border-color);
@@ -47,7 +53,7 @@ body {
 
 .nav-container {
     width: 100%;
-    max-width: 1400px; /* Limita a largura em telas gigantes */
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -65,7 +71,7 @@ body {
 .nav-links {
     display: flex;
     gap: 2rem;
-    flex: 1; /* Ocupa o espaço central */
+    flex: 1;
 }
 
 .nav-item {
@@ -85,16 +91,10 @@ body {
     font-weight: 600;
 }
 
-/* Perfil e Ações na Direita */
-.nav-profile {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
+.nav-profile { display: flex; align-items: center; gap: 1.5rem; }
 
-.notification-badge { position: relative; cursor: pointer; }
-.bell-icon { font-size: 1.2rem; filter: grayscale(100%); transition: 0.3s; }
-.bell-icon:hover { filter: grayscale(0); }
+.notification-badge { position: relative; cursor: pointer; display: flex; align-items: center; }
+.notification-badge:hover .icon-nav { color: var(--text-primary); }
 .dot-alert {
     position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: var(--red); border-radius: 50%; border: 1px solid white;
 }
@@ -113,78 +113,66 @@ body {
 }
 .btn-logout:hover { background: var(--red-light); border-color: var(--red); }
 
-/* --- 2. Conteúdo Principal --- */
+/* --- 2. LAYOUT PRINCIPAL --- */
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
 }
 
-/* Header da Página */
 .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 2.5rem;
+    display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;
 }
 .page-title { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
 .page-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px; }
 
 .header-actions { display: flex; gap: 1rem; }
 .btn {
-    padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: transform 0.2s;
+    padding: 0.6rem 1.2rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: transform 0.2s; display: flex; align-items: center;
 }
 .btn:hover { transform: translateY(-2px); }
 .btn-blue { background-color: var(--blue); color: white; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); }
 .btn-yellow { background-color: var(--yellow-light); color: var(--yellow); border: 1px solid rgba(202, 138, 4, 0.2); }
 
-/* --- 3. Grid de Estatísticas (Stats Row) --- */
-.stats-row {
+/* --- 3. GRID DE CARDS (Layout 4 Colunas) --- */
+.stats-grid-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 3rem;
+    /* Ajusta automaticamente: Tenta colocar 4 cards. Se ficar apertado, quebra linha */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .stat-card {
     background: var(--bg-surface);
     padding: 1.5rem;
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: var(--shadow-sm);
     display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+    flex-direction: column;
+    justify-content: space-between;
     transition: 0.3s;
-    border-top: 4px solid transparent; /* Linha colorida no topo */
+    border-top: 4px solid transparent; 
+    height: 100%;
 }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-}
+.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
-/* Cores específicas dos cards */
 .border-blue { border-top-color: var(--blue); }
 .border-yellow { border-top-color: var(--yellow); }
 .border-red { border-top-color: var(--red); }
 
-.stat-icon {
-    width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-}
-.bg-blue-light { background: var(--blue-light); }
-.bg-yellow-light { background: var(--yellow-light); }
-.bg-red-light { background: var(--red-light); }
-
-.stat-info { flex: 1; }
-.stat-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.5px; }
-.card-value { font-size: 2rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-primary); letter-spacing: -1px; }
-.stat-delta { font-size: 0.85rem; font-weight: 500; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+.stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.5px; }
+.card-value { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin: 0.5rem 0; letter-spacing: -1px; }
+.stat-delta { font-size: 0.8rem; font-weight: 600; }
 
 .text-blue { color: var(--blue); }
-.text-yellow { color: var(--yellow); }
 .text-red { color: var(--red); }
+.text-yellow { color: var(--yellow); }
+.text-secondary { color: var(--text-secondary); }
 
-/* --- 4. Painel de Conteúdo (Tabela) --- */
+/* --- 4. TABELA --- */
 .content-panel {
     background: var(--bg-surface);
     border-radius: 12px;
@@ -193,31 +181,29 @@ body {
     border: 1px solid var(--border-color);
 }
 
-.panel-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;
+.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+
+.status-badge {
+    display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #10b981; font-weight: 700; text-transform: uppercase; background: #ecfdf5; padding: 6px 12px; border-radius: 20px;
 }
-.status-live { font-size: 0.8rem; color: #10b981; font-weight: 600; text-transform: uppercase; animation: pulse 2s infinite; }
+.pulse-dot {
+    width: 8px; height: 8px; background-color: #10b981; border-radius: 50%;
+    box-shadow: 0 0 0 rgba(16, 185, 129, 0.4); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-/* Tabela Moderna */
 .modern-table { width: 100%; border-collapse: collapse; }
 .modern-table th {
     text-align: left; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; font-weight: 600; padding-bottom: 1rem; border-bottom: 2px solid var(--bg-body);
 }
-.modern-table td {
-    padding: 1.25rem 0; border-bottom: 1px solid var(--border-color); vertical-align: middle;
-}
+.modern-table td { padding: 1.25rem 0; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
 .modern-table tr:last-child td { border-bottom: none; }
 
 .row-title { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; }
 .row-sub { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
 .font-bold { font-weight: 700; }
 
-/* Badges de Status na Tabela */
-.badge {
-    padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-}
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 .badge-blue { background: var(--blue-light); color: var(--blue); }
 .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
 .badge-red { background: var(--red-light); color: var(--red); }
