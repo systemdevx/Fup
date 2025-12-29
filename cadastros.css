@@ -1,17 +1,35 @@
 /* Estilos Exclusivos para Cadastros */
 
-/* Alinha o conteúdo (botão) para o final (direita) */
-.action-bar-right {
+/* --- Estilos das Abas --- */
+.tabs-container {
     display: flex;
-    justify-content: flex-end; 
+    gap: 1rem;
     margin-bottom: 2rem;
+    padding-left: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.btn-lg {
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
     padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
+.tab-btn:hover { color: var(--blue); }
+
+.tab-btn.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    background: linear-gradient(to top, var(--blue-light), transparent);
+}
+
+/* --- Botões da Tabela --- */
 .btn-icon-small {
     background: transparent;
     border: none;

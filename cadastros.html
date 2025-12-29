@@ -41,13 +41,18 @@
                 <h1 class="page-title">Solicitações de Cadastro</h1>
                 <p class="page-subtitle">Gerencie e acompanhe seus pedidos de novos registros.</p>
             </div>
+            <div class="header-actions">
+                <button class="btn btn-blue" onclick="novaSolicitacao()">
+                    <svg class="icon-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Solicitar Cadastro
+                </button>
+            </div>
         </header>
 
-        <div class="action-bar-right">
-            <button class="btn btn-blue btn-lg" onclick="novaSolicitacao()">
-                <svg class="icon-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Solicitar Cadastro
-            </button>
+        <div class="tabs-container">
+            <button class="tab-btn active">Todas</button>
+            <button class="tab-btn">Solicitações</button>
+            <button class="tab-btn">Aprovações</button>
         </div>
 
         <section class="content-panel">

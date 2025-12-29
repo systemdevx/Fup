@@ -5,12 +5,14 @@
     gap: 1rem;
     margin-bottom: 2rem;
     padding-left: 0.5rem;
-    /* SEM BORDER-BOTTOM para ficar igual ao seu arquivo Fiscais */
+    /* Adicionada a linha fina abaixo das abas */
+    border-bottom: 1px solid var(--border-color);
 }
 
 .tab-btn {
     background: transparent;
     border: none;
+    /* A borda da aba fica "dentro" do container, acima da linha fina criada no container */
     border-bottom: 2px solid transparent;
     padding: 0.8rem 1.5rem;
     font-size: 0.95rem;
@@ -18,6 +20,8 @@
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s;
+    /* Margem negativa opcional se quiser que a borda azul "sobreponha" a linha cinza, 
+       mas por padrão o design atual (tipo Material) funciona bem sem ela */
 }
 
 .tab-btn:hover { color: var(--blue); }
