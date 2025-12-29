@@ -1,27 +1,34 @@
 /* Estilos Exclusivos Ativos */
 
-.asset-filters {
+.tabs-container {
     display: flex;
-    gap: 0.8rem;
+    gap: 1rem;
     margin-bottom: 2rem;
-    flex-wrap: wrap;
+    padding-left: 0.5rem;
+    /* SEM BORDER-BOTTOM para ficar igual ao seu arquivo Fiscais */
 }
 
-.filter-pill {
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    background: white;
-    border: 1px solid var(--border-color);
-    font-size: 0.85rem;
+.tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s;
 }
 
-.filter-pill:hover { border-color: var(--blue); color: var(--blue); }
-.filter-pill.active { background: var(--blue); color: white; border-color: var(--blue); }
+.tab-btn:hover { color: var(--blue); }
 
+.tab-btn.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    background: linear-gradient(to top, var(--blue-light), transparent);
+}
+
+/* Grid de Cards */
 .assets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

@@ -1,0 +1,26 @@
+/* Estilos Exclusivos para Cadastros */
+
+/* Alinha o conteúdo (botão) para o final (direita) */
+.action-bar-right {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: 2rem;
+}
+
+.btn-lg {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-icon-small {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 10px;
+    transition: color 0.2s;
+}
+.btn-icon-small:hover {
+    color: var(--blue);
+}

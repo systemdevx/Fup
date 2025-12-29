@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fup | Solicitações de Cadastro</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="cadastros.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <a href="dashboard.html" class="nav-brand">Fup<span class="dot-blue">.</span></a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-item">Visão Geral</a>
+                <a href="transacoes.html" class="nav-item">Transações</a>
+                <a href="cadastros.html" class="nav-item">Cadastros</a>
+                <a href="fiscais.html" class="nav-item">Registros Fiscais</a>
+                <a href="ativos.html" class="nav-item">Registros Ativos</a>
+            </div>
+            <div class="nav-profile">
+                <div class="notification-badge">
+                    <svg class="icon-nav" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    <span class="dot-alert"></span>
+                </div>
+                <div class="user-pill">
+                    <div class="avatar-circle">AD</div>
+                    <span class="user-name">Admin</span>
+                </div>
+                <button class="btn-logout" id="logout-btn">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Solicitações de Cadastro</h1>
+                <p class="page-subtitle">Gerencie e acompanhe seus pedidos de novos registros.</p>
+            </div>
+        </header>
+
+        <div class="action-bar-right">
+            <button class="btn btn-blue btn-lg" onclick="novaSolicitacao()">
+                <svg class="icon-btn" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Solicitar Cadastro
+            </button>
+        </div>
+
+        <section class="content-panel">
+            <div class="panel-header">
+                <h3>Minhas Solicitações Recentes</h3>
+            </div>
+
+            <table class="modern-table">
+                <thead>
+                    <tr>
+                        <th width="40%">Tipo / Descrição</th>
+                        <th>Data Pedido</th>
+                        <th>Solicitante</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="row-title">Novo Fornecedor: Tech Supply</div>
+                            <div class="row-sub">CNPJ: 12.345.678/0001-90</div>
+                        </td>
+                        <td>Hoje, 10:30</td>
+                        <td>Admin</td>
+                        <td><span class="badge badge-yellow">Pendente</span></td>
+                        <td><button class="btn-icon-small">⋮</button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row-title">Novo Cliente: Grupo Alpha</div>
+                            <div class="row-sub">Varejo • Contrato Anual</div>
+                        </td>
+                        <td>Ontem</td>
+                        <td>Roberto Vendas</td>
+                        <td><span class="badge badge-blue">Em Análise</span></td>
+                        <td><button class="btn-icon-small">⋮</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <script src="dashboard.js"></script>
+    <script src="cadastros.js"></script>
+</body>
+</html>

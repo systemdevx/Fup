@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Filtros visuais (pílulas)
-    const pills = document.querySelectorAll('.filter-pill');
+    // Lógica de Abas
+    const tabs = document.querySelectorAll('.tab-btn');
     
-    pills.forEach(pill => {
-        pill.addEventListener('click', () => {
-            pills.forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active de todas
+            tabs.forEach(t => t.classList.remove('active'));
+            // Adiciona na clicada
+            tab.classList.add('active');
             
-            // Simulação de ação de filtro
-            console.log(`Filtrando por: ${pill.innerText}`);
+            console.log(`Filtrando grid por: ${tab.innerText}`);
         });
     });
 });

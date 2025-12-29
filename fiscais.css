@@ -3,8 +3,10 @@
 .tabs-container {
     display: flex;
     gap: 1rem;
-    margin-bottom: 0;
+    /* AJUSTE: Aumentado para igualar a página de Ativos */
+    margin-bottom: 2rem; 
     padding-left: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .tab-btn {
@@ -17,6 +19,7 @@
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s;
+    margin-bottom: -1px; 
 }
 
 .tab-btn:hover { color: var(--blue); }
