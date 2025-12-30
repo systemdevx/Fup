@@ -18,12 +18,11 @@
                 <span class="user-name">Admin</span>
                 <span class="user-role">Administrador</span>
             </div>
-            <button id="logout-btn" class="btn-exit" title="Sair">Sair</button>
+            <button id="logout-btn" class="btn-exit">Sair</button>
         </div>
     </header>
 
     <main class="me-workspace">
-        
         <div class="page-header-container">
             <div class="page-title-row">
                 <h1 class="page-title">Histórico de Transações</h1>
@@ -36,7 +35,7 @@
                 <a href="fiscais.html" class="tab-item">Registros Fiscais</a>
                 <a href="ativos.html" class="tab-item">Registros Ativos</a>
                 <a href="cadastros.html" class="tab-item">Cadastros</a>
-                <a href="aprovacoes.html" class="tab-item">Aprovações <span class="tab-badge">7</span></a>
+                <a href="aprovacoes.html" class="tab-item">Aprovações</a>
             </div>
 
             <div class="me-sub-nav">
@@ -47,16 +46,7 @@
         </div>
 
         <div class="content-wrapper">
-            
-            <div class="toolbar-clean">
-                <div class="search-group">
-                    <input type="text" class="me-input" placeholder="Buscar transação...">
-                    <select class="me-select">
-                        <option>Status: Todos</option>
-                        <option>Concluído</option>
-                        <option>Pendente</option>
-                    </select>
-                </div>
+            <div class="toolbar-clean" style="justify-content: flex-end;">
                 <button class="btn-me-primary" onclick="novaTransacao()">+ Nova Transação</button>
             </div>
 
@@ -64,46 +54,40 @@
                 <table class="me-table">
                     <thead>
                         <tr>
-                            <th width="120">Data</th>
-                            <th width="35%">Descrição</th>
-                            <th>Método</th>
-                            <th>Valor</th>
-                            <th>Status</th>
+                            <th width="100">
+                                <div class="th-content">Data <button class="btn-filter" data-col="date">▼</button></div>
+                            </th>
+                            <th width="35%">
+                                <div class="th-content">Descrição <button class="btn-filter" data-col="desc">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Método <button class="btn-filter" data-col="method">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Valor <button class="btn-filter" data-col="valRaw">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Status <button class="btn-filter" data-col="status">▼</button></div>
+                            </th>
                             <th width="80" class="col-center">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="transactions-body">
-                        
-                        <tr data-category="contratos">
-                            <td class="text-gray">28/10/2025</td>
-                            <td>
-                                <span class="doc-id">Licença Google Workspace</span>
-                                <span class="doc-desc">Software • Mensal</span>
-                            </td>
-                            <td>Cartão Corp.</td>
-                            <td class="val-main text-red">- R$ 1.250,00</td>
-                            <td><div class="status-indicator st-new"><span class="dot-status"></span> Pago</div></td>
-                            <td class="col-center"><button class="btn-link">Ver</button></td>
-                        </tr>
-
-                        <tr data-category="pedidos">
-                            <td class="text-gray">27/10/2025</td>
-                            <td>
-                                <span class="doc-id">Pagamento Cliente: Alpha Ltda</span>
-                                <span class="doc-desc">Nota Fiscal #9920</span>
-                            </td>
-                            <td>PIX</td>
-                            <td class="val-main text-green">+ R$ 15.000,00</td>
-                            <td><div class="status-indicator st-new"><span class="dot-status bg-green"></span> Recebido</div></td>
-                            <td class="col-center"><button class="btn-link">Ver</button></td>
-                        </tr>
-
-                    </tbody>
+                    <tbody id="grid-body"></tbody>
                 </table>
             </div>
         </div>
-
     </main>
+
+    <div id="filter-dropdown-template" class="filter-dropdown hidden">
+        <div class="filter-search-container">
+            <input type="text" class="filter-search-input" placeholder="Buscar...">
+        </div>
+        <div class="filter-options-list"></div>
+        <div class="filter-actions">
+            <button class="btn-filter-clear">Limpar</button>
+            <button class="btn-filter-apply">Aplicar</button>
+        </div>
+    </div>
 
     <script src="transacoes.js"></script>
 </body>

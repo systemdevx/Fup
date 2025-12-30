@@ -11,23 +11,22 @@
 
     <header class="me-shell">
         <div class="shell-start">
-            <span class="brand-logo">FUP<span class="dot">.</span> <span class="module-name">Fiscal & Tributário</span></span>
+            <span class="brand-logo">FUP<span class="dot">.</span> <span class="module-name">Fiscal</span></span>
         </div>
         <div class="shell-end">
             <div class="user-info">
                 <span class="user-name">Admin</span>
                 <span class="user-role">Administrador</span>
             </div>
-            <button id="logout-btn" class="btn-exit" title="Sair">Sair</button>
+            <button id="logout-btn" class="btn-exit">Sair</button>
         </div>
     </header>
 
     <main class="me-workspace">
-        
         <div class="page-header-container">
             <div class="page-title-row">
                 <h1 class="page-title">Documentos Fiscais</h1>
-                <div class="breadcrumb">Central de Notas Fiscais, DARFs e Comprovantes.</div>
+                <div class="breadcrumb">Central de Notas Fiscais e Impostos</div>
             </div>
 
             <div class="me-tabs">
@@ -36,27 +35,18 @@
                 <a href="fiscais.html" class="tab-item active">Registros Fiscais</a>
                 <a href="ativos.html" class="tab-item">Registros Ativos</a>
                 <a href="cadastros.html" class="tab-item">Cadastros</a>
-                <a href="aprovacoes.html" class="tab-item">Aprovações <span class="tab-badge">7</span></a>
+                <a href="aprovacoes.html" class="tab-item">Aprovações</a>
             </div>
 
             <div class="me-sub-nav">
-                <button class="sub-pill active" data-target="emitidas">Notas Emitidas</button>
-                <button class="sub-pill" data-target="recebidas">Notas Recebidas</button>
-                <button class="sub-pill" data-target="impostos">Guias de Impostos</button>
+                <button class="sub-pill active" data-target="emitidas">Emitidas</button>
+                <button class="sub-pill" data-target="recebidas">Recebidas</button>
+                <button class="sub-pill" data-target="impostos">Impostos</button>
             </div>
         </div>
 
         <div class="content-wrapper">
-            
             <div class="toolbar-clean">
-                <div class="search-group">
-                    <input type="text" class="me-input" placeholder="Buscar nota, valor ou CNPJ...">
-                    <select class="me-select">
-                        <option>Período: Este Mês</option>
-                        <option>Mês Passado</option>
-                        <option>2024</option>
-                    </select>
-                </div>
                 <button class="btn-me-primary">Upload XML/PDF</button>
             </div>
 
@@ -64,65 +54,37 @@
                 <table class="me-table">
                     <thead>
                         <tr>
-                            <th width="35%">Documento</th>
-                            <th>Competência</th>
-                            <th>Valor Total</th>
-                            <th>Vencimento/Status</th>
+                            <th width="35%">
+                                <div class="th-content">Documento <button class="btn-filter" data-col="doc">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Competência <button class="btn-filter" data-col="comp">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Valor <button class="btn-filter" data-col="valRaw">▼</button></div>
+                            </th>
+                            <th>
+                                <div class="th-content">Status <button class="btn-filter" data-col="status">▼</button></div>
+                            </th>
                             <th class="col-center">Arquivo</th>
                         </tr>
                     </thead>
-                    <tbody id="fiscais-body">
-                        
-                        <tr data-category="emitidas">
-                            <td>
-                                <span class="doc-id">NF-e #000.293.112</span>
-                                <span class="doc-desc">Dest: Cliente Beta S.A.</span>
-                            </td>
-                            <td class="text-gray">Out/2025</td>
-                            <td class="val-main">R$ 22.400,00</td>
-                            <td><div class="status-indicator st-ok"><span class="dot-status bg-green"></span> Emitida</div></td>
-                            <td class="col-center"><button class="btn-icon-row" title="Download XML">⬇</button></td>
-                        </tr>
-
-                        <tr data-category="emitidas">
-                            <td>
-                                <span class="doc-id">NF-e #000.293.113</span>
-                                <span class="doc-desc">Dest: Consultoria XYZ</span>
-                            </td>
-                            <td class="text-gray">Out/2025</td>
-                            <td class="val-main">R$ 5.000,00</td>
-                            <td><div class="status-indicator st-urgent"><span class="dot-status bg-red"></span> Cancelada</div></td>
-                            <td class="col-center"><button class="btn-icon-row" title="Download XML">⬇</button></td>
-                        </tr>
-
-                        <tr data-category="recebidas" style="display:none;">
-                            <td>
-                                <span class="doc-id">NF-e #550.111.002</span>
-                                <span class="doc-desc">Forn: AWS Services</span>
-                            </td>
-                            <td class="text-gray">Set/2025</td>
-                            <td class="val-main text-red">- R$ 1.200,00</td>
-                            <td><div class="status-indicator st-ok"><span class="dot-status bg-blue"></span> Escriturada</div></td>
-                            <td class="col-center"><button class="btn-icon-row" title="Download PDF">⬇</button></td>
-                        </tr>
-
-                        <tr data-category="impostos" style="display:none;">
-                            <td>
-                                <span class="doc-id">DARF - PIS/COFINS</span>
-                                <span class="doc-desc">Ref: Faturamento Set/25</span>
-                            </td>
-                            <td class="text-gray">Out/2025</td>
-                            <td class="val-main text-red">- R$ 3.450,00</td>
-                            <td><div class="status-indicator st-new"><span class="dot-status"></span> Pendente</div></td>
-                            <td class="col-center"><button class="btn-icon-row" title="Download Guia">⬇</button></td>
-                        </tr>
-
-                    </tbody>
+                    <tbody id="grid-body"></tbody>
                 </table>
             </div>
         </div>
-
     </main>
+
+    <div id="filter-dropdown-template" class="filter-dropdown hidden">
+        <div class="filter-search-container">
+            <input type="text" class="filter-search-input" placeholder="Buscar...">
+        </div>
+        <div class="filter-options-list"></div>
+        <div class="filter-actions">
+            <button class="btn-filter-clear">Limpar</button>
+            <button class="btn-filter-apply">Aplicar</button>
+        </div>
+    </div>
 
     <script src="fiscais.js"></script>
 </body>

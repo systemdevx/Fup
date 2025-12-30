@@ -1,4 +1,4 @@
-/* --- ME STYLE (Clean Version) --- */
+/* --- ME STYLE (Clean Version - Universal List) --- */
 :root {
     --me-blue-dark: #202d3d;
     --me-blue-primary: #0065a3;
@@ -9,6 +9,9 @@
     
     --status-green: #378e47;
     --status-red: #c0392b;
+    --status-yellow: #ca8a04;
+    --status-blue: #2563eb;
+    --status-gray: #7f8c8d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -23,7 +26,7 @@ body.me-body {
     font-size: 13px;
 }
 
-/* SHELL */
+/* --- SHELL & HEADER (Cabeçalho Azul) --- */
 .me-shell {
     background-color: var(--me-blue-dark); height: 48px;
     display: flex; justify-content: space-between; align-items: center;
@@ -31,19 +34,20 @@ body.me-body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 .shell-start { display: flex; align-items: center; gap: 15px; }
-.brand-logo { font-size: 16px; font-weight: 700; }
+.brand-logo { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
 .dot { color: #00aaff; }
 .module-name { font-weight: 300; opacity: 0.8; margin-left: 5px; font-size: 14px; }
+
 .shell-end { display: flex; align-items: center; gap: 20px; }
 .user-info { text-align: right; line-height: 1.2; }
 .user-name { display: block; font-weight: 700; font-size: 12px; }
 .user-role { display: block; font-size: 11px; opacity: 0.8; }
-.btn-exit { background: none; border: none; color: white; opacity: 0.7; cursor: pointer; font-size: 13px; font-weight: 500; }
+.btn-exit { background: none; border: none; color: white; opacity: 0.7; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s; }
 .btn-exit:hover { opacity: 1; }
 
+/* --- LAYOUT PRINCIPAL --- */
 .me-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-/* HEADER & TABS */
 .page-header-container {
     background: white; padding: 15px 20px 0 20px;
     border-bottom: 1px solid var(--me-border); flex-shrink: 0;
@@ -51,16 +55,19 @@ body.me-body {
 .page-title { font-size: 20px; font-weight: 400; color: #444; margin-bottom: 5px; }
 .breadcrumb { font-size: 11px; color: #888; margin-bottom: 10px; }
 
+/* --- ABAS (TABS) --- */
 .me-tabs { display: flex; gap: 25px; border-bottom: 1px solid #eee; }
 .tab-item {
-    text-decoration: none; padding: 10px 0; font-size: 13px; font-weight: 500; color: #666;
+    background: none; border: none; text-decoration: none; padding: 10px 0;
+    font-size: 13px; font-weight: 500; color: #666;
     border-bottom: 3px solid transparent; cursor: pointer; transition: 0.2s;
 }
 .tab-item:hover { color: var(--me-blue-primary); }
 .tab-item.active { color: var(--me-blue-primary); border-bottom-color: var(--me-blue-primary); }
-.tab-badge { background: #e0e0e0; color: #444; font-size: 10px; padding: 2px 6px; border-radius: 10px; margin-left: 5px; }
+.tab-badge { background: #e0e0e0; color: #444; font-size: 10px; padding: 2px 6px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
 .tab-item.active .tab-badge { background: var(--me-blue-primary); color: white; }
 
+/* --- SUB-NAV (PILLS) --- */
 .me-sub-nav { display: flex; gap: 10px; padding: 10px 0 20px 0; }
 .sub-pill {
     font-size: 12px; color: #555; background: #f0f0f0; border: 1px solid transparent;
@@ -69,39 +76,81 @@ body.me-body {
 .sub-pill:hover { background: #e0e0e0; }
 .sub-pill.active { background: #e6f2fa; color: var(--me-blue-primary); border-color: #bce0fd; font-weight: 500; }
 
-/* CONTENT */
+/* --- CONTEÚDO E TOOLBAR --- */
 .content-wrapper { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
-.toolbar-clean { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.search-group { display: flex; gap: 10px; }
+.toolbar-clean { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; gap: 10px; }
 
+.search-group { display: flex; gap: 10px; }
 .me-input, .me-select {
     padding: 6px 10px; border: 1px solid var(--me-border); border-radius: 3px; font-size: 12px; color: #333;
 }
 .me-input:focus, .me-select:focus { border-color: var(--me-blue-primary); }
 
 .btn-me-primary {
-    background: var(--me-blue-primary); color: white; border: none; padding: 7px 16px; border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: 500;
+    background: var(--me-blue-primary); color: white; border: none; padding: 7px 16px; 
+    border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: 500; text-decoration: none; display: inline-block;
 }
 .btn-me-primary:hover { background: var(--me-blue-hover); }
 
-/* TABLE */
+/* --- TABELA PADRÃO --- */
 .grid-container { background: white; border: 1px solid var(--me-border); border-radius: 4px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 .me-table { width: 100%; border-collapse: collapse; }
+
 .me-table th {
     text-align: left; padding: 8px 10px; background: #e6f2fa; color: var(--me-blue-primary);
     font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 2px solid #bce0fd;
+    position: sticky; top: 0; z-index: 10; vertical-align: middle;
 }
+.th-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
 .me-table td { padding: 8px 10px; border-bottom: 1px solid #eee; color: #333; font-size: 12px; vertical-align: middle; }
 .me-table tr:hover { background-color: #f0f7fd; }
 
-.doc-id { display: block; font-weight: 700; color: var(--me-blue-primary); font-size: 12px; }
-.doc-desc { display: block; color: #555; font-size: 11px; }
-.text-gray { color: #888; }
+/* Botão de Filtro na Coluna */
+.btn-filter {
+    background: none; border: none; font-size: 9px; cursor: pointer; 
+    color: #88a; padding: 2px 4px; border-radius: 2px; margin-left: 5px; transition: 0.2s;
+}
+.btn-filter:hover { background: rgba(0,0,0,0.05); color: #333; }
+.btn-filter.active-filter { color: var(--me-blue-primary); font-weight: bold; background: rgba(0, 101, 163, 0.1); }
+
+/* --- DROPDOWN DE FILTRO (Estilo Excel) --- */
+.filter-dropdown {
+    position: absolute; background: white; border: 1px solid #ccc; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; width: 200px; 
+    z-index: 1000; display: flex; flex-direction: column; font-family: 'Roboto', sans-serif;
+}
+.hidden { display: none !important; }
+
+.filter-search-container { padding: 8px; border-bottom: 1px solid #eee; }
+.filter-search-input { width: 100%; padding: 5px; font-size: 12px; border: 1px solid #ddd; border-radius: 2px; }
+
+.filter-options-list { max-height: 200px; overflow-y: auto; padding: 5px 0; }
+.filter-option-item { display: flex; align-items: center; gap: 8px; padding: 5px 10px; font-size: 12px; color: #333; cursor: pointer; }
+.filter-option-item:hover { background: #f0f7fd; }
+
+.filter-actions { padding: 8px; background: #f9f9f9; border-top: 1px solid #eee; display: flex; justify-content: space-between; }
+.btn-filter-apply { background: var(--me-blue-primary); color: white; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; }
+.btn-filter-clear { background: white; color: #555; border: 1px solid #ccc; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 11px; }
+
+/* --- UTILITÁRIOS DE TEXTO E STATUS --- */
 .col-center { text-align: center; }
+.doc-id { display: block; font-weight: 700; color: var(--me-blue-primary); font-size: 12px; cursor: pointer; }
+.doc-id:hover { text-decoration: underline; }
+.doc-desc { display: block; color: #555; font-size: 11px; }
+
+.text-gray { color: #888; }
+.text-red { color: var(--status-red); }
+.text-green { color: var(--status-green); }
+.val-main { font-weight: 500; }
 
 .status-indicator { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; }
-.dot-status { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: var(--me-blue-primary); }
-.bg-green { background: var(--status-green); }
+.dot-status { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: #bbb; }
+.st-ok .dot-status, .bg-green { background: var(--status-green); }
+.st-urgent .dot-status, .bg-red { background: var(--status-red); }
+.st-new .dot-status, .bg-blue { background: var(--status-blue); }
 
 .btn-link { background: none; border: none; color: var(--me-blue-primary); font-size: 11px; font-weight: 500; cursor: pointer; padding: 0; }
 .btn-link:hover { text-decoration: underline; }
+.btn-icon-row { background: none; border: 1px solid transparent; width: 24px; height: 24px; cursor: pointer; color: #666; font-size: 12px; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; }
+.btn-icon-row:hover { background: #eee; border-color: #ccc; }
