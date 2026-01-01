@@ -20,57 +20,24 @@
         
         <nav>
             <ul>
-                <li>
-                    <a href="dashboard.html">
-                        <span class="material-icons-outlined">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="transacoes.html" class="active">
-                        <span class="material-icons-outlined">receipt_long</span>
-                        <span>Transações</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">storefront</span>
-                        <span>Fornecedores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">shopping_bag</span>
-                        <span>Catálogos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">group</span>
-                        <span>Usuários</span>
-                    </a>
-                </li>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transacoes.html" class="active"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">shopping_bag</span><span>Catálogos</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">group</span><span>Usuários</span></a></li>
             </ul>
         </nav>
-
-        <div class="user-profile">
-            <div class="avatar">JS</div>
-        </div>
+        <div class="user-profile"><div class="avatar">JS</div></div>
     </header>
 
     <div class="erp-sub-header">
         <div class="erp-left">
             <button id="toggleSidebarBtn" class="icon-toggle-btn" title="Expandir/Recolher Menu">
-                <span class="material-icons-outlined">menu_open</span>
+                <span class="material-icons-outlined">menu</span>
             </button>
-
             <div class="btn-group">
-                <button class="btn-primary-erp">
-                    <span class="material-icons-outlined">add</span> Novo Pedido
-                </button>
-                <button class="btn-primary-erp-arrow">
-                    <span class="material-icons-outlined">expand_more</span>
-                </button>
+                <button class="btn-primary-erp"><span class="material-icons-outlined">add</span> Novo Pedido</button>
+                <button class="btn-primary-erp-arrow"><span class="material-icons-outlined">expand_more</span></button>
             </div>
         </div>
         
@@ -79,10 +46,7 @@
                 <span class="material-icons-outlined search-icon">search</span>
                 <input type="text" placeholder="Pesquisar" class="erp-input-search">
             </div>
-            
-            <button class="btn-text-icon">
-                <span class="material-icons-outlined">filter_list</span> Filtros
-            </button>
+            <button class="btn-text-icon"><span class="material-icons-outlined">filter_list</span> Filtros</button>
             <div class="erp-divider"></div>
             <button class="icon-only"><span class="material-icons-outlined">bar_chart</span></button>
             <button class="icon-only"><span class="material-icons-outlined">grid_view</span></button>
@@ -90,91 +54,30 @@
     </div>
 
     <div class="transacoes-wrapper">
-        
         <aside id="sidebarTransacoes" class="sidebar-erp">
             <div class="sidebar-inner-search">
                 <span class="material-icons-outlined">search</span>
                 <input type="text" placeholder="Buscar neste menu">
             </div>
-
             <div class="menu-group">
-                <div class="group-title">
-                    <span>PENDÊNCIAS</span>
-                    <span class="material-icons-outlined arrow">expand_less</span>
-                </div>
+                <div class="group-title"><span>PENDÊNCIAS</span><span class="material-icons-outlined arrow">expand_less</span></div>
                 <ul>
-                    <li class="has-notification">
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">shopping_bag</span>
-                            <span>Compras</span>
-                        </div>
-                        <span class="red-dot"></span>
-                    </li>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">assignment_turned_in</span>
-                            <span>Aprovações</span>
-                        </div>
-                        <span class="material-icons-outlined arrow-right">expand_more</span>
-                    </li>
+                    <li class="has-notification"><div class="li-content"><span class="material-icons-outlined icon-left">shopping_bag</span><span>Compras</span></div><span class="red-dot"></span></li>
+                    <li><div class="li-content"><span class="material-icons-outlined icon-left">assignment_turned_in</span><span>Aprovações</span></div><span class="material-icons-outlined arrow-right">expand_more</span></li>
                 </ul>
             </div>
-
             <div class="menu-group">
-                <div class="group-title">
-                    <span>ITENS</span>
-                    <span class="material-icons-outlined arrow">expand_less</span>
-                </div>
-                <ul>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder_open</span>
-                            <span>Todos</span>
-                        </div>
-                    </li>
-                </ul>
+                <div class="group-title"><span>ITENS</span><span class="material-icons-outlined arrow">expand_less</span></div>
+                <ul><li><div class="li-content"><span class="material-icons-outlined icon-left">folder_open</span><span>Todos</span></div></li></ul>
             </div>
-
             <div class="menu-group">
-                <div class="group-title">
-                    <span>TRANSAÇÕES</span>
-                    <span class="material-icons-outlined arrow">expand_less</span>
-                </div>
+                <div class="group-title"><span>TRANSAÇÕES</span><span class="material-icons-outlined arrow">expand_less</span></div>
                 <ul>
-                    <li class="active-item">
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder</span>
-                            <span>Todas</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder_open</span>
-                            <span>Requisições</span>
-                        </div>
-                        <span class="material-icons-outlined arrow-right">expand_more</span>
-                    </li>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder_open</span>
-                            <span>Cotações</span>
-                        </div>
-                        <span class="material-icons-outlined arrow-right">expand_more</span>
-                    </li>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder_open</span>
-                            <span>Contratos</span>
-                        </div>
-                        <span class="material-icons-outlined arrow-right">expand_more</span>
-                    </li>
-                    <li>
-                        <div class="li-content">
-                            <span class="material-icons-outlined icon-left">folder_open</span>
-                            <span>Pedidos</span>
-                        </div>
-                        <span class="material-icons-outlined arrow-right">expand_more</span>
-                    </li>
+                    <li class="active-item"><div class="li-content"><span class="material-icons-outlined icon-left">folder</span><span>Todas</span></div></li>
+                    <li><div class="li-content"><span class="material-icons-outlined icon-left">folder_open</span><span>Requisições</span></div><span class="material-icons-outlined arrow-right">expand_more</span></li>
+                    <li><div class="li-content"><span class="material-icons-outlined icon-left">folder_open</span><span>Cotações</span></div><span class="material-icons-outlined arrow-right">expand_more</span></li>
+                    <li><div class="li-content"><span class="material-icons-outlined icon-left">folder_open</span><span>Contratos</span></div><span class="material-icons-outlined arrow-right">expand_more</span></li>
+                    <li><div class="li-content"><span class="material-icons-outlined icon-left">folder_open</span><span>Pedidos</span></div><span class="material-icons-outlined arrow-right">expand_more</span></li>
                 </ul>
             </div>
         </aside>
@@ -182,17 +85,10 @@
         <main class="transacoes-content-erp">
             <div class="table-toolbar">
                 <div class="toolbar-left">
-                    <button class="pill-btn">
-                        Todos Processos <span class="material-icons-outlined">expand_more</span>
-                    </button>
-                    <button class="pill-btn">
-                        Todo período <span class="material-icons-outlined">expand_more</span>
-                    </button>
+                    <button class="pill-btn">Todos Processos <span class="material-icons-outlined">expand_more</span></button>
+                    <button class="pill-btn">Todo período <span class="material-icons-outlined">expand_more</span></button>
                 </div>
                 <div class="toolbar-right">
-                    <span class="material-icons-outlined icon-nav">chevron_left</span>
-                    <span class="paginacao-texto">1 - 50 de 50.000</span>
-                    <span class="material-icons-outlined icon-nav">chevron_right</span>
                     <span class="material-icons-outlined icon-nav">refresh</span>
                     <span class="material-icons-outlined icon-nav">more_vert</span>
                 </div>
@@ -202,55 +98,20 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 40px;"><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
                             <th>Número do documento Me. <span class="sort-icon">kv</span></th>
                             <th>Número do documento ERP <span class="sort-icon">kv</span></th>
                             <th>Título</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">21568398</td>
-                            <td></td>
-                            <td>INSTALAÇÃO DE PORCELANATO NA BANCADA DA FUNDIÇÃO JOIA E PISO COZINHA</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">69499130</td>
-                            <td></td>
-                            <td>IP - INSTALAÇÃO DE PORCELANATO NA BANCADA DA FUNDIÇÃO JOIA</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">847099</td>
-                            <td class="text-blue">4600016929</td>
-                            <td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">21564219</td>
-                            <td></td>
-                            <td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">69493170</td>
-                            <td></td>
-                            <td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">847096</td>
-                            <td class="text-blue">4600016928</td>
-                            <td>APORTE LEI DO IDOSO - Hospital do Amor - Amparo ao</td>
-                        </tr>
-                         <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="text-blue">847031</td>
-                            <td></td>
-                            <td>IMPERMEABILIZAÇÃO DO PISO DA FUNDIÇÃO JOIA E FLANG</td>
-                        </tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">21568398</td><td></td><td>INSTALAÇÃO DE PORCELANATO NA BANCADA DA FUNDIÇÃO JOIA E PISO COZINHA</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">69499130</td><td></td><td>IP - INSTALAÇÃO DE PORCELANATO NA BANCADA DA FUNDIÇÃO JOIA</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">847099</td><td class="text-blue">4600016929</td><td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">21564219</td><td></td><td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">69493170</td><td></td><td>APORTE LEI DO ESPORTE - Macabi - Futebol Holambra</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">847096</td><td class="text-blue">4600016928</td><td>APORTE LEI DO IDOSO - Hospital do Amor - Amparo ao</td></tr>
+                        <tr><td><input type="checkbox"></td><td class="text-blue">847031</td><td></td><td>IMPERMEABILIZAÇÃO DO PISO DA FUNDIÇÃO JOIA E FLANG</td></tr>
                     </tbody>
                 </table>
             </div>
