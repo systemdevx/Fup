@@ -13,60 +13,65 @@
 </head>
 <body>
 
-    <div class="top-header">
-        <div class="doc-title">
-            <strong>Nº do documento ME</strong> <span class="material-icons-outlined" style="font-size:14px; margin:0 5px;">chevron_right</span> Detalhes dos Itens
+    <div class="nav-bar">
+        <div class="nav-left">
+             <div class="breadcrumbs"></div>
         </div>
-        <div class="top-actions">
-            <button class="btn-top btn-white">Cancelar <span class="material-icons-outlined">close</span></button>
-            <a href="novo_pedido2.html" class="btn-top btn-white">Voltar <span class="material-icons-outlined">arrow_back</span></a>
-            <button id="btnConcluir" class="btn-top btn-orange">Avançar</button>
+        
+        <div class="nav-actions">
+            <button class="btn-action btn-cancel" onclick="window.location.href='novo_pedido.html'">
+                <span class="material-icons-outlined">close</span> Cancelar
+            </button>
+            <a href="novo_pedido2.html" class="btn-action btn-back">
+                <span class="material-icons-outlined">arrow_back</span> Voltar
+            </a>
+            <button id="btnConcluir" class="btn-action btn-advance">
+                Avançar <span class="material-icons-outlined">arrow_forward</span>
+            </button>
         </div>
     </div>
 
-    <div class="split-layout">
+    <div class="split-layout-container" id="splitLayout">
         
-        <aside class="sidebar-items">
-            <div class="sidebar-header">ITENS</div>
-            <div id="sidebarList" class="sidebar-list-content">
+        <aside class="sidebar-items" id="sidebarContainer">
+            <div class="sidebar-header">
+                <span>ITENS (<span id="countSidebar">0</span>)</span>
+            </div>
+            <div id="listaItensSidebar" class="items-list-content">
                 </div>
         </aside>
 
-        <main class="main-content">
+        <div class="resize-handle" id="resizeHandle" title="Clique para ocultar | Arraste para ajustar">
+            <div class="handle-grip">
+                <span class="material-icons-outlined handle-icon">chevron_left</span>
+            </div>
+        </div>
+
+        <main class="main-content-area" id="mainContainer">
             
             <div class="content-header-row">
-                <div class="accordion-trigger">
-                    <span class="material-icons-outlined orange-icon">expand_less</span>
+                <div class="accordion-trigger" id="accordionMainBtn">
+                    <span class="material-icons-outlined orange-icon" id="accordionIcon">expand_less</span>
                     <h3>Itens</h3>
                 </div>
             </div>
 
-            <div class="items-grid-header">
-                <div class="col-idx">#</div>
-                <div class="col-code">Código Produto</div>
-                <div class="col-client">Código Produto Cliente</div>
-                <div class="col-desc">Descrição</div>
-                <div class="col-val">Valor Total</div>
-                <div class="col-act">Ações</div>
-            </div>
-
-            <div id="itemsDetailContainer" class="items-detail-wrapper">
-                
+            <div id="accordionContent">
+                <div class="items-grid-header">
+                    <div class="col-idx">#</div>
+                    <div class="col-erp">Código Produto</div>
+                    <div class="col-cli">Código Produto Cliente</div>
+                    <div class="col-desc">Descrição</div>
+                    <div class="col-val">Valor Total</div>
+                    <div class="col-act">Ações</div>
                 </div>
+
+                <div id="itemsDetailContainer" class="items-detail-wrapper">
+                    </div>
+            </div>
 
         </main>
     </div>
-
-    <footer class="app-footer">
-        <div class="footer-left">
-            <span>Português (pt-BR)</span>
-        </div>
-        <div class="footer-right">
-            <span>Termos e Políticas</span>
-            <span>Contato</span>
-            <span>Suporte Online</span>
-        </div>
-    </footer>
 
     <script src="novo_pedido3.js"></script>
 </body>

@@ -1,157 +1,350 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Recuperar dados
-    const dadosCarrinho = sessionStorage.getItem('carrinho_temp');
-    const dadosCabecalho = sessionStorage.getItem('cabecalho_temp');
-    
-    let carrinho = [];
+    // --- ELEMENTOS ---
+    const sidebar = document.getElementById('sidebarContainer');
+    const resizeHandle = document.getElementById('resizeHandle');
+    const btnConcluir = document.getElementById('btnConcluir');
+    const accordionBtn = document.getElementById('accordionMainBtn');
+    const accordionContent = document.getElementById('accordionContent');
+    const accordionIcon = document.getElementById('accordionIcon');
+    const totalHeader = document.getElementById('totalValorHeader');
 
+    // --- 1. DADOS ---
+    const dadosCarrinho = sessionStorage.getItem('carrinho_temp');
+    let carrinho = [];
     if (dadosCarrinho) carrinho = JSON.parse(dadosCarrinho);
 
     if (carrinho.length === 0) {
         alert('Sessão expirada. Reinicie o processo.');
         window.location.href = 'novo_pedido.html';
-        return;
     }
 
-    // 2. Renderização (Mantida a lógica visual anterior)
-    const sidebarList = document.getElementById('sidebarList');
-    const itemsContainer = document.getElementById('itemsDetailContainer');
-    const btnConcluir = document.getElementById('btnConcluir');
+    renderizarTudo();
 
-    renderizarPagina();
+    function renderizarTudo() {
+        renderizarSidebar();
+        renderizarGridDetalhes();
+        atualizarTotais();
+    }
 
-    function renderizarPagina() {
-        if(sidebarList) sidebarList.innerHTML = '';
-        if(itemsContainer) itemsContainer.innerHTML = '';
+    function atualizarTotais() {
+        const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+        if(totalHeader) totalHeader.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
+        const countLabel = document.getElementById('countSidebar');
+        if(countLabel) countLabel.innerText = carrinho.length;
+    }
+
+    // --- 2. RENDERIZAR SIDEBAR (Leitura) ---
+    function renderizarSidebar() {
+        const container = document.getElementById('listaItensSidebar');
+        if(!container) return;
+        container.innerHTML = '';
+
+        carrinho.forEach((item) => {
+            const html = `
+                <div class="item-mini-card">
+                    <div class="badge-g">G</div>
+                    <div class="item-info">
+                        <span class="item-code">${item.codigo}</span>
+                        <span class="item-desc">${item.descricao}</span>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    // --- 3. GRID PRINCIPAL ---
+    function renderizarGridDetalhes() {
+        const container = document.getElementById('itemsDetailContainer');
+        if(!container) return;
+        container.innerHTML = '';
 
         carrinho.forEach((item, index) => {
             const valorTotal = item.preco * item.quantidade;
-
-            // Sidebar
-            if(sidebarList) {
-                const sbHtml = `
-                    <div class="sidebar-item-row" style="padding: 10px; border-bottom: 1px solid #ddd; background: #fff;">
-                        <span style="background:#FFA000; color:white; padding:2px 5px; border-radius:3px; font-size:10px; font-weight:bold;">G</span>
-                        <div style="font-size: 11px; margin-top:4px;">
-                            <strong>${item.codigo}</strong> <br> ${item.descricao}
-                        </div>
-                    </div>
-                `;
-                sidebarList.insertAdjacentHTML('beforeend', sbHtml);
-            }
-
-            // Detalhes (Inputs)
-            if(itemsContainer) {
-                const detailHtml = `
-                    <div class="item-detail-card" data-index="${index}" style="background: #fff; border: 1px solid #e0e0e0; margin-bottom: 20px; border-radius: 4px;">
-                        <div class="card-summary-row" style="padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; font-size: 12px;">
-                            <div style="font-weight:bold; color:#E67E22;">${index + 1}</div>
-                            <div style="width: 100px; font-weight:600; color:#E67E22;">${item.codigo}</div>
-                            <div style="flex:1;">
-                                <span style="background:#FFA000; color:white; padding:1px 4px; font-size:9px; border-radius:2px;">G</span>
-                                <strong>${item.descricao}</strong>
-                            </div>
-                            <div style="font-weight:bold;">${formatarMoeda(valorTotal)}</div>
-                        </div>
-
-                        <div class="card-inputs-grid" style="padding: 20px; background: #FAFAFA; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;">
-                            
-                            <div>
-                                <label style="display:block; font-size:11px; color:#666; margin-bottom:4px;">Grupo / Catálogo</label>
-                                <div style="font-size:12px; font-weight:600;">${item.grupo}</div>
-                                
-                                <label style="display:block; font-size:11px; color:#666; margin-top:15px; margin-bottom:4px;">Cat. Class. Contábil</label>
-                                <select class="input-me input-classificacao" style="width:100%; padding:6px; border:1px solid #ccc; border-left: 3px solid #ff4d4d; border-radius:4px;">
-                                    <option value="Material de Consumo">Material de Consumo</option>
-                                    <option value="Ativo Imobilizado">Ativo Imobilizado</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label style="display:block; font-size:11px; color:#666; margin-bottom:4px;">Código Produto ERP</label>
-                                <div style="font-size:12px; font-weight:600;">${item.codigo}</div>
-
-                                <label style="display:block; font-size:11px; color:#666; margin-top:15px; margin-bottom:4px;">Orçado</label>
-                                <select class="input-me input-orcado" style="width:100%; padding:6px; border:1px solid #ccc; border-left: 3px solid #ff4d4d; border-radius:4px;">
-                                    <option value="S">Sim</option>
-                                    <option value="N">Não</option>
-                                </select>
-                            </div>
-
-                             <div>
-                                <label style="display:block; font-size:11px; color:#666; margin-bottom:4px;">Aplicação</label>
-                                <select class="input-me input-aplicacao" style="width:100%; padding:6px; border:1px solid #ccc; border-left: 3px solid #ff4d4d; border-radius:4px;">
-                                    <option value="Industrialização">Industrialização</option>
-                                    <option value="Uso e Consumo">Uso e Consumo</option>
-                                </select>
-
-                                <label style="display:block; font-size:11px; color:#666; margin-top:15px; margin-bottom:4px;">Tipo De Compra</label>
-                                <select class="input-me input-tipo" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:4px;">
-                                    <option value="Normal">Normal</option>
-                                    <option value="Urgente">Urgente</option>
-                                </select>
-                            </div>
-
-                             <div>
-                                <label style="display:block; font-size:11px; color:#666; margin-bottom:4px;">Quantidade</label>
-                                <input type="number" class="input-me input-qtd" value="${item.quantidade}" style="width:100%; padding:6px; border:1px solid #ccc; border-left: 3px solid #ff4d4d; border-radius:4px;">
-
-                                <label style="display:block; font-size:11px; color:#666; margin-top:15px; margin-bottom:4px;">Data Estimada</label>
-                                <input type="date" class="input-me input-data" style="width:100%; padding:6px; border:1px solid #ccc; border-left: 3px solid #ff4d4d; border-radius:4px;">
-                            </div>
-
-                        </div>
-                    </div>
-                `;
-                itemsContainer.insertAdjacentHTML('beforeend', detailHtml);
-            }
-        });
-    }
-
-    // 3. Ação: AVANÇAR PARA PÁGINA 4
-    if(btnConcluir) {
-        btnConcluir.addEventListener('click', () => {
+            const detalhes = item.detalhesItem || {}; 
             
-            // Atualizar o objeto carrinho com os dados digitados nos inputs
-            const cards = document.querySelectorAll('.item-detail-card');
-            let erro = false;
+            const valQtd = item.quantidade;
+            const valAplic = detalhes.aplicacao || "Industrialização";
+            const valData = detalhes.dataEntrega || "";
+            const valClass = detalhes.classificacao || "";
+            const valDep = detalhes.deposito || "";
+            const valOrcado = detalhes.orcado || "S";
+            const valTipo = detalhes.tipoCompra || "";
 
-            cards.forEach((card, index) => {
-                const qtd = card.querySelector('.input-qtd').value;
-                const data = card.querySelector('.input-data').value;
-                const classificacao = card.querySelector('.input-classificacao').value;
-                const aplicacao = card.querySelector('.input-aplicacao').value;
-                const orcado = card.querySelector('.input-orcado').value;
-                
-                // Validação visual
-                if(!qtd || !data) erro = true;
+            const detailHtml = `
+                <div class="item-detail-card" data-index="${index}">
+                    
+                    <div class="card-summary-row">
+                        <div class="col-idx text-center">
+                            <span class="material-icons-outlined orange-icon" style="font-size:14px; padding:2px;">expand_less</span>
+                            ${index + 1}
+                        </div>
+                        <div class="col-erp"><span class="erp-code">${item.codigo}</span></div>
+                        <div class="col-cli"><span class="material-icons check-icon">done</span> ${item.codigo}</div>
+                        <div class="col-desc"><span class="badge-g">G</span> <strong>${item.descricao}</strong></div>
+                        <div class="col-val">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        <div class="col-act">
+                            <button class="btn-delete-item" title="Excluir item" data-index="${index}">
+                                <span class="material-icons">close</span>
+                            </button>
+                        </div>
+                    </div>
 
-                // Atualiza o array principal
-                carrinho[index].quantidade = parseInt(qtd);
-                carrinho[index].detalhesItem = {
-                    dataEntrega: data,
-                    classificacao: classificacao,
-                    aplicacao: aplicacao,
-                    orcado: orcado
-                };
+                    <div class="card-inputs-grid">
+                        <div class="field-group">
+                            <label>Grupo / Catálogo</label>
+                            <div class="ro-value">${item.grupo || 'ALMOXARIFADO'}</div>
+                        </div>
+                        <div class="field-group">
+                            <label>Código Produto ERP</label>
+                            <div class="ro-value">${item.codigo}</div>
+                        </div>
+                        <div class="field-group">
+                            <label>Unidade</label>
+                            <div class="ro-value">${item.un}</div>
+                        </div>
+                        <div class="field-group">
+                            <label>Quantidade</label>
+                            <input type="number" class="input-me mandatory-border input-qtd" value="${valQtd}" min="1">
+                        </div>
+
+                        <div class="field-group">
+                            <label>Ultimo Preço Pago</label>
+                            <div class="ro-value">${(item.preco * 1.1).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        </div>
+                        <div class="field-group">
+                            <label>Aplicação</label>
+                            <select class="input-me mandatory-border input-aplicacao">
+                                <option value="Industrialização" ${valAplic === 'Industrialização' ? 'selected' : ''}>Industrialização</option>
+                                <option value="Uso e Consumo" ${valAplic === 'Uso e Consumo' ? 'selected' : ''}>Uso e Consumo</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Tipo De Compra</label>
+                            <select class="input-me input-tipo">
+                                <option value="Normal">Normal</option>
+                                <option value="Urgente">Urgente</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Data Estimada</label>
+                            <input type="date" class="input-me mandatory-border input-data" value="${valData}">
+                        </div>
+
+                        <div class="field-group">
+                            <label>Cat. Class. Contábil</label>
+                            <select class="input-me mandatory-border input-classificacao">
+                                <option value="" selected>Selecione</option>
+                                <option value="Material de Consumo" ${valClass === 'Material de Consumo' ? 'selected' : ''}>Material de Consumo</option>
+                                <option value="Ativo" ${valClass === 'Ativo' ? 'selected' : ''}>Ativo</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Complemento</label>
+                            <textarea class="input-me input-complemento"></textarea>
+                        </div>
+                        <div class="field-group span-2">
+                            <label>Observações</label>
+                            <textarea class="input-me input-obs"></textarea>
+                        </div>
+
+                        <div class="field-group">
+                            <label>Depósito</label>
+                            <select class="input-me mandatory-border input-deposito">
+                                <option value="" selected>Selecione</option>
+                                <option value="DEP01">DEP01</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Orçado</label>
+                            <select class="input-me mandatory-border input-orcado">
+                                <option value="" selected>Selecione</option>
+                                <option value="Sim" ${valOrcado === 'Sim' ? 'selected' : ''}>Sim</option>
+                                <option value="Não" ${valOrcado === 'Não' ? 'selected' : ''}>Não</option>
+                            </select>
+                        </div>
+                        <div></div> <div></div> </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', detailHtml);
+        });
+
+        // Listeners
+        container.querySelectorAll('select, input, textarea').forEach(input => {
+            input.addEventListener('change', (e) => {
+                salvarDadosGridParaCarrinho();
+                if(e.target.classList.contains('input-qtd')) {
+                    renderizarTudo(); 
+                }
             });
+        });
 
-            if (erro) {
-                alert('Preencha as quantidades e datas obrigatórias.');
-                return;
-            }
-
-            // Salva o carrinho atualizado na sessão
-            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
-
-            // Redireciona para Verificação
-            btnConcluir.innerText = 'Processando...';
-            window.location.href = 'novo_pedido4.html';
+        container.querySelectorAll('.btn-delete-item').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(e.currentTarget.dataset.index);
+                if(confirm('Tem certeza que deseja remover este item?')) {
+                    carrinho.splice(idx, 1);
+                    sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
+                    if(carrinho.length === 0) {
+                        alert('Todos os itens removidos. Voltando ao catálogo.');
+                        window.location.href = 'novo_pedido.html';
+                    } else {
+                        renderizarTudo();
+                    }
+                }
+            });
         });
     }
 
-    function formatarMoeda(valor) {
-        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    function salvarDadosGridParaCarrinho() {
+        const cards = document.querySelectorAll('.item-detail-card');
+        cards.forEach((card, index) => {
+            if (carrinho[index]) {
+                const qtd = parseInt(card.querySelector('.input-qtd').value) || 1;
+                carrinho[index].quantidade = qtd;
+                carrinho[index].detalhesItem = {
+                    dataEntrega: card.querySelector('.input-data').value,
+                    aplicacao: card.querySelector('.input-aplicacao').value,
+                    classificacao: card.querySelector('.input-classificacao').value,
+                    deposito: card.querySelector('.input-deposito').value,
+                    orcado: card.querySelector('.input-orcado').value,
+                    tipoCompra: card.querySelector('.input-tipo').value
+                };
+            }
+        });
+        sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
     }
+
+
+    // --- 4. ALÇA: CLIQUE (OCULTAR) e ARRASTE (AJUSTAR) ---
+    
+    let isResizing = false;
+    let isDragging = false; 
+    let startX = 0;
+    let startWidth = 0;
+
+    // A. CLIQUE PRESSIONADO (Início)
+    resizeHandle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isResizing = true;
+        isDragging = false; // Resetamos: por enquanto é um clique
+        startX = e.clientX;
+        startWidth = sidebar.getBoundingClientRect().width;
+
+        // Se estiver fechado (0px), preparamos a largura inicial se for um arraste
+        if (sidebar.classList.contains('closed')) {
+            startWidth = 0;
+            // Não removemos a classe 'closed' imediatamente para não piscar se for só um clique
+        }
+
+        sidebar.style.transition = 'none'; // Desliga animação para o arraste ser fluido
+        resizeHandle.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+    });
+
+    // B. MOVIMENTO DO MOUSE (Window, para não perder o foco)
+    window.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+
+        const dx = e.clientX - startX;
+
+        // Se mover mais de 5 pixels, consideramos ARRASTE
+        if (Math.abs(dx) > 5) {
+            isDragging = true;
+            
+            // Se começou a arrastar e estava fechado, agora abrimos visualmente
+            if (sidebar.classList.contains('closed')) {
+                sidebar.classList.remove('closed');
+                // Mas definimos a width inline para 0 para começar o calculo
+                sidebar.style.width = '0px'; 
+            }
+        }
+
+        // Se for arraste, atualiza a largura
+        if (isDragging) {
+            let newWidth = startWidth + dx;
+
+            // Limites
+            if (newWidth < 150) newWidth = 0; // Cola no zero se for muito pequeno
+            if (newWidth > 600) newWidth = 600;
+
+            sidebar.style.width = `${newWidth}px`;
+        }
+    });
+
+    // C. SOLTAR O MOUSE
+    window.addEventListener('mouseup', (e) => {
+        if (!isResizing) return;
+        
+        isResizing = false;
+        resizeHandle.classList.remove('dragging');
+        document.body.style.cursor = '';
+        sidebar.style.transition = 'width 0.3s ease'; // Religa animação
+
+        if (!isDragging) {
+            // --- FOI UM CLIQUE SIMPLES ---
+            toggleSidebar();
+        } else {
+            // --- FOI UM ARRASTE ---
+            const finalWidth = sidebar.getBoundingClientRect().width;
+            
+            // Se soltou muito pequeno, fecha de vez
+            if (finalWidth < 100) {
+                sidebar.classList.add('closed');
+                sidebar.style.width = ''; // Limpa width inline
+            } else {
+                sidebar.classList.remove('closed');
+                // Garante um mínimo visual se ficou aberto
+                if(finalWidth < 200) sidebar.style.width = '200px';
+            }
+        }
+    });
+
+    function toggleSidebar() {
+        if (sidebar.classList.contains('closed')) {
+            // Abrir
+            sidebar.classList.remove('closed');
+            // Se não tem largura definida, usa padrão
+            if (!sidebar.style.width || sidebar.style.width === '0px') {
+                sidebar.style.width = '280px';
+            }
+        } else {
+            // Fechar
+            sidebar.classList.add('closed');
+        }
+    }
+
+    // Accordion
+    if(accordionBtn && accordionContent) {
+        accordionBtn.addEventListener('click', () => {
+            if (accordionContent.style.display === 'none') {
+                accordionContent.style.display = 'block';
+                accordionIcon.innerText = 'expand_less';
+            } else {
+                accordionContent.style.display = 'none';
+                accordionIcon.innerText = 'expand_more';
+            }
+        });
+    }
+
+    // --- 5. AÇÃO AVANÇAR ---
+    btnConcluir.addEventListener('click', () => {
+        salvarDadosGridParaCarrinho();
+        let erro = false;
+        carrinho.forEach(item => {
+            if(!item.detalhesItem?.dataEntrega) erro = true;
+        });
+
+        if (erro) {
+            alert('Por favor, preencha a Data Estimada para todos os itens.');
+            return;
+        }
+
+        btnConcluir.innerHTML = 'Processando...';
+        setTimeout(() => {
+            window.location.href = 'novo_pedido4.html';
+        }, 300);
+    });
 });
