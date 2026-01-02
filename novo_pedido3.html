@@ -4,20 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Pedido - Detalhes Itens</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
     <link rel="stylesheet" href="novo_pedido3.css">
 </head>
 <body>
-
     <div class="nav-bar">
-        <div class="nav-left">
-             <div class="breadcrumbs"></div>
-        </div>
-        
+        <div class="nav-left"><div class="breadcrumbs"></div></div>
         <div class="nav-actions">
             <button class="btn-action btn-cancel" onclick="window.location.href='novo_pedido.html'">
                 <span class="material-icons-outlined">close</span> Cancelar
@@ -32,23 +25,20 @@
     </div>
 
     <div class="split-layout-container" id="splitLayout">
-        
         <aside class="sidebar-items" id="sidebarContainer">
             <div class="sidebar-header">
                 <span>ITENS (<span id="countSidebar">0</span>)</span>
             </div>
-            <div id="listaItensSidebar" class="items-list-content">
-                </div>
+            <div id="listaItensSidebar" class="items-list-content"></div>
         </aside>
 
-        <div class="resize-handle" id="resizeHandle" title="Clique para ocultar | Arraste para ajustar">
+        <div class="resize-handle" id="resizeHandle" title="Clique para ocultar | Arrastar para ajustar">
             <div class="handle-grip">
                 <span class="material-icons-outlined handle-icon">chevron_left</span>
             </div>
         </div>
 
         <main class="main-content-area" id="mainContainer">
-            
             <div class="content-header-row">
                 <div class="accordion-trigger" id="accordionMainBtn">
                     <span class="material-icons-outlined orange-icon" id="accordionIcon">expand_less</span>
@@ -59,20 +49,18 @@
             <div id="accordionContent">
                 <div class="items-grid-header">
                     <div class="col-idx">#</div>
-                    <div class="col-erp">Código Produto</div>
-                    <div class="col-cli">Código Produto Cliente</div>
+                    <div class="col-grp">Grupo</div>
+                    <div class="col-code">Código Produto</div>
                     <div class="col-desc">Descrição</div>
+                    <div class="col-un">Unidade</div>
+                    <div class="col-price">Ultimo Preço Pago</div>
                     <div class="col-val">Valor Total</div>
                     <div class="col-act">Ações</div>
                 </div>
-
-                <div id="itemsDetailContainer" class="items-detail-wrapper">
-                    </div>
+                <div id="itemsDetailContainer" class="items-detail-wrapper"></div>
             </div>
-
         </main>
     </div>
-
     <script src="novo_pedido3.js"></script>
 </body>
 </html>

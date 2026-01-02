@@ -1,11 +1,23 @@
 /* --- Base --- */
 * { box-sizing: border-box; }
-body { background-color: #F3F4F6; margin: 0; padding: 0; height: 100vh; width: 100vw; display: flex; flex-direction: column; font-family: 'Inter', sans-serif; font-size: 12px; color: #333; overflow: hidden; }
+
+body { 
+    background-color: #F3F4F6; margin: 0; padding: 0; 
+    height: 100vh; width: 100vw; 
+    display: flex; flex-direction: column; 
+    font-family: 'Calibri', 'Segoe UI', sans-serif; 
+    font-size: 14px; color: #333; overflow: hidden; 
+}
+
+/* Força Calibri nos inputs */
+input, select, textarea, button { 
+    font-family: 'Calibri', 'Segoe UI', sans-serif; font-size: 14px; 
+}
 
 /* NavBar */
 .nav-bar { background: #FFF; height: 50px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; flex-shrink: 0; z-index: 20; }
 .nav-actions { display: flex; gap: 10px; }
-.btn-action { display: flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border-radius: 4px; font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none; border: 1px solid transparent; }
+.btn-action { display: flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border-radius: 4px; font-weight: 600; font-size: 13px; cursor: pointer; text-decoration: none; border: 1px solid transparent; }
 .btn-cancel { background: #FFF; border-color: #DDD; color: #555; }
 .btn-cancel:hover { background: #F5F5F5; }
 .btn-back { background: #FFF; border-color: #DDD; color: #555; }
@@ -17,53 +29,65 @@ body { background-color: #F3F4F6; margin: 0; padding: 0; height: 100vh; width: 1
 .split-layout-container { display: flex; flex: 1; overflow: hidden; align-items: stretch; }
 
 /* Sidebar */
-.sidebar-items { width: 250px; min-width: 0; max-width: 600px; background-color: #F8F8F8; border-right: 1px solid #E0E0E0; display: flex; flex-direction: column; flex-shrink: 0; transition: width 0.3s ease; overflow: hidden; }
+.sidebar-items { width: 300px; min-width: 0; max-width: 600px; background-color: #F8F8F8; border-right: 1px solid #E0E0E0; display: flex; flex-direction: column; flex-shrink: 0; transition: width 0.3s ease; overflow: hidden; }
 .sidebar-items.closed { width: 0 !important; border-right: none; }
-.sidebar-header { height: 40px; padding: 0 15px; font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; border-bottom: 1px solid #E0E0E0; display: flex; align-items: center; background: #F4F4F4; white-space: nowrap; }
+.sidebar-header { height: 40px; padding: 0 15px; font-size: 12px; font-weight: 700; color: #666; text-transform: uppercase; border-bottom: 1px solid #E0E0E0; display: flex; align-items: center; background: #F4F4F4; white-space: nowrap; }
 .items-list-content { padding: 10px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-.item-mini-card { background: #FFF; border: 1px solid #DDD; border-radius: 4px; padding: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: flex; gap: 8px; align-items: flex-start; }
-.badge-g { background-color: #FFA000; color: white; font-weight: bold; font-size: 9px; padding: 1px 4px; border-radius: 2px; }
-.item-info { display: flex; flex-direction: column; overflow: hidden; }
-.item-code { font-weight: 700; color: #333; font-size: 11px; }
-.item-desc { color: #666; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ALÇA (HANDLE) - FUNDAMENTAL */
-.resize-handle {
-    width: 14px; margin-left: -7px; 
-    background: transparent; cursor: col-resize; z-index: 50; 
-    display: flex; align-items: center; justify-content: center; 
-    flex-shrink: 0; position: relative; transition: margin-left 0.3s ease;
-}
-.handle-grip {
-    width: 20px; height: 20px; background: #FFF; border: 1px solid #DDD; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; z-index: 51; transition: transform 0.2s;
-}
+/* Item Mini Card */
+.item-mini-card { background: #FFF; border: 1px solid #DDD; border-radius: 4px; padding: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px; }
+.badge-g { background-color: #FFA000; color: white; font-weight: bold; font-size: 11px; padding: 2px 5px; border-radius: 2px; flex-shrink: 0; }
+.item-line-text { font-size: 13px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
+.item-line-text span { font-weight: 400; margin-right: 3px; }
+
+/* Alça */
+.resize-handle { width: 12px; margin-left: -6px; background: transparent; cursor: col-resize; z-index: 50; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; transition: margin-left 0.3s ease; }
+.handle-grip { width: 20px; height: 20px; background: #FFF; border: 1px solid #DDD; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; z-index: 51; transition: transform 0.2s; }
 .handle-icon { font-size: 14px; color: #888; transition: transform 0.3s; }
 .resize-handle:hover .handle-grip { border-color: #1A56DB; color: #1A56DB; transform: scale(1.1); }
-
-/* Quando FECHADO: Encosta a alça na esquerda e inverte a seta */
+.resize-handle.dragging .handle-grip { border-color: #1A56DB; background: #F0F5FF; }
 .sidebar-items.closed + .resize-handle { margin-left: 0; }
 .sidebar-items.closed + .resize-handle .handle-grip { transform: translateX(6px); }
 .sidebar-items.closed + .resize-handle .handle-icon { transform: rotate(180deg); }
-
 
 /* Main Content */
 .main-content-area { flex: 1; background: #FFF; padding: 20px; overflow-y: auto; }
 .content-header-row { display: flex; align-items: center; margin-bottom: 15px; }
 .accordion-trigger { display: flex; align-items: center; gap: 5px; cursor: pointer; }
-.accordion-trigger h3 { margin: 0; font-size: 14px; font-weight: 700; color: #333; }
-.orange-icon { color: #E67E22; background: #FFF5E5; border-radius: 50%; padding: 2px; font-size: 16px; }
+.accordion-trigger h3 { margin: 0; font-size: 15px; font-weight: 700; color: #333; }
+.orange-icon { color: #E67E22; background: #FFF5E5; border-radius: 50%; padding: 2px; font-size: 18px; }
 
-/* Grid Header */
-.items-grid-header { display: grid; grid-template-columns: 30px 120px 150px 1fr 100px 60px; padding: 8px 0; border-bottom: 1px solid #DDD; font-weight: 700; color: #555; font-size: 11px; }
-.col-idx { text-align: center; } .col-val { text-align: right; } .col-act { text-align: right; padding-right: 10px; }
+/* --- GRID LAYOUT AJUSTADO --- */
+/* A estratégia aqui é dar um tamanho fixo/percentual para Descrição (ex: 25%) 
+   e deixar o 1fr para o Valor Total. Isso "puxa" Unidade e Preço para a esquerda. */
+.items-grid-header { 
+    display: grid; 
+    /* # | Grupo | Cod | Desc (25%) | Un | Preco | Total (1fr - Espaço vazio) | Acoes */
+    grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
+    padding: 8px 0; border-bottom: 1px solid #DDD; 
+    font-weight: 700; color: #555; font-size: 13px;
+}
+.col-idx { text-align: center; } 
+.col-un  { text-align: center; } /* Centralizado conforme pedido */
+.col-price { text-align: right; }
+.col-val { text-align: right; padding-right: 20px; } /* Total alinhado a direita do seu espaço */
+.col-act { text-align: right; padding-right: 10px; }
 
-/* Item Card */
+/* Linha de Dados */
 .item-detail-card { border-bottom: 1px solid #EEE; padding-bottom: 20px; margin-bottom: 20px; }
-.card-summary-row { display: grid; grid-template-columns: 30px 120px 150px 1fr 100px 60px; padding: 12px 0; align-items: center; font-size: 12px; }
-.erp-code { color: #E67E22; font-weight: 500; }
-.cli-code { display: flex; align-items: center; gap: 5px; color: #333; }
+.card-summary-row { 
+    display: grid; 
+    /* Mesma estrutura do header */
+    grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
+    padding: 12px 0; align-items: center; font-size: 13px; 
+    font-weight: 400; 
+}
+.col-code { 
+    display: flex; align-items: center; gap: 5px; 
+    color: #E67E22; cursor: pointer; user-select: none;
+}
+.col-desc { color: #333; }
+
 .btn-delete-item { background: black; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
 .btn-delete-item:hover { background: #333; }
 .btn-delete-item .material-icons { font-size: 12px; }
@@ -72,9 +96,8 @@ body { background-color: #F3F4F6; margin: 0; padding: 0; height: 100vh; width: 1
 .card-inputs-grid { background: #FAFAFA; padding: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px 20px; }
 .field-group { display: flex; flex-direction: column; gap: 4px; }
 .field-group.span-2 { grid-column: span 2; }
-.field-group label { font-size: 11px; color: #777; font-weight: 500; }
-.ro-value { font-size: 12px; color: #222; font-weight: 600; min-height: 25px; padding-top: 4px; }
-.input-me { width: 100%; padding: 6px 8px; border: 1px solid #CCC; border-radius: 4px; font-size: 12px; color: #333; outline: none; background: #FFF; }
+.field-group label { font-size: 12px; color: #777; font-weight: 500; }
+.input-me { width: 100%; padding: 6px 8px; border: 1px solid #CCC; border-radius: 4px; font-size: 13px; color: #333; outline: none; background: #FFF; font-weight: 400; }
 .input-me:focus { border-color: #E67E22; }
 .mandatory-border { border-left: 3px solid #FF4D4D; }
-textarea.input-me { resize: vertical; height: 30px; font-family: inherit; }
+textarea.input-me { resize: vertical; height: 30px; }

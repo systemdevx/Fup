@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- ELEMENTOS ---
     const sidebar = document.getElementById('sidebarContainer');
     const resizeHandle = document.getElementById('resizeHandle');
     const btnConcluir = document.getElementById('btnConcluir');
@@ -9,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const accordionIcon = document.getElementById('accordionIcon');
     const totalHeader = document.getElementById('totalValorHeader');
 
-    // --- 1. DADOS ---
+    // DADOS
     const dadosCarrinho = sessionStorage.getItem('carrinho_temp');
     let carrinho = [];
     if (dadosCarrinho) carrinho = JSON.parse(dadosCarrinho);
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(countLabel) countLabel.innerText = carrinho.length;
     }
 
-    // --- 2. RENDERIZAR SIDEBAR (Leitura) ---
+    // --- SIDEBAR ---
     function renderizarSidebar() {
         const container = document.getElementById('listaItensSidebar');
         if(!container) return;
@@ -44,10 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
         carrinho.forEach((item) => {
             const html = `
                 <div class="item-mini-card">
-                    <div class="badge-g">G</div>
-                    <div class="item-info">
-                        <span class="item-code">${item.codigo}</span>
-                        <span class="item-desc">${item.descricao}</span>
+                    <span class="badge-g">G</span>
+                    <div class="item-line-text">
+                        <span>${item.codigo}</span> - ${item.descricao}
                     </div>
                 </div>
             `;
@@ -55,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 3. GRID PRINCIPAL ---
+    // --- GRID PRINCIPAL ---
     function renderizarGridDetalhes() {
         const container = document.getElementById('itemsDetailContainer');
         if(!container) return;
@@ -72,19 +70,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const valDep = detalhes.deposito || "";
             const valOrcado = detalhes.orcado || "S";
             const valTipo = detalhes.tipoCompra || "";
+            const valObs = detalhes.observacoes || "";
+            
+            const grupo = item.grupo || 'ALMOXARIFADO';
+            const ultimoPreco = item.preco * 1.1;
 
             const detailHtml = `
                 <div class="item-detail-card" data-index="${index}">
                     
                     <div class="card-summary-row">
-                        <div class="col-idx text-center">
-                            <span class="material-icons-outlined orange-icon" style="font-size:14px; padding:2px;">expand_less</span>
-                            ${index + 1}
+                        <div class="col-idx text-center">${index + 1}</div>
+                        <div class="col-grp">${grupo}</div>
+                        
+                        <div class="col-code" onclick="toggleItemRow(${index})">
+                            <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:14px; padding:2px; margin-right:5px;">expand_less</span>
+                            ${item.codigo}
                         </div>
-                        <div class="col-erp"><span class="erp-code">${item.codigo}</span></div>
-                        <div class="col-cli"><span class="material-icons check-icon">done</span> ${item.codigo}</div>
-                        <div class="col-desc"><span class="badge-g">G</span> <strong>${item.descricao}</strong></div>
+                        
+                        <div class="col-desc">
+                            <span class="badge-g" style="margin-right:5px;">G</span>${item.descricao}
+                        </div>
+                        
+                        <div class="col-un text-center">${item.un}</div>
+                        <div class="col-price">${ultimoPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        
                         <div class="col-val">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        
                         <div class="col-act">
                             <button class="btn-delete-item" title="Excluir item" data-index="${index}">
                                 <span class="material-icons">close</span>
@@ -92,27 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
 
-                    <div class="card-inputs-grid">
-                        <div class="field-group">
-                            <label>Grupo / Catálogo</label>
-                            <div class="ro-value">${item.grupo || 'ALMOXARIFADO'}</div>
-                        </div>
-                        <div class="field-group">
-                            <label>Código Produto ERP</label>
-                            <div class="ro-value">${item.codigo}</div>
-                        </div>
-                        <div class="field-group">
-                            <label>Unidade</label>
-                            <div class="ro-value">${item.un}</div>
-                        </div>
+                    <div class="card-inputs-grid" id="inputGrid-${index}">
+                        
                         <div class="field-group">
                             <label>Quantidade</label>
                             <input type="number" class="input-me mandatory-border input-qtd" value="${valQtd}" min="1">
-                        </div>
-
-                        <div class="field-group">
-                            <label>Ultimo Preço Pago</label>
-                            <div class="ro-value">${(item.preco * 1.1).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                         </div>
                         <div class="field-group">
                             <label>Aplicação</label>
@@ -124,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="field-group">
                             <label>Tipo De Compra</label>
                             <select class="input-me input-tipo">
-                                <option value="Normal">Normal</option>
-                                <option value="Urgente">Urgente</option>
+                                <option value="Normal" ${valTipo === 'Normal' ? 'selected' : ''}>Normal</option>
+                                <option value="Urgente" ${valTipo === 'Urgente' ? 'selected' : ''}>Urgente</option>
                             </select>
                         </div>
                         <div class="field-group">
@@ -136,36 +131,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="field-group">
                             <label>Cat. Class. Contábil</label>
                             <select class="input-me mandatory-border input-classificacao">
-                                <option value="" selected>Selecione</option>
+                                <option value="" disabled selected>Selecione</option>
                                 <option value="Material de Consumo" ${valClass === 'Material de Consumo' ? 'selected' : ''}>Material de Consumo</option>
                                 <option value="Ativo" ${valClass === 'Ativo' ? 'selected' : ''}>Ativo</option>
                             </select>
                         </div>
                         <div class="field-group">
-                            <label>Complemento</label>
-                            <textarea class="input-me input-complemento"></textarea>
-                        </div>
-                        <div class="field-group span-2">
-                            <label>Observações</label>
-                            <textarea class="input-me input-obs"></textarea>
-                        </div>
-
-                        <div class="field-group">
                             <label>Depósito</label>
                             <select class="input-me mandatory-border input-deposito">
-                                <option value="" selected>Selecione</option>
-                                <option value="DEP01">DEP01</option>
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="DEP01" ${valDep === 'DEP01' ? 'selected' : ''}>DEP01</option>
                             </select>
                         </div>
                         <div class="field-group">
                             <label>Orçado</label>
                             <select class="input-me mandatory-border input-orcado">
-                                <option value="" selected>Selecione</option>
+                                <option value="" disabled selected>Selecione</option>
                                 <option value="Sim" ${valOrcado === 'Sim' ? 'selected' : ''}>Sim</option>
                                 <option value="Não" ${valOrcado === 'Não' ? 'selected' : ''}>Não</option>
                             </select>
                         </div>
-                        <div></div> <div></div> </div>
+                        <div></div>
+
+                        <div class="field-group span-2">
+                            <label>Observações</label>
+                            <textarea class="input-me input-obs">${valObs}</textarea>
+                        </div>
+                        <div></div>
+                        <div></div>
+
+                    </div>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', detailHtml);
@@ -175,20 +170,18 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('select, input, textarea').forEach(input => {
             input.addEventListener('change', (e) => {
                 salvarDadosGridParaCarrinho();
-                if(e.target.classList.contains('input-qtd')) {
-                    renderizarTudo(); 
-                }
+                if(e.target.classList.contains('input-qtd')) renderizarTudo();
             });
         });
 
         container.querySelectorAll('.btn-delete-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const idx = parseInt(e.currentTarget.dataset.index);
-                if(confirm('Tem certeza que deseja remover este item?')) {
+                if(confirm('Remover este item?')) {
                     carrinho.splice(idx, 1);
                     sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
                     if(carrinho.length === 0) {
-                        alert('Todos os itens removidos. Voltando ao catálogo.');
+                        alert('Lista vazia.');
                         window.location.href = 'novo_pedido.html';
                     } else {
                         renderizarTudo();
@@ -197,6 +190,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Toggle Row Function
+    window.toggleItemRow = function(index) {
+        const grid = document.getElementById(`inputGrid-${index}`);
+        const icon = document.querySelector(`.toggle-icon-${index}`);
+        
+        if (grid.style.display === 'none') {
+            grid.style.display = 'grid'; 
+            icon.innerText = 'expand_less';
+        } else {
+            grid.style.display = 'none'; 
+            icon.innerText = 'expand_more';
+        }
+    };
 
     function salvarDadosGridParaCarrinho() {
         const cards = document.querySelectorAll('.item-detail-card');
@@ -210,93 +217,66 @@ document.addEventListener('DOMContentLoaded', () => {
                     classificacao: card.querySelector('.input-classificacao').value,
                     deposito: card.querySelector('.input-deposito').value,
                     orcado: card.querySelector('.input-orcado').value,
-                    tipoCompra: card.querySelector('.input-tipo').value
+                    tipoCompra: card.querySelector('.input-tipo').value,
+                    observacoes: card.querySelector('.input-obs').value
                 };
             }
         });
         sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
     }
 
-
-    // --- 4. ALÇA: CLIQUE (OCULTAR) e ARRASTE (AJUSTAR) ---
-    
+    // ALÇA
     let isResizing = false;
     let isDragging = false; 
     let startX = 0;
     let startWidth = 0;
 
-    // A. CLIQUE PRESSIONADO (Início)
     resizeHandle.addEventListener('mousedown', (e) => {
         e.preventDefault();
         isResizing = true;
-        isDragging = false; // Resetamos: por enquanto é um clique
+        isDragging = false; 
         startX = e.clientX;
         startWidth = sidebar.getBoundingClientRect().width;
-
-        // Se estiver fechado (0px), preparamos a largura inicial se for um arraste
-        if (sidebar.classList.contains('closed')) {
-            startWidth = 0;
-            // Não removemos a classe 'closed' imediatamente para não piscar se for só um clique
-        }
-
-        sidebar.style.transition = 'none'; // Desliga animação para o arraste ser fluido
+        if (sidebar.classList.contains('closed')) startWidth = 0;
+        
+        sidebar.style.transition = 'none';
         resizeHandle.classList.add('dragging');
         document.body.style.cursor = 'col-resize';
     });
 
-    // B. MOVIMENTO DO MOUSE (Window, para não perder o foco)
     window.addEventListener('mousemove', (e) => {
         if (!isResizing) return;
-
         const dx = e.clientX - startX;
-
-        // Se mover mais de 5 pixels, consideramos ARRASTE
         if (Math.abs(dx) > 5) {
             isDragging = true;
-            
-            // Se começou a arrastar e estava fechado, agora abrimos visualmente
             if (sidebar.classList.contains('closed')) {
                 sidebar.classList.remove('closed');
-                // Mas definimos a width inline para 0 para começar o calculo
                 sidebar.style.width = '0px'; 
             }
         }
-
-        // Se for arraste, atualiza a largura
         if (isDragging) {
             let newWidth = startWidth + dx;
-
-            // Limites
-            if (newWidth < 150) newWidth = 0; // Cola no zero se for muito pequeno
+            if (newWidth < 150) newWidth = 0; 
             if (newWidth > 600) newWidth = 600;
-
-            sidebar.style.width = `${newWidth}px`;
+            if (newWidth > 0) sidebar.style.width = `${newWidth}px`;
+            else sidebar.style.width = '0px';
         }
     });
 
-    // C. SOLTAR O MOUSE
     window.addEventListener('mouseup', (e) => {
         if (!isResizing) return;
-        
         isResizing = false;
         resizeHandle.classList.remove('dragging');
         document.body.style.cursor = '';
-        sidebar.style.transition = 'width 0.3s ease'; // Religa animação
+        sidebar.style.transition = 'width 0.3s ease';
 
-        if (!isDragging) {
-            // --- FOI UM CLIQUE SIMPLES ---
-            toggleSidebar();
-        } else {
-            // --- FOI UM ARRASTE ---
+        if (!isDragging) toggleSidebar(); 
+        else {
             const finalWidth = sidebar.getBoundingClientRect().width;
-            
-            // Se soltou muito pequeno, fecha de vez
             if (finalWidth < 100) {
-                sidebar.classList.add('closed');
-                sidebar.style.width = ''; // Limpa width inline
+                sidebar.classList.add('closed'); sidebar.style.width = ''; 
             } else {
                 sidebar.classList.remove('closed');
-                // Garante um mínimo visual se ficou aberto
                 if(finalWidth < 200) sidebar.style.width = '200px';
             }
         }
@@ -304,19 +284,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleSidebar() {
         if (sidebar.classList.contains('closed')) {
-            // Abrir
             sidebar.classList.remove('closed');
-            // Se não tem largura definida, usa padrão
-            if (!sidebar.style.width || sidebar.style.width === '0px') {
-                sidebar.style.width = '280px';
-            }
+            if (!sidebar.style.width || sidebar.style.width === '0px') sidebar.style.width = '280px';
         } else {
-            // Fechar
             sidebar.classList.add('closed');
         }
     }
 
-    // Accordion
     if(accordionBtn && accordionContent) {
         accordionBtn.addEventListener('click', () => {
             if (accordionContent.style.display === 'none') {
@@ -329,22 +303,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. AÇÃO AVANÇAR ---
     btnConcluir.addEventListener('click', () => {
         salvarDadosGridParaCarrinho();
         let erro = false;
         carrinho.forEach(item => {
             if(!item.detalhesItem?.dataEntrega) erro = true;
         });
-
         if (erro) {
             alert('Por favor, preencha a Data Estimada para todos os itens.');
             return;
         }
-
         btnConcluir.innerHTML = 'Processando...';
-        setTimeout(() => {
-            window.location.href = 'novo_pedido4.html';
-        }, 300);
+        setTimeout(() => { window.location.href = 'novo_pedido4.html'; }, 300);
     });
 });
