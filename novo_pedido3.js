@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebarContainer');
     const resizeHandle = document.getElementById('resizeHandle');
     const btnConcluir = document.getElementById('btnConcluir');
-    const accordionBtn = document.getElementById('accordionMainBtn');
-    const accordionContent = document.getElementById('accordionContent');
-    const accordionIcon = document.getElementById('accordionIcon');
     const totalHeader = document.getElementById('totalValorHeader');
 
     const modalOverlay = document.getElementById('modalOverlay');
@@ -18,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dadosCarrinho) carrinho = JSON.parse(dadosCarrinho);
 
     if (carrinho.length === 0) {
-        alert('Sessão expirada. Reinicie o processo.');
-        window.location.href = 'novo_pedido.html';
+        // alert('Sessão expirada. Reinicie o processo.');
+        // window.location.href = 'novo_pedido.html';
     }
 
     renderizarTudo();
@@ -163,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             container.insertAdjacentHTML('beforeend', detailHtml);
         });
 
-        // Listeners
+        // Listeners para Inputs e Botão Delete
         container.querySelectorAll('select, input, textarea').forEach(input => {
             input.addEventListener('change', (e) => {
                 salvarDadosGridParaCarrinho();
@@ -179,14 +176,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Toggle
+    // --- FUNÇÕES DE TOGGLE (GLOBAL - IGUAL NOVO_PEDIDO4) ---
+    
+    // Toggle para Expandir/Recolher Itens Individuais
     window.toggleItemRow = function(index) {
         const grid = document.getElementById(`inputGrid-${index}`);
         const icon = document.querySelector(`.toggle-icon-${index}`);
+        
+        // Verifica display none ou vazio
         if (grid.style.display === 'none' || grid.style.display === '') {
-            grid.style.display = 'grid'; icon.innerText = 'expand_less';
+            grid.style.display = 'grid'; 
+            icon.innerText = 'expand_less';
         } else {
-            grid.style.display = 'none'; icon.innerText = 'expand_more';
+            grid.style.display = 'none'; 
+            icon.innerText = 'expand_more';
+        }
+    };
+
+    // Toggle para a Seção Principal de Itens (Accordion)
+    window.toggleMainSection = function() {
+        const content = document.getElementById('accordionContent');
+        const icon = document.getElementById('accordionIcon');
+
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.innerText = 'expand_less';
+        } else {
+            content.style.display = 'none';
+            icon.innerText = 'expand_more';
         }
     };
 
@@ -210,14 +227,16 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
     }
 
-    // Alça logic
+    // --- LÓGICA DE ALÇA (SIDEBAR) ---
     let isResizing = false, isDragging = false, startX = 0, startWidth = 0;
+    
     resizeHandle.addEventListener('mousedown', (e) => {
         e.preventDefault(); isResizing = true; isDragging = false; 
         startX = e.clientX; startWidth = sidebar.getBoundingClientRect().width;
         if (sidebar.classList.contains('closed')) startWidth = 0;
         sidebar.style.transition = 'none'; resizeHandle.classList.add('dragging'); document.body.style.cursor = 'col-resize';
     });
+    
     window.addEventListener('mousemove', (e) => {
         if (!isResizing) return;
         const dx = e.clientX - startX;
@@ -228,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newWidth > 0) sidebar.style.width = `${newWidth}px`; else sidebar.style.width = '0px';
         }
     });
+    
     window.addEventListener('mouseup', (e) => {
         if (!isResizing) return;
         isResizing = false; resizeHandle.classList.remove('dragging'); document.body.style.cursor = '';
@@ -239,31 +259,33 @@ document.addEventListener('DOMContentLoaded', () => {
             else { sidebar.classList.remove('closed'); if(finalWidth < 200) sidebar.style.width = '200px'; }
         }
     });
+    
     function toggleSidebar() {
         if (sidebar.classList.contains('closed')) { sidebar.classList.remove('closed'); if (!sidebar.style.width || sidebar.style.width === '0px') sidebar.style.width = '280px'; } 
         else { sidebar.classList.add('closed'); }
     }
 
-    if(accordionBtn && accordionContent) {
-        accordionBtn.addEventListener('click', () => {
-            if (accordionContent.style.display === 'none') { accordionContent.style.display = 'block'; accordionIcon.innerText = 'expand_less'; } 
-            else { accordionContent.style.display = 'none'; accordionIcon.innerText = 'expand_more'; }
-        });
-    }
-
+    // Botão Concluir
     btnConcluir.addEventListener('click', () => {
         salvarDadosGridParaCarrinho();
         let erro = false;
         carrinho.forEach(item => { if(!item.detalhesItem?.dataEntrega) erro = true; });
-        if (erro) { alert('Por favor, preencha a Data Estimada para todos os itens.'); return; }
+        
+        if (erro) { 
+            alert('Por favor, preencha a Data Estimada para todos os itens.'); 
+            return; 
+        }
+        
         btnConcluir.innerHTML = 'Processando...';
         setTimeout(() => { window.location.href = 'novo_pedido4.html'; }, 300);
     });
 
-    // Modal
+    // Modal de Exclusão
     function abrirModal() { modalOverlay.style.display = 'flex'; }
     function fecharModal() { modalOverlay.style.display = 'none'; itemToDeleteIndex = null; }
+    
     btnModalCancel.addEventListener('click', fecharModal);
+    
     btnModalConfirm.addEventListener('click', () => {
         if (itemToDeleteIndex !== null) {
             carrinho.splice(itemToDeleteIndex, 1);

@@ -11,9 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dadosCabecalho) cabecalho = JSON.parse(dadosCabecalho);
 
     if (carrinho.length === 0) {
-        alert('Sessão expirada. Redirecionando...');
-        window.location.href = 'novo_pedido.html';
-        return;
+        // Para testes, se não houver sessão, podemos comentar o alerta
+        // alert('Sessão expirada. Redirecionando...');
+        // window.location.href = 'novo_pedido.html';
+        // return;
     }
 
     // --- RENDERIZAR INFO GERAL ---
@@ -26,6 +27,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapaLocais = { 'CD-SP': 'CNP', 'LOJA-RJ': 'LJR', 'MATRIZ': 'MTZ', 'VIVARA-MATRIZ': 'ALM', 'VIVARA-FILIAL': 'FL1' };
     document.getElementById('lblLocalEntrega').innerText = mapaLocais[cabecalho.localEntrega] || 'LOC';
     document.getElementById('lblLocalFat').innerText = mapaLocais[cabecalho.localFaturamento] || 'FAT';
+
+    // --- LÓGICA DE ANEXO (NOVO) ---
+    const fileInput = document.getElementById('fileUploadInput');
+    const txtAnexo = document.getElementById('txtAnexo');
+    const iconAnexo = document.getElementById('iconAnexo');
+    const btnRemove = document.getElementById('btnRemoveAnexo');
+
+    fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files.length > 0) {
+            const fileName = this.files[0].name;
+            txtAnexo.innerText = fileName;
+            txtAnexo.style.color = '#2E7D32'; // Verde
+            txtAnexo.style.fontWeight = '600';
+            
+            iconAnexo.innerText = 'check_circle'; // Ícone de sucesso
+            iconAnexo.style.color = '#2E7D32';
+            
+            btnRemove.classList.remove('hidden');
+            btnRemove.style.display = 'flex';
+        }
+    });
+
+    btnRemove.addEventListener('click', function(e) {
+        fileInput.value = ''; // Limpa input
+        txtAnexo.innerText = 'Nenhum anexo existente. Clique para adicionar.';
+        txtAnexo.style.color = '#666';
+        txtAnexo.style.fontWeight = '400';
+        
+        iconAnexo.innerText = 'attach_file';
+        iconAnexo.style.color = '#666';
+        
+        this.style.display = 'none';
+    });
 
     // --- RENDERIZAR TABELA DE ITENS (COMPLEXA) ---
     const mainList = document.getElementById('listaItensResumo');
@@ -41,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Detalhes recuperados (Inputs)
         const det = item.detalhesItem || {};
         
-        // HTML COMPLEXO (Igual novo_pedido3)
         const html = `
             <div class="item-card-wrapper">
                 
@@ -50,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="col-grp">${grupo}</div>
                     
                     <div class="col-code" onclick="toggleItemRow(${index})" title="Ver detalhes">
-                        <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:14px; padding:2px; margin-right:5px;">expand_more</span>
+                        <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:16px; padding:2px; margin-right:5px;">expand_more</span>
                         ${item.codigo}
                     </div>
                     
@@ -64,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     <div class="col-act">
                         <button class="btn-icon-only" title="Remover item">
-                            <span class="material-icons" style="font-size:16px;">close</span>
+                            <span class="material-icons" style="font-size:18px;">close</span>
                         </button>
                     </div>
                 </div>

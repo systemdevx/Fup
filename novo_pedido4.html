@@ -14,7 +14,7 @@
 
     <div class="top-header">
         <div class="doc-title">
-            <strong>Nº do documento ME</strong> <span class="material-icons-outlined" style="font-size:14px; margin:0 5px;">chevron_right</span> Verificação
+            <strong>Nº do documento ME</strong> <span class="material-icons-outlined" style="font-size:15px; margin:0 5px;">chevron_right</span> Verificação
         </div>
         <div class="top-actions">
             <button class="btn-top btn-white" onclick="window.location.href='novo_pedido.html'">Cancelar <span class="material-icons-outlined">close</span></button>
@@ -68,11 +68,19 @@
                         <label>Valor Total</label>
                         <span id="lblValorTotal" style="font-weight: 700;">R$ 0,00</span>
                     </div>
+                    
                     <div class="info-item full-width">
                         <label>Anexo</label>
-                        <span style="color:#666; display:flex; align-items:center; gap:5px;">
-                            <span class="material-icons-outlined" style="font-size:14px;">attach_file</span> Nenhum anexo existente.
-                        </span>
+                        <div class="attachment-wrapper">
+                            <input type="file" id="fileUploadInput" style="display: none;">
+                            <label for="fileUploadInput" class="attachment-btn">
+                                <span class="material-icons-outlined" id="iconAnexo">attach_file</span> 
+                                <span id="txtAnexo">Nenhum anexo existente. Clique para adicionar.</span>
+                            </label>
+                            <button id="btnRemoveAnexo" class="btn-icon-only hidden" title="Remover anexo" style="margin-left: 10px;">
+                                <span class="material-icons" style="font-size: 16px; color: #D32F2F;">close</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,7 +113,7 @@
                     <h3>Itens (<span id="countItens">0</span>)</h3>
                     
                     <span class="expand-link" onclick="event.stopPropagation(); expandItems()">
-                        <span class="material-icons" style="font-size:14px;">open_in_full</span> Expandir Itens
+                        <span class="material-icons" style="font-size:15px;">open_in_full</span> Expandir Itens
                     </span>
                 </div>
 
