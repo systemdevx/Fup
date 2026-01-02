@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const accordionIcon = document.getElementById('accordionIcon');
     const totalHeader = document.getElementById('totalValorHeader');
 
-    // Elementos do Modal
+    // Modal
     const modalOverlay = document.getElementById('modalOverlay');
     const btnModalCancel = document.getElementById('btnModalCancel');
     const btnModalConfirm = document.getElementById('btnModalConfirm');
-    let itemToDeleteIndex = null; // Armazena qual item será excluido
+    let itemToDeleteIndex = null;
 
-    // DADOS
+    // Dados
     const dadosCarrinho = sessionStorage.getItem('carrinho_temp');
     let carrinho = [];
     if (dadosCarrinho) carrinho = JSON.parse(dadosCarrinho);
@@ -32,17 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarTotais();
     }
 
-    // --- CÁLCULO DE TOTAIS ---
     function atualizarTotais() {
-        // Soma do (Preço Unitário * Quantidade) de todos os itens
         const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-        
-        // Atualiza o Cabeçalho (Total Geral)
-        if(totalHeader) {
-            totalHeader.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-        
-        // Atualiza contador da sidebar
+        if(totalHeader) totalHeader.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         const countLabel = document.getElementById('countSidebar');
         if(countLabel) countLabel.innerText = carrinho.length;
     }
@@ -71,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
 
         carrinho.forEach((item, index) => {
-            const valorTotalLinha = item.preco * item.quantidade; // Total desta linha
+            const valorTotal = item.preco * item.quantidade;
             const detalhes = item.detalhesItem || {}; 
             
             const valQtd = item.quantidade;
@@ -82,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const valOrcado = detalhes.orcado || "S";
             const valTipo = detalhes.tipoCompra || "";
             const valObs = detalhes.observacoes || "";
-            
             const grupo = item.grupo || 'ALMOXARIFADO';
             const ultimoPreco = item.preco * 1.1;
 
@@ -91,10 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     <div class="card-summary-row">
                         <div class="col-idx text-center">${index + 1}</div>
+                        
                         <div class="col-grp">${grupo}</div>
                         
-                        <div class="col-code" onclick="toggleItemRow(${index})">
-                            <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:14px; padding:2px; margin-right:5px;">expand_less</span>
+                        <div class="col-code" onclick="toggleItemRow(${index})" title="Clique para expandir/recolher">
+                            <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:14px; padding:2px; margin-right:5px;">expand_more</span>
                             ${item.codigo}
                         </div>
                         
@@ -103,9 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="col-un text-center">${item.un}</div>
+                        
                         <div class="col-price">${ultimoPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                         
-                        <div class="col-val">${valorTotalLinha.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        <div class="col-val">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                         
                         <div class="col-act">
                             <button class="btn-delete-item" title="Excluir item" data-index="${index}">
@@ -177,18 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
             container.insertAdjacentHTML('beforeend', detailHtml);
         });
 
-        // Eventos
+        // Listeners
         container.querySelectorAll('select, input, textarea').forEach(input => {
             input.addEventListener('change', (e) => {
                 salvarDadosGridParaCarrinho();
-                // Se mudou a quantidade, re-renderiza para atualizar os preços na tabela e no cabeçalho
                 if(e.target.classList.contains('input-qtd')) {
                     renderizarTudo(); 
                 }
             });
         });
 
-        // Botão de Excluir chama o Modal
         container.querySelectorAll('.btn-delete-item').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 itemToDeleteIndex = parseInt(e.currentTarget.dataset.index);
@@ -197,44 +188,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- MODAL LOGIC ---
-    function abrirModal() {
-        modalOverlay.style.display = 'flex';
-    }
-
-    function fecharModal() {
-        modalOverlay.style.display = 'none';
-        itemToDeleteIndex = null;
-    }
-
-    btnModalCancel.addEventListener('click', fecharModal);
-
-    btnModalConfirm.addEventListener('click', () => {
-        if (itemToDeleteIndex !== null) {
-            carrinho.splice(itemToDeleteIndex, 1);
-            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
-            
-            fecharModal();
-
-            if(carrinho.length === 0) {
-                alert('Todos os itens removidos. Voltando ao catálogo.');
-                window.location.href = 'novo_pedido.html';
-            } else {
-                renderizarTudo();
-            }
-        }
-    });
-
-
-    // --- OUTROS (Toggle, Salvar, Alça) ---
-    
+    // Toggle
     window.toggleItemRow = function(index) {
         const grid = document.getElementById(`inputGrid-${index}`);
         const icon = document.querySelector(`.toggle-icon-${index}`);
-        if (grid.style.display === 'none') {
-            grid.style.display = 'grid'; icon.innerText = 'expand_less';
+        
+        if (grid.style.display === 'none' || grid.style.display === '') {
+            grid.style.display = 'grid'; 
+            icon.innerText = 'expand_less';
         } else {
-            grid.style.display = 'none'; icon.innerText = 'expand_more';
+            grid.style.display = 'none'; 
+            icon.innerText = 'expand_more';
         }
     };
 
@@ -244,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (carrinho[index]) {
                 const qtd = parseInt(card.querySelector('.input-qtd').value) || 1;
                 carrinho[index].quantidade = qtd;
-                // Nota: O preço total da linha será recalculado na renderização baseado em qtd * preco
                 
                 carrinho[index].detalhesItem = {
                     dataEntrega: card.querySelector('.input-data').value,
@@ -260,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
     }
 
+    // Alça (Resizing)
     let isResizing = false;
     let isDragging = false; 
     let startX = 0;
@@ -314,5 +278,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (erro) { alert('Por favor, preencha a Data Estimada para todos os itens.'); return; }
         btnConcluir.innerHTML = 'Processando...';
         setTimeout(() => { window.location.href = 'novo_pedido4.html'; }, 300);
+    });
+
+    // Eventos Modal
+    function abrirModal() { modalOverlay.style.display = 'flex'; }
+    function fecharModal() { modalOverlay.style.display = 'none'; itemToDeleteIndex = null; }
+    btnModalCancel.addEventListener('click', fecharModal);
+    btnModalConfirm.addEventListener('click', () => {
+        if (itemToDeleteIndex !== null) {
+            carrinho.splice(itemToDeleteIndex, 1);
+            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
+            fecharModal();
+            if(carrinho.length === 0) {
+                alert('Todos os itens removidos. Voltando ao catálogo.');
+                window.location.href = 'novo_pedido.html';
+            } else {
+                renderizarTudo();
+            }
+        }
     });
 });

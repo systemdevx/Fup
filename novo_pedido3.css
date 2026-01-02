@@ -50,37 +50,50 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 
 /* Main Content */
 .main-content-area { flex: 1; background: #FFF; padding: 20px; overflow-y: auto; }
-.content-header-row { display: flex; align-items: center; margin-bottom: 15px; justify-content: space-between; }
+.content-header-row { display: flex; align-items: center; margin-bottom: 15px; }
 .accordion-trigger { display: flex; align-items: center; gap: 5px; cursor: pointer; }
 .accordion-trigger h3 { margin: 0; font-size: 15px; font-weight: 700; color: #333; }
 .orange-icon { color: #E67E22; background: #FFF5E5; border-radius: 50%; padding: 2px; font-size: 18px; }
 
 /* GRID HEADER */
-/* Ajuste de colunas: Unidade e Preço colados na Descrição */
-/* # | Grupo | Cod | Desc (25%) | Un | Preco | Total (1fr) | Acoes */
 .items-grid-header { 
     display: grid; 
+    /* # | Grupo | Cod | Desc (25%) | Un | Preco | Total (1fr) | Acoes */
     grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
-    padding: 8px 0; border-bottom: 1px solid #DDD; 
+    padding: 10px 20px; 
+    border-bottom: 1px solid #DDD; 
     font-weight: 700; color: #555; font-size: 13px;
 }
 .col-idx { text-align: center; } 
 .col-un  { text-align: center; } 
-.col-price { text-align: right; }
+/* AJUSTE: Preço Centralizado */
+.col-price { text-align: center; } 
 .col-val { text-align: right; padding-right: 20px; } 
 .col-act { text-align: right; padding-right: 10px; }
 
 /* Item Card (Linha de Resumo) */
-.item-detail-card { border-bottom: 1px solid #EEE; padding-bottom: 20px; margin-bottom: 20px; }
+.item-detail-card { 
+    /* AJUSTE: Removido margin-bottom para unir as linhas */
+    border-bottom: 1px solid #EEE; 
+    padding-bottom: 0; 
+    margin-bottom: 0; 
+}
+
 .card-summary-row { 
     display: grid; 
     grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
-    padding: 12px 0; align-items: center; font-size: 13px; 
+    padding: 12px 20px; 
+    align-items: center; font-size: 13px; 
     font-weight: 400; 
+    cursor: default; /* Remove cursor pointer da linha toda, já que o clique é só no codigo */
 }
+.card-summary-row:hover { background-color: #FAFAFA; }
+
+/* Código Produto (Onde fica o toggle) */
 .col-code { 
     display: flex; align-items: center; gap: 5px; 
     color: #E67E22; cursor: pointer; user-select: none;
+    font-weight: 500;
 }
 .col-desc { color: #333; }
 
@@ -88,8 +101,15 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 .btn-delete-item:hover { background: #333; }
 .btn-delete-item .material-icons { font-size: 12px; }
 
-/* Inputs Grid */
-.card-inputs-grid { background: #FAFAFA; padding: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px 20px; }
+/* Inputs Grid (Escondido por padrão) */
+.card-inputs-grid { 
+    background: #FAFAFA; 
+    padding: 20px; 
+    display: none; /* JS controla o display: grid */
+    grid-template-columns: repeat(4, 1fr); gap: 15px 20px; 
+    border-top: 1px dashed #EEE; /* Separação sutil */
+}
+
 .field-group { display: flex; flex-direction: column; gap: 4px; }
 .field-group.span-2 { grid-column: span 2; }
 .field-group label { font-size: 12px; color: #777; font-weight: 500; }
@@ -98,18 +118,9 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 .mandatory-border { border-left: 3px solid #FF4D4D; }
 textarea.input-me { resize: vertical; height: 30px; }
 
-/* --- MODAL ESTILOS --- */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5); z-index: 1000;
-    display: flex; justify-content: center; align-items: center;
-    backdrop-filter: blur(2px);
-}
-.modal-box {
-    background: #FFF; padding: 25px; border-radius: 8px;
-    width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    display: flex; flex-direction: column; gap: 15px; text-align: center;
-}
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
+.modal-box { background: #FFF; padding: 25px; border-radius: 8px; width: 350px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; flex-direction: column; gap: 15px; text-align: center; }
 .modal-header { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
 .modal-header h3 { margin: 0; font-size: 18px; color: #333; }
 .modal-actions { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
