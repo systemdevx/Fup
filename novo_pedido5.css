@@ -1,14 +1,12 @@
-/* --- Reset Global de Geometria --- */
-* {
-    box-sizing: border-box; /* Fundamental para width 100% funcionar bem */
-}
+/* --- Reset Global --- */
+* { box-sizing: border-box; }
 
 body {
     background-color: #F9FAFC;
     margin: 0; padding: 0;
     font-family: 'Inter', sans-serif;
-    color: #333; font-size: 13px; /* Aumentei levemente para telas grandes */
-    overflow-x: hidden; /* Evita rolagem horizontal acidental */
+    color: #333; font-size: 13px;
+    overflow-x: hidden;
     width: 100vw;
 }
 
@@ -16,11 +14,12 @@ body {
 .actions-bar {
     width: 100%;
     display: flex; justify-content: space-between; 
-    padding: 10px 20px; /* Alinhado com o container principal */
+    padding: 10px 20px;
     border-bottom: 1px solid #DDD; background: #FFF;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    position: relative; z-index: 100; /* Garante que fique acima */
 }
-.left-actions, .right-actions { display: flex; gap: 15px; }
+.left-actions, .right-actions { display: flex; gap: 15px; align-items: center; }
 
 .action-btn {
     background: transparent; border: none; font-weight: 600; color: #555;
@@ -29,65 +28,89 @@ body {
 }
 .action-btn:hover { color: #000; background: #F0F0F0; }
 
-/* --- Container Principal "Full Fluid" --- */
+/* --- Estilos do Dropdown (NOVO) --- */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    top: 100%; left: 0;
+    margin-top: 5px;
+    background-color: #FFF;
+    min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    border: 1px solid #EEE;
+    z-index: 200;
+    padding: 5px 0;
+}
+
+.dropdown-menu.show {
+    display: block; /* Mostra quando tem a classe show */
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    display: flex; align-items: center; gap: 8px;
+    color: #444; font-size: 13px; cursor: pointer;
+    transition: background 0.1s;
+}
+
+.dropdown-item:hover {
+    background-color: #F5F7FA;
+    color: #1A56DB;
+}
+
+.dropdown-item .material-icons-outlined { font-size: 18px; color: #777; }
+.dropdown-item:hover .material-icons-outlined { color: #1A56DB; }
+
+
+/* --- Container Principal --- */
 .main-container {
-    width: 100%;       /* Ocupa tudo */
-    padding: 15px 20px; /* Espaço mínimo nas laterais */
-    margin: 0;         /* Remove margens centrais */
+    width: 100%;       
+    padding: 15px 20px;
+    margin: 0;         
 }
 
-/* --- Hero Section (Bloco Laranja) --- */
+/* --- Hero Section --- */
 .hero-section {
-    display: flex; 
-    width: 100%;
-    align-items: stretch; /* Garante que todos tenham a mesma altura */
+    display: flex; width: 100%; align-items: stretch;
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; 
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
-/* 1. Esquerda (ID) */
 .id-box {
     background-color: #EFA674; color: #FFF;
-    padding: 20px 40px; /* Mais largo */
-    min-width: 200px;   /* Largura mínima garantida */
+    padding: 20px 40px; min-width: 200px;
     display: flex; flex-direction: column; justify-content: center;
 }
 .id-label { font-size: 12px; opacity: 0.9; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
 .id-value { font-size: 26px; font-weight: 800; }
 
-/* 2. Centro (Info) - Onde acontece a mágica do espaço */
 .hero-info { 
-    flex: 1; /* Ocupa TODO o espaço sobrando no meio */
-    display: flex; flex-direction: column; justify-content: center; 
-    padding: 20px 40px; 
-    border-right: 1px solid #EEE;
+    flex: 1; display: flex; flex-direction: column; justify-content: center; 
+    padding: 20px 40px; border-right: 1px solid #EEE;
 }
 .hero-title { font-size: 18px; font-weight: 700; text-transform: uppercase; color: #333; margin-bottom: 5px;}
 .hero-subtitle { font-size: 14px; font-weight: 600; color: #666; margin-bottom: 8px; }
 .hero-user { display: flex; align-items: center; gap: 6px; color: #777; font-size: 13px; font-weight: 500;}
 
-/* 3. Direita (Status) */
 .hero-status { 
-    text-align: right; 
-    display: flex; flex-direction: column; justify-content: center; 
-    padding: 20px 40px; 
-    min-width: 250px; 
-    background: #FAFAFA;
+    text-align: right; display: flex; flex-direction: column; justify-content: center; 
+    padding: 20px 40px; min-width: 250px; background: #FAFAFA;
 }
 .total-value { font-size: 28px; font-weight: 700; color: #333; letter-spacing: -0.5px; }
 .status-badge { font-size: 14px; font-weight: 700; margin-top: 5px; color: #1A56DB; text-transform: uppercase; }
 .created-date { font-size: 12px; color: #888; margin-top: 5px; }
 
-/* --- Cards de Endereço (Esticado) --- */
+/* --- Cards de Endereço --- */
 .address-row { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; /* 50% para cada */
-    gap: 20px; 
-    margin-bottom: 20px; 
-    width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; 
+    margin-bottom: 20px; width: 100%;
 }
-
 .address-card {
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; padding: 25px 30px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.02);
@@ -100,30 +123,24 @@ body {
 .section-block { margin-bottom: 25px; width: 100%; }
 .section-title { 
     font-size: 16px; font-weight: 600; color: #222; margin-bottom: 15px; 
-    display: flex; align-items: center; gap: 10px;
-    padding-left: 5px; /* Alinhamento visual */
+    display: flex; align-items: center; gap: 10px; padding-left: 5px;
 }
 .toggle-orange { color: #E67E22; background: #FFF3E0; border-radius: 50%; padding: 4px; font-size: 20px; }
 .status-inline { color: #1A56DB; font-weight: 700; margin-left: 5px; }
 .expand-all { font-size: 12px; font-weight: 600; margin-left: auto; cursor: pointer; color: #666; display: flex; align-items: center; gap: 5px;}
 
-/* --- Grid de Informações (Espaçado) --- */
+/* --- Grid de Informações --- */
 .info-grid {
-    display: grid; 
-    grid-template-columns: repeat(4, 1fr); /* 4 colunas iguais ocupando 100% */
-    gap: 40px; /* Gap grande para aproveitar o espaço em tela larga */
-    padding: 0 10px;
-    width: 100%;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+    padding: 0 10px; width: 100%;
 }
 .field-box { display: flex; flex-direction: column; gap: 8px; }
 .field-box label { font-size: 12px; color: #888; font-weight: 600; text-transform: uppercase; }
 .field-box span { font-size: 14px; font-weight: 500; color: #111; }
-.field-box.full { 
-    grid-column: span 4; 
-    margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 20px;
-}
+.field-box.full { grid-column: span 4; margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 20px; }
+.attachment-link { color: #555; display: flex; align-items: center; gap: 5px; font-style: italic;}
 
-/* --- Tabela Full Width --- */
+/* --- Tabela --- */
 .table-container {
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; overflow: hidden; width: 100%;
 }
@@ -131,12 +148,10 @@ body {
     display: flex; padding: 15px 30px; border-bottom: 1px solid #DDD; background: #F8F9FA;
     font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase;
 }
-/* Linha da tabela ajustada */
 .item-row-final {
     display: flex; padding: 18px 30px; border-bottom: 1px solid #EEE; align-items: center; font-size: 13px; background: #FFF;
 }
 .item-row-final:last-child { border-bottom: none; }
 .badge-g { background:#FFA000; color:white; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:bold; margin-right: 10px;}
 
-/* Estilo para links e ícones */
 .icon-tiny { font-size: 18px; color: #BBB; }

@@ -15,14 +15,32 @@
 
     <div class="actions-bar">
         <div class="left-actions">
-            <button class="action-btn"><span class="material-icons-outlined">close</span> Cancelar</button>
-            <button class="action-btn"><span class="material-icons-outlined">edit</span> Editar</button>
-            <button class="action-btn"><span class="material-icons-outlined">content_copy</span> Reaproveitar</button>
-            <button class="action-btn"><span class="material-icons-outlined">remove_circle_outline</span> Cancelar Itens</button>
+            <button class="action-btn" onclick="window.location.href='transacoes.html'">
+                <span class="material-icons-outlined">highlight_off</span> Cancelar
+            </button>
+
+            <div class="dropdown-container">
+                <button class="action-btn" id="btnMaisOpcoes">
+                    <span class="material-icons-outlined">more_horiz</span> Mais opções 
+                    <span class="material-icons" style="font-size:18px;">arrow_drop_down</span>
+                </button>
+                
+                <div class="dropdown-menu" id="menuMaisOpcoes">
+                    <div class="dropdown-item">
+                        <span class="material-icons-outlined">edit</span> Editar
+                    </div>
+                    <div class="dropdown-item">
+                        <span class="material-icons-outlined">content_copy</span> Reaproveitar
+                    </div>
+                    <div class="dropdown-item">
+                        <span class="material-icons-outlined">remove_circle_outline</span> Cancelar Itens
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <div class="right-actions">
-            <button class="action-btn">Opções <span class="material-icons">arrow_drop_down</span></button>
-        </div>
+            </div>
     </div>
 
     <div class="main-container">
