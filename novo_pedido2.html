@@ -57,13 +57,13 @@
                         <div class="form-grid">
                             <div class="form-group span-2">
                                 <label>Título da Requisição <span class="req">*</span></label>
-                                <input type="text" id="inputTitulo" class="input-field mandatory" placeholder="Ex: Reposição de Estoque">
+                                <input type="text" id="inputTitulo" class="input-field mandatory-field" placeholder="Ex: Reposição de Estoque (Obrigatório)">
                             </div>
 
                             <div class="form-group">
                                 <label>Local de Entrega <span class="req">*</span></label>
-                                <select id="selectEntrega" class="input-field select-field mandatory">
-                                    <option value="" disabled selected>Selecione...</option>
+                                <select id="selectEntrega" class="input-field select-field mandatory-field">
+                                    <option value="" disabled selected>Selecione (Obrigatório)</option>
                                     <option value="CD-SP">CD - São Paulo (CNP)</option>
                                     <option value="LOJA-RJ">Loja Barra - RJ (LJR)</option>
                                     <option value="MATRIZ">Matriz Adm (MTZ)</option>
@@ -71,8 +71,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Local de Faturamento <span class="req">*</span></label>
-                                <select id="selectFaturamento" class="input-field select-field mandatory">
-                                    <option value="" disabled selected>Selecione...</option>
+                                <select id="selectFaturamento" class="input-field select-field mandatory-field">
+                                    <option value="" disabled selected>Selecione (Obrigatório)</option>
                                     <option value="VIVARA-MATRIZ">Vivara Matriz (ALM)</option>
                                     <option value="VIVARA-FILIAL">Vivara Filial (FL1)</option>
                                 </select>
@@ -80,11 +80,12 @@
 
                              <div class="form-group">
                                 <label>Centro de Custo do Aprovador <span class="req">*</span></label>
-                                <input type="text" id="inputCC" class="input-field mandatory" value="10020 - MARKETING" readonly style="background: #F9FAFB;">
+                                <input type="text" id="inputCC" class="input-field mandatory-field" value="10020 - MARKETING" readonly style="background: #F9FAFB;">
                             </div>
+                            
                             <div class="form-group">
-                                <label>Data de Necessidade</label>
-                                <input type="date" class="input-field">
+                                <label>Data de Necessidade <span class="req">*</span></label>
+                                <input type="date" id="inputDataNecessidade" class="input-field mandatory-field">
                             </div>
 
                             <div class="form-group span-2">

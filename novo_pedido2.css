@@ -8,14 +8,14 @@ body {
     display: flex; flex-direction: column;
     /* Fonte Oficial */
     font-family: 'Calibri', 'Segoe UI', sans-serif; 
-    font-size: 14px; color: #333; 
+    /* AUMENTADO PARA 15px */
+    font-size: 15px; color: #333; 
     overflow: hidden;
 }
 
 /* Força Calibri */
-input, select, textarea, button { 
+input, select, textarea, button, div, span, p, h3, label { 
     font-family: 'Calibri', 'Segoe UI', sans-serif; 
-    font-size: 14px; 
 }
 
 /* --- NavBar --- */
@@ -32,15 +32,15 @@ input, select, textarea, button {
 /* Botões */
 .btn-back, .btn-advance {
     display: flex; align-items: center; gap: 5px; 
-    height: 32px; padding: 0 12px; border-radius: 4px; 
-    font-weight: 600; font-size: 13px;
+    height: 34px; padding: 0 15px; border-radius: 4px; 
+    font-weight: 600; font-size: 14px;
     cursor: pointer; transition: all 0.2s; text-decoration: none;
     border: 1px solid transparent;
 }
 .btn-back { background: #FFF; border: 1px solid #D1D5DB; color: #555; }
 .btn-back:hover { background: #F9FAFB; border-color: #9CA3AF; }
-.btn-advance { background: #1A56DB; color: white; }
-.btn-advance:hover { background: #1545AD; }
+.btn-advance { background: #E67E22; color: white; border: 1px solid #E67E22; } /* Laranja padrão */
+.btn-advance:hover { background: #D35400; }
 
 /* --- Layout --- */
 .split-layout-container {
@@ -59,9 +59,9 @@ input, select, textarea, button {
 
 .sidebar-header {
     height: 40px; padding: 0 15px; flex-shrink: 0;
-    font-size: 12px; 
-    font-weight: 400; /* SEM NEGRITO */
-    color: #666; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 13px; 
+    font-weight: 700; 
+    color: #666; text-transform: uppercase; 
     border-bottom: 1px solid #E5E7EB;
     display: flex; align-items: center;
     background: #F9FAFB; white-space: nowrap;
@@ -72,23 +72,23 @@ input, select, textarea, button {
     overflow-y: auto; flex: 1;
 }
 
-/* CARDS SIDEBAR (Visual Limpo) */
+/* CARDS SIDEBAR */
 .item-mini-card {
     background: #FFF; border: 1px solid #E5E7EB; border-radius: 6px;
     padding: 10px; 
-    display: flex; align-items: center; /* Alinha na mesma linha */
+    display: flex; align-items: center; 
     gap: 8px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 .badge-g {
-    background-color: #F59E0B; color: white;
-    font-weight: bold; font-size: 10px; padding: 2px 5px;
-    border-radius: 4px; flex-shrink: 0; 
+    background-color: #FFA000; color: white;
+    font-weight: bold; font-size: 11px; padding: 2px 5px;
+    border-radius: 2px; flex-shrink: 0; 
 }
 .item-line-text {
-    font-size: 13px; color: #333; 
+    font-size: 14px; color: #333; 
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    font-weight: 400; /* SEM NEGRITO */
+    font-weight: 400; 
 }
 
 /* --- ALÇA (HANDLE) --- */
@@ -105,8 +105,8 @@ input, select, textarea, button {
     cursor: pointer; z-index: 51;
 }
 .handle-icon { font-size: 14px; color: #6B7280; transition: transform 0.3s; }
-.resize-handle:hover .handle-grip { border-color: #1A56DB; color: #1A56DB; transform: scale(1.1); }
-.resize-handle.dragging .handle-grip { border-color: #1A56DB; background: #F0F5FF; }
+.resize-handle:hover .handle-grip { border-color: #E67E22; color: #E67E22; transform: scale(1.1); }
+.resize-handle.dragging .handle-grip { border-color: #E67E22; background: #FFF5E5; }
 .sidebar-items.closed + .resize-handle { margin-left: 0; }
 .sidebar-items.closed + .resize-handle .handle-grip { transform: translateX(6px); }
 .sidebar-items.closed + .resize-handle .handle-icon { transform: rotate(180deg); }
@@ -123,33 +123,61 @@ input, select, textarea, button {
 }
 .form-header { padding: 16px 24px; border-bottom: 1px solid #E5E7EB; }
 
-/* ÚNICO ELEMENTO EM NEGRITO */
 .form-header h3 { 
-    margin: 0; font-size: 16px; 
-    font-weight: 700; /* NEGRITO AQUI */
+    margin: 0; font-size: 17px; 
+    font-weight: 700; 
     color: #111; 
 }
 
 .form-body { padding: 24px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-group.span-2 { grid-column: span 2; }
 
-/* Labels Normais */
+/* Labels */
 .form-group label { 
-    font-size: 12px; 
-    font-weight: 400; /* SEM NEGRITO */
+    font-size: 13px; 
+    font-weight: 400; 
     color: #333; 
 }
-.req { color: #EF4444; margin-left: 2px; }
+.req { color: #D32F2F; margin-left: 3px; font-weight: bold; }
 
-/* Inputs Normais */
+/* Inputs */
 .input-field {
-    padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 4px;
-    font-size: 13px; color: #111; outline: none; transition: all 0.2s; width: 100%;
-    font-weight: 400; /* SEM NEGRITO */
+    padding: 8px 12px; border: 1px solid #CCC; border-radius: 4px;
+    font-size: 14px; color: #111; outline: none; transition: all 0.2s; width: 100%;
+    font-weight: 400;
 }
-.input-field:focus { border-color: #1A56DB; box-shadow: 0 0 0 2px rgba(26,86,219,0.1); }
+.input-field:focus { border-color: #E67E22; box-shadow: 0 0 0 1px rgba(230, 126, 34, 0.2); }
 .select-field { appearance: none; background: #FFF; }
 .textarea-field { resize: vertical; min-height: 80px; }
-.mandatory { border-left: 3px solid #EF4444; }
+
+/* --- VALIDAÇÃO VISUAL (SEM ALERT) --- */
+
+/* Estilo padrão para obrigatórios (borda esquerda) */
+.mandatory-field {
+    border-left: 3px solid #E57373; /* Vermelho suave */
+}
+
+/* Placeholders vermelhos para indicar "dentro da zona" */
+.mandatory-field::placeholder {
+    color: #D32F2F;
+    opacity: 0.6;
+    font-style: italic;
+    font-size: 13px;
+}
+
+/* Classe de Erro (aplicada pelo JS) */
+.input-error {
+    border: 1px solid #D32F2F !important;
+    background-color: #FFEBEE !important;
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}

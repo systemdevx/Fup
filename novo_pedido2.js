@@ -1,54 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- ELEMENTOS ---
+    // --- ELEMENTOS DE UI ---
     const sidebar = document.getElementById('sidebarContainer');
     const resizeHandle = document.getElementById('resizeHandle');
     
-    // --- LÓGICA DE ALÇA (CLIQUE vs ARRASTE) ---
-    let isResizing = false;
-    let isDragging = false; 
-    let startX = 0;
-    let startWidth = 0;
+    // --- DATA AUTOMÁTICA (HOJE) ---
+    const inputData = document.getElementById('inputDataNecessidade');
+    if (inputData) {
+        const hoje = new Date();
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+        const dia = String(hoje.getDate()).padStart(2, '0');
+        inputData.value = `${ano}-${mes}-${dia}`;
+    }
+
+    // --- LÓGICA DE ALÇA SIDEBAR ---
+    let isResizing = false, isDragging = false, startX = 0, startWidth = 0;
 
     resizeHandle.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        isResizing = true;
-        isDragging = false; 
-        startX = e.clientX;
-        startWidth = sidebar.getBoundingClientRect().width;
+        e.preventDefault(); isResizing = true; isDragging = false; 
+        startX = e.clientX; startWidth = sidebar.getBoundingClientRect().width;
         if (sidebar.classList.contains('closed')) startWidth = 0;
-        
-        sidebar.style.transition = 'none'; 
-        resizeHandle.classList.add('dragging');
-        document.body.style.cursor = 'col-resize';
+        sidebar.style.transition = 'none'; resizeHandle.classList.add('dragging'); document.body.style.cursor = 'col-resize';
     });
 
     window.addEventListener('mousemove', (e) => {
         if (!isResizing) return;
         const dx = e.clientX - startX;
-        if (Math.abs(dx) > 5) {
-            isDragging = true;
-            if (sidebar.classList.contains('closed')) {
-                sidebar.classList.remove('closed');
-                sidebar.style.width = '0px'; 
-            }
-        }
+        if (Math.abs(dx) > 5) isDragging = true;
         if (isDragging) {
             let newWidth = startWidth + dx;
-            if (newWidth < 150) newWidth = 0; 
-            if (newWidth > 600) newWidth = 600;
-            if (newWidth > 0) sidebar.style.width = `${newWidth}px`; 
-            else sidebar.style.width = '0px';
+            if (newWidth < 150) newWidth = 0; if (newWidth > 600) newWidth = 600;
+            if (newWidth > 0) sidebar.style.width = `${newWidth}px`; else sidebar.style.width = '0px';
         }
     });
 
     window.addEventListener('mouseup', (e) => {
         if (!isResizing) return;
-        isResizing = false;
-        resizeHandle.classList.remove('dragging');
-        document.body.style.cursor = '';
+        isResizing = false; resizeHandle.classList.remove('dragging'); document.body.style.cursor = '';
         sidebar.style.transition = 'width 0.3s ease'; 
-
         if (!isDragging) toggleSidebar(); 
         else {
             const finalWidth = sidebar.getBoundingClientRect().width;
@@ -61,13 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sidebar.classList.contains('closed')) {
             sidebar.classList.remove('closed');
             if (!sidebar.style.width || sidebar.style.width === '0px') sidebar.style.width = '280px';
-        } else {
-            sidebar.classList.add('closed');
-        }
+        } else { sidebar.classList.add('closed'); }
     }
 
-
-    // --- DADOS E FORMULÁRIO ---
+    // --- RECUPERAR DADOS DO CARRINHO ---
     const dadosSessao = sessionStorage.getItem('carrinho_temp');
     let carrinho = [];
 
@@ -75,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         carrinho = JSON.parse(dadosSessao);
         renderizarSidebar(carrinho);
     } else {
-        alert('Carrinho vazio.');
-        window.location.href = 'novo_pedido.html';
+        // Se não tiver carrinho, volta (pode remover se estiver testando direto)
+        // window.location.href = 'novo_pedido.html';
     }
 
     function renderizarSidebar(itens) {
@@ -87,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = ''; 
 
         itens.forEach(item => {
-            // FORMATO: G CÓDIGO - DESCRIÇÃO (Sem quantidade, sem negrito extra)
             const html = `
                 <div class="item-mini-card">
                     <span class="badge-g">G</span>
@@ -99,28 +85,67 @@ document.addEventListener('DOMContentLoaded', () => {
             container.insertAdjacentHTML('beforeend', html);
         });
 
+        // Tenta preencher título automaticamente se estiver vazio
         const inputTitulo = document.getElementById('inputTitulo');
-        if(inputTitulo && itens.length > 0) {
+        // Recupera cabeçalho se existir (edição)
+        const cabecalhoSalvo = JSON.parse(sessionStorage.getItem('cabecalho_temp'));
+
+        if(cabecalhoSalvo && cabecalhoSalvo.titulo) {
+            inputTitulo.value = cabecalhoSalvo.titulo;
+            document.getElementById('selectEntrega').value = cabecalhoSalvo.localEntrega || "";
+            document.getElementById('selectFaturamento').value = cabecalhoSalvo.localFaturamento || "";
+            document.getElementById('inputComentarios').value = cabecalhoSalvo.comentarios || "";
+        } else if(inputTitulo && itens.length > 0 && !inputTitulo.value) {
             inputTitulo.value = `Pedido: ${itens[0].descricao.substring(0, 20)}...`;
         }
     }
 
+    // --- LISTENERS PARA REMOVER ERRO VISUAL ---
+    document.querySelectorAll('.mandatory-field').forEach(input => {
+        input.addEventListener('input', () => input.classList.remove('input-error'));
+        input.addEventListener('change', () => input.classList.remove('input-error'));
+    });
+
+    // --- BOTÃO AVANÇAR ---
     const btnAvancar = document.getElementById('btnAvancarEtapa2');
     if(btnAvancar) {
         btnAvancar.addEventListener('click', (e) => {
             e.preventDefault();
-            const titulo = document.getElementById('inputTitulo').value;
-            const localEntrega = document.getElementById('selectEntrega').value;
-            const cc = document.getElementById('inputCC').value;
-            const localFat = document.getElementById('selectFaturamento').value;
-            const comentarios = document.getElementById('inputComentarios').value;
 
-            if(!titulo || !localEntrega || !localFat || !cc) {
-                alert('Preencha os campos obrigatórios.');
-                return;
-            }
+            // Referências
+            const elTitulo = document.getElementById('inputTitulo');
+            const elEntrega = document.getElementById('selectEntrega');
+            const elCC = document.getElementById('inputCC');
+            const elFat = document.getElementById('selectFaturamento');
+            const elData = document.getElementById('inputDataNecessidade');
+            const elObs = document.getElementById('inputComentarios');
 
-            const cabecalhoPedido = { titulo, centroCusto: cc, localEntrega, localFaturamento: localFat, comentarios };
+            // Validação
+            let temErro = false;
+            
+            const camposObrigatorios = [elTitulo, elEntrega, elFat, elCC, elData];
+            
+            camposObrigatorios.forEach(campo => {
+                if(!campo.value || campo.value.trim() === "") {
+                    campo.classList.add('input-error');
+                    temErro = true;
+                } else {
+                    campo.classList.remove('input-error');
+                }
+            });
+
+            if(temErro) return; // Para aqui se houver erro (sem alert)
+
+            // Salvar
+            const cabecalhoPedido = { 
+                titulo: elTitulo.value, 
+                centroCusto: elCC.value, 
+                localEntrega: elEntrega.value, 
+                localFaturamento: elFat.value, 
+                comentarios: elObs.value,
+                dataNecessidade: elData.value 
+            };
+            
             sessionStorage.setItem('cabecalho_temp', JSON.stringify(cabecalhoPedido));
             
             btnAvancar.innerHTML = `<span>Processando...</span>`;

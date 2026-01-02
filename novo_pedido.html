@@ -5,18 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Novo Pedido</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css"> 
     <link rel="stylesheet" href="novo_pedido.css">
 </head>
 <body>
 
     <div class="nav-bar">
         <div class="breadcrumbs">
-            <strong>Catálogo</strong> <span class="divider">/</span> <span>Novo Pedido</span>
+            <strong>Catálogo de materiais</strong>
         </div>
         <div class="nav-actions">
             <a href="transacoes.html" class="btn-cancel">
@@ -30,8 +28,8 @@
 
     <div class="search-context-wrapper">
         <div class="search-module">
-            <input type="text" class="search-input" placeholder="Pesquise por código, nome ou grupo...">
-            <button class="search-btn">
+            <input type="text" id="searchInput" class="search-input" placeholder="Pesquise por código ou nome (Ex: 'caneta', 'INS')...">
+            <button id="btnPesquisar" class="search-btn">
                 <span class="material-icons">search</span>
             </button>
         </div>
@@ -39,16 +37,18 @@
         <div class="context-module">
             <div class="context-item">
                 <span class="ctx-label">Centro de Custo</span>
-                <span class="ctx-value">ADM - GERAL</span>
-            </div>
-            <div class="context-separator"></div>
-            <div class="context-item">
-                <span class="ctx-label">Empresa</span>
-                <span class="ctx-value">VIVARA MATRIZ</span>
+                <span class="ctx-value" id="displayCC">ADM - GERAL</span>
             </div>
             
-            <button class="btn-edit-context">
-                <span class="material-icons-outlined">edit</span> Alterar
+            <div class="context-separator"></div>
+            
+            <div class="context-item">
+                <span class="ctx-label">Empresa</span>
+                <span class="ctx-value" id="displayEmpresa">VIVARA MATRIZ</span>
+            </div>
+            
+            <button id="btnAlterarContexto" class="btn-edit-context">
+                <span class="material-icons-outlined" style="font-size: 16px;">edit</span> Alterar
             </button>
         </div>
     </div>
@@ -59,68 +59,32 @@
             <div class="panel-header">
                 <span class="panel-title">Produtos Disponíveis</span>
                 <div class="panel-controls">
-                    <button class="icon-btn" title="Atualizar"><span class="material-icons">refresh</span></button>
-                    <div class="view-toggle">
-                        <span class="material-icons">list</span>
-                    </div>
+                    <button class="icon-btn" title="Atualizar" onclick="location.reload()"><span class="material-icons">refresh</span></button>
                 </div>
             </div>
 
             <div class="table-container">
-                <table class="catalog-table">
+                <table class="catalog-table" id="tabelaPrincipal">
                     <thead>
                         <tr>
-                            <th width="80">Código</th>
+                            <th width="100">Código</th>
                             <th>Descrição</th>
                             <th>Grupo</th>
                             <th width="80">Unidade</th>
-                            <th width="100">Preço Unit.</th>
+                            <th width="120">Preço Unit.</th>
                             <th width="60" class="text-center">Ação</th>
                         </tr>
                     </thead>
                     <tbody id="tabelaProdutos">
-                        <tr data-codigo="INS150124" 
-                            data-descricao="SACO ZIP TRANSP 12X17CM c/100" 
-                            data-grupo="ALMOXARIFADO" 
-                            data-un="PCT" 
-                            data-preco="8.75">
-                            <td><strong>INS150124</strong></td>
-                            <td><a href="#" class="link-prod">SACO ZIP TRANSP 12X17CM c/100</a></td>
-                            <td>ALMOXARIFADO</td>
-                            <td>PCT</td>
-                            <td>R$ 8,750000</td>
-                            <td class="text-center">
-                                <button type="button" class="btn-add-cart" title="Adicionar ao carrinho">
-                                    <span class="material-icons">shopping_cart</span>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr data-codigo="INS99999" 
-                            data-descricao="CANETA ESFEROGRÁFICA AZUL" 
-                            data-grupo="ESCRITÓRIO" 
-                            data-un="UN" 
-                            data-preco="1.50">
-                            <td><strong>INS99999</strong></td>
-                            <td><a href="#" class="link-prod">CANETA ESFEROGRÁFICA AZUL</a></td>
-                            <td>ESCRITÓRIO</td>
-                            <td>UN</td>
-                            <td>R$ 1,500000</td>
-                            <td class="text-center">
-                                <button type="button" class="btn-add-cart" title="Adicionar ao carrinho">
-                                    <span class="material-icons">shopping_cart</span>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
             
             <div class="panel-footer">
-                <span class="footer-info">Itens exibidos</span>
+                <span class="footer-info" id="infoResultados">Itens exibidos</span>
                 <div class="pagination">
                     <button disabled><span class="material-icons">chevron_left</span></button>
-                    <span>1 - 2 de 2</span>
+                    <span>1 - 1</span>
                     <button disabled><span class="material-icons">chevron_right</span></button>
                 </div>
             </div>
@@ -131,7 +95,12 @@
                 <div class="cart-title-row">
                     <span class="material-icons cart-icon">shopping_cart</span>
                     <h3>Carrinho</h3>
-                    <button id="btnLimparCarrinho" class="btn-clear-cart">Limpar</button>
+                    
+                    <button id="btnToggleCart" class="btn-toggle-cart" title="Ocultar/Mostrar itens">
+                        <span class="material-icons">expand_less</span>
+                    </button>
+
+                    <button id="btnLimparCarrinho" class="btn-clear-cart" style="margin-left: auto;">Limpar</button>
                 </div>
                 
                 <div class="cart-summary">
@@ -140,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="cart-items-container">
+            <div id="cartContainer" class="cart-items-container">
                 <div class="empty-cart-state">
                     <span class="material-icons-outlined">remove_shopping_cart</span>
                     <p>Seu carrinho está vazio</p>
