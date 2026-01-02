@@ -1,26 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 0. LÓGICA DO MENU DROPDOWN (NOVO) ---
-    const btnMaisOpcoes = document.getElementById('btnMaisOpcoes');
-    const menuMaisOpcoes = document.getElementById('menuMaisOpcoes');
+    // --- FUNÇÃO GENÉRICA PARA DROPDOWNS ---
+    function setupDropdown(btnId, menuId) {
+        const btn = document.getElementById(btnId);
+        const menu = document.getElementById(menuId);
 
-    if (btnMaisOpcoes && menuMaisOpcoes) {
-        // Alternar visualização ao clicar
-        btnMaisOpcoes.addEventListener('click', (e) => {
-            e.stopPropagation(); // Impede que o clique feche imediatamente
-            menuMaisOpcoes.classList.toggle('show');
-        });
-
-        // Fechar ao clicar fora
-        document.addEventListener('click', () => {
-            menuMaisOpcoes.classList.remove('show');
-        });
-
-        // Fechar ao clicar dentro de um item do menu
-        menuMaisOpcoes.addEventListener('click', () => {
-            menuMaisOpcoes.classList.remove('show');
-        });
+        if (btn && menu) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // Fecha outros menus abertos antes de abrir este
+                document.querySelectorAll('.dropdown-menu').forEach(m => {
+                    if (m !== menu) m.classList.remove('show');
+                });
+                menu.classList.toggle('show');
+            });
+        }
     }
+
+    setupDropdown('btnMaisOpcoes', 'menuMaisOpcoes');
+    setupDropdown('btnOpcoesDireita', 'menuOpcoesDireita');
+
+    // Fechar qualquer menu ao clicar fora
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
+
 
     // --- 1. RECUPERAR ID DA URL ---
     const params = new URLSearchParams(window.location.search);
@@ -43,22 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. PREENCHER A TELA ---
 
-    // Hero Header
+    // Hero Header (Bloco Principal)
     document.getElementById('viewId').innerText = `ME# ${pedido.id}`;
-    document.getElementById('viewTitulo').innerText = pedido.cabecalho.titulo.toUpperCase();
-    document.getElementById('viewTotalHero').innerText = pedido.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    // --- CORREÇÃO: Remove "PEDIDO:" do título se existir ---
+    let tituloLimpo = pedido.cabecalho.titulo || '';
+    tituloLimpo = tituloLimpo.replace(/^PEDIDO:\s*/i, ''); // Remove "Pedido:" ou "PEDIDO:" do início
+    document.getElementById('viewTitulo').innerText = tituloLimpo.toUpperCase();
+    
     document.getElementById('viewDataCriacao').innerText = `Criado em: ${pedido.dataCriacao}`;
     
     // Status
     const elStatus = document.getElementById('viewStatus');
     elStatus.innerText = pedido.status.toUpperCase();
+    
     if(pedido.status.toLowerCase().includes('aprovado')) {
         elStatus.style.color = '#00C853'; // Verde
     } else {
         elStatus.style.color = '#1A56DB'; // Azul Vivara
     }
 
-    // Endereços
+    // Endereços (Mapeamento Visual)
     const siglaMap = { 'CD-SP': 'CNP', 'LOJA-RJ': 'LJR', 'MATRIZ': 'MTZ', 'VIVARA-MATRIZ': 'ALM' };
     const enderecoMap = { 
         'CD-SP': 'RUA VERBO DIVINO, 1207 - SP', 
@@ -76,7 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('viewEnderecoFat').innerText = enderecoMap[pedido.cabecalho.localFaturamento] || 'Endereço Faturamento...';
 
     // Informações Gerais
-    document.getElementById('infoTitulo').innerText = pedido.cabecalho.titulo;
+    // Aqui mantemos o título original ou o limpo, conforme preferir. Vou usar o limpo também.
+    document.getElementById('infoTitulo').innerText = tituloLimpo; 
     document.getElementById('infoRequisitante').innerText = 'JOSE CLAUDIO CORTEZ DA SILVA'; 
     document.getElementById('infoMeId').innerText = pedido.id;
     document.getElementById('infoData').innerText = pedido.dataCriacao;

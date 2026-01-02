@@ -1,23 +1,17 @@
-/* --- Reset Global --- */
+/* --- CSS Global --- */
 * { box-sizing: border-box; }
 
 body {
-    background-color: #F9FAFC;
-    margin: 0; padding: 0;
-    font-family: 'Inter', sans-serif;
-    color: #333; font-size: 13px;
-    overflow-x: hidden;
-    width: 100vw;
+    background-color: #F9FAFC; margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif; color: #333; font-size: 13px;
+    overflow-x: hidden; width: 100vw;
 }
 
-/* --- Action Bar (Topo) --- */
+/* --- Action Bar --- */
 .actions-bar {
-    width: 100%;
-    display: flex; justify-content: space-between; 
-    padding: 10px 20px;
-    border-bottom: 1px solid #DDD; background: #FFF;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    position: relative; z-index: 100; /* Garante que fique acima */
+    width: 100%; display: flex; justify-content: space-between; 
+    padding: 10px 20px; border-bottom: 1px solid #DDD; background: #FFF;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03); position: relative; z-index: 100; 
 }
 .left-actions, .right-actions { display: flex; gap: 15px; align-items: center; }
 
@@ -28,54 +22,27 @@ body {
 }
 .action-btn:hover { color: #000; background: #F0F0F0; }
 
-/* --- Estilos do Dropdown (NOVO) --- */
-.dropdown-container {
-    position: relative;
-    display: inline-block;
-}
-
+/* --- Dropdown --- */
+.dropdown-container { position: relative; display: inline-block; }
 .dropdown-menu {
-    display: none; /* Escondido por padrão */
-    position: absolute;
-    top: 100%; left: 0;
-    margin-top: 5px;
-    background-color: #FFF;
-    min-width: 180px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-radius: 4px;
-    border: 1px solid #EEE;
-    z-index: 200;
-    padding: 5px 0;
+    display: none; position: absolute; top: 100%; left: 0; margin-top: 5px;
+    background-color: #FFF; min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 4px; border: 1px solid #EEE;
+    z-index: 200; padding: 5px 0;
 }
-
-.dropdown-menu.show {
-    display: block; /* Mostra quando tem a classe show */
-}
-
+.dropdown-menu.dropdown-right { left: auto; right: 0; }
+.dropdown-menu.show { display: block; }
 .dropdown-item {
-    padding: 10px 15px;
-    display: flex; align-items: center; gap: 8px;
-    color: #444; font-size: 13px; cursor: pointer;
-    transition: background 0.1s;
+    padding: 10px 15px; display: flex; align-items: center; gap: 8px;
+    color: #444; font-size: 13px; cursor: pointer; transition: background 0.1s;
 }
-
-.dropdown-item:hover {
-    background-color: #F5F7FA;
-    color: #1A56DB;
-}
-
+.dropdown-item:hover { background-color: #F5F7FA; color: #1A56DB; }
 .dropdown-item .material-icons-outlined { font-size: 18px; color: #777; }
 .dropdown-item:hover .material-icons-outlined { color: #1A56DB; }
 
-
-/* --- Container Principal --- */
-.main-container {
-    width: 100%;       
-    padding: 15px 20px;
-    margin: 0;         
-}
-
 /* --- Hero Section --- */
+.main-container { width: 100%; padding: 15px 20px; margin: 0; }
+
 .hero-section {
     display: flex; width: 100%; align-items: stretch;
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; 
@@ -92,25 +59,23 @@ body {
 
 .hero-info { 
     flex: 1; display: flex; flex-direction: column; justify-content: center; 
-    padding: 20px 40px; border-right: 1px solid #EEE;
+    padding: 20px 40px; 
 }
 .hero-title { font-size: 18px; font-weight: 700; text-transform: uppercase; color: #333; margin-bottom: 5px;}
 .hero-subtitle { font-size: 14px; font-weight: 600; color: #666; margin-bottom: 8px; }
 .hero-user { display: flex; align-items: center; gap: 6px; color: #777; font-size: 13px; font-weight: 500;}
 
+/* HERO STATUS: Fundo branco e alinhado */
 .hero-status { 
     text-align: right; display: flex; flex-direction: column; justify-content: center; 
-    padding: 20px 40px; min-width: 250px; background: #FAFAFA;
+    padding: 20px 40px; min-width: 250px; 
+    background: #FFF; /* Branco Puro */
 }
-.total-value { font-size: 28px; font-weight: 700; color: #333; letter-spacing: -0.5px; }
-.status-badge { font-size: 14px; font-weight: 700; margin-top: 5px; color: #1A56DB; text-transform: uppercase; }
-.created-date { font-size: 12px; color: #888; margin-top: 5px; }
+.status-badge { font-size: 14px; font-weight: 700; color: #1A56DB; text-transform: uppercase; margin-bottom: 5px; }
+.created-date { font-size: 12px; color: #888; }
 
-/* --- Cards de Endereço --- */
-.address-row { 
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; 
-    margin-bottom: 20px; width: 100%;
-}
+/* --- Resto do Layout --- */
+.address-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; width: 100%; }
 .address-card {
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; padding: 25px 30px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.02);
@@ -119,7 +84,6 @@ body {
 .card-code { font-size: 20px; font-weight: 700; color: #E67E22; margin-bottom: 15px; }
 .address-lines p { margin: 8px 0; color: #555; display: flex; align-items: center; gap: 10px; font-size: 13px; }
 
-/* --- Seções Accordion --- */
 .section-block { margin-bottom: 25px; width: 100%; }
 .section-title { 
     font-size: 16px; font-weight: 600; color: #222; margin-bottom: 15px; 
@@ -129,7 +93,6 @@ body {
 .status-inline { color: #1A56DB; font-weight: 700; margin-left: 5px; }
 .expand-all { font-size: 12px; font-weight: 600; margin-left: auto; cursor: pointer; color: #666; display: flex; align-items: center; gap: 5px;}
 
-/* --- Grid de Informações --- */
 .info-grid {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
     padding: 0 10px; width: 100%;
@@ -140,7 +103,6 @@ body {
 .field-box.full { grid-column: span 4; margin-top: 15px; border-top: 1px dashed #DDD; padding-top: 20px; }
 .attachment-link { color: #555; display: flex; align-items: center; gap: 5px; font-style: italic;}
 
-/* --- Tabela --- */
 .table-container {
     background: #FFF; border: 1px solid #E0E0E0; border-radius: 4px; overflow: hidden; width: 100%;
 }
@@ -153,5 +115,4 @@ body {
 }
 .item-row-final:last-child { border-bottom: none; }
 .badge-g { background:#FFA000; color:white; padding:3px 8px; border-radius:3px; font-size:10px; font-weight:bold; margin-right: 10px;}
-
 .icon-tiny { font-size: 18px; color: #BBB; }

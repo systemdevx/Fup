@@ -24,7 +24,6 @@
                     <span class="material-icons-outlined">more_horiz</span> Mais opções 
                     <span class="material-icons" style="font-size:18px;">arrow_drop_down</span>
                 </button>
-                
                 <div class="dropdown-menu" id="menuMaisOpcoes">
                     <div class="dropdown-item">
                         <span class="material-icons-outlined">edit</span> Editar
@@ -40,7 +39,20 @@
         </div>
         
         <div class="right-actions">
+            <div class="dropdown-container">
+                <button class="action-btn" id="btnOpcoesDireita">
+                    Opções <span class="material-icons">arrow_drop_down</span>
+                </button>
+                <div class="dropdown-menu dropdown-right" id="menuOpcoesDireita">
+                    <div class="dropdown-item" onclick="alert('Enviando para impressão...')">
+                        <span class="material-icons-outlined">print</span> Imprimir
+                    </div>
+                    <div class="dropdown-item" onclick="alert('Exibindo histórico completo...')">
+                        <span class="material-icons-outlined">history</span> Histórico do Pedido
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
 
     <div class="main-container">
@@ -61,7 +73,6 @@
             </div>
 
             <div class="hero-status">
-                <div class="total-value" id="viewTotalHero">R$ 0,00</div>
                 <div class="status-badge" id="viewStatus">AGUARDANDO APROVAÇÃO</div>
                 <div class="created-date" id="viewDataCriacao">Criado em: --/--/----</div>
             </div>
