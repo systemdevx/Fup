@@ -6,14 +6,13 @@ body {
     margin: 0; padding: 0;
     height: 100vh; width: 100vw;
     display: flex; flex-direction: column;
-    /* FONTE CALIBRI (Igual novo_pedido3) */
+    /* Fonte Oficial */
     font-family: 'Calibri', 'Segoe UI', sans-serif; 
-    font-size: 14px; /* Tamanho base aumentado */
-    color: #333; /* Cor ajustada para #333 */
+    font-size: 14px; color: #333; 
     overflow: hidden;
 }
 
-/* Força Calibri em inputs */
+/* Força Calibri */
 input, select, textarea, button { 
     font-family: 'Calibri', 'Segoe UI', sans-serif; 
     font-size: 14px; 
@@ -21,22 +20,26 @@ input, select, textarea, button {
 
 /* --- NavBar --- */
 .nav-bar {
-    background: #FFF; height: 56px; padding: 0 24px;
+    background: #FFF; height: 50px; padding: 0 20px;
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid #E5E7EB; flex-shrink: 0; z-index: 20;
 }
 .nav-left { display: flex; align-items: center; gap: 16px; }
 .breadcrumbs { font-size: 14px; color: #6B7280; }
 
-.nav-actions { display: flex; gap: 12px; }
+.nav-actions { display: flex; gap: 10px; }
+
+/* Botões */
 .btn-back, .btn-advance {
-    display: flex; align-items: center; gap: 8px; height: 36px;
-    padding: 0 16px; border-radius: 6px; font-weight: 600; font-size: 13px;
+    display: flex; align-items: center; gap: 5px; 
+    height: 32px; padding: 0 12px; border-radius: 4px; 
+    font-weight: 600; font-size: 13px;
     cursor: pointer; transition: all 0.2s; text-decoration: none;
+    border: 1px solid transparent;
 }
-.btn-back { background: #FFF; border: 1px solid #D1D5DB; color: #374151; }
+.btn-back { background: #FFF; border: 1px solid #D1D5DB; color: #555; }
 .btn-back:hover { background: #F9FAFB; border-color: #9CA3AF; }
-.btn-advance { background: #1A56DB; border: 1px solid transparent; color: white; }
+.btn-advance { background: #1A56DB; color: white; }
 .btn-advance:hover { background: #1545AD; }
 
 /* --- Layout --- */
@@ -47,98 +50,69 @@ input, select, textarea, button {
 
 /* --- SIDEBAR --- */
 .sidebar-items {
-    width: 280px; 
-    min-width: 0; 
-    max-width: 600px;
-    background-color: #FFF;
-    border-right: 1px solid #E5E7EB;
-    display: flex; flex-direction: column;
-    flex-shrink: 0; 
-    transition: width 0.3s ease;
-    overflow: hidden;
+    width: 280px; min-width: 0; max-width: 600px;
+    background-color: #FFF; border-right: 1px solid #E5E7EB;
+    display: flex; flex-direction: column; flex-shrink: 0; 
+    transition: width 0.3s ease; overflow: hidden;
 }
-
-.sidebar-items.closed {
-    width: 0 !important;
-    border-right: none;
-}
+.sidebar-items.closed { width: 0 !important; border-right: none; }
 
 .sidebar-header {
-    height: 50px; padding: 0 16px; flex-shrink: 0;
-    font-size: 12px; font-weight: 700; color: #4B5563;
-    text-transform: uppercase; letter-spacing: 0.5px;
+    height: 40px; padding: 0 15px; flex-shrink: 0;
+    font-size: 12px; 
+    font-weight: 400; /* SEM NEGRITO */
+    color: #666; text-transform: uppercase; letter-spacing: 0.5px;
     border-bottom: 1px solid #E5E7EB;
     display: flex; align-items: center;
     background: #F9FAFB; white-space: nowrap;
 }
 
 .items-list-content {
-    padding: 12px; display: flex; flex-direction: column; gap: 10px;
+    padding: 10px; display: flex; flex-direction: column; gap: 8px;
     overflow-y: auto; flex: 1;
 }
 
-/* Cards Sidebar */
+/* CARDS SIDEBAR (Visual Limpo) */
 .item-mini-card {
     background: #FFF; border: 1px solid #E5E7EB; border-radius: 6px;
-    padding: 12px; display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px; 
+    display: flex; align-items: center; /* Alinha na mesma linha */
+    gap: 8px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 .badge-g {
     background-color: #F59E0B; color: white;
-    font-weight: bold; font-size: 11px; padding: 3px 6px;
+    font-weight: bold; font-size: 10px; padding: 2px 5px;
     border-radius: 4px; flex-shrink: 0; 
 }
-.item-info { display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden;}
-.item-code { font-weight: 600; color: #111; font-size: 13px; }
-.item-desc { color: #6B7280; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.item-qty { font-size: 12px; color: #9CA3AF; margin-top: 4px; }
-
+.item-line-text {
+    font-size: 13px; color: #333; 
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-weight: 400; /* SEM NEGRITO */
+}
 
 /* --- ALÇA (HANDLE) --- */
 .resize-handle {
-    width: 12px; 
-    margin-left: -6px; 
-    background: transparent;
-    cursor: col-resize;
-    z-index: 50;
+    width: 12px; margin-left: -6px; background: transparent;
+    cursor: col-resize; z-index: 50;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-    transition: margin-left 0.3s ease;
+    flex-shrink: 0; position: relative; transition: margin-left 0.3s ease;
 }
-
 .handle-grip {
-    width: 20px; height: 20px;
-    background: #FFF; border: 1px solid #D1D5DB; border-radius: 50%;
+    width: 20px; height: 20px; background: #FFF; border: 1px solid #D1D5DB; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: all 0.2s;
-    cursor: pointer;
-    z-index: 51;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;
+    cursor: pointer; z-index: 51;
 }
-
 .handle-icon { font-size: 14px; color: #6B7280; transition: transform 0.3s; }
-
-.resize-handle:hover .handle-grip {
-    border-color: #1A56DB; color: #1A56DB; transform: scale(1.1);
-}
-
-.resize-handle.dragging .handle-grip {
-    border-color: #1A56DB; background: #F0F5FF;
-}
-
-.sidebar-items.closed + .resize-handle {
-    margin-left: 0;
-}
-.sidebar-items.closed + .resize-handle .handle-grip {
-    transform: translateX(6px);
-}
-.sidebar-items.closed + .resize-handle .handle-icon {
-    transform: rotate(180deg);
-}
+.resize-handle:hover .handle-grip { border-color: #1A56DB; color: #1A56DB; transform: scale(1.1); }
+.resize-handle.dragging .handle-grip { border-color: #1A56DB; background: #F0F5FF; }
+.sidebar-items.closed + .resize-handle { margin-left: 0; }
+.sidebar-items.closed + .resize-handle .handle-grip { transform: translateX(6px); }
+.sidebar-items.closed + .resize-handle .handle-icon { transform: rotate(180deg); }
 
 
-/* --- Conteúdo Principal --- */
+/* --- CONTEÚDO PRINCIPAL --- */
 .main-content-area {
     flex: 1; background: #F3F4F6; padding: 24px; overflow-y: auto;
 }
@@ -148,21 +122,32 @@ input, select, textarea, button {
     max-width: 900px; margin: 0 auto;
 }
 .form-header { padding: 16px 24px; border-bottom: 1px solid #E5E7EB; }
-.form-header h3 { margin: 0; font-size: 16px; font-weight: 600; color: #111; }
+
+/* ÚNICO ELEMENTO EM NEGRITO */
+.form-header h3 { 
+    margin: 0; font-size: 16px; 
+    font-weight: 700; /* NEGRITO AQUI */
+    color: #111; 
+}
+
 .form-body { padding: 24px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group.span-2 { grid-column: span 2; }
-.form-group label { font-size: 12px; font-weight: 500; color: #374151; }
+
+/* Labels Normais */
+.form-group label { 
+    font-size: 12px; 
+    font-weight: 400; /* SEM NEGRITO */
+    color: #333; 
+}
 .req { color: #EF4444; margin-left: 2px; }
 
-/* INPUTS ESTILIZADOS IGUAL NOVO_PEDIDO3 */
+/* Inputs Normais */
 .input-field {
-    padding: 10px 12px; border: 1px solid #D1D5DB; border-radius: 6px;
-    font-size: 13px; /* Tamanho 13px nos inputs */
-    color: #111; outline: none; transition: all 0.2s; width: 100%;
-    font-family: 'Calibri', 'Segoe UI', sans-serif;
-    font-weight: 400;
+    padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 4px;
+    font-size: 13px; color: #111; outline: none; transition: all 0.2s; width: 100%;
+    font-weight: 400; /* SEM NEGRITO */
 }
 .input-field:focus { border-color: #1A56DB; box-shadow: 0 0 0 2px rgba(26,86,219,0.1); }
 .select-field { appearance: none; background: #FFF; }

@@ -6,7 +6,8 @@ body {
     height: 100vh; width: 100vw; 
     display: flex; flex-direction: column; 
     font-family: 'Calibri', 'Segoe UI', sans-serif; 
-    font-size: 14px; color: #333; overflow: hidden; 
+    font-size: 14px; 
+    color: #333; overflow: hidden; 
 }
 
 /* Força Calibri */
@@ -53,16 +54,34 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 .content-header-row { display: flex; align-items: center; margin-bottom: 15px; justify-content: space-between; }
 .accordion-trigger { display: flex; align-items: center; gap: 5px; cursor: pointer; }
 .accordion-trigger h3 { margin: 0; font-size: 15px; font-weight: 700; color: #333; }
-.orange-icon { color: #E67E22; background: #FFF5E5; border-radius: 50%; padding: 2px; font-size: 18px; }
+
+/* Ícone do Header da Seção (Pode manter fundo ou não, conforme preferir) */
+.toggle-icon-small { 
+    font-size: 18px; color: #E67E22; background: #FFF5E5; 
+    border-radius: 50%; padding: 2px; transition: background 0.2s;
+    display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ÍCONE LIMPO (Código do Produto) - Sem fundo, Laranja Discreto */
+.toggle-icon-clean {
+    font-size: 18px; 
+    color: #E67E22; 
+    background: transparent; 
+    padding: 2px;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+}
+.toggle-icon-clean:hover {
+    transform: scale(1.1);
+}
 
 /* GRID HEADER */
 .items-grid-header { 
     display: grid; 
-    /* # | Grupo | Cod | Desc (25%) | Un | Preco | Total (1fr) | Acoes */
     grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
     padding: 10px 20px; 
     border-bottom: 1px solid #DDD; 
-    font-weight: 700; color: #000; font-size: 13px; /* NEGRITO E PRETO */
+    font-weight: 700; color: #000; font-size: 13px; 
 }
 .col-idx { text-align: center; } 
 .col-un  { text-align: center; } 
@@ -78,12 +97,15 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
     grid-template-columns: 40px 100px 130px 25% 60px 120px 1fr 50px; 
     padding: 12px 20px; 
     align-items: center; font-size: 13px; 
-    font-weight: 400; 
+    font-weight: 400; /* Texto normal */
 }
+
+/* Código Produto: SEM NEGRITO */
 .col-code { 
-    display: flex; align-items: center; gap: 5px; 
-    color: #E67E22; cursor: pointer; user-select: none;
-    font-weight: 500;
+    display: flex; align-items: center; gap: 8px; 
+    color: #E67E22; 
+    cursor: pointer; user-select: none;
+    font-weight: 400; /* Alterado para Normal */
 }
 .col-desc { color: #333; }
 
@@ -93,9 +115,8 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 
 /* Inputs Grid */
 .card-inputs-grid { 
-    background: #FAFAFA; padding: 20px; display: none; 
-    grid-template-columns: repeat(4, 1fr); gap: 15px 20px; 
-    border-top: 1px dashed #EEE; 
+    background: #FAFAFA; padding: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px 20px; 
+    border-top: 1px dashed #EEE;
 }
 .field-group { display: flex; flex-direction: column; gap: 4px; }
 .field-group.span-2 { grid-column: span 2; }
@@ -105,44 +126,16 @@ input, select, textarea, button { font-family: 'Calibri', 'Segoe UI', sans-serif
 .mandatory-border { border-left: 3px solid #FF4D4D; }
 textarea.input-me { resize: vertical; height: 30px; }
 
-/* --- MODAL ESTILOS --- */
-.modal-overlay { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0, 0, 0, 0.4); z-index: 1000; 
-    display: flex; justify-content: center; align-items: center; 
-    backdrop-filter: blur(1px);
-}
-.modal-box { 
-    background: #FFF; padding: 20px 30px; border-radius: 6px; 
-    width: 380px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); 
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-    font-family: 'Calibri', sans-serif;
-}
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(1px); }
+.modal-box { background: #FFF; padding: 20px 30px; border-radius: 6px; width: 380px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; text-align: center; }
 .modal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
 .modal-icon-discrete { color: #9CA3AF; font-size: 24px; } 
-
 .modal-header h3 { margin: 0; font-size: 16px; color: #111; font-weight: 400; }
-
-/* PEDIDO: Texto Preto */
-.modal-box p { 
-    font-size: 14px; 
-    color: #000; /* Preto */
-    margin: 0 0 20px 0; font-weight: 400; 
-}
-
+.modal-box p { font-size: 14px; color: #000; margin: 0 0 20px 0; font-weight: 400; }
 .modal-actions { display: flex; justify-content: center; gap: 10px; width: 100%; }
-
-.modal-btn {
-    padding: 8px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; border: 1px solid transparent; font-family: 'Calibri', sans-serif;
-}
-
-/* PEDIDO: Container Cinza */
-.modal-btn-cancel { 
-    background: #E5E7EB; /* Cinza Container */
-    color: #000; /* Texto Preto */
-    border: none;
-}
+.modal-btn { padding: 8px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; border: 1px solid transparent; font-family: 'Calibri', sans-serif; }
+.modal-btn-cancel { background: #E5E7EB; color: #000; border: none; }
 .modal-btn-cancel:hover { background: #D1D5DB; }
-
 .modal-btn-confirm { background: #EF4444; color: white; }
 .modal-btn-confirm:hover { background: #DC2626; }

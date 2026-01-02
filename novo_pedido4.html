@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Pedido - Verificação</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
@@ -18,7 +17,7 @@
             <strong>Nº do documento ME</strong> <span class="material-icons-outlined" style="font-size:14px; margin:0 5px;">chevron_right</span> Verificação
         </div>
         <div class="top-actions">
-            <button class="btn-top btn-white">Cancelar <span class="material-icons-outlined">close</span></button>
+            <button class="btn-top btn-white" onclick="window.location.href='novo_pedido.html'">Cancelar <span class="material-icons-outlined">close</span></button>
             <a href="novo_pedido3.html" class="btn-top btn-white">Voltar <span class="material-icons-outlined">arrow_back</span></a>
             <button id="btnFinalizar" class="btn-top btn-orange">
                 Finalizar <span class="material-icons-outlined">check</span>
@@ -26,23 +25,17 @@
         </div>
     </div>
 
-    <div class="split-layout">
+    <div class="page-container">
         
-        <aside class="sidebar-items">
-            <div class="sidebar-header">ITENS</div>
-            <div id="listaItensSidebar" class="sidebar-list-content">
-                </div>
-        </aside>
-
         <main class="main-content">
             
             <div class="section-block">
-                <div class="section-header">
-                    <span class="material-icons-outlined toggle-icon">expand_less</span>
+                <div class="section-header" onclick="toggleSection('infoGridContainer', 'iconInfo')">
+                    <span id="iconInfo" class="material-icons-outlined toggle-icon-small">expand_less</span>
                     <h3>Informações Gerais</h3>
                 </div>
 
-                <div class="info-grid">
+                <div id="infoGridContainer" class="info-grid">
                     <div class="info-item">
                         <label>Título</label>
                         <span id="lblTitulo">...</span>
@@ -77,7 +70,9 @@
                     </div>
                     <div class="info-item full-width">
                         <label>Anexo</label>
-                        <span style="color:#666; display:flex; align-items:center; gap:5px;"><span class="material-icons-outlined" style="font-size:14px;">attach_file</span> Nenhum anexo existente.</span>
+                        <span style="color:#666; display:flex; align-items:center; gap:5px;">
+                            <span class="material-icons-outlined" style="font-size:14px;">attach_file</span> Nenhum anexo existente.
+                        </span>
                     </div>
                 </div>
             </div>
@@ -104,24 +99,31 @@
                 </div>
             </div>
 
-            <div class="section-block" style="margin-top: 20px;">
-                <div class="section-header">
-                    <span class="material-icons-outlined toggle-icon">expand_less</span>
+            <div class="section-block" style="margin-top: 30px;">
+                <div class="section-header" onclick="toggleSection('itemsListContainer', 'iconItems')">
+                    <span id="iconItems" class="material-icons-outlined toggle-icon-small">expand_less</span>
                     <h3>Itens (<span id="countItens">0</span>)</h3>
-                    <span class="expand-link"><span class="material-icons" style="font-size:14px;">open_in_full</span> Expandir Tudo</span>
+                    
+                    <span class="expand-link" onclick="event.stopPropagation(); expandItems()">
+                        <span class="material-icons" style="font-size:14px;">open_in_full</span> Expandir Itens
+                    </span>
                 </div>
 
-                <div class="table-header-custom">
-                    <div style="width: 30px;">#</div>
-                    <div style="width: 120px;">Código Produto</div>
-                    <div style="width: 150px;">Código Produto Cliente</div>
-                    <div style="flex:1;">Descrição</div>
-                    <div style="width: 100px; text-align:right;">Valor Total</div>
-                    <div style="width: 60px; text-align:right;">Ações</div>
-                </div>
-
-                <div id="listaItensResumo">
+                <div id="itemsListContainer">
+                    <div class="table-header-custom">
+                        <div class="col-idx">#</div>
+                        <div class="col-grp">Grupo</div>
+                        <div class="col-code">Código Produto</div>
+                        <div class="col-desc">Descrição</div>
+                        <div class="col-un">Unidade</div>
+                        <div class="col-price">Ultimo Preço Pago</div>
+                        <div class="col-val">Valor Total</div>
+                        <div class="col-act">Ações</div>
                     </div>
+
+                    <div id="listaItensResumo">
+                        </div>
+                </div>
             </div>
 
         </main>

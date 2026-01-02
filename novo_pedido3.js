@@ -8,13 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const accordionIcon = document.getElementById('accordionIcon');
     const totalHeader = document.getElementById('totalValorHeader');
 
-    // Modal
     const modalOverlay = document.getElementById('modalOverlay');
     const btnModalCancel = document.getElementById('btnModalCancel');
     const btnModalConfirm = document.getElementById('btnModalConfirm');
     let itemToDeleteIndex = null;
 
-    // Dados
     const dadosCarrinho = sessionStorage.getItem('carrinho_temp');
     let carrinho = [];
     if (dadosCarrinho) carrinho = JSON.parse(dadosCarrinho);
@@ -84,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="col-idx text-center">${index + 1}</div>
                         <div class="col-grp">${grupo}</div>
                         
-                        <div class="col-code" onclick="toggleItemRow(${index})" title="Clique para expandir/recolher">
-                            <span class="material-icons-outlined orange-icon toggle-icon-${index}" style="font-size:14px; padding:2px; margin-right:5px;">expand_more</span>
+                        <div class="col-code" onclick="toggleItemRow(${index})" title="Ver detalhes">
+                            <span class="material-icons-outlined toggle-icon-clean toggle-icon-${index}">expand_more</span>
                             ${item.codigo}
                         </div>
                         
@@ -169,9 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('select, input, textarea').forEach(input => {
             input.addEventListener('change', (e) => {
                 salvarDadosGridParaCarrinho();
-                if(e.target.classList.contains('input-qtd')) {
-                    renderizarTudo(); 
-                }
+                if(e.target.classList.contains('input-qtd')) renderizarTudo();
             });
         });
 
@@ -183,28 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Logic
-    function abrirModal() { modalOverlay.style.display = 'flex'; }
-    function fecharModal() { modalOverlay.style.display = 'none'; itemToDeleteIndex = null; }
-    btnModalCancel.addEventListener('click', fecharModal);
-    btnModalConfirm.addEventListener('click', () => {
-        if (itemToDeleteIndex !== null) {
-            carrinho.splice(itemToDeleteIndex, 1);
-            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
-            fecharModal();
-            if(carrinho.length === 0) {
-                alert('Todos os itens removidos. Voltando ao catálogo.');
-                window.location.href = 'novo_pedido.html';
-            } else {
-                renderizarTudo();
-            }
-        }
-    });
-
+    // Toggle
     window.toggleItemRow = function(index) {
         const grid = document.getElementById(`inputGrid-${index}`);
         const icon = document.querySelector(`.toggle-icon-${index}`);
-        if (grid.style.display === 'none') {
+        if (grid.style.display === 'none' || grid.style.display === '') {
             grid.style.display = 'grid'; icon.innerText = 'expand_less';
         } else {
             grid.style.display = 'none'; icon.innerText = 'expand_more';
@@ -217,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (carrinho[index]) {
                 const qtd = parseInt(card.querySelector('.input-qtd').value) || 1;
                 carrinho[index].quantidade = qtd;
-                
                 carrinho[index].detalhesItem = {
                     dataEntrega: card.querySelector('.input-data').value,
                     aplicacao: card.querySelector('.input-aplicacao').value,
@@ -232,18 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
     }
 
-    let isResizing = false;
-    let isDragging = false; 
-    let startX = 0;
-    let startWidth = 0;
-
+    // Alça logic
+    let isResizing = false, isDragging = false, startX = 0, startWidth = 0;
     resizeHandle.addEventListener('mousedown', (e) => {
         e.preventDefault(); isResizing = true; isDragging = false; 
         startX = e.clientX; startWidth = sidebar.getBoundingClientRect().width;
         if (sidebar.classList.contains('closed')) startWidth = 0;
         sidebar.style.transition = 'none'; resizeHandle.classList.add('dragging'); document.body.style.cursor = 'col-resize';
     });
-
     window.addEventListener('mousemove', (e) => {
         if (!isResizing) return;
         const dx = e.clientX - startX;
@@ -254,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newWidth > 0) sidebar.style.width = `${newWidth}px`; else sidebar.style.width = '0px';
         }
     });
-
     window.addEventListener('mouseup', (e) => {
         if (!isResizing) return;
         isResizing = false; resizeHandle.classList.remove('dragging'); document.body.style.cursor = '';
@@ -266,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
             else { sidebar.classList.remove('closed'); if(finalWidth < 200) sidebar.style.width = '200px'; }
         }
     });
-
     function toggleSidebar() {
         if (sidebar.classList.contains('closed')) { sidebar.classList.remove('closed'); if (!sidebar.style.width || sidebar.style.width === '0px') sidebar.style.width = '280px'; } 
         else { sidebar.classList.add('closed'); }
@@ -286,5 +258,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (erro) { alert('Por favor, preencha a Data Estimada para todos os itens.'); return; }
         btnConcluir.innerHTML = 'Processando...';
         setTimeout(() => { window.location.href = 'novo_pedido4.html'; }, 300);
+    });
+
+    // Modal
+    function abrirModal() { modalOverlay.style.display = 'flex'; }
+    function fecharModal() { modalOverlay.style.display = 'none'; itemToDeleteIndex = null; }
+    btnModalCancel.addEventListener('click', fecharModal);
+    btnModalConfirm.addEventListener('click', () => {
+        if (itemToDeleteIndex !== null) {
+            carrinho.splice(itemToDeleteIndex, 1);
+            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
+            fecharModal();
+            if(carrinho.length === 0) {
+                alert('Todos os itens removidos.');
+                window.location.href = 'novo_pedido.html';
+            } else {
+                renderizarTudo();
+            }
+        }
     });
 });

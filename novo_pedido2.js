@@ -16,11 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = false; 
         startX = e.clientX;
         startWidth = sidebar.getBoundingClientRect().width;
+        if (sidebar.classList.contains('closed')) startWidth = 0;
         
-        if (sidebar.classList.contains('closed')) {
-            startWidth = 0;
-        }
-
         sidebar.style.transition = 'none'; 
         resizeHandle.classList.add('dragging');
         document.body.style.cursor = 'col-resize';
@@ -28,9 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('mousemove', (e) => {
         if (!isResizing) return;
-
         const dx = e.clientX - startX;
-        
         if (Math.abs(dx) > 5) {
             isDragging = true;
             if (sidebar.classList.contains('closed')) {
@@ -38,48 +33,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 sidebar.style.width = '0px'; 
             }
         }
-
         if (isDragging) {
             let newWidth = startWidth + dx;
             if (newWidth < 150) newWidth = 0; 
             if (newWidth > 600) newWidth = 600;
-
-            if (newWidth > 0) {
-                sidebar.style.width = `${newWidth}px`;
-            } else {
-                sidebar.style.width = '0px';
-            }
+            if (newWidth > 0) sidebar.style.width = `${newWidth}px`; 
+            else sidebar.style.width = '0px';
         }
     });
 
     window.addEventListener('mouseup', (e) => {
         if (!isResizing) return;
-        
         isResizing = false;
         resizeHandle.classList.remove('dragging');
         document.body.style.cursor = '';
         sidebar.style.transition = 'width 0.3s ease'; 
 
-        if (!isDragging) {
-            toggleSidebar();
-        } else {
+        if (!isDragging) toggleSidebar(); 
+        else {
             const finalWidth = sidebar.getBoundingClientRect().width;
-            if (finalWidth < 100) {
-                sidebar.classList.add('closed');
-                sidebar.style.width = ''; 
-            } else {
-                sidebar.classList.remove('closed');
-                if(finalWidth < 200) sidebar.style.width = '200px'; 
-            }
+            if (finalWidth < 100) { sidebar.classList.add('closed'); sidebar.style.width = ''; } 
+            else { sidebar.classList.remove('closed'); if(finalWidth < 200) sidebar.style.width = '200px'; }
         }
     });
 
     function toggleSidebar() {
         if (sidebar.classList.contains('closed')) {
             sidebar.classList.remove('closed');
-            if (!sidebar.style.width || sidebar.style.width === '0px') {
-                sidebar.style.width = '280px';
-            }
+            if (!sidebar.style.width || sidebar.style.width === '0px') sidebar.style.width = '280px';
         } else {
             sidebar.classList.add('closed');
         }
@@ -92,14 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (dadosSessao) {
         carrinho = JSON.parse(dadosSessao);
-        if(carrinho.length > 0) {
-            renderizarSidebar(carrinho);
-        } else {
-            alert('Carrinho vazio.');
-            window.location.href = 'novo_pedido.html';
-        }
+        renderizarSidebar(carrinho);
     } else {
-        alert('Sessão inválida.');
+        alert('Carrinho vazio.');
         window.location.href = 'novo_pedido.html';
     }
 
@@ -111,13 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = ''; 
 
         itens.forEach(item => {
+            // FORMATO: G CÓDIGO - DESCRIÇÃO (Sem quantidade, sem negrito extra)
             const html = `
                 <div class="item-mini-card">
-                    <div class="badge-g">G</div>
-                    <div class="item-info">
-                        <span class="item-code">${item.codigo}</span>
-                        <span class="item-desc">${item.descricao}</span>
-                        <span class="item-qty">Qtd: ${item.quantidade} | ${item.un}</span>
+                    <span class="badge-g">G</span>
+                    <div class="item-line-text">
+                        ${item.codigo} - ${item.descricao}
                     </div>
                 </div>
             `;
