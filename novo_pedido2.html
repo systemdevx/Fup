@@ -13,76 +13,86 @@
 <body>
 
     <div class="nav-bar">
-        <div class="breadcrumbs">
-            <strong>Catálogo</strong> 
-            <span class="divider">/</span> <span>Novo Pedido</span> 
-            <span class="divider">/</span> <span>Condições Gerais</span>
+        <div class="nav-left">
+            <div class="breadcrumbs">
+                </div>
         </div>
+
         <div class="nav-actions">
             <a href="novo_pedido.html" class="btn-back">
-                <span class="material-icons-outlined">arrow_back</span> Voltar
+                <span class="material-icons-outlined" style="font-size: 18px;">arrow_back</span> 
+                <span>Voltar</span>
             </a>
             <button id="btnAvancarEtapa2" class="btn-advance">
-                Avançar <span class="material-icons-outlined">arrow_forward</span>
+                <span>Avançar</span> 
+                <span class="material-icons-outlined" style="font-size: 18px;">arrow_forward</span>
             </button>
         </div>
     </div>
 
-    <div class="split-layout">
+    <div class="split-layout-container" id="splitLayout">
         
-        <aside class="sidebar-items">
-            <div class="sidebar-header">ITENS SELECIONADOS</div>
-            <div id="listaItensSidebar" class="items-list">
+        <aside class="sidebar-items" id="sidebarContainer">
+            <div class="sidebar-header">
+                <span>ITENS SELECIONADOS (<span id="countSidebar">0</span>)</span>
+            </div>
+            <div id="listaItensSidebar" class="items-list-content">
                 </div>
         </aside>
 
-        <main class="main-form">
+        <div class="resize-handle" id="resizeHandle" title="Duplo Clique: Ocultar/Mostrar | Arrastar: Ajustar largura">
+            <div class="handle-grip">
+                <span class="material-icons-outlined handle-icon">chevron_left</span>
+            </div>
+        </div>
+
+        <main class="main-content-area" id="mainContainer">
             
-            <div class="accordion-section">
-                <div class="accordion-header">
-                    <span class="material-icons-outlined toggle-icon">expand_less</span>
-                    <h3>Condições Gerais</h3>
+            <div class="form-section-block">
+                <div class="form-header">
+                    <h3>Condições Gerais do Pedido</h3>
                 </div>
                 
-                <div class="accordion-body">
+                <div class="form-body">
                     <form id="formPedido">
                         
-                        <div class="form-row">
-                            <label>Título da Requisição:</label>
-                            <input type="text" id="inputTitulo" class="input-field mandatory" placeholder="Ex: Materiais para Escritório">
-                        </div>
+                        <div class="form-grid">
+                            <div class="form-group span-2">
+                                <label>Título da Requisição <span class="req">*</span></label>
+                                <input type="text" id="inputTitulo" class="input-field mandatory" placeholder="Ex: Reposição de Estoque">
+                            </div>
 
-                        <div class="form-row">
-                            <label>Local de Entrega:</label>
-                            <div class="select-wrapper mandatory">
-                                <select id="selectEntrega" class="input-field">
-                                    <option value="" disabled selected>Selecione</option>
-                                    <option value="CD-SP">CD - São Paulo</option>
-                                    <option value="LOJA-RJ">Loja - Rio de Janeiro</option>
-                                    <option value="MATRIZ">Matriz</option>
+                            <div class="form-group">
+                                <label>Local de Entrega <span class="req">*</span></label>
+                                <select id="selectEntrega" class="input-field select-field mandatory">
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="CD-SP">CD - São Paulo (CNP)</option>
+                                    <option value="LOJA-RJ">Loja Barra - RJ (LJR)</option>
+                                    <option value="MATRIZ">Matriz Adm (MTZ)</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <label>Centro de Custo do Aprovador:</label>
-                            <input type="text" id="inputCC" class="input-field mandatory" value="10020 - MARKETING">
-                        </div>
-
-                        <div class="form-row">
-                            <label>Local de Faturamento:</label>
-                            <div class="select-wrapper mandatory">
-                                <select id="selectFaturamento" class="input-field">
-                                    <option value="" disabled selected>Selecione</option>
-                                    <option value="VIVARA-MATRIZ">VIVARA MATRIZ</option>
-                                    <option value="VIVARA-FILIAL">VIVARA FILIAL</option>
+                            <div class="form-group">
+                                <label>Local de Faturamento <span class="req">*</span></label>
+                                <select id="selectFaturamento" class="input-field select-field mandatory">
+                                    <option value="" disabled selected>Selecione...</option>
+                                    <option value="VIVARA-MATRIZ">Vivara Matriz (ALM)</option>
+                                    <option value="VIVARA-FILIAL">Vivara Filial (FL1)</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="form-row align-top">
-                            <label>Comentários:</label>
-                            <textarea id="inputComentarios" class="input-field" rows="4"></textarea>
+                             <div class="form-group">
+                                <label>Centro de Custo do Aprovador <span class="req">*</span></label>
+                                <input type="text" id="inputCC" class="input-field mandatory" value="10020 - MARKETING" readonly style="background: #F9FAFB;">
+                            </div>
+                            <div class="form-group">
+                                <label>Data de Necessidade</label>
+                                <input type="date" class="input-field">
+                            </div>
+
+                            <div class="form-group span-2">
+                                <label>Comentários / Justificativa</label>
+                                <textarea id="inputComentarios" class="input-field textarea-field" rows="4" placeholder="Adicione observações importantes para o aprovador..."></textarea>
+                            </div>
                         </div>
 
                     </form>
