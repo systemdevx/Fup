@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Pedido - Verificação</title>
+    <title>Nova Requisição - Verificação</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,13 +14,13 @@
 
     <div class="top-header">
         <div class="doc-title">
-            <strong>Nº do documento ME</strong> <span class="material-icons-outlined" style="font-size:15px; margin:0 5px;">chevron_right</span> Verificação
+            <strong>Nova Requisição</strong> <span class="material-icons-outlined" style="font-size:15px; margin:0 5px;">chevron_right</span> Verificação
         </div>
         <div class="top-actions">
             <button class="btn-top btn-white" onclick="window.location.href='novo_pedido.html'">Cancelar <span class="material-icons-outlined">close</span></button>
             <a href="novo_pedido3.html" class="btn-top btn-white">Voltar <span class="material-icons-outlined">arrow_back</span></a>
             <button id="btnFinalizar" class="btn-top btn-orange">
-                Finalizar <span class="material-icons-outlined">check</span>
+                Finalizar Requisição <span class="material-icons-outlined">check</span>
             </button>
         </div>
     </div>
@@ -131,8 +131,7 @@
                         <div class="col-act">Ações</div>
                     </div>
 
-                    <div id="listaItensResumo">
-                        </div>
+                    <div id="listaItensResumo"></div>
                 </div>
             </div>
 
@@ -145,7 +144,7 @@
                 <span class="material-icons-outlined modal-icon-discrete">info</span>
                 <h3>Remover Item</h3>
             </div>
-            <p>Deseja realmente remover este item do pedido?</p>
+            <p>Deseja realmente remover este item da requisição?</p>
             <div class="modal-actions">
                 <button id="btnModalCancel" class="modal-btn modal-btn-cancel">Não, Cancelar</button>
                 <button id="btnModalConfirm" class="modal-btn modal-btn-confirm">Sim, Remover</button>

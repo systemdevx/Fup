@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
     });
 
-    // 2. RECUPERAR ID E FLAG DE NOVO PEDIDO
+    // 2. RECUPERAR ID
     const params = new URLSearchParams(window.location.search);
     const pedidoId = params.get('id');
     const isNew = params.get('new');
 
-    // Banner de sucesso
+    // Banner
     if (isNew === 'true') {
         const banner = document.getElementById('successBanner');
         const bannerId = document.getElementById('bannerId');
@@ -37,41 +37,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const pedido = historico.find(p => p.id == pedidoId);
 
     if (!pedido) {
-        alert('Erro: Pedido não encontrado no histórico. Você será redirecionado.');
-        window.location.href = 'novo_pedido.html'; 
+        alert('Erro: Requisição não encontrada no histórico.');
+        window.location.href = 'transacoes.html'; 
         return;
     }
 
-    // 4. RENDERIZAR TELA
+    // 4. RENDERIZAR
     renderizarPedido(pedido);
 
     function renderizarPedido(p) {
         document.getElementById('viewId').innerText = `ME# ${p.id}`;
         
-        const titulo = p.cabecalho.titulo || 'SEM TÍTULO';
+        const cab = p.cabecalho || {};
+        const titulo = cab.titulo || 'SEM TÍTULO';
+        
         document.getElementById('viewTitulo').innerText = titulo.toUpperCase();
         document.getElementById('infoTitulo').innerText = titulo;
         
         document.getElementById('viewDataCriacao').innerText = `Criado em: ${p.dataCriacao}`;
         
-        // Status Colors
         const elStatus = document.getElementById('viewStatus');
         elStatus.innerText = p.status;
         
         if (p.status.includes('CANCELADO')) {
-            elStatus.style.color = '#D32F2F'; // Vermelho
-            document.getElementById('txtHistoricoCriacao').innerHTML = `Pedido <strong>CANCELADO</strong>. <br><span style="font-size:12px; font-weight:400; color:#555;">Motivo: ${p.justificativaCancelamento || 'Não informado'}</span>`;
+            elStatus.style.color = '#D32F2F'; 
+            // CORREÇÃO: "Requisição" em vez de "Pedido"
+            document.getElementById('txtHistoricoCriacao').innerHTML = `Requisição <strong>CANCELADA</strong>. <br><span style="font-size:12px; font-weight:400; color:#555;">Motivo: ${p.justificativaCancelamento || 'Não informado'}</span>`;
             
-            // Ícone vermelho
             const iconHist = document.getElementById('txtHistoricoCriacao').previousElementSibling;
             if(iconHist) {
                 iconHist.style.color = '#D32F2F';
                 iconHist.innerText = 'cancel'; 
             }
 
-            document.getElementById('historicoStatusAtual').style.display = 'none';
+            const elHistStatus = document.getElementById('historicoStatusAtual');
+            if(elHistStatus) elHistStatus.style.display = 'none';
             
-            // Desabilita botões
             const btnMais = document.getElementById('btnMaisOpcoes');
             const btnCancel = document.getElementById('btnCancelarPedidoTrigger');
             if(btnMais) btnMais.disabled = true;
@@ -87,9 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('viewRequisitante').innerText = p.requisitamte;
         document.getElementById('infoRequisitante').innerText = p.requisitamte;
         document.getElementById('infoMeId').innerText = p.id;
-        document.getElementById('infoCC').innerText = p.cabecalho.centroCusto;
+        document.getElementById('infoCC').innerText = cab.centroCusto || '-';
 
-        // Mapas de Endereço
         const mapaLocais = { 'CD-SP': 'CNP', 'LOJA-RJ': 'LJR', 'MATRIZ': 'MTZ', 'VIVARA-MATRIZ': 'ALM', 'VIVARA-FILIAL': 'FL1' };
         const mapaEnderecos = {
             'CD-SP': 'RODOVIA VICE-PREFEITO HERMENEGILDO TONOLLI, 1500',
@@ -99,15 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'VIVARA-FILIAL': 'AV. DO TURISMO, 2000 - MANAUS'
         };
 
-        const localEnt = p.cabecalho.localEntrega;
-        const localFat = p.cabecalho.localFaturamento;
+        const localEnt = cab.localEntrega;
+        const localFat = cab.localFaturamento;
 
         document.getElementById('viewLocalEntrega').innerText = mapaLocais[localEnt] || 'LOC';
         document.getElementById('viewEnderecoEntrega').innerText = mapaEnderecos[localEnt] || 'Endereço não cadastrado';
         document.getElementById('viewLocalFat').innerText = mapaLocais[localFat] || 'FAT';
         document.getElementById('viewEnderecoFat').innerText = mapaEnderecos[localFat] || 'Endereço não cadastrado';
 
-        // Anexo
         const txtAnexo = document.getElementById('txtAnexoView');
         const iconAnexo = document.getElementById('iconAnexoView');
         
@@ -125,34 +124,39 @@ document.addEventListener('DOMContentLoaded', () => {
             iconAnexo.style.color = '#555';
         }
 
-        // Lista
         const listaFinal = document.getElementById('listaItensFinal');
-        listaFinal.innerHTML = '';
-        const totalGeral = p.total || 0;
-        document.getElementById('infoTotal').innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        document.getElementById('cntItens').innerText = p.itens.length;
+        if(listaFinal) {
+            listaFinal.innerHTML = '';
+            const itens = p.itens || [];
+            const totalGeral = itens.reduce((acc, i) => acc + (parseFloat(i.preco) * parseInt(i.quantidade)), 0);
+            
+            document.getElementById('infoTotal').innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('cntItens').innerText = itens.length;
 
-        p.itens.forEach((item, index) => {
-            const totalItem = item.preco * item.quantidade;
-            const html = `
-                <div class="item-row-final">
-                    <div class="t-col-idx">${index + 1}</div>
-                    <div style="font-weight:600; color:#E67E22;">${item.codigo}</div>
-                    <div><span class="badge-g">G</span> ${item.descricao}</div>
-                    <div class="t-col-un" style="text-align:center;">${item.un}</div>
-                    <div class="t-col-qtd" style="text-align:center;">${item.quantidade}</div>
-                    <div class="t-col-price">${item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    <div class="t-col-total" style="font-weight:600;">${totalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-                    <div class="t-col-actions" style="font-size:12px; color:${p.status.includes('CANCELADO') ? '#D32F2F' : '#2E7D32'};">
-                        ${p.status.includes('CANCELADO') ? 'Cancelado' : 'Disponível'}
+            itens.forEach((item, index) => {
+                const preco = parseFloat(item.preco);
+                const qtd = parseInt(item.quantidade);
+                const totalItem = preco * qtd;
+                
+                const html = `
+                    <div class="item-row-final">
+                        <div class="t-col-idx">${index + 1}</div>
+                        <div style="font-weight:600; color:#E67E22;">${item.codigo}</div>
+                        <div><span class="badge-g">G</span> ${item.descricao}</div>
+                        <div class="t-col-un" style="text-align:center;">${item.un}</div>
+                        <div class="t-col-qtd" style="text-align:center;">${qtd}</div>
+                        <div class="t-col-price">${preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        <div class="t-col-total" style="font-weight:600;">${totalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        <div class="t-col-actions" style="font-size:12px; color:${p.status.includes('CANCELADO') ? '#D32F2F' : '#2E7D32'};">
+                            ${p.status.includes('CANCELADO') ? 'Cancelado' : 'Disponível'}
+                        </div>
                     </div>
-                </div>
-            `;
-            listaFinal.insertAdjacentHTML('beforeend', html);
-        });
+                `;
+                listaFinal.insertAdjacentHTML('beforeend', html);
+            });
+        }
     }
 
-    // --- AÇÕES ---
     function carregarDadosNaSessao(p) {
         sessionStorage.setItem('cabecalho_temp', JSON.stringify(p.cabecalho));
         sessionStorage.setItem('carrinho_temp', JSON.stringify(p.itens));
@@ -175,7 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- MODAL CANCELAMENTO ---
     const modalCancel = document.getElementById('modalCancelOrder');
     const btnTriggerCancel = document.getElementById('btnCancelarPedidoTrigger');
     const btnCloseModal = document.getElementById('btnModalCloseOrder');
@@ -221,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ACCORDION ---
     window.toggleSection = function(headerElement) {
         const content = headerElement.nextElementSibling;
         const icon = headerElement.querySelector('.toggle-orange');

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprovações - Portal de Compras</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="aprovacoes.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-area">
+            <h1>VIVARA <span class="logo-subtitle">(Portal de Compras)</span></h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="dashboard.html" class="nav-item"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transacoes.html" class="nav-item"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">shopping_bag</span><span>Catálogos</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">group</span><span>Usuários</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">JS</div></div>
+    </header>
+
+    <div class="erp-sub-header">
+        <div class="erp-left">
+            <button id="toggleSidebarBtn" class="icon-toggle-btn"><span class="material-icons-outlined">menu</span></button>
+            <div class="btn-group">
+                <a href="novo_pedido.html" class="btn-primary-erp">
+                    <span class="material-icons-outlined" style="font-size: 18px;">add</span> Nova Requisição
+                </a>
+                <button class="btn-primary-erp-arrow"><span class="material-icons-outlined">expand_more</span></button>
+            </div>
+        </div>
+        <div class="erp-right">
+            <div class="erp-search-container">
+                <span class="material-icons-outlined search-icon">search</span>
+                <input type="text" placeholder="Buscar pendência..." class="erp-input-search">
+            </div>
+            <button class="btn-text-icon"><span class="material-icons-outlined" style="font-size:18px;">filter_list</span> Filtros</button>
+        </div>
+    </div>
+
+    <div class="transacoes-wrapper">
+        <aside id="sidebarTransacoes" class="sidebar-erp">
+            <div class="sidebar-inner-search">
+                <span class="material-icons-outlined" style="font-size: 18px;">search</span>
+                <input type="text" placeholder="Buscar no menu">
+            </div>
+            <div class="menu-group">
+                <div class="group-title"><span>PENDÊNCIAS</span><span class="material-icons-outlined arrow">expand_less</span></div>
+                <ul>
+                    <li class="active-item" onclick="window.location.href='aprovacoes.html'">
+                        <div class="li-content"><span class="material-icons-outlined icon-left">assignment_turned_in</span><span>Aprovações</span></div>
+                        <span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#E67E22;">chevron_right</span>
+                    </li>
+                </ul>
+            </div> 
+            <div class="menu-group">
+                <div class="group-title"><span>TRANSAÇÕES</span><span class="material-icons-outlined arrow">expand_less</span></div>
+                <ul>
+                    <li onclick="window.location.href='transacoes.html'">
+                        <div class="li-content"><span class="material-icons-outlined icon-left">article</span><span>Requisições</span></div>
+                        <span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#CCC;">chevron_right</span>
+                    </li>
+                    <li onclick="window.location.href='transacoes.html'">
+                        <div class="li-content"><span class="material-icons-outlined icon-left">list_alt</span><span>Pedidos</span></div>
+                        <span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#CCC;">chevron_right</span>
+                    </li>
+                    <li onclick="window.location.href='transacoes.html'">
+                        <div class="li-content"><span class="material-icons-outlined icon-left">description</span><span>Contratos</span></div>
+                        <span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#CCC;">chevron_right</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="transacoes-content-erp">
+            <div class="table-container-erp">
+                <table id="resizableTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">Número do documento <div class="resizer"></div></th>
+                            <th style="width: 160px;">Número do documento ERP <div class="resizer"></div></th>
+                            <th style="width: 300px;">Título <div class="resizer"></div></th>
+                            <th style="width: 140px;">Status <div class="resizer"></div></th>
+                            <th style="width: 110px;">Criado em <div class="resizer"></div></th>
+                            <th style="width: 160px;">Criado por <div class="resizer"></div></th>
+                            <th style="width: 240px; text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaAprovacoes">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script src="aprovacoes.js"></script>
+</body>
+</html>

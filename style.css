@@ -1,35 +1,47 @@
-/* --- Variáveis baseadas na imagem --- */
+/* --- Variáveis (Tema Laranja Vivara) --- */
 :root {
-    --bg-body: #F5F6FA;      /* Fundo cinza bem claro */
-    --header-bg: #E8DCC6;    /* Cor "Areia/Bege" do header */
-    --header-bg-neutral: #FFFFFF; 
+    --bg-body: #F3F4F6;      /* Fundo cinza igual Transações */
+    --header-bg: #FFFFFF; 
     
-    --primary-blue: #1A56DB; /* Azul "Royal" forte do botão */
-    --light-blue-bg: #EBF2FF; /* Fundo azul claro */
+    --primary-orange: #E67E22; /* Laranja Vivara */
+    --primary-orange-hover: #D35400;
+    --light-orange-bg: #FFF5E5; /* Fundo laranja claro para hovers */
     
     --text-dark: #333333;
     --text-grey: #666666;
-    --border-color: #E0E0E0;
+    --border-color: #E5E7EB;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body { background-color: var(--bg-body); color: var(--text-dark); }
+/* Fonte Global Calibri */
+body { 
+    background-color: var(--bg-body); 
+    color: var(--text-dark);
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    font-size: 15px; 
+}
+
+button, input, select, textarea, h1, h2, h3, h4, span, div, a {
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+}
 
 /* --- 1. HEADER SUPERIOR --- */
 header {
-    background-color: var(--header-bg-neutral);
+    background-color: var(--header-bg);
     height: 75px;
     display: flex; align-items: center; padding: 0 30px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.logo-area h1 { font-family: serif; letter-spacing: 1px; font-weight: 700; }
+.logo-area h1 { 
+    font-weight: 700; font-size: 20px; color: var(--primary-orange); letter-spacing: 0.5px; margin: 0;
+}
 
 /* Menu movido para a direita */
 nav { 
-    margin-left: auto;   /* Empurra o menu para a direita */
-    margin-right: 30px;  /* Espaço entre o menu e o avatar */
+    margin-left: auto;   
+    margin-right: 30px;  
     height: 100%; 
 }
 
@@ -40,7 +52,7 @@ nav ul li { height: 100%; display: flex; align-items: center; }
 nav ul li a {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-decoration: none; color: var(--text-grey);
-    font-size: 0.75rem; font-weight: 500; gap: 4px;
+    font-size: 13px; font-weight: 500; gap: 4px;
     height: 100%; padding: 0 10px;
     border-bottom: 3px solid transparent;
     transition: 0.2s;
@@ -51,55 +63,53 @@ nav ul li a .material-icons-outlined { font-size: 24px; margin-bottom: 2px; }
 /* Estado Ativo e Hover */
 nav ul li a:hover, nav ul li a.active {
     color: #000;
-    border-bottom-color: #000;
+    border-bottom-color: var(--primary-orange);
 }
 
-.user-profile {
-    display: flex;
-    align-items: center;
-}
+.user-profile { display: flex; align-items: center; }
 
 .avatar {
     width: 40px; height: 40px; background-color: #8D6E63; color: white;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+    font-weight: bold; font-size: 14px;
 }
 
 /* --- 2. SUB-HEADER & FILTROS --- */
 .sub-header {
-    background: white; padding: 10px 30px;
+    background: white; height: 60px; padding: 0 30px;
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 1px solid var(--border-color);
 }
 
 .dropdown {
     display: inline-flex; align-items: center; gap: 5px;
-    color: var(--primary-blue); font-weight: 600; font-size: 0.9rem;
-    margin-right: 20px; cursor: pointer;
+    color: #444; font-weight: 600; font-size: 14px;
+    margin-right: 20px; cursor: pointer; transition: color 0.2s;
 }
+.dropdown:hover { color: var(--primary-orange); }
 
 .filter-bar {
     padding: 15px 30px; display: flex; align-items: center; gap: 10px;
 }
 
 .btn-filter {
-    background: white; border: 1px solid var(--primary-blue); color: var(--primary-blue);
-    padding: 6px 12px; border-radius: 20px; cursor: pointer;
-    display: flex; align-items: center; gap: 5px; font-size: 0.85rem; font-weight: 500;
+    background: white; border: 1px solid #D1D5DB; color: #555;
+    padding: 6px 14px; border-radius: 4px; cursor: pointer;
+    display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+    transition: all 0.2s;
 }
+.btn-filter:hover { background-color: #F9FAFB; border-color: #9CA3AF; }
 
 /* Botões de Ação (Add, Delete, Save) */
 .icon-action {
-    background: transparent; border: none; color: var(--text-grey); cursor: pointer; padding: 5px;
-    display: flex; align-items: center; justify-content: center;
+    background: transparent; border: none; color: var(--text-grey); cursor: pointer; padding: 6px;
+    display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
-.icon-action:hover { color: var(--text-dark); }
+.icon-action:hover { color: var(--primary-orange); background-color: var(--light-orange-bg); }
 
-/* --- ALTERAÇÃO AQUI: Tamanho reduzido dos ícones --- */
-.icon-action .material-icons-outlined {
-    font-size: 18px; /* Reduzido de 24px para 18px */
-}
+.icon-action .material-icons-outlined { font-size: 20px; }
 
-.divider { height: 20px; width: 1px; background: #ddd; margin: 0 10px; }
+.divider { height: 20px; width: 1px; background: #E5E7EB; margin: 0 10px; }
 
 
 /* --- 3. DASHBOARD GRID --- */
@@ -114,33 +124,40 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; }
 
 .card {
     background: white; border-radius: 8px; border: 1px solid #E5E5E5;
-    padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-/* Estilo do HERO CARD (Azul) */
+/* Estilo do HERO CARD (Laranja Suave) */
 .hero-card {
-    background: linear-gradient(135deg, #EBF3FF 0%, #FFFFFF 100%);
-    border-color: #D1E0FF;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFFFFF 100%);
+    border-color: #FFE0B2;
     display: flex; justify-content: space-between; align-items: center;
     position: relative; overflow: hidden;
 }
 
 .hero-content { z-index: 2; }
-.hero-content h2 { color: #333; font-size: 1.2rem; margin-bottom: 5px; }
-.hero-content p { color: #666; font-size: 0.9rem; margin-bottom: 20px; max-width: 250px; }
+.hero-content h2 { color: #333; font-size: 18px; margin-bottom: 5px; font-weight: 700; }
+.hero-content p { color: #666; font-size: 14px; margin-bottom: 20px; max-width: 300px; }
 
 .btn-cta {
-    background-color: var(--primary-blue); color: white;
-    border: none; padding: 10px 20px; border-radius: 6px;
-    font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;
+    background-color: var(--primary-orange); color: white;
+    border: 1px solid var(--primary-orange); padding: 8px 18px; border-radius: 4px;
+    font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s;
 }
-.btn-cta:hover { background-color: #1545ad; }
+.btn-cta:hover { background-color: var(--primary-orange-hover); }
+
+/* Ícone de fundo ilustrativo */
+.hero-illustration { position: absolute; right: -10px; bottom: -10px; transform: rotate(-10deg); }
 
 /* Cards Pequenos */
-.simple-card { display: flex; flex-direction: column; justify-content: space-between; height: 220px; }
-.card-top h3 { font-size: 1rem; font-weight: 500; margin-top: 10px; color: #444; }
-.icon-blue { color: var(--primary-blue); font-size: 28px; }
-.link-bottom { text-decoration: underline; color: #666; font-size: 0.85rem; }
+.simple-card { display: flex; flex-direction: column; justify-content: space-between; height: 180px; transition: border-color 0.2s; }
+.simple-card:hover { border-color: var(--primary-orange); }
+
+.card-top h3 { font-size: 15px; font-weight: 600; margin-top: 10px; color: #444; }
+.icon-theme { color: var(--primary-orange); font-size: 28px; }
+.link-bottom { text-decoration: none; color: #666; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.link-bottom:hover { color: var(--primary-orange); }
 
 /* Grid Inferior */
 .dashboard-grid-bottom {
@@ -148,22 +165,23 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; }
 }
 
 .processos-container h3, .pendencias-container h3 {
-    font-size: 1rem; color: #555; margin-bottom: 15px;
+    font-size: 16px; color: #444; margin-bottom: 15px; font-weight: 700;
 }
 
 .stats-row { display: flex; gap: 20px; }
 .stat-card {
     flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 25px;
+    border-left: 4px solid var(--primary-orange); /* Detalhe lateral laranja */
 }
-.icon-stat { color: var(--primary-blue); }
-.stat-number { font-size: 1.8rem; font-weight: 700; color: #333; }
-.stat-label { font-size: 0.9rem; color: #666; }
+.icon-stat { color: var(--primary-orange); font-size: 24px; }
+.stat-number { font-size: 28px; font-weight: 700; color: #333; }
+.stat-label { font-size: 13px; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
 
 .empty-state {
     height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; color: #999; min-height: 200px;
 }
-
+.empty-state h4 { color: #555; margin-bottom: 5px; font-size: 16px; }
 
 /* Responsividade */
 @media (max-width: 900px) {
@@ -173,7 +191,7 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; }
     nav ul li a span:last-child { display: none; }
 }
 
-/* Lógica de Telas */
+/* Lógica de Telas (SPA Simples) */
 .tela { display: none; }
 .active-tela { display: block; animation: fade 0.3s; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }

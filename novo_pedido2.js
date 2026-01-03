@@ -61,9 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dadosSessao) {
         carrinho = JSON.parse(dadosSessao);
         renderizarSidebar(carrinho);
-    } else {
-        // Se não tiver carrinho, volta (pode remover se estiver testando direto)
-        // window.location.href = 'novo_pedido.html';
     }
 
     function renderizarSidebar(itens) {
@@ -87,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Tenta preencher título automaticamente se estiver vazio
         const inputTitulo = document.getElementById('inputTitulo');
-        // Recupera cabeçalho se existir (edição)
         const cabecalhoSalvo = JSON.parse(sessionStorage.getItem('cabecalho_temp'));
 
         if(cabecalhoSalvo && cabecalhoSalvo.titulo) {
@@ -96,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('selectFaturamento').value = cabecalhoSalvo.localFaturamento || "";
             document.getElementById('inputComentarios').value = cabecalhoSalvo.comentarios || "";
         } else if(inputTitulo && itens.length > 0 && !inputTitulo.value) {
-            inputTitulo.value = `Pedido: ${itens[0].descricao.substring(0, 20)}...`;
+            // CORREÇÃO: "Pedido:" para "Requisição:"
+            inputTitulo.value = `Requisição: ${itens[0].descricao.substring(0, 20)}...`;
         }
     }
 
@@ -134,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            if(temErro) return; // Para aqui se houver erro (sem alert)
+            if(temErro) return;
 
             // Salvar
             const cabecalhoPedido = { 

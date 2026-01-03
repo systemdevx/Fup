@@ -126,43 +126,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRemove = document.getElementById('btnRemoveAnexo');
     const lblAnexoBtn = document.getElementById('lblAnexoBtn');
 
-    fileInput.addEventListener('change', function(e) {
-        if (this.files && this.files.length > 0) {
-            const fileName = this.files[0].name;
-            txtAnexo.innerText = fileName;
-            txtAnexo.style.color = '#2E7D32'; 
-            txtAnexo.style.fontWeight = '600';
-            
-            iconAnexo.innerText = 'check_circle';
-            iconAnexo.style.color = '#2E7D32';
-            
-            lblAnexoBtn.style.borderColor = '#2E7D32';
-            lblAnexoBtn.style.backgroundColor = '#E8F5E9';
-            
-            btnRemove.classList.remove('hidden');
-            
-            // Salva nome do anexo na sessão para passar para pg5
-            sessionStorage.setItem('temp_anexo_name', fileName);
-        }
-    });
+    if(fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                const fileName = this.files[0].name;
+                txtAnexo.innerText = fileName;
+                txtAnexo.style.color = '#2E7D32'; 
+                txtAnexo.style.fontWeight = '600';
+                
+                iconAnexo.innerText = 'check_circle';
+                iconAnexo.style.color = '#2E7D32';
+                
+                lblAnexoBtn.style.borderColor = '#2E7D32';
+                lblAnexoBtn.style.backgroundColor = '#E8F5E9';
+                
+                btnRemove.classList.remove('hidden');
+                
+                // Salva nome do anexo na sessão para passar para pg5
+                sessionStorage.setItem('temp_anexo_name', fileName);
+            }
+        });
+    }
 
-    btnRemove.addEventListener('click', function(e) {
-        e.preventDefault();
-        fileInput.value = ''; 
-        
-        txtAnexo.innerText = 'Nenhum anexo existente. Clique para adicionar.';
-        txtAnexo.style.color = '#666';
-        txtAnexo.style.fontWeight = '400';
-        
-        iconAnexo.innerText = 'attach_file';
-        iconAnexo.style.color = '#666';
-        
-        lblAnexoBtn.style.borderColor = '#CCC';
-        lblAnexoBtn.style.backgroundColor = '#FAFAFA';
-        
-        this.classList.add('hidden');
-        sessionStorage.removeItem('temp_anexo_name');
-    });
+    if(btnRemove) {
+        btnRemove.addEventListener('click', function(e) {
+            e.preventDefault();
+            fileInput.value = ''; 
+            
+            txtAnexo.innerText = 'Nenhum anexo existente. Clique para adicionar.';
+            txtAnexo.style.color = '#666';
+            txtAnexo.style.fontWeight = '400';
+            
+            iconAnexo.innerText = 'attach_file';
+            iconAnexo.style.color = '#666';
+            
+            lblAnexoBtn.style.borderColor = '#CCC';
+            lblAnexoBtn.style.backgroundColor = '#FAFAFA';
+            
+            this.classList.add('hidden');
+            sessionStorage.removeItem('temp_anexo_name');
+        });
+    }
 
     // --- TOGGLES GLOBAIS ---
     window.toggleItemRow = function(index) {
@@ -197,62 +201,74 @@ document.addEventListener('DOMContentLoaded', () => {
     function abrirModal() { modalOverlay.style.display = 'flex'; }
     function fecharModal() { modalOverlay.style.display = 'none'; itemToDeleteIndex = null; }
 
-    btnModalCancel.addEventListener('click', fecharModal);
+    if(btnModalCancel) btnModalCancel.addEventListener('click', fecharModal);
 
-    btnModalConfirm.addEventListener('click', () => {
-        if (itemToDeleteIndex !== null) {
-            carrinho.splice(itemToDeleteIndex, 1);
-            sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
-            fecharModal();
-            
-            if (carrinho.length === 0) {
-                alert('Todos os itens removidos. Voltando ao início.');
-                window.location.href = 'novo_pedido.html';
-            } else {
-                renderizarTudo();
+    if(btnModalConfirm) {
+        btnModalConfirm.addEventListener('click', () => {
+            if (itemToDeleteIndex !== null) {
+                carrinho.splice(itemToDeleteIndex, 1);
+                sessionStorage.setItem('carrinho_temp', JSON.stringify(carrinho));
+                fecharModal();
+                
+                if (carrinho.length === 0) {
+                    alert('Todos os itens removidos. Voltando ao início.');
+                    window.location.href = 'novo_pedido.html';
+                } else {
+                    renderizarTudo();
+                }
             }
-        }
-    });
+        });
+    }
 
-    // --- FINALIZAR (Lógica Principal) ---
-    document.getElementById('btnFinalizar').addEventListener('click', (e) => {
-        e.preventDefault();
-        const btn = e.currentTarget;
-        btn.innerHTML = 'Processando...';
-        btn.disabled = true;
-        
-        setTimeout(() => {
-            // 1. Gerar ID Único
-            const meId = Math.floor(69000000 + Math.random() * 100000); 
-            const nomeAnexo = sessionStorage.getItem('temp_anexo_name') || "";
-
-            // 2. Montar objeto do pedido
-            const novoPedido = {
-                id: meId,
-                cabecalho: cabecalho,
-                itens: carrinho,
-                total: carrinho.reduce((acc, i) => acc + (i.preco * i.quantidade), 0),
-                status: "AGUARDANDO APROVAÇÃO",
-                dataCriacao: new Date().toLocaleDateString('pt-BR'),
-                requisitamte: "JOSE CLAUDIO CORTEZ DA SILVA",
-                nomeAnexo: nomeAnexo
-            };
-
-            // 3. Salvar no LocalStorage (Histórico Persistente)
-            const historico = JSON.parse(localStorage.getItem('vivara_pedidos')) || [];
-            historico.push(novoPedido);
-            localStorage.setItem('vivara_pedidos', JSON.stringify(historico));
-
-            // 4. Limpar Sessão Temporária
-            sessionStorage.removeItem('carrinho_temp');
-            sessionStorage.removeItem('cabecalho_temp');
-            sessionStorage.removeItem('temp_anexo_name');
-
-            // 5. Redirecionar com flag de novo pedido
-            // NÃO mostramos alert aqui, a confirmação será na página 5
-            window.location.href = `novo_pedido5.html?id=${meId}&new=true`;
+    // --- FINALIZAR (Lógica Principal Ajustada) ---
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    if(btnFinalizar) {
+        btnFinalizar.addEventListener('click', (e) => {
+            e.preventDefault();
+            btnFinalizar.innerHTML = 'Processando...';
+            btnFinalizar.disabled = true;
             
-        }, 800);
-    });
+            setTimeout(() => {
+                // 1. Gerar ID Único
+                const meId = Math.floor(69000000 + Math.random() * 100000); 
+                const nomeAnexo = sessionStorage.getItem('temp_anexo_name') || "";
+
+                // IMPORTANTE: Converter strings para número para garantir cálculos futuros
+                const itensLimpos = carrinho.map(item => ({
+                    ...item,
+                    preco: parseFloat(item.preco),
+                    quantidade: parseInt(item.quantidade)
+                }));
+                
+                const totalCalculado = itensLimpos.reduce((acc, i) => acc + (i.preco * i.quantidade), 0);
+
+                // 2. Montar objeto do pedido
+                const novoPedido = {
+                    id: meId,
+                    cabecalho: cabecalho,
+                    itens: itensLimpos,
+                    total: totalCalculado,
+                    status: "AGUARDANDO APROVAÇÃO",
+                    dataCriacao: new Date().toLocaleDateString('pt-BR'),
+                    requisitamte: "JOSE CLAUDIO CORTEZ DA SILVA",
+                    nomeAnexo: nomeAnexo
+                };
+
+                // 3. Salvar no LocalStorage (Histórico Persistente)
+                const historico = JSON.parse(localStorage.getItem('vivara_pedidos')) || [];
+                historico.push(novoPedido);
+                localStorage.setItem('vivara_pedidos', JSON.stringify(historico));
+
+                // 4. Limpar Sessão Temporária
+                sessionStorage.removeItem('carrinho_temp');
+                sessionStorage.removeItem('cabecalho_temp');
+                sessionStorage.removeItem('temp_anexo_name');
+
+                // 5. Redirecionar com flag de novo pedido
+                window.location.href = `novo_pedido5.html?id=${meId}&new=true`;
+                
+            }, 800);
+        });
+    }
 
 });

@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Compras</title>
+    <title>Dashboard - Portal de Compras</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <div class="logo-area">
-            <h1>VIVARA <span style="font-size: 0.5em; color: #666;">(Clone)</span></h1>
+            <h1>VIVARA <span style="font-size: 0.5em; color: #999; font-weight:400;">(Portal de Compras)</span></h1>
         </div>
         
         <nav>
@@ -71,13 +67,13 @@
             </div>
         </div>
         <div class="right-actions">
-             <span class="material-icons-outlined icon-btn">more_vert</span>
+             <span class="material-icons-outlined icon-action">more_vert</span>
         </div>
     </div>
 
     <div class="filter-bar">
-        <button class="btn-filter">Todos Processos <span class="material-icons-outlined">expand_more</span></button>
-        <button class="btn-filter">Criado em: Todo período <span class="material-icons-outlined">expand_more</span></button>
+        <button class="btn-filter">Todos Processos <span class="material-icons-outlined" style="font-size:16px;">expand_more</span></button>
+        <button class="btn-filter">Criado em: Todo período <span class="material-icons-outlined" style="font-size:16px;">expand_more</span></button>
         <div class="divider"></div>
         <button class="icon-action"><span class="material-icons-outlined">add</span></button>
         <button class="icon-action"><span class="material-icons-outlined">delete</span></button>
@@ -91,29 +87,29 @@
                 <div class="card hero-card">
                     <div class="hero-content">
                         <h2>Crie novos processos</h2>
-                        <p>Crie requisições, cotações, contratos e pedidos.</p>
-                        <button class="btn-cta">
+                        <p>Crie requisições, cotações, contratos e pedidos de forma rápida e integrada.</p>
+                        <button class="btn-cta" onclick="window.location.href='novo_pedido.html'">
                             <span class="material-icons-outlined">add</span> Nova Transação
                         </button>
                     </div>
                     <div class="hero-illustration">
-                        <span class="material-icons-outlined" style="font-size: 6rem; opacity: 0.2; color: white;">assignment</span>
+                        <span class="material-icons-outlined" style="font-size: 8rem; opacity: 0.1; color: #E67E22;">assignment</span>
                     </div>
                 </div>
 
                 <div class="card simple-card">
                     <div class="card-top">
-                        <span class="material-icons-outlined icon-blue">chat</span>
+                        <span class="material-icons-outlined icon-theme">chat</span>
                         <h3>Mensagens</h3>
                     </div>
-                    <a href="#" class="link-bottom">acessar</a>
+                    <a href="#" class="link-bottom">Acessar mensagens <span class="material-icons-outlined" style="font-size:14px;">arrow_forward</span></a>
                 </div>
 
                 <div class="card simple-card">
                     <div class="card-top">
-                        <span class="material-icons-outlined icon-blue">link</span> <h3>Visualizar catálogo</h3>
+                        <span class="material-icons-outlined icon-theme">link</span> <h3>Visualizar catálogo</h3>
                     </div>
-                    <a href="#" class="link-bottom">acessar</a>
+                    <a href="#" class="link-bottom">Ir para catálogo <span class="material-icons-outlined" style="font-size:14px;">arrow_forward</span></a>
                 </div>
             </div>
 
@@ -123,13 +119,13 @@
                     <div class="stats-row">
                         <div class="card stat-card">
                             <span class="material-icons-outlined icon-stat">edit_note</span>
-                            <span class="stat-number">11878</span>
-                            <span class="stat-label">Requisição</span>
+                            <span class="stat-number">11.878</span>
+                            <span class="stat-label">Requisições</span>
                         </div>
                         <div class="card stat-card">
                             <span class="material-icons-outlined icon-stat">inventory_2</span>
-                            <span class="stat-number">11840</span>
-                            <span class="stat-label">Pedido</span>
+                            <span class="stat-number">11.840</span>
+                            <span class="stat-label">Pedidos</span>
                         </div>
                     </div>
                 </div>
@@ -137,8 +133,9 @@
                 <div class="pendencias-container">
                     <h3>Pendências de aprovação</h3>
                     <div class="card empty-state">
+                        <span class="material-icons-outlined" style="font-size: 48px; color:#E0E0E0; margin-bottom:10px;">check_circle</span>
                         <h4>Tudo certo por aqui!</h4>
-                        <p>Você não tem pendências no momento.</p>
+                        <p style="font-size:13px;">Você não tem pendências no momento.</p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formalização de Pedido</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="Apr_Form_pd.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-area"><h1>VIVARA <span class="logo-subtitle">(Portal de Compras)</span></h1></div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="dashboard.html" class="nav-item"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transacoes.html" class="nav-item active"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">JS</div></div>
+    </header>
+
+    <div class="erp-sub-header">
+        <div class="erp-left">
+            <a href="aprovacoes.html" class="btn-back-link">
+                <span class="material-icons-outlined">arrow_back</span> Voltar para Aprovações
+            </a>
+            <div class="separator">|</div>
+            <span class="page-title">Formalização de Pedido</span>
+        </div>
+        <div class="erp-right">
+            <div class="status-badge-large" id="lblStatusTopo">AGUARDANDO ENVIO</div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        
+        <div class="workflow-container">
+            <div class="step completed">
+                <div class="step-circle"><span class="material-icons">check</span></div>
+                <div class="step-label">Requisição Aprovada</div>
+            </div>
+            <div class="step-line active-line"></div>
+            
+            <div class="step active" id="stepEnvio">
+                <div class="step-circle">2</div>
+                <div class="step-label">Envio para Compras</div>
+            </div>
+            <div class="step-line" id="lineSap"></div>
+
+            <div class="step" id="stepSap">
+                <div class="step-circle">3</div>
+                <div class="step-label">Registro SAP</div>
+            </div>
+            <div class="step-line"></div>
+
+            <div class="step">
+                <div class="step-circle">4</div>
+                <div class="step-label">Aguardando Entrega</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            
+            <div class="details-column">
+                <div class="card-box">
+                    <h3>Resumo da Requisição</h3>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>ID Requisição</label>
+                            <span id="txtIdReq">...</span>
+                        </div>
+                        <div class="info-group">
+                            <label>Requisitante</label>
+                            <span id="txtRequisitante">...</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Título</label>
+                            <span id="txtTitulo">...</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-group">
+                            <label>Centro de Custo</label>
+                            <span id="txtCC">...</span>
+                        </div>
+                        <div class="info-group">
+                            <label>Valor Total</label>
+                            <span id="txtTotal" style="color:#E67E22; font-weight:700;">...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-box items-box">
+                    <h3>Itens</h3>
+                    <div id="listaItensSimples">
+                        </div>
+                </div>
+            </div>
+
+            <div class="action-column">
+                
+                <div class="action-card" id="cardEnvioEmail">
+                    <div class="card-icon-header">
+                        <span class="material-icons-outlined">email</span>
+                    </div>
+                    <h2>1. Notificar Time de Compras</h2>
+                    <p>O primeiro passo é enviar esta requisição aprovada por e-mail para o setor de compras iniciar a cotação/compra no SAP.</p>
+                    
+                    <div class="alert-box">
+                        <span class="material-icons-outlined">info</span>
+                        <span>Ao clicar abaixo, o status mudará para "Aguardando SAP".</span>
+                    </div>
+
+                    <button class="btn-action-primary" id="btnConfirmarEnvioEmail">
+                        Confirmar Envio de E-mail
+                    </button>
+                </div>
+
+                <div class="action-card hidden" id="cardRegistroSAP">
+                    <div class="card-icon-header" style="background: #E8F5E9; color: #2E7D32;">
+                        <span class="material-icons-outlined">assignment_turned_in</span>
+                    </div>
+                    <h2>2. Registrar Pedido SAP</h2>
+                    <p>A administração retornou com o pedido oficial? Insira o número abaixo para vincular e finalizar.</p>
+                    
+                    <div class="input-sap-wrapper">
+                        <label>Número do Pedido SAP (ERP)</label>
+                        <input type="text" id="inputSapId" placeholder="Ex: 4600012345" maxlength="15">
+                    </div>
+
+                    <button class="btn-action-success" id="btnFinalizarFormalizacao">
+                        Vincular e Finalizar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="Apr_Form_pd.js"></script>
+</body>
+</html>
