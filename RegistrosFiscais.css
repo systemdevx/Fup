@@ -13,7 +13,7 @@ h1, h2, h3, h4, .group-title, th, .btn-primary-erp, .logo-area, label {
 }
 input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Segoe UI', sans-serif; }
 
-/* --- HEADER PRINCIPAL (Lista) --- */
+/* --- HEADER PRINCIPAL --- */
 .main-header {
     background: #FFF; padding: 0 30px; height: 75px; 
     display: flex; align-items: center; justify-content: space-between; 
@@ -37,7 +37,7 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
     display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold; font-size: 14px;
 }
 
-/* --- ESTILOS PARA FORMULÁRIOS TELA CHEIA (Minimal) --- */
+/* --- LAYOUTS DE FORMULÁRIO (Full Screen) --- */
 .clean-body { background-color: #F3F4F6; overflow: hidden; }
 .minimal-header {
     background: #FFF; height: 70px; padding: 0 30px;
@@ -57,10 +57,10 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
     width: 100%; max-width: 1600px; background: #FFF; 
     padding: 30px 40px; border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #E5E7EB;
-    height: fit-content;
+    height: fit-content; margin-bottom: 40px;
 }
 
-/* --- SUB-HEADER (Lista) --- */
+/* --- TABELA E SIDEBAR (Listagem) --- */
 .erp-sub-header {
     background: #FFF; height: 60px; border-bottom: 1px solid #E5E7EB;
     display: flex; justify-content: space-between; align-items: center;
@@ -73,7 +73,6 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
 }
 .icon-toggle-btn:hover { color: #333; }
 
-/* Dropdown */
 .dropdown-container { position: relative; }
 .dropdown-menu {
     display: none; position: absolute; top: 100%; left: 0;
@@ -102,7 +101,6 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
 }
 .btn-primary-erp-arrow:hover { background-color: #1976D2; border-color: #1976D2; }
 
-/* Busca */
 .erp-search-container {
     background-color: #FFF; border: 1px solid #D1D5DB; border-radius: 4px;
     display: flex; align-items: center; padding: 0 10px; width: 350px; height: 34px;
@@ -120,10 +118,8 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
 .icon-only { background: transparent; border: none; cursor: pointer; color: #6B7280; padding: 6px; border-radius: 50%; }
 .icon-only:hover { background-color: #F3F4F6; color: #E67E22; }
 
-/* --- SIDEBAR E CONTEÚDO (Lista) --- */
-.transacoes-wrapper { 
-    display: flex; flex: 1; overflow: hidden; background-color: #F3F4F6; width: 100%;
-}
+/* Wrapper Listagem */
+.transacoes-wrapper { display: flex; flex: 1; overflow: hidden; background-color: #F3F4F6; width: 100%; }
 .sidebar-erp {
     width: 260px; background: #FFF; border-right: 1px solid #E5E7EB;
     display: flex; flex-direction: column; padding: 15px 0; flex-shrink: 0;
@@ -150,8 +146,6 @@ input, select, textarea, button, div, span, p, a { font-family: 'Calibri', 'Sego
     background-color: #FFF; margin: 20px; border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #E5E7EB;
 }
-
-/* --- TABELA --- */
 .table-toolbar {
     padding: 10px 20px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between;
     align-items: center; background: #FFF; border-radius: 8px 8px 0 0;
@@ -164,20 +158,13 @@ th {
     color: #374151; font-size: 13px; text-transform: none; white-space: normal; vertical-align: middle;
 }
 th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center; } 
-th:nth-child(2), td:nth-child(2) { width: 140px; } 
-th:nth-child(3), td:nth-child(3) { width: 160px; } 
-th:nth-child(4), td:nth-child(4) { width: auto; }   
-th:nth-child(5), td:nth-child(5) { width: 130px; font-weight: 600; }  
-th:nth-child(6), td:nth-child(6) { width: 120px; }  
-th:nth-child(7), td:nth-child(7) { width: 130px; }  
-th:nth-child(8), td:nth-child(8) { width: 130px; }  
 td { padding: 14px 20px; border-bottom: 1px solid #F3F4F6; color: #111; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 tbody tr:hover { background-color: #FAFAFA; }
 .text-orange-link { color: #E67E22; cursor: pointer; font-weight: 600; }
 .text-orange-link:hover { text-decoration: underline; color: #D35400; }
 input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #E67E22; }
 
-/* --- FORMULÁRIOS ESTILOS GERAIS --- */
+/* --- FORMULÁRIO (INPUTS E ESTRUTURA) --- */
 .form-section-title {
     font-size: 15px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;
     margin: 20px 0 15px 0; font-weight: 700; border-bottom: 1px solid #F0F0F0; padding-bottom: 5px;
@@ -188,9 +175,42 @@ input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-colo
 .col-2 { flex: 2; }
 .col-3 { flex: 3; }
 .col-5 { flex: 5; }
+
 .form-group label { font-size: 13px; font-weight: 600; color: #4B5563; }
 .form-group input, .form-group select, .form-group textarea {
     padding: 10px; border: 1px solid #D1D5DB; border-radius: 4px;
     font-size: 14px; outline: none; transition: border 0.2s; width: 100%;
 }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2196F3; }
+
+/* --- ITENS DA NOTA (TABELA) --- */
+.table-items-container {
+    border: 1px solid #E5E7EB; border-radius: 4px; overflow: hidden; margin-top: 10px;
+}
+.items-table {
+    width: 100%; min-width: auto; /* Sobrescreve min-width da tabela principal */
+}
+.items-table th {
+    background: #F9FAFB; padding: 10px; font-size: 13px; color: #666;
+}
+.items-table td {
+    padding: 5px; border-bottom: 1px solid #EEE;
+}
+/* Inputs dentro da tabela de itens mais discretos */
+.items-table input {
+    border: 1px solid transparent; background: transparent; padding: 8px; width: 100%;
+}
+.items-table input:hover { background: #FAFAFA; border-color: #EEE; }
+.items-table input:focus { background: #FFF; border-color: #2196F3; }
+
+.btn-add-item {
+    background: transparent; border: 1px solid #2196F3; color: #2196F3;
+    padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+}
+.btn-add-item:hover { background: #E3F2FD; }
+
+.btn-remove-item {
+    background: transparent; border: none; color: #999; cursor: pointer; padding: 5px;
+}
+.btn-remove-item:hover { color: #D32F2F; }

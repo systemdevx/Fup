@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Nota Fiscal</title>
+    <title>Novo Registro Fiscal - NF-e</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="RegistrosFiscais.css">
 </head>
@@ -12,7 +12,7 @@
     <div class="minimal-header">
         <div class="header-title">
             <span class="material-icons-outlined icon-header">receipt</span>
-            <h2>Lançamento de Nota Fiscal</h2>
+            <h2>Novo Registro Fiscal (NF-e)</h2>
         </div>
         <div class="header-actions">
             <button class="btn-text-icon" onclick="window.location.href='RegistrosFiscais.html'">
@@ -24,77 +24,111 @@
 
     <div class="full-screen-wrapper">
         <form class="erp-form full-width-form">
-            <div class="form-section-title">Dados Principais</div>
-            <div class="form-row">
-                <div class="form-group col-3">
-                    <label>Chave de Acesso (44 dígitos)</label>
-                    <input type="text" placeholder="Código de barras..." autofocus>
-                </div>
-                <div class="form-group col-1">
-                    <label>Número NF</label>
-                    <input type="text">
-                </div>
-                <div class="form-group col-1">
-                    <label>Série</label>
-                    <input type="text">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-2">
-                    <label>Emitente (Razão Social)</label>
-                    <input type="text">
-                </div>
-                <div class="form-group col-1">
-                    <label>CNPJ</label>
-                    <input type="text">
-                </div>
-                <div class="form-group col-1">
-                    <label>Emissão</label>
-                    <input type="date">
-                </div>
-                <div class="form-group col-1">
-                    <label>Entrada</label>
-                    <input type="date">
-                </div>
-            </div>
-
-            <div class="form-section-title">Valores</div>
-            <div class="form-row">
-                <div class="form-group col-1">
-                    <label>Valor Produtos</label>
-                    <input type="text" placeholder="R$ 0,00">
-                </div>
-                <div class="form-group col-1">
-                    <label>Valor Frete</label>
-                    <input type="text" placeholder="R$ 0,00">
-                </div>
-                <div class="form-group col-1">
-                    <label>IPI</label>
-                    <input type="text" placeholder="R$ 0,00">
-                </div>
-                <div class="form-group col-1">
-                    <label>ICMS ST</label>
-                    <input type="text" placeholder="R$ 0,00">
-                </div>
-                <div class="form-group col-1 total-highlight">
-                    <label>Valor Total Nota</label>
-                    <input type="text" placeholder="R$ 0,00" style="font-weight: bold; color: #2196F3;">
-                </div>
-            </div>
             
-            <div class="form-section-title">Classificação</div>
+            <div class="form-section-title">Dados do Documento</div>
             <div class="form-row">
-                <div class="form-group col-2">
-                    <label>Centro de Custo</label>
-                    <select><option>Selecione...</option><option>Administrativo</option><option>Vendas</option></select>
+                <div class="form-group col-1">
+                    <label>Número Documento (NF)</label>
+                    <input type="text" placeholder="Ex: 000.123.456" autofocus>
                 </div>
-                <div class="form-group col-3">
-                    <label>Anexar XML / PDF</label>
-                    <input type="file" style="padding: 10px;">
+                <div class="form-group col-1">
+                    <label>Data Emissão</label>
+                    <input type="date">
+                </div>
+                <div class="form-group col-1">
+                    <label>Data Entrada</label>
+                    <input type="date">
+                </div>
+                <div class="form-group col-1">
+                    <label>Localidade</label>
+                    <select>
+                        <option value="">Selecione...</option>
+                        <option value="Nacional">Nacional</option>
+                        <option value="Local">Local</option>
+                        <option value="Importado">Importado</option>
+                    </select>
                 </div>
             </div>
+
+            <div class="form-row">
+                <div class="form-group col-2">
+                    <label>Fornecedor</label>
+                    <input type="text" placeholder="Razão Social ou CNPJ">
+                </div>
+                <div class="form-group col-1">
+                    <label>Qtd. Volumes</label>
+                    <input type="number" placeholder="0">
+                </div>
+                <div class="form-group col-1">
+                    <label>Entr. Saldo?</label>
+                    <select>
+                        <option value="nao">Não</option>
+                        <option value="sim">Sim</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-section-title">Responsabilidades e Destino</div>
+            <div class="form-row">
+                <div class="form-group col-1">
+                    <label>Requisitante (Solicitante)</label>
+                    <input type="text" placeholder="Quem pediu a compra?">
+                </div>
+                <div class="form-group col-1">
+                    <label>Resp. Recebimento</label>
+                    <input type="text" placeholder="Quem recebeu fisicamente?">
+                </div>
+                <div class="form-group col-1">
+                    <label>Fábrica</label>
+                    <input type="text" placeholder="Unidade/Filial">
+                </div>
+                <div class="form-group col-1">
+                    <label>Destino Material</label>
+                    <input type="text" placeholder="Ex: Almoxarifado, Linha 1...">
+                </div>
+            </div>
+
+            <div class="form-section-title" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>Itens da Nota</span>
+                <button type="button" class="btn-add-item" onclick="adicionarItem()">
+                    <span class="material-icons-outlined">add</span> Adicionar Item
+                </button>
+            </div>
+
+            <div class="table-items-container">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">Código Produto</th>
+                            <th>Descrição do Produto / Serviço</th>
+                            <th style="width: 100px;">Qtd.</th>
+                            <th style="width: 50px;">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyItens">
+                        <tr>
+                            <td><input type="text" placeholder="Cód."></td>
+                            <td><input type="text" placeholder="Descrição detalhada..."></td>
+                            <td><input type="number" placeholder="0"></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-remove-item" onclick="removerItem(this)">
+                                    <span class="material-icons-outlined">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-row" style="margin-top: 20px;">
+                <div class="form-group col-5">
+                    <label>Observações Adicionais</label>
+                    <textarea rows="2" placeholder="Informações complementares sobre a nota ou recebimento..."></textarea>
+                </div>
+            </div>
+
         </form>
     </div>
+    <script src="RegistrosFiscais.js"></script>
 </body>
 </html>
