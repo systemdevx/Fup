@@ -139,5 +139,7 @@ function carregarTabela(tbody) {
 }
 
 window.abrirDetalhes = function(id) {
-    window.location.href = `novo_pedido5.html?id=${id}`;
+    // ALTERADO: Redirecionamento removido para isolar a página
+    console.log('Visualização de detalhes desativada para: ' + id);
+    // window.location.href = `novo_pedido5.html?id=${id}`;
 };

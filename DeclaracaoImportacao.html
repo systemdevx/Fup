@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declaração de Importação - DI</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="RegistrosFiscais.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-area"><h1>VIVARA <span class="logo-subtitle">(Portal de Compras)</span></h1></div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="dashboard.html" class="nav-item"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="RegistrosFiscais.html" class="nav-item active"><span class="material-icons-outlined">description</span><span>Registros Fiscais</span></a></li>
+                </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">JS</div></div>
+    </header>
+
+    <div class="transacoes-wrapper" style="height: calc(100vh - 75px);">
+        <aside id="sidebarRegistros" class="sidebar-erp">
+            <div class="sidebar-inner-search"><span class="material-icons-outlined">search</span><input type="text" placeholder="Buscar no menu"></div>
+            <div class="menu-group">
+                <div class="group-title"><span>DOCUMENTOS FISCAIS</span><span class="material-icons-outlined arrow">expand_less</span></div>
+                <ul>
+                    <li onclick="window.location.href='RegistrosFiscais.html'"><div class="li-content"><span class="material-icons-outlined icon-left">arrow_back</span><span>Voltar para Lista</span></div></li>
+                    <li class="active-item"><div class="li-content"><span class="material-icons-outlined icon-left">flight_land</span><span>Nova DI Importação</span></div><span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#E67E22;">chevron_right</span></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="transacoes-content-erp form-page-container">
+            <div class="form-header-bar">
+                <h2><span class="material-icons-outlined icon-title">flight_land</span> Declaração de Importação (DI)</h2>
+                <button class="btn-text-icon" onclick="window.location.href='RegistrosFiscais.html'">Cancelar</button>
+            </div>
+
+            <form class="erp-form">
+                <div class="form-section-title">Dados da Importação</div>
+                <div class="form-row">
+                    <div class="form-group col-1">
+                        <label>Número da DI</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group col-1">
+                        <label>Data Registro</label>
+                        <input type="date">
+                    </div>
+                    <div class="form-group col-2">
+                        <label>Exportador (Fornecedor)</label>
+                        <input type="text">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-1">
+                        <label>Valor CIF (USD)</label>
+                        <input type="text" placeholder="$ 0.00">
+                    </div>
+                    <div class="form-group col-1">
+                        <label>Taxa Dólar (PTAX)</label>
+                        <input type="text" placeholder="R$ 0,00">
+                    </div>
+                    <div class="form-group col-1">
+                        <label>Canal Parametrização</label>
+                        <select><option>Verde</option><option>Amarelo</option><option>Vermelho</option><option>Cinza</option></select>
+                    </div>
+                     <div class="form-group col-1">
+                        <label>Via de Transporte</label>
+                        <select><option>Aérea</option><option>Marítima</option><option>Rodoviária</option></select>
+                    </div>
+                </div>
+                
+                <div class="form-section-title">Desembaraço</div>
+                <div class="form-row">
+                    <div class="form-group col-2">
+                        <label>Despachante Responsável</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group col-2">
+                        <label>Upload DI (PDF)</label>
+                        <input type="file" style="padding: 6px;">
+                    </div>
+                </div>
+
+                <div class="form-actions-footer">
+                    <button type="button" class="btn-secondary" onclick="window.location.href='RegistrosFiscais.html'">Cancelar</button>
+                    <button type="button" class="btn-primary-action">Registrar DI</button>
+                </div>
+            </form>
+        </main>
+    </div>
+    <script src="RegistrosFiscais.js"></script>
+</body>
+</html>

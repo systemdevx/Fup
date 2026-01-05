@@ -6,7 +6,7 @@
     <title>Dashboard - Portal de Compras</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
@@ -24,9 +24,21 @@
                     </a>
                 </li>
                 <li>
-                    <a href="transacoes.html">
+                    <a href="PageTransacoes.html">
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="mostrarTela('registros', this)">
+                        <span class="material-icons-outlined">description</span>
+                        <span>Registros Fiscais</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="mostrarTela('sgq', this)">
+                        <span class="material-icons-outlined">fact_check</span>
+                        <span>Ativos SGQ</span>
                     </a>
                 </li>
                 <li>
@@ -144,8 +156,11 @@
         <section id="fornecedores" class="tela"><h1>Fornecedores</h1></section>
         <section id="catalogo" class="tela"><h1>Catálogos</h1></section>
         <section id="usuarios" class="tela"><h1>Usuários</h1></section>
+        
+        <section id="registros" class="tela"><h1>Registros Fiscais</h1></section>
+        <section id="sgq" class="tela"><h1>Ativos SGQ</h1></section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros Fiscais - Portal de Compras</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="RegistrosFiscais.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-area">
+            <h1>VIVARA <span class="logo-subtitle">(Portal de Compras)</span></h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="dashboard.html" class="nav-item"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="PageTransacoes.html" class="nav-item"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="RegistrosFiscais.html" class="nav-item active"><span class="material-icons-outlined">description</span><span>Registros Fiscais</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">fact_check</span><span>Ativos SGQ</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">shopping_bag</span><span>Catálogos</span></a></li>
+                <li><a href="#" class="nav-item"><span class="material-icons-outlined">group</span><span>Usuários</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">JS</div></div>
+    </header>
+
+    <div class="erp-sub-header">
+        <div class="erp-left">
+            <button id="toggleSidebarBtn" class="icon-toggle-btn"><span class="material-icons-outlined">menu</span></button>
+            
+            <div class="dropdown-container">
+                <div class="btn-group">
+                    <button class="btn-primary-erp" onclick="toggleDropdown()">
+                        <span class="material-icons-outlined" style="font-size: 18px;">add</span> Novo Registro
+                    </button>
+                    <button class="btn-primary-erp-arrow" onclick="toggleDropdown()">
+                        <span class="material-icons-outlined">expand_more</span>
+                    </button>
+                </div>
+                <div id="newRecordDropdown" class="dropdown-menu">
+                    <a href="NovoRegistroFiscal.html">
+                        <span class="material-icons-outlined">receipt</span> Nota Fiscal (NF-e)
+                    </a>
+                    <a href="DeclaracaoImportacao.html">
+                        <span class="material-icons-outlined">flight_land</span> DI Importação
+                    </a>
+                    <a href="DocumentoCorreios.html">
+                        <span class="material-icons-outlined">local_shipping</span> Doc. Correios
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="erp-right">
+            <div class="erp-search-container">
+                <span class="material-icons-outlined search-icon">search</span>
+                <input type="text" placeholder="Pesquisar documento..." class="erp-input-search">
+            </div>
+            <button class="btn-text-icon"><span class="material-icons-outlined" style="font-size:18px;">filter_list</span> Filtros</button>
+            <div class="erp-divider"></div>
+            <button class="icon-only"><span class="material-icons-outlined">bar_chart</span></button>
+            <button class="icon-only"><span class="material-icons-outlined">grid_view</span></button>
+        </div>
+    </div>
+
+    <div class="transacoes-wrapper">
+        <aside id="sidebarRegistros" class="sidebar-erp">
+            <div class="sidebar-inner-search">
+                <span class="material-icons-outlined">search</span><input type="text" placeholder="Buscar no menu">
+            </div>
+            <div class="menu-group">
+                <div class="group-title"><span>DOCUMENTOS FISCAIS</span><span class="material-icons-outlined arrow">expand_less</span></div>
+                <ul>
+                    <li class="active-item" onclick="window.location.href='RegistrosFiscais.html'">
+                        <div class="li-content"><span class="material-icons-outlined icon-left">description</span><span>Todos Registros</span></div>
+                        <span class="material-icons-outlined arrow-right" style="font-size: 16px; color:#E67E22;">chevron_right</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="transacoes-content-erp">
+            <div class="table-toolbar">
+                <div class="toolbar-left">
+                    <button class="pill-btn">Todas Datas <span class="material-icons-outlined">expand_more</span></button>
+                    <button class="pill-btn">Status: Todos <span class="material-icons-outlined">expand_more</span></button>
+                </div>
+                <div class="toolbar-right">
+                    <span class="material-icons-outlined icon-nav">refresh</span>
+                    <span class="material-icons-outlined icon-nav">more_vert</span>
+                </div>
+            </div>
+            <div class="table-container-erp">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Nº Documento</th>
+                            <th>Tipo</th>
+                            <th>Fornecedor / Emitente</th>
+                            <th>Valor Total</th>
+                            <th>Data Emissão</th>
+                            <th>Status Sefaz</th>
+                            <th>Status ERP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaFiscalBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="RegistrosFiscais.js"></script>
+</body>
+</html>

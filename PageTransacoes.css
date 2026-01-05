@@ -1,0 +1,213 @@
+/* --- Base e Reset --- */
+* { box-sizing: border-box; }
+
+body {
+    background-color: #F3F4F6;
+    margin: 0; padding: 0;
+    height: 100vh; width: 100vw;
+    display: flex; flex-direction: column;
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    font-size: 16px; 
+    color: #333; overflow: hidden;
+}
+
+/* Regra para Cabeçalhos (Fonte Calibre) */
+h1, h2, h3, .group-title, th, .btn-primary-erp, .logo-area {
+    font-family: 'Calibre', 'Calibri', 'Segoe UI', sans-serif;
+    font-weight: 700;
+}
+
+input, select, textarea, button, div, span, p, a { 
+    font-family: 'Calibri', 'Segoe UI', sans-serif; 
+}
+
+/* --- HEADER PRINCIPAL --- */
+.main-header {
+    background: #FFF; padding: 0 30px; height: 75px; 
+    display: flex; align-items: center; justify-content: space-between; 
+    border-bottom: 1px solid #E5E7EB; flex-shrink: 0;
+}
+
+.logo-area h1 { 
+    font-size: 20px; color: #E67E22; 
+    letter-spacing: 0.5px; margin: 0; 
+}
+.logo-subtitle { font-size: 0.5em; color: #999; font-weight: 400; font-family: 'Calibri', sans-serif; }
+
+.main-nav { margin-left: auto; margin-right: 30px; height: 100%; }
+.main-nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; height: 100%; }
+
+.nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-decoration: none; color: #666; 
+    font-size: 13px; font-weight: 500;
+    height: 100%; padding: 0 10px;
+    border-bottom: 3px solid transparent; 
+    transition: all 0.2s; gap: 4px;
+    text-align: center;
+}
+.nav-item:hover, .nav-item.active { color: #000; border-bottom-color: #E67E22; }
+.nav-item .material-icons-outlined { font-size: 24px; margin-bottom: 2px; }
+
+.user-profile { display: flex; align-items: center; }
+.avatar {
+    width: 40px; height: 40px; background-color: #8D6E63; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; 
+    color: #FFF; font-weight: bold; font-size: 14px;
+}
+
+/* --- SUB-HEADER --- */
+.erp-sub-header {
+    background: #FFF; height: 60px; border-bottom: 1px solid #E5E7EB;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 30px; flex-shrink: 0; z-index: 20;
+}
+.erp-left { display: flex; align-items: center; gap: 10px; }
+
+/* ALTERADO: Botão Toggle mais discreto, sem container e menor */
+.icon-toggle-btn {
+    background: transparent; 
+    border: none; 
+    color: #9CA3AF; /* Cor cinza mais clara */
+    width: auto; height: auto; 
+    padding: 8px; /* Padding menor */
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border-radius: 4px; transition: all 0.2s;
+}
+.icon-toggle-btn:hover { 
+    color: #333; 
+    background-color: transparent; 
+}
+/* Caso precise ajustar o tamanho do ícone dentro do botão */
+.icon-toggle-btn .material-icons-outlined { font-size: 22px; }
+
+.btn-group { display: flex; align-items: center; }
+
+/* ALTERADO: Cor Azul (#2196F3) */
+.btn-primary-erp {
+    background-color: #2196F3; color: white; border: 1px solid #2196F3;
+    padding: 0 16px; height: 34px; border-radius: 4px 0 0 4px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer; text-decoration: none;
+}
+.btn-primary-erp:hover { background-color: #1976D2; border-color: #1976D2; }
+
+/* ALTERADO: Seta do botão também azul */
+.btn-primary-erp-arrow {
+    background-color: #2196F3; color: white; border: 1px solid #2196F3; 
+    border-left: 1px solid rgba(255,255,255,0.3); height: 34px; padding: 0 8px; 
+    border-radius: 0 4px 4px 0; cursor: pointer; display: flex; align-items: center;
+}
+.btn-primary-erp-arrow:hover { background-color: #1976D2; border-color: #1976D2; }
+
+.erp-right { display: flex; align-items: center; gap: 10px; }
+.erp-search-container {
+    background-color: #FFF; border: 1px solid #D1D5DB; border-radius: 4px;
+    display: flex; align-items: center; padding: 0 10px; width: 350px; height: 34px;
+}
+.erp-search-container:focus-within { border-color: #E67E22; } /* Mantido laranja aqui pois é foco de input */
+.erp-input-search { border: none; background: transparent; outline: none; margin-left: 8px; font-size: 13px; width: 100%; }
+.search-icon { color: #9CA3AF; font-size: 18px; }
+
+.btn-text-icon {
+    background: transparent; border: 1px solid transparent; color: #555;
+    font-weight: 500; display: flex; align-items: center; gap: 5px;
+    cursor: pointer; font-size: 13px; padding: 6px 12px; border-radius: 4px;
+}
+.btn-text-icon:hover { background-color: #F3F4F6; }
+.erp-divider { width: 1px; height: 24px; background: #E5E7EB; }
+.icon-only { background: transparent; border: none; cursor: pointer; color: #6B7280; padding: 6px; border-radius: 50%; }
+.icon-only:hover { background-color: #F3F4F6; color: #E67E22; }
+
+/* --- WRAPPER E SIDEBAR --- */
+.transacoes-wrapper { 
+    display: flex; flex: 1; overflow: hidden; background-color: #F3F4F6; width: 100%;
+    height: calc(100vh - 75px - 60px); 
+}
+.sidebar-erp {
+    width: 260px; background: #FFF; border-right: 1px solid #E5E7EB;
+    display: flex; flex-direction: column; padding: 15px 0; flex-shrink: 0;
+    transition: width 0.3s ease; white-space: nowrap; overflow: hidden;
+}
+.sidebar-erp.closed { width: 0; border-right: none; padding: 0; }
+.sidebar-inner-search {
+    margin: 0 15px 20px 15px; background: #F9FAFB; padding: 8px 12px;
+    border: 1px solid #E5E7EB; border-radius: 4px; display: flex; align-items: center; gap: 8px; color: #9CA3AF;
+}
+.sidebar-inner-search input { background: transparent; border: none; outline: none; width: 100%; font-size: 13px; }
+
+.group-title { padding: 10px 20px; font-size: 11px; color: #9CA3AF; display: flex; justify-content: space-between; cursor: pointer; text-transform: uppercase; }
+.menu-group ul { list-style: none; margin: 0 0 15px 0; padding: 0; }
+.menu-group li {
+    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+    font-size: 14px; color: #4B5563; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s;
+}
+.menu-group li:hover, .active-item { background-color: #FFF7ED; color: #E67E22; border-left-color: #E67E22; font-weight: 600; }
+.menu-group li .li-content { display: flex; align-items: center; gap: 12px; }
+.icon-left { font-size: 20px; color: #9CA3AF; }
+.active-item .icon-left, .menu-group li:hover .icon-left { color: #E67E22; }
+
+/* --- CONTEÚDO --- */
+.transacoes-content-erp {
+    flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    background-color: #FFF; margin: 20px; border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #E5E7EB;
+}
+.table-toolbar {
+    padding: 10px 20px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between;
+    align-items: center; background: #FFF; border-radius: 8px 8px 0 0;
+}
+.pill-btn {
+    background: #FFF; border: 1px solid #D1D5DB; color: #374151; padding: 6px 14px;
+    border-radius: 4px; margin-right: 10px; font-size: 13px; font-weight: 500; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+}
+.pill-btn:hover { background: #F9FAFB; border-color: #9CA3AF; }
+.toolbar-right { display: flex; align-items: center; gap: 10px; color: #666; }
+.icon-nav { font-size: 20px; cursor: pointer; color: #9CA3AF; padding: 4px; }
+.icon-nav:hover { color: #333; }
+
+/* --- TABELA OTIMIZADA --- */
+.table-container-erp { 
+    flex-grow: 1; 
+    overflow-y: auto; 
+    overflow-x: auto; 
+    width: 100%; 
+}
+
+table { 
+    width: 100%; 
+    min-width: 1200px; 
+    border-collapse: collapse; 
+    table-layout: fixed; 
+}
+
+thead { background-color: #F9FAFB; position: sticky; top: 0; z-index: 10; }
+
+th {
+    text-align: left;
+    padding: 12px 20px;
+    border-bottom: 1px solid #E5E7EB;
+    color: #374151;
+    font-size: 13px;
+    text-transform: none; 
+    white-space: normal;  
+    vertical-align: middle;
+}
+
+/* Larguras Ajustadas */
+th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center; } 
+th:nth-child(2), td:nth-child(2) { width: 190px; } 
+th:nth-child(3), td:nth-child(3) { width: 220px; } 
+th:nth-child(4), td:nth-child(4) { width: auto; }   
+th:nth-child(5), td:nth-child(5) { width: 160px; }  
+th:nth-child(6), td:nth-child(6) { width: 130px; }  
+th:nth-child(7), td:nth-child(7) { width: 180px; }  
+
+td { padding: 14px 20px; border-bottom: 1px solid #F3F4F6; color: #111; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+tbody tr:hover { background-color: #FAFAFA; }
+
+.text-orange-link { color: #E67E22; cursor: pointer; font-weight: 600; }
+.text-orange-link:hover { text-decoration: underline; color: #D35400; }
+input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #E67E22; }
