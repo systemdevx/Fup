@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // --- ÁREA DE LIMPEZA DE DADOS ANTIGOS ---
+    // Esta linha abaixo força o navegador a esquecer os dados velhos (Jose Claudio, etc).
+    // DICA: Após recarregar a página e ver a tabela limpa, você pode apagar esta linha 
+    // ou colocar "//" no início dela para voltar a salvar novos pedidos.
+    localStorage.removeItem('vivara_pedidos'); 
+    // ----------------------------------------
+
     // 1. Menu Lateral (Toggle)
     const toggleBtn = document.getElementById('toggleSidebarBtn');
     const sidebar = document.getElementById('sidebarTransacoes');
@@ -43,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.style.display = 'none';
                 }
             });
-            // Expande os grupos se houver busca
             if (termo.length > 0) {
                 document.querySelectorAll('.menu-group ul').forEach(ul => ul.style.display = 'block');
                 document.querySelectorAll('.group-title .arrow').forEach(arrow => arrow.innerText = 'expand_less');
@@ -57,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         carregarTabela(tabelaBody);
     }
 
-    // 5. Busca Principal (Filtra as linhas da tabela)
+    // 5. Busca Principal
     const mainSearchInput = document.querySelector('.erp-input-search');
     if (mainSearchInput) {
         mainSearchInput.addEventListener('input', function() {
@@ -76,10 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function carregarTabela(tbody) {
-    // Recupera pedidos do LocalStorage
+    // Recupera pedidos do LocalStorage (agora estará vazio após o comando acima)
     const pedidos = JSON.parse(localStorage.getItem('vivara_pedidos')) || [];
     
-    // Inverte para mostrar os mais recentes primeiro
     pedidos.reverse();
 
     tbody.innerHTML = ''; 
@@ -88,7 +93,6 @@ function carregarTabela(tbody) {
         let corStatus = '#666';
         let corTextoStatus = status;
 
-        // Lógica de Cores dos Status
         if(status.includes('AGUARDANDO')) { corStatus = '#E67E22'; }
         else if(status.includes('CANCELADO') || status.includes('REPROVADO')) { corStatus = '#D32F2F'; }
         else if(status.includes('Concluído') || status.includes('Processado') || status.includes('APROVADO')) { corStatus = '#2E7D32'; }
@@ -121,20 +125,19 @@ function carregarTabela(tbody) {
         `;
     };
 
-    // Gera as linhas baseadas no LocalStorage
     if (pedidos.length > 0) {
         pedidos.forEach(p => {
             const id = p.id || 'N/A';
             const titulo = p.cabecalho ? p.cabecalho.titulo : 'Sem Título';
             const status = p.status || 'Aguardando';
             const data = p.dataCriacao || '-';
-            const autor = p.requisitamte || 'Desconhecido'; 
+            const autor = p.requisitamte || 'Desconhecido';
             
             const html = criarLinha(id, p.erpId, titulo, status, data, autor);
             tbody.insertAdjacentHTML('beforeend', html);
         });
     } else {
-        // Mensagem de estado vazio caso não tenha pedidos
+        // Mensagem padrão quando limpo
         tbody.innerHTML = `
             <tr>
                 <td colspan="7" style="text-align:center; padding: 40px; color: #999;">
@@ -146,6 +149,5 @@ function carregarTabela(tbody) {
 }
 
 window.abrirDetalhes = function(id) {
-    console.log('Navegando para detalhes do ID: ' + id);
-    // window.location.href = `novo_pedido5.html?id=${id}`;
+    console.log('Visualização de detalhes: ' + id);
 };
