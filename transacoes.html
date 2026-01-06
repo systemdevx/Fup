@@ -67,11 +67,148 @@
         </div>
     </header>
 
-    <main>
-        <div class="page-header-row">
-            <div class="page-title">
-                
+    <div class="layout-wrapper">
+        
+        <aside class="sidebar-local">
+            
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>PENDÊNCIAS</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">shopping_bag</span>
+                                <span>Compras</span>
+                            </div>
+                            <span class="notification-dot"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">fact_check</span>
+                                <span>Aprovações</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
+
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>ITENS</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder</span>
+                                <span>Todos</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>TRANSAÇÕES</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" class="active" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder_open</span>
+                                <span>Todas</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder</span>
+                                <span>Requisições</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder</span>
+                                <span>Cotações</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder</span>
+                                <span>Contratos</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">folder</span>
+                                <span>Pedidos</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="page-header-row">
+                <div class="page-title">
+                    <h2 id="titulo-pagina">Transações</h2>
+                    <p>Gerencie todas as solicitações e pedidos.</p>
+                </div>
+                <button class="btn-new-order" onclick="window.location.href='novo_pedido.html'">
+                    <span class="material-icons-outlined">add</span> Novo Pedido
+                </button>
+            </div>
+
+            <div class="filter-bar-simple">
+                <input type="text" class="search-input" placeholder="Buscar por ID, tipo ou detalhes...">
+                <select class="filter-select">
+                    <option value="">Status: Todos</option>
+                    <option value="aprovado">Aprovado</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Detalhes</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-pedidos">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
     <script src="transacoes.js"></script>
 </body>
 </html>
