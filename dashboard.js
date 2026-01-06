@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Menu Lateral (Toggle)
+    // 1. Menu Lateral (Toggle) - Código defensivo caso o menu exista em outras páginas
     const toggleBtn = document.getElementById('toggleSidebarBtn');
     const sidebar = document.getElementById('sidebarTransacoes');
 
@@ -79,8 +79,6 @@ function carregarTabela(tbody) {
     pedidos.reverse();
 
     tbody.innerHTML = ''; 
-
-    // ALTERADO: Itens estáticos (fictícios) removidos.
     
     const criarLinha = (id, erp, titulo, status, data, autor) => {
         let corStatus = '#666';
@@ -113,7 +111,6 @@ function carregarTabela(tbody) {
         `;
     };
 
-    // Apenas pedidos dinâmicos (localStorage) são carregados agora
     pedidos.forEach(p => {
         const id = p.id || 'N/A';
         const titulo = p.cabecalho ? p.cabecalho.titulo : 'Sem Título';

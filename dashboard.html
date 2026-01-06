@@ -7,7 +7,16 @@
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
-</head>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEU-ID-AQUI"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SEU-ID-AQUI');
+    </script>
+    </head>
 <body>
 
     <header>
@@ -24,19 +33,19 @@
                     </a>
                 </li>
                 <li>
-                    <a href="PageTransacoes.html">
+                    <a href="">
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
                     </a>
                 </li>
                 <li>
-                    <a href="taxdocuments.html">
+                    <a href="">
                         <span class="material-icons-outlined">description</span>
                         <span>Registros Fiscais</span>
                     </a>
                 </li>
                 <li>
-                    <a href="assetspage.html" onclick="mostrarTela('sgq', this)">
+                    <a href="" onclick="mostrarTela('sgq', this)">
                         <span class="material-icons-outlined">fact_check</span>
                         <span>Ativos SGQ</span>
                     </a>
@@ -161,19 +170,14 @@
 
     <script src="dashboard.js"></script>
     <script>
-        // Pequeno script inline para garantir o funcionamento das outras abas (SPA) 
-        // caso o dashboard.js não tenha a função mostrarTela.
+        // Script inline para garantir o funcionamento das outras abas (SPA)
         function mostrarTela(id, elemento) {
-            // Esconde todas as telas
             document.querySelectorAll('.tela').forEach(t => t.classList.remove('active-tela'));
-            // Remove active dos links
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
             
-            // Mostra a tela selecionada
             const tela = document.getElementById(id);
             if(tela) tela.classList.add('active-tela');
             
-            // Ativa o link clicado
             if(elemento) elemento.classList.add('active');
         }
     </script>
