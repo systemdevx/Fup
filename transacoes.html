@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transações - Portal de Compras</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="transacoes.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <h1>FUP ALM <span style="font-size: 0.5em; color: #999; font-weight:400;"></span></h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <span class="material-icons-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="transacoes.html" class="active">
+                        <span class="material-icons-outlined">receipt_long</span>
+                        <span>Transações</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="material-icons-outlined">description</span>
+                        <span>Registros Fiscais</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="material-icons-outlined">fact_check</span>
+                        <span>Ativos SGQ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="material-icons-outlined">storefront</span>
+                        <span>Fornecedores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="material-icons-outlined">shopping_bag</span>
+                        <span>Catálogos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="material-icons-outlined">group</span>
+                        <span>Usuários</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <div class="avatar">JS</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header-row">
+            <div class="page-title">
+                <h2>Meus Pedidos</h2>
+                <p>Gerencie e acompanhe suas solicitações de Gases e Gelo.</p>
+            </div>
+            <button class="btn-new-order" onclick="irParaNovoPedido()">
+                <span class="material-icons-outlined">add</span> Novo Pedido
+            </button>
+        </div>
+
+        <div class="filter-bar-simple">
+            <input type="text" placeholder="Buscar por ID ou Tipo..." class="search-input">
+            <select class="filter-select">
+                <option value="todos">Todos os Status</option>
+                <option value="aprovado">Aprovados</option>
+                <option value="pendente">Pendentes</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Detalhes</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-pedidos">
+                    </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script src="transacoes.js"></script>
+</body>
+</html>
