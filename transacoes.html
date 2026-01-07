@@ -67,25 +67,53 @@
         </div>
     </header>
 
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
+            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
+        </button>
+
+        <div class="v-separator"></div>
+
+        <button class="btn-subheader-action" onclick="window.location.href='novo_pedido.html'">
+            <span class="material-icons-outlined">add</span>
+            <span>Novo Pedido</span>
+        </button>
+
+        <div class="header-right-actions">
+            
+            <div class="search-styled-container">
+                <span class="material-icons-outlined search-icon-left">search</span>
+                <input type="text" class="search-input-clean" placeholder="Pesquisar">
+                
+                <button class="btn-filter-inside">
+                    <span class="material-icons-outlined">filter_alt</span>
+                    <span>Filtros</span>
+                </button>
+            </div>
+
+            <div class="view-actions">
+                <button class="btn-view-icon" title="Visualização em Gráfico">
+                    <span class="material-icons-outlined">bar_chart</span>
+                </button>
+                
+                <button class="btn-view-icon" title="Visualização em Grade">
+                    <span class="material-icons-outlined">grid_view</span>
+                    <span class="material-icons-outlined" style="font-size: 14px; margin-left: 2px;">expand_more</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <div class="layout-wrapper">
         
-        <aside class="sidebar-local">
-            
+        <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
                     <span>PENDÊNCIAS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">shopping_bag</span>
-                                <span>Compras</span>
-                            </div>
-                            <span class="notification-dot"></span>
-                        </a>
-                    </li>
                     <li>
                         <a href="#" onclick="ativarItem(this)">
                             <div class="menu-text-icon">
@@ -97,56 +125,12 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
-                    <span>ITENS</span>
-                    <span class="material-icons-outlined arrow-header">expand_less</span>
-                </div>
-                <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Todos</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
                     <span>TRANSAÇÕES</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li>
-                        <a href="#" class="active" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder_open</span>
-                                <span>Todas</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Requisições</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Cotações</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
                     <li>
                         <a href="#" onclick="ativarItem(this)">
                             <div class="menu-text-icon">
@@ -175,19 +159,6 @@
                     <h2 id="titulo-pagina">Transações</h2>
                     <p>Gerencie todas as solicitações e pedidos.</p>
                 </div>
-                <button class="btn-new-order" onclick="window.location.href='novo_pedido.html'">
-                    <span class="material-icons-outlined">add</span> Novo Pedido
-                </button>
-            </div>
-
-            <div class="filter-bar-simple">
-                <input type="text" class="search-input" placeholder="Buscar por ID, tipo ou detalhes...">
-                <select class="filter-select">
-                    <option value="">Status: Todos</option>
-                    <option value="aprovado">Aprovado</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
             </div>
 
             <div class="table-container">

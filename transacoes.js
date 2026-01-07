@@ -1,47 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
     carregarPedidos();
-    
-    // Opcional: Se quiser que algum grupo comece fechado, configure aqui.
-    // Atualmente todos começam abertos conforme HTML.
 });
 
 /* --- LÓGICA DO MENU LATERAL --- */
 
+// Função para Alternar (Ocultar/Mostrar) a Sidebar
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const label = document.getElementById('lbl-toggle-menu');
+    const icon = document.getElementById('icon-toggle-menu');
+
+    if (sidebar) {
+        sidebar.classList.toggle('sidebar-closed');
+
+        // Atualiza Texto e Ícone do botão baseado no estado
+        if (sidebar.classList.contains('sidebar-closed')) {
+            if(label) label.innerText = 'Mostrar Menu';
+            if(icon) icon.innerText = 'chevron_right'; 
+        } else {
+            if(label) label.innerText = 'Ocultar Menu';
+            if(icon) icon.innerText = 'chevron_left'; 
+        }
+    }
+}
+
 // Função para abrir/fechar os grupos (Accordion)
 function toggleGroup(header) {
-    const list = header.nextElementSibling; // Pega a lista <ul> logo abaixo
+    const list = header.nextElementSibling; 
     const arrow = header.querySelector('.arrow-header');
     
-    // Verifica se está visível
     if (list.style.display === 'none') {
-        list.style.display = 'flex'; // Abre
-        arrow.innerText = 'expand_less'; // Seta para cima
+        list.style.display = 'flex'; 
+        arrow.innerText = 'expand_less'; 
     } else {
-        list.style.display = 'none'; // Fecha
-        arrow.innerText = 'expand_more'; // Seta para baixo
+        list.style.display = 'none'; 
+        arrow.innerText = 'expand_more'; 
     }
 }
 
 // Função para marcar item como Ativo
 function ativarItem(element) {
-    // 1. Remove active de todos os links da sidebar
     document.querySelectorAll('.sidebar-local a').forEach(link => {
         link.classList.remove('active');
-        // Reseta ícone de pasta se necessário (opcional)
         const icon = link.querySelector('.menu-text-icon .material-icons-outlined');
         if(icon && icon.innerText === 'folder_open') icon.innerText = 'folder';
     });
 
-    // 2. Adiciona active ao clicado
     element.classList.add('active');
 
-    // 3. Efeito visual: muda pasta fechada para aberta se for pasta
     const icon = element.querySelector('.menu-text-icon .material-icons-outlined');
     if(icon && icon.innerText === 'folder') {
         icon.innerText = 'folder_open';
     }
 
-    // 4. Atualiza Título da página (Simulação)
     const textoItem = element.querySelector('span:not(.material-icons-outlined)').innerText;
     const tituloPagina = document.getElementById('titulo-pagina');
     if(tituloPagina) tituloPagina.innerText = textoItem;
@@ -49,7 +60,6 @@ function ativarItem(element) {
 
 /* --- LÓGICA DA TABELA DE DADOS --- */
 
-// Dados Fictícios
 const dadosPedidos = [
     { id: '#REQ-001', tipo: 'Gases', detalhes: 'Oxigênio Industrial (G) - 2 un', data: '15/10/2023', status: 'aprovado' },
     { id: '#REQ-002', tipo: 'Gelo', detalhes: 'Gelo Seco - 10kg', data: '16/10/2023', status: 'pendente' },
@@ -62,16 +72,14 @@ function carregarPedidos() {
     const tbody = document.getElementById('lista-pedidos');
     if(!tbody) return;
     
-    tbody.innerHTML = ''; // Limpa tabela
+    tbody.innerHTML = ''; 
 
     dadosPedidos.forEach(pedido => {
-        // Define classe da cor do status
         let statusClass = '';
         if(pedido.status === 'aprovado') statusClass = 'status-aprovado';
         else if(pedido.status === 'pendente') statusClass = 'status-pendente';
         else statusClass = 'status-cancelado';
 
-        // Ícone baseado no tipo
         let icone = 'inventory_2';
         if(pedido.tipo === 'Gases') icone = 'science';
         if(pedido.tipo === 'Gelo') icone = 'ac_unit';
