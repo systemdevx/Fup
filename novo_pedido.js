@@ -1,108 +1,93 @@
-// Dados Mockados
+// --- DADOS ---
 const catalogo = [
-    { id: 101, sku: 'INS150311', nome: 'Lâminas de Bisturi Aço', grupo: 'ALMOXARIFADO', categoria: 'Insumos', un: 'CX', preco: 0.590000 },
-    { id: 102, sku: 'SER102030', nome: 'Seringa Descartável 10ml', grupo: 'ALMOXARIFADO', categoria: 'Insumos', un: 'UN', preco: 1.250000 },
-    { id: 103, sku: 'LUV990022', nome: 'Luva Procedimento M', grupo: 'EPI', categoria: 'EPI', un: 'CX', preco: 25.900000 },
-    { id: 104, sku: 'GAS500100', nome: 'Oxigênio Medicinal', grupo: 'GASES', categoria: 'Gases', un: 'M3', preco: 150.000000 },
-    { id: 105, sku: 'CAP200300', nome: 'Capacete de Segurança', grupo: 'EPI', categoria: 'EPI', un: 'UN', preco: 45.500000 },
-    { id: 106, sku: 'PAP400500', nome: 'Papel A4 Sulfite', grupo: 'ALMOXARIFADO', categoria: 'Insumos', un: 'RES', preco: 22.100000 },
+    { id: 807735, nome: 'NF 68400 - Material Elétrico', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L030 - Prazo 30 DDD' },
+    { id: 776596, nome: 'Material Elétrico Fab Life', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L045 - Prazo 45 DDD' },
+    { id: 102030, nome: 'Seringa Descartável 10ml', fornecedor: 'MEDIX BRASIL', preco: 1.25, un: 'UN', condicao: 'À Vista' },
+    { id: 990022, nome: 'Luva Procedimento M', fornecedor: 'SAFEHAND PROTECTION', preco: 25.90, un: 'CX', condicao: 'L030 - Prazo 30 DDD' },
+    { id: 500100, nome: 'Oxigênio Medicinal', fornecedor: 'AIRLIFE GASES', preco: 150.00, un: 'M3', condicao: 'Faturado 15 Dias' },
+    { id: 200300, nome: 'Capacete de Segurança', fornecedor: 'PROT-TOTAL', preco: 45.50, un: 'UN', condicao: 'À Vista' },
 ];
 
 let carrinho = [];
-let filtroAtivo = 'todos';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa com o grupo 'todos' ou simula o 'Grupos' aberto
-    document.getElementById('submenu-grupos').style.display = 'block';
     renderizarCatalogo(catalogo);
     atualizarCarrinhoUI();
 });
 
-// --- MENU LATERAL ---
-function toggleMenu(id) {
-    const el = document.getElementById(`submenu-${id}`);
-    if(el) {
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-}
-
-// --- CATÁLOGO ---
+// --- RENDERIZAR TABELA (Sem input de quantidade) ---
 function renderizarCatalogo(lista) {
-    const container = document.getElementById('lista-produtos');
+    const container = document.getElementById('table-body');
     container.innerHTML = '';
 
     if(lista.length === 0) {
-        container.innerHTML = '<div style="padding:20px; color:#999; text-align:center">Nenhum item encontrado.</div>';
+        container.innerHTML = '<div style="padding:20px; text-align:center;">Nenhum item encontrado.</div>';
         return;
     }
 
     lista.forEach(item => {
-        // Formatar preço com 6 casas decimais (Padrão ERP)
-        const precoFmt = item.preco.toLocaleString('pt-BR', { minimumFractionDigits: 6 });
-
+        const precoFmt = item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
+        // Grid Row (7 colunas)
         const row = `
             <div class="grid-row">
-                <div class="col-main">
-                    <span class="item-sku">${item.sku}</span>
-                    <span class="item-name">${item.nome}</span>
-                    <span class="item-tag">UN: ${item.un}</span>
-                </div>
-                <div class="col-price">
-                    <span class="price-display">${precoFmt}</span>
-                </div>
-                <div class="col-add" style="text-align:right">
-                    <button class="btn-cart-add" onclick="adicionarItem(${item.id})">
-                        <span class="material-icons-outlined" style="font-size:20px">shopping_cart</span>
+                <div class="cell-id">${item.id}</div>
+                <div class="cell-text">${item.nome}</div>
+                <div class="cell-text">${item.fornecedor}</div>
+                <div class="cell-text">${precoFmt}</div>
+                <div class="cell-text">${item.un}</div>
+                <div class="cell-secondary">${item.condicao}</div>
+                
+                <div>
+                    <button class="btn-add-cart" onclick="adicionarAoCarrinho(${item.id})">
+                        <span class="material-icons-outlined">shopping_cart</span>
                     </button>
                 </div>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', row);
     });
-
-    // Adiciona linhas "fantasmas" (skeleton) para preencher a tela como na imagem
-    for(let i=0; i<5; i++) {
-        container.insertAdjacentHTML('beforeend', '<div class="skeleton-row"></div>');
-    }
 }
 
 function filtrarCatalogo() {
-    const termo = document.getElementById('input-busca').value.toLowerCase();
-    
-    const filtrados = catalogo.filter(p => {
-        const matchTermo = p.nome.toLowerCase().includes(termo) || p.sku.toLowerCase().includes(termo);
-        const matchCat = filtroAtivo === 'todos' || p.categoria === filtroAtivo;
-        return matchTermo && matchCat;
+    const termo = document.getElementById('global-search').value.toLowerCase();
+    const filtrados = catalogo.filter(item => {
+        return item.nome.toLowerCase().includes(termo) || 
+               item.fornecedor.toLowerCase().includes(termo) ||
+               item.id.toString().includes(termo);
     });
-
     renderizarCatalogo(filtrados);
 }
 
-function filtrarCategoria(cat) {
-    filtroAtivo = cat;
-    filtrarCatalogo();
-}
+// --- LÓGICA DO CARRINHO ---
 
-// --- CARRINHO ---
-function adicionarItem(id) {
-    const prod = catalogo.find(p => p.id === id);
-    const exist = carrinho.find(c => c.id === id);
+// Adiciona 1 unidade por padrão
+function adicionarAoCarrinho(id) {
+    const produto = catalogo.find(p => p.id === id);
+    const itemExistente = carrinho.find(c => c.id === id);
 
-    if(exist) {
-        exist.qtd++;
+    if(itemExistente) {
+        itemExistente.qtd += 1; // Se já existe, soma +1
     } else {
-        carrinho.push({ ...prod, qtd: 1 });
+        carrinho.push({ ...produto, qtd: 1 }); // Novo item começa com 1
     }
+
     atualizarCarrinhoUI();
 }
 
-function alterarQtd(id, delta) {
+// Altera quantidade DENTRO do carrinho (+ ou -)
+function alterarQtdCarrinho(id, delta) {
     const item = carrinho.find(c => c.id === id);
-    if(!item) return;
+    if (!item) return;
 
     item.qtd += delta;
-    if(item.qtd <= 0) removerItem(id);
-    else atualizarCarrinhoUI();
+
+    // Se chegar a zero ou menos, removemos do carrinho?
+    // Geralmente sim, ou travamos em 1. Vou travar em 1.
+    // Se quiser remover, use: if (item.qtd <= 0) removerItem(id);
+    if (item.qtd < 1) item.qtd = 1;
+
+    atualizarCarrinhoUI();
 }
 
 function removerItem(id) {
@@ -116,68 +101,48 @@ function limparCarrinho() {
 }
 
 function atualizarCarrinhoUI() {
-    const container = document.getElementById('cart-content');
-    const totalEl = document.getElementById('cart-total-value');
+    const container = document.getElementById('cart-items-container');
+    const totalEl = document.getElementById('cart-total-display');
+    
     container.innerHTML = '';
-
     let totalGeral = 0;
 
-    // Agrupar itens por 'grupo' (ex: ALMOXARIFADO)
-    const grupos = {};
+    if(carrinho.length === 0) {
+        container.innerHTML = '<div class="empty-msg">Seu carrinho está vazio</div>';
+        totalEl.innerText = 'BRL 0,00';
+        return;
+    }
+
     carrinho.forEach(item => {
-        if(!grupos[item.grupo]) grupos[item.grupo] = [];
-        grupos[item.grupo].push(item);
-    });
+        const subtotal = item.qtd * item.preco;
+        totalGeral += subtotal;
 
-    // Renderizar por grupo
-    for (const [nomeGrupo, itens] of Object.entries(grupos)) {
-        let subtotalGrupo = 0;
-        
-        // Cabeçalho do Grupo
-        const groupHeader = `
-            <div class="cart-group-header">
-                <span>GRUPO: ${nomeGrupo}</span>
-                <span class="material-icons-outlined" style="font-size:14px; cursor:pointer" onclick="alert('Fechar grupo')">close</span>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', groupHeader);
+        // Formatação com 6 casas decimais e vírgula
+        const qtdDisplay = item.qtd.toFixed(6).replace('.', ',');
 
-        // Itens do Grupo
-        itens.forEach(item => {
-            const subtotal = item.qtd * item.preco;
-            subtotalGrupo += subtotal;
-            totalGeral += subtotal;
-
-            const card = `
-                <div class="cart-item-card">
-                    <div class="cart-item-top">
-                        <div>
-                            <div class="c-name">${item.nome}</div>
-                            <div class="c-sku">(${item.sku})</div>
-                        </div>
-                        <button class="btn-remove-item" onclick="removerItem(${item.id})">&times;</button>
+        const cartItem = `
+            <div class="cart-item">
+                <button class="cart-remove" onclick="removerItem(${item.id})">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+                
+                <div class="cart-item-title">${item.nome}</div>
+                
+                <div class="cart-item-bottom">
+                    <div class="cart-qty-wrapper">
+                        <button class="btn-cart-qty" onclick="alterarQtdCarrinho(${item.id}, -1)">-</button>
+                        <input type="text" class="input-cart-qty" value="${qtdDisplay}" readonly>
+                        <button class="btn-cart-qty" onclick="alterarQtdCarrinho(${item.id}, 1)">+</button>
                     </div>
-                    <div class="cart-item-controls">
-                        <div class="qty-wrapper">
-                            <button class="btn-qty-mini" onclick="alterarQtd(${item.id}, -1)">-</button>
-                            <input type="text" class="qty-val" value="${item.qtd}" readonly>
-                            <button class="btn-qty-mini" onclick="alterarQtd(${item.id}, 1)">+</button>
-                        </div>
-                        <span class="item-subtotal">BRL ${subtotal.toFixed(6).replace('.',',')}</span>
+
+                    <div class="cart-price-total">
+                        ${subtotal.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                     </div>
                 </div>
-            `;
-            container.insertAdjacentHTML('beforeend', card);
-        });
-    }
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', cartItem);
+    });
 
-    if(carrinho.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#999; margin-top:30px;">Carrinho vazio</p>';
-    }
-
-    totalEl.innerText = totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 6 });
-}
-
-function finalizarPedido() {
-    alert('Pedido enviado para processamento ERP.');
+    totalEl.innerText = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }

@@ -3,116 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Compras - ERP V2</title>
+    <title>Novo Pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="novo_pedido.css">
 </head>
 <body>
 
-    <header class="top-bar">
-        <div class="breadcrumb-area">
-            <span class="section-title">Catálogo</span>
-            <span class="divider">&rsaquo;</span>
-            <span class="current-page">Faça uma busca ou navegue por grupos</span>
-        </div>
-        <div class="top-actions">
-            <button class="btn-top btn-default" onclick="location.reload()">
-                <span class="material-icons-outlined">close</span> Cancelar
-            </button>
-            <button class="btn-top btn-primary" onclick="finalizarPedido()">
-                Avançar <span class="material-icons-outlined">arrow_circle_right</span>
-            </button>
-        </div>
-    </header>
-
     <div class="main-layout">
-        
-        <aside class="left-panel">
-            <div class="search-widget">
-                <input type="text" id="input-busca" placeholder="Buscar" onkeyup="filtrarCatalogo()">
-                <button class="btn-search-icon"><span class="material-icons-outlined">search</span></button>
-            </div>
-            
-            <div class="advanced-search-toggle">
-                <span class="material-icons-outlined">search</span> BUSCA AVANÇADA
-                <span class="status-text">ATIVAR</span>
-            </div>
-
-            <div class="menu-group">
-                <div class="menu-item" onclick="toggleMenu('grupos')">
-                    <span class="material-icons-outlined">folder_open</span> GRUPOS
-                    <span class="material-icons-outlined icon-end">add_circle</span>
-                </div>
-                <div id="submenu-grupos" class="submenu-container">
-                    <div class="submenu-item" onclick="filtrarCategoria('todos')">Todos</div>
-                    <div class="submenu-item" onclick="filtrarCategoria('EPI')">EPIs</div>
-                    <div class="submenu-item" onclick="filtrarCategoria('Gases')">Gases Medicinais</div>
-                    <div class="submenu-item" onclick="filtrarCategoria('Insumos')">Insumos Gerais</div>
-                </div>
-
-                <div class="menu-item">
-                    <span class="material-icons-outlined">domain</span> FORNECEDORES
-                    <span class="material-icons-outlined icon-end">add_circle</span>
-                </div>
-                <div class="menu-item">
-                    <span class="material-icons-outlined">description</span> CATEGORIA CONTRATO
-                    <span class="material-icons-outlined icon-end">add_circle</span>
+        <main class="center-content">
+            <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                    <span class="material-icons-outlined search-icon">search</span>
+                    <input type="text" id="global-search" placeholder="Pesquisar por nome, ID ou fornecedor" onkeyup="filtrarCatalogo()">
+                    <span class="material-icons-outlined more-icon">more_vert</span>
                 </div>
             </div>
-        </aside>
 
-        <section class="center-panel">
-            
-            <div class="context-banner">
-                <div class="ctx-info">
-                    <label>Categoria da requisição</label>
-                    <strong>CCI CONIPA</strong>
+            <div class="table-wrapper">
+                <div class="grid-header">
+                    <div class="th col-id">ID do Contrato <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-titulo">Título <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-fornec">Fornecedor <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-preco">Preço <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-un">Unidade <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-pagto">Condição de Pagamento <span class="material-icons-outlined sort-icon">unfold_more</span></div>
+                    <div class="th col-action"></div>
                 </div>
-                <div class="ctx-divider"></div>
-                <div class="ctx-info">
-                    <label>EMPRESA</label>
-                    <strong>3000 - CONIPA</strong>
-                </div>
-                <div class="ctx-divider">></div>
-                <div class="ctx-info">
-                    <label>ORGANIZAÇÃO DE...</label>
-                    <strong>OCCO - CONIPA</strong>
-                </div>
-                <div class="ctx-divider">></div>
-                <div class="ctx-info">
-                    <label>CENTRO</label>
-                    <strong>FAB1 - FABRICAÇÃO...</strong>
-                </div>
-                <button class="btn-edit-ctx"><span class="material-icons-outlined">settings</span> EDITAR</button>
+
+                <div id="table-body" class="grid-body">
+                    </div>
             </div>
+        </main>
 
-            <div class="data-grid-header">
-                <div class="col-main">Descrição / Código</div>
-                <div class="col-price">Valor Unit.</div>
-                <div class="col-add"></div>
-            </div>
-
-            <div id="lista-produtos" class="data-grid-body">
-                </div>
-
-        </section>
-
-        <aside class="right-panel">
+        <aside class="right-sidebar">
             <div class="cart-header">
-                <button class="btn-back-mobile"><span class="material-icons-outlined">arrow_back</span></button>
-                <div class="cart-title-row">
-                    <span class="material-icons-outlined">shopping_cart</span> Carrinho
-                </div>
-                <a href="#" class="link-clean" onclick="limparCarrinho()">Limpar</a>
+                <h3>Carrinho de Compras</h3>
+                <button class="btn-clear" onclick="limparCarrinho()">Limpar</button>
+            </div>
+            
+            <div id="cart-items-container" class="cart-items">
+                <div class="empty-msg">Seu carrinho está vazio</div>
             </div>
 
-            <div class="cart-summary-bar">
-                <span>Total BRL</span>
-                <strong id="cart-total-value">0,000000</strong>
-            </div>
-
-            <div class="cart-content" id="cart-content">
+            <div class="cart-footer">
+                <div class="cart-total-row">
+                    <span>Total Estimado</span>
+                    <strong id="cart-total-display">BRL 0,00</strong>
                 </div>
+                <button class="btn-checkout" onclick="alert('Pedido enviado!')">Finalizar Pedido</button>
+            </div>
         </aside>
     </div>
 
