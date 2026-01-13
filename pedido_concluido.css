@@ -1,0 +1,125 @@
+/* Importa variáveis se necessário, mas o navegador já pega do dashboard.css carregado antes */
+
+/* Layout Centralizado */
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 75px); /* Altura total menos o header */
+    padding: 20px;
+    background-color: var(--bg-body);
+}
+
+/* Card de Sucesso */
+.success-card {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ícone */
+.icon-wrapper {
+    margin-bottom: 25px;
+}
+
+.success-icon {
+    font-size: 80px;
+    color: #27AE60; /* Verde sucesso distinto do Laranja da marca */
+    background: #E8F8F5;
+    border-radius: 50%;
+    padding: 15px;
+}
+
+/* Tipografia */
+.success-card h1 {
+    color: var(--text-dark);
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.order-id {
+    font-size: 16px;
+    color: var(--primary-orange);
+    background-color: var(--light-orange-bg);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #FFE0B2;
+}
+
+.success-details p {
+    color: var(--text-grey);
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.success-details {
+    margin-bottom: 40px;
+}
+
+/* Botões */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+button {
+    cursor: pointer;
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-orange);
+    color: white;
+    border: 1px solid var(--primary-orange);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-orange-hover);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--text-grey);
+    border: 1px solid #D1D5DB;
+}
+
+.btn-secondary:hover {
+    background-color: #F9FAFB;
+    color: var(--text-dark);
+    border-color: #9CA3AF;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    .btn-primary, .btn-secondary {
+        justify-content: center;
+        width: 100%;
+    }
+}

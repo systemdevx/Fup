@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes dos Itens</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="detalhes_item.css">
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="breadcrumb">
+            <span class="doc-title">Nº do documento ME</span> 
+            <span class="separator">></span> 
+            <span class="current-step">Detalhes dos Itens</span>
+        </div>
+        <div class="top-actions">
+            <button class="btn-outline" onclick="window.history.back()">
+                <span class="material-icons-outlined">cancel</span> Cancelar
+            </button>
+            <button class="btn-outline" onclick="window.history.back()">
+                <span class="material-icons-outlined">arrow_back</span> Voltar
+            </button>
+            <button class="btn-solid" onclick="finalizar()">
+                Avançar
+            </button>
+        </div>
+    </header>
+
+    <main class="content-area">
+        
+        <div class="section-header">
+            <button class="accordion-btn">
+                <span class="material-icons-outlined arrow-icon">expand_less</span>
+                <span class="section-title">Itens</span>
+            </button>
+        </div>
+
+        <div class="item-summary-table">
+            <div class="tbl-header">
+                <div class="col-center">#</div>
+                <div>Código Produto</div>
+                <div>Descrição</div>
+                <div>Grupo</div> <div class="col-center">UM</div>
+                <div class="col-right">Último Preço</div>
+                <div class="col-right">Valor Total</div>
+                <div class="col-right">Ações</div>
+            </div>
+            
+            <div class="tbl-row">
+                <div class="col-center">1</div>
+                <div class="orange-text">
+                    <span class="material-icons-outlined tiny-icon">expand_less</span> INS150551
+                </div>
+                
+                <div class="desc-col">
+                    <span class="badge-glp">G</span> GLP
+                </div>
+
+                <div class="text-secondary">AX - ALMOXARIFADO</div>
+                <div class="col-center">UN</div>
+                <div class="col-right">BRL 488,00</div>
+
+                <div class="col-right bold-text">BRL 488,000000</div>
+                
+                <div class="col-right action-icons">
+                    <span class="material-icons-outlined">save_alt</span>
+                    <span class="material-icons-outlined">refresh</span>
+                    <span class="material-icons-outlined">cancel</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-grid-container">
+            <div class="form-group required">
+                <label>Quantidade</label>
+                <input type="text" value="1,000000">
+            </div>
+            <div class="form-group required">
+                <label>Aplicação</label>
+                <select>
+                    <option>Industrialização</option>
+                    <option>Consumo</option>
+                </select>
+            </div>
+           
+            <div class="form-group required">
+                <label>Cat. Class. Contábil</label>
+                <select class="placeholder-select">
+                    <option selected disabled>Selecione</option>
+                    <option>Material de Uso</option>
+                    <option>Imobilizado</option>
+                </select>
+            </div>
+            <div class="form-group required icon-input">
+                <label>Data Estimada</label>
+                <input type="text" placeholder="">
+                <span class="material-icons-outlined input-icon">calendar_today</span>
+            </div>
+             <div class="form-group required">
+                <label>Depósito</label>
+                <select class="placeholder-select">
+                    <option selected disabled>Selecione</option>
+                    <option>Depósito Central</option>
+                    <option>Filial 1</option>
+                </select>
+            </div>
+            <div class="form-group required">
+                <label>Orçado</label>
+                <select class="placeholder-select">
+                    <option selected disabled>Selecione</option>
+                    <option>Sim</option>
+                    <option>Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tipo De Compra</label>
+                <select class="placeholder-select">
+                    <option selected disabled>Selecione</option>
+                    <option>Normal</option>
+                    <option>Urgente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Fábrica</label>
+                <select class="placeholder-select">
+                    <option selected disabled>Selecione</option>
+                    <option>Matriz</option>
+                    <option>Filial RJ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Observação Para Requisitante</label>
+                <textarea rows="1"></textarea>
+                <span class="textarea-icon material-icons-outlined">edit</span>
+            </div>
+            <div class="form-group"></div>
+        </div>
+
+    </main>
+
+    <footer class="bottom-bar">
+        <div class="lang-selector">
+            <span class="material-icons-outlined">language</span>
+            <span>Português (pt-BR)</span>
+            <span class="material-icons-outlined">expand_more</span>
+        </div>
+        <div class="footer-links">
+            <a href="#"><span class="material-icons-outlined">description</span> Termos e Políticas</a>
+            <a href="#"><span class="material-icons-outlined">call</span> Contato</a>
+            <a href="#"><span class="material-icons-outlined">forum</span> Suporte Online</a>
+        </div>
+    </footer>
+
+    <script src="detalhes_item.js"></script>
+</body>
+</html>
