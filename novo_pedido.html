@@ -3,57 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Pedido</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Novo Pedido - FUP ALM</title>
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="novo_pedido.css">
 </head>
 <body>
 
-    <div class="main-layout">
+    <header class="top-bar">
+        <div class="breadcrumb">
+            <span class="doc-title">Dashboard</span> 
+            <span class="separator">></span> 
+            <span class="current-step">Novo Pedido</span>
+        </div>
+        <div class="top-actions">
+            <button class="btn-outline" onclick="window.location.href='dashboard.html'">
+                <span class="material-icons-outlined">cancel</span> Cancelar
+            </button>
+            <button class="btn-outline" onclick="window.history.back()">
+                <span class="material-icons-outlined">arrow_back</span> Voltar
+            </button>
+            <button class="btn-solid" onclick="avancarParaDetalhes()">
+                Avançar
+            </button>
+        </div>
+    </header>
+
+    <div class="pedido-layout">
+        
         <main class="center-content">
-            <div class="search-bar-container">
+            
+            <div class="page-header-row">
+                <h2>Catálogo de Produtos</h2>
                 <div class="search-input-wrapper">
                     <span class="material-icons-outlined search-icon">search</span>
-                    <input type="text" id="global-search" placeholder="Pesquisar por nome, ID ou fornecedor" onkeyup="filtrarCatalogo()">
-                    <span class="material-icons-outlined more-icon">more_vert</span>
+                    <input type="text" id="global-search" placeholder="Pesquise por nome, código ou grupo..." onkeyup="filtrarCatalogo()">
                 </div>
             </div>
 
             <div class="table-wrapper">
                 <div class="grid-header">
-                    <div class="th col-id"># <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-titulo">	Código <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-fornec">Descrição <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-preco">	Grupo de produto <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-un">UM <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-pagto">Preço <span class="material-icons-outlined sort-icon">unfold_more</span></div>
-                    <div class="th col-action"></div>
+                    <div class="th col-id">#</div>
+                    <div class="th col-titulo">Código</div>
+                    <div class="th col-fornec">Descrição</div>
+                    <div class="th col-preco">Grupo</div>
+                    <div class="th col-un">UM</div>
+                    <div class="th col-pagto">Preço</div>
+                    <div class="th col-action" style="text-align: center;">Adicionar</div>
                 </div>
 
                 <div id="table-body" class="grid-body">
+                    <div class="start-search-state">
+                        <span class="material-icons-outlined">manage_search</span>
+                        <p>Digite o nome do produto ou código para iniciar a busca.</p>
                     </div>
+                </div>
             </div>
         </main>
 
         <aside class="right-sidebar">
             <div class="cart-header">
-                <h3>Carrinho de Compras</h3>
-                <button class="btn-clear" onclick="limparCarrinho()">Limpar</button>
+                <h3>Carrinho</h3>
+                <button class="btn-clear" onclick="limparCarrinho()">
+                    <span class="material-icons-outlined" style="font-size:16px;">delete_sweep</span> Limpar
+                </button>
             </div>
             
             <div id="cart-items-container" class="cart-items">
-                <div class="empty-msg">Seu carrinho está vazio</div>
-            </div>
+                </div>
 
             <div class="cart-footer">
-                <div class="cart-total-row">
-                    <span>Total Estimado</span>
+                <div class="cart-total-column">
+                    <span class="label-total">Total Estimado</span>
                     <strong id="cart-total-display">BRL 0,00</strong>
                 </div>
-                <button class="btn-checkout" onclick="alert('Pedido enviado!')">Finalizar Pedido</button>
             </div>
         </aside>
+
     </div>
 
     <script src="novo_pedido.js"></script>
