@@ -6,19 +6,20 @@
     <title>Novo Cadastro - FUP ALM</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="registration.css">
-    <link rel="stylesheet" href="productalm.css">
-</head>
+    <link rel="stylesheet" href="productalm.css"> 
+    </head>
 <body class="fullscreen-bg">
 
     <header class="header-fullscreen">
         <div class="logo-area">
-            <h1>FUP ALM <span style="font-size: 0.5em; color: #999; font-weight:400;">CADASTRO</span></h1>
+            <h1 style="font-family: 'Calibre', sans-serif; font-weight: 700; font-size: 20px; color: #E67E22; margin: 0;">
+                FUP ALM <span style="font-size: 0.5em; color: #999; font-weight:400;">CADASTRO</span>
+            </h1>
         </div>
         
         <a href="registration.html" class="btn-voltar-topo">
             <span class="material-icons-outlined">arrow_back</span>
-            <span>Cancelar e Voltar</span>
+            <span>Voltar</span>
         </a>
     </header>
 
@@ -27,7 +28,7 @@
         <div class="form-card-fullscreen">
             <div class="form-header">
                 <h2 id="titulo-dinamico">Carregando...</h2>
-                <p>Preencha as informações detalhadas abaixo.</p>
+                <p>Preencha os campos abaixo para registrar a informação.</p>
             </div>
 
             <form id="form-cadastro">
@@ -47,18 +48,17 @@
                     
                     <div class="input-wrapper full-width">
                         <label>Descrição Completa</label>
-                        <input type="text" class="input-field" name="descricao" placeholder="Descrição detalhada do item para nota fiscal">
+                        <input type="text" class="input-field" name="descricao" placeholder="Descrição detalhada do item">
                     </div>
 
                     <div class="row-2">
                         <div class="input-wrapper">
-                            <label>Unidade de Medida</label>
+                            <label>Unidade</label>
                             <select class="input-field" name="unidade">
                                 <option value="UN">UN - Unidade</option>
                                 <option value="KG">KG - Quilograma</option>
                                 <option value="CX">CX - Caixa</option>
                                 <option value="LT">LT - Litro</option>
-                                <option value="M">M - Metro</option>
                             </select>
                         </div>
                         <div class="input-wrapper">
@@ -72,16 +72,6 @@
                     <div class="input-wrapper full-width">
                         <label>Nome do Equipamento / Ativo</label>
                         <input type="text" class="input-field" name="equipamento" placeholder="Ex: Notebook Dell Latitude 5420">
-                    </div>
-                    <div class="row-2">
-                        <div class="input-wrapper">
-                            <label>Número de Série</label>
-                            <input type="text" class="input-field" name="serial" placeholder="S/N do fabricante">
-                        </div>
-                        <div class="input-wrapper">
-                            <label>Tag Patrimonial</label>
-                            <input type="text" class="input-field" name="patrimonio" placeholder="Código Fixo">
-                        </div>
                     </div>
                 </div>
 
@@ -114,7 +104,10 @@
                 <div class="divider"></div>
 
                 <div class="form-footer">
-                    <button type="submit" class="btn-salvar-full">Confirmar Cadastro</button>
+                    <button type="submit" class="btn-salvar-full">
+                        <span class="material-icons-outlined" style="font-size: 18px;">check</span>
+                        Confirmar Cadastro
+                    </button>
                 </div>
 
             </form>
