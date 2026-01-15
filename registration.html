@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastros - Portal de Compras</title>
+    <title>Cadastros - FUP ALM</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="registration.css">
@@ -17,54 +17,14 @@
         
         <nav>
             <ul>
-                <li>
-                    <a href="dashboard.html">
-                        <span class="material-icons-outlined">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="transacoes.html">
-                        <span class="material-icons-outlined">receipt_long</span>
-                        <span>Transações</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">description</span>
-                        <span>Registros Fiscais</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">fact_check</span>
-                        <span>Ativos SGQ</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">storefront</span>
-                        <span>Fornecedores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">shopping_bag</span>
-                        <span>Catálogos</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="registration.html" class="active">
-                        <span class="material-icons-outlined">app_registration</span>
-                        <span>Cadastros</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="material-icons-outlined">group</span>
-                        <span>Usuários</span>
-                    </a>
-                </li>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transacoes.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">description</span><span>Registros Fiscais</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">fact_check</span><span>Ativos SGQ</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">shopping_bag</span><span>Catálogos</span></a></li>
+                <li><a href="registration.html" class="active"><span class="material-icons-outlined">app_registration</span><span>Cadastros</span></a></li>
+                <li><a href="#"><span class="material-icons-outlined">group</span><span>Usuários</span></a></li>
             </ul>
         </nav>
 
@@ -74,68 +34,64 @@
     </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
+        <button class="btn-toggle-menu" onclick="window.toggleSidebar()" title="Alternar Menu">
             <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
         </button>
 
         <div class="v-separator"></div>
 
         <div class="dropdown-container">
-            <button class="btn-subheader-action" onclick="toggleNovoMenu()">
+            <button class="btn-subheader-action" id="btn-novo-cadastro" onclick="window.toggleNovoMenu(event)">
                 <span class="material-icons-outlined">add</span>
                 <span>Novo Cadastro</span>
                 <span class="material-icons-outlined" style="font-size: 16px; margin-left: 4px;">expand_more</span>
             </button>
             
-    <div id="novo-cadastro-menu" class="dropdown-content">
-    <a href="productalm.html?type=almoxarifado">
-       <span class="material-icons-outlined">warehouse</span> Almoxarifado
-    </a>
-    <a href="productalm.html?type=ativos">
-        <span class="material-icons-outlined">inventory</span> Ativos
-    </a>
-    <div class="dropdown-divider"></div>
-    <a href="productalm.html?type=fornecedores">
-        <span class="material-icons-outlined">storefront</span> Fornecedores
-    </a>
-     <a href="productalm.html?type=transportadoras">
-        <span class="material-icons-outlined">local_shipping</span> Transportadoras
-     </a>
-     </div>
+            <div id="novo-cadastro-menu" class="dropdown-content">
+                <a href="productalm.html?type=almoxarifado">
+                   <span class="material-icons-outlined">warehouse</span> Almoxarifado
+                </a>
+                <a href="productalm.html?type=ativos">
+                    <span class="material-icons-outlined">inventory</span> Ativos
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="productalm.html?type=fornecedores">
+                    <span class="material-icons-outlined">storefront</span> Fornecedores
+                </a>
+                 <a href="productalm.html?type=transportadoras">
+                    <span class="material-icons-outlined">local_shipping</span> Transportadoras
+                 </a>
+             </div>
         </div>
+
         <div class="header-right-actions">
-            
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
                 <input type="text" class="search-input-clean" placeholder="Pesquisar registro...">
-                
                 <button class="btn-filter-inside">
                     <span class="material-icons-outlined">filter_alt</span>
                     <span>Filtros</span>
                 </button>
             </div>
-
             <div class="view-actions">
                 <button class="btn-view-icon" title="Visualização em Grade">
                     <span class="material-icons-outlined">grid_view</span>
                     <span class="material-icons-outlined" style="font-size: 14px; margin-left: 2px;">expand_more</span>
                 </button>
             </div>
-
         </div>
     </div>
 
     <div class="layout-wrapper">
-        
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
+                <div class="group-header" onclick="window.toggleGroup(this)">
                     <span>ORGANIZAÇÃO</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="carregarLista('Centro de Custo', this)">
+                        <a href="#" onclick="window.carregarLista('Centro de Custo', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">account_balance_wallet</span>
                                 <span>Centro de Custo</span>
@@ -144,7 +100,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="carregarLista('Almoxarifado', this)">
+                        <a href="#" onclick="window.carregarLista('Almoxarifado', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">warehouse</span>
                                 <span>Almoxarifado</span>
@@ -153,7 +109,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="carregarLista('Ativos', this)">
+                        <a href="#" onclick="window.carregarLista('Ativos', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">inventory</span>
                                 <span>Ativos</span>
@@ -165,13 +121,13 @@
             </div>
 
             <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
+                <div class="group-header" onclick="window.toggleGroup(this)">
                     <span>PARCEIROS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="carregarLista('Fornecedores', this)">
+                        <a href="#" onclick="window.carregarLista('Fornecedores', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">storefront</span>
                                 <span>Fornecedores</span>
@@ -180,7 +136,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="carregarLista('Transportadoras', this)">
+                        <a href="#" onclick="window.carregarLista('Transportadoras', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">local_shipping</span>
                                 <span>Transportadoras</span>
@@ -216,12 +172,12 @@
                 </table>
                 
                 <div id="msg-vazio" style="padding: 40px; text-align: center; color: #999; display: none;">
-                    Nenhum registro encontrado.
+                    Selecione um módulo ao lado para visualizar.
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="registration.js"></script>
+    <script type="module" src="registration.js"></script>
 </body>
 </html>

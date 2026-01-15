@@ -1,24 +1,24 @@
 /* --- productalm.css --- */
 
-/* Fundo e Fonte Global */
+/* 1. RESET E BASE */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body.fullscreen-bg {
     background-color: #F3F4F6;
-    font-family: 'Calibre', 'Calibri', 'Segoe UI', sans-serif; /* Fonte Calibre priorizada */
+    font-family: 'Calibre', 'Calibri', 'Segoe UI', sans-serif; 
     font-size: 15px;
     color: #333;
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     overflow-y: auto;
-    margin: 0;
 }
 
-/* Reset básico para garantir fonte em tudo */
 input, button, select, textarea {
     font-family: 'Calibre', 'Calibri', sans-serif;
 }
 
-/* --- HEADER --- */
+/* 2. HEADER */
 .header-fullscreen {
     background-color: #FFFFFF;
     height: 75px;
@@ -28,36 +28,30 @@ input, button, select, textarea {
     align-items: center;
     border-bottom: 1px solid #E5E7EB;
     
-    /* Fixação e Correção de Sobreposição */
-    position: sticky;
-    top: 0;
-    z-index: 1000; /* Garante que fique acima do formulário */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Sombra sutil para separar */
+    /* FIX DE SOBREPOSIÇÃO */
+    flex-shrink: 0; 
+    position: relative;
+    z-index: 10;
 }
 
-/* Logo */
 .logo-area h1 {
     font-size: 20px;
     color: #E67E22;
     margin: 0;
-    font-weight: 600; /* Reduzido de 700 para 600 */
+    font-weight: 500;
     letter-spacing: -0.5px;
 }
 
-/* Botão Voltar (Leve) */
 .btn-voltar-topo {
     text-decoration: none;
     color: #666;
     font-size: 13px;
-    font-weight: 500; /* Reduzido de 600/700 para 500 */
-    
+    font-weight: 400;
     display: flex;
     align-items: center;
     gap: 6px;
-    
     height: 32px;
     padding: 0 16px;
-    
     background-color: #FFFFFF;
     border: 1px solid #E5E7EB;
     border-radius: 4px;
@@ -67,7 +61,7 @@ input, button, select, textarea {
 .btn-voltar-topo:hover {
     background-color: #F9FAFB;
     border-color: #D1D5DB;
-    color: #333;
+    color: #E67E22;
 }
 
 .btn-voltar-topo .material-icons-outlined {
@@ -75,28 +69,26 @@ input, button, select, textarea {
     color: #999;
 }
 
-/* --- ÁREA CENTRAL --- */
+/* 3. ÁREA PRINCIPAL */
 .main-fullscreen {
     flex-grow: 1;
     display: flex;
     justify-content: center;
-    padding: 40px 20px; /* Padding ajustado para evitar corte em telas menores */
+    padding: 40px 20px;
+    width: 100%;
 }
 
 .form-card-fullscreen {
     background-color: #FFFFFF;
     width: 100%;
     max-width: 1100px;
+    height: fit-content; 
     border-radius: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    padding: 40px;
-    height: fit-content;
     border: 1px solid #E5E5E5;
-    position: relative; /* Contexto de empilhamento local */
-    z-index: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 40px;
 }
 
-/* Cabeçalho do Form */
 .form-header {
     margin-bottom: 30px;
     text-align: left;
@@ -107,87 +99,85 @@ input, button, select, textarea {
 .form-header h2 {
     font-size: 20px;
     color: #333;
-    margin-bottom: 6px;
-    font-weight: 600; /* Mais leve */
+    margin-bottom: 5px;
+    font-weight: 500;
 }
 
 .form-header p {
     color: #666;
     font-size: 14px;
-    font-weight: 400; /* Normal */
+    font-weight: 400;
 }
 
-/* Inputs e Labels */
+/* 4. INPUTS */
 .input-wrapper label {
     display: block;
     font-size: 13px;
-    font-weight: 500; /* REMOVIDO O NEGRITO (Era 700, agora 500) */
-    color: #555;      /* Cor levemente mais suave que preto puro */
-    margin-bottom: 6px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 8px;
 }
 
 .input-field {
     width: 100%;
-    padding: 9px 12px;
+    height: 38px;
+    padding: 8px 12px;
     border: 1px solid #D1D5DB;
     border-radius: 4px;
     font-size: 14px;
     color: #333;
+    background-color: #FFFFFF;
     outline: none;
     transition: border 0.2s;
-    background-color: #FFFFFF;
 }
 
 .input-field:focus {
     border-color: #E67E22;
-    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.1);
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
 }
 
 .input-field::placeholder {
     color: #A1A1AA;
+    font-weight: 400;
 }
 
-/* Grid Layout */
+/* 5. GRID */
 .row-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 20px;
 }
 
 .full-width {
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .divider {
     height: 1px;
     background-color: #F3F4F6;
-    margin: 25px 0;
+    margin: 30px 0;
 }
 
-/* Rodapé */
+/* 6. BOTÕES */
 .form-footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-/* Botão Confirmar (Compacto e Leve) */
 .btn-salvar-full {
     background-color: #E67E22;
     color: white;
     border: none;
-    
     height: 36px;
     padding: 0 24px;
-    
     font-size: 14px;
-    font-weight: 500; /* Reduzido de 700 para 500 */
-    
+    font-weight: 500;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s;
-    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,19 +188,10 @@ input, button, select, textarea {
     background-color: #D35400;
 }
 
-/* Utilitários */
 .hidden { display: none !important; }
 
-/* Responsividade */
-@media (max-width: 900px) {
-    .form-card-fullscreen { 
-        padding: 20px; 
-    }
-    .header-fullscreen { 
-        padding: 0 15px; 
-    }
-    .row-2 { 
-        grid-template-columns: 1fr; 
-        gap: 15px; 
-    }
+@media (max-width: 768px) {
+    .row-2 { grid-template-columns: 1fr; gap: 15px; }
+    .form-card-fullscreen { padding: 20px; }
+    .header-fullscreen { padding: 0 15px; }
 }
