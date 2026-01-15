@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('form-cadastro').addEventListener('submit', (e) => {
         e.preventDefault();
-        // Lógica de envio (simulação)
         alert('Cadastro realizado com sucesso!');
         window.location.href = 'registration.html';
     });
