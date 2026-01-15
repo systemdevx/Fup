@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transações - Portal de Compras</title>
+    <title>Cadastros - Portal de Compras</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="transacoes.css">
+    <link rel="stylesheet" href="registration.css">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="transacoes.html" class="active">
+                    <a href="transacoes.html">
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
                     </a>
@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="registration.html">
+                    <a href="registration.html" class="active">
                         <span class="material-icons-outlined">app_registration</span>
                         <span>Cadastros</span>
                     </a>
@@ -80,16 +80,38 @@
 
         <div class="v-separator"></div>
 
-        <button class="btn-subheader-action" onclick="window.location.href='novo_pedido.html'">
-            <span class="material-icons-outlined">add</span>
-            <span>Novo Pedido</span>
-        </button>
+        <div class="dropdown-container">
+            <button class="btn-subheader-action" onclick="toggleNovoMenu()">
+                <span class="material-icons-outlined">add</span>
+                <span>Novo Cadastro</span>
+                <span class="material-icons-outlined" style="font-size: 16px; margin-left: 4px;">expand_more</span>
+            </button>
+            
+            <div id="novo-cadastro-menu" class="dropdown-content">
+                <a href="#" onclick="iniciarCadastro('Centro de Custo')">
+                    <span class="material-icons-outlined">account_balance_wallet</span> Centro de Custo
+                </a>
+                <a href="#" onclick="iniciarCadastro('Materiais (Almoxarifado)')">
+                    <span class="material-icons-outlined">warehouse</span> Almoxarifado
+                </a>
+                <a href="#" onclick="iniciarCadastro('Ativos')">
+                    <span class="material-icons-outlined">inventory</span> Ativos
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" onclick="iniciarCadastro('Fornecedores')">
+                    <span class="material-icons-outlined">storefront</span> Fornecedores
+                </a>
+                <a href="#" onclick="iniciarCadastro('Transportadoras')">
+                    <span class="material-icons-outlined">local_shipping</span> Transportadoras
+                </a>
+            </div>
+        </div>
 
         <div class="header-right-actions">
             
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar">
+                <input type="text" class="search-input-clean" placeholder="Pesquisar registro...">
                 
                 <button class="btn-filter-inside">
                     <span class="material-icons-outlined">filter_alt</span>
@@ -98,10 +120,6 @@
             </div>
 
             <div class="view-actions">
-                <button class="btn-view-icon" title="Visualização em Gráfico">
-                    <span class="material-icons-outlined">bar_chart</span>
-                </button>
-                
                 <button class="btn-view-icon" title="Visualização em Grade">
                     <span class="material-icons-outlined">grid_view</span>
                     <span class="material-icons-outlined" style="font-size: 14px; margin-left: 2px;">expand_more</span>
@@ -116,43 +134,62 @@
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
-                    <span>PENDÊNCIAS</span>
+                    <span>ORGANIZAÇÃO</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="ativarItem(this)">
+                        <a href="#" onclick="carregarLista('Centro de Custo', this)">
                             <div class="menu-text-icon">
-                                <span class="material-icons-outlined">fact_check</span>
-                                <span>Aprovações</span>
+                                <span class="material-icons-outlined">account_balance_wallet</span>
+                                <span>Centro de Custo</span>
                             </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
+                            <span class="material-icons-outlined icon-right">chevron_right</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="carregarLista('Almoxarifado', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">warehouse</span>
+                                <span>Almoxarifado</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">chevron_right</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="carregarLista('Ativos', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">inventory</span>
+                                <span>Ativos</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">chevron_right</span>
                         </a>
                     </li>
                 </ul>
             </div>
+
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
-                    <span>TRANSAÇÕES</span>
+                    <span>PARCEIROS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="ativarItem(this)">
+                        <a href="#" onclick="carregarLista('Fornecedores', this)">
                             <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Contratos</span>
+                                <span class="material-icons-outlined">storefront</span>
+                                <span>Fornecedores</span>
                             </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
+                            <span class="material-icons-outlined icon-right">chevron_right</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="ativarItem(this)">
+                        <a href="#" onclick="carregarLista('Transportadoras', this)">
                             <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Pedidos</span>
+                                <span class="material-icons-outlined">local_shipping</span>
+                                <span>Transportadoras</span>
                             </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
+                            <span class="material-icons-outlined icon-right">chevron_right</span>
                         </a>
                     </li>
                 </ul>
@@ -162,30 +199,33 @@
         <main class="content-area">
             <div class="page-header-row">
                 <div class="page-title">
-                    <h2 id="titulo-pagina">Transações</h2>
-                    <p>Gerencie todas as solicitações e pedidos.</p>
+                    <h2 id="titulo-pagina">Selecione uma opção</h2>
+                    <p>Gerencie os registros do sistema.</p>
                 </div>
             </div>
 
             <div class="table-container">
-                <table>
+                <table id="tabela-principal">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tipo</th>
-                            <th>Detalhes</th>
-                            <th>Data</th>
+                            <th>Descrição / Razão Social</th>
+                            <th>Tipo / Categoria</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-pedidos">
+                    <tbody id="lista-dados">
                         </tbody>
                 </table>
+                
+                <div id="msg-vazio" style="padding: 40px; text-align: center; color: #999; display: none;">
+                    Nenhum registro encontrado.
+                </div>
             </div>
         </main>
     </div>
 
-    <script src="transacoes.js"></script>
+    <script src="registration.js"></script>
 </body>
 </html>

@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- RENDERIZAR TABELA ---
 function renderizarCatalogo(lista) {
     const container = document.getElementById('table-body');
+    if (!container) return; // Segurança caso a tabela não exista na view atual
+
     container.innerHTML = '';
 
     if(lista.length === 0) {
@@ -115,6 +117,8 @@ function atualizarCarrinhoUI() {
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total-display');
     
+    if(!container || !totalEl) return;
+
     container.innerHTML = '';
     let totalGeral = 0;
 
