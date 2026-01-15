@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo - FUP ALM</title>
+    <title>FUP ALM</title>
     <link rel="stylesheet" href="intro.css">
 </head>
 <body>
 
-    <div class="center-content">
-        <div class="logo-circle">
-            <span>F</span>
+    <div class="main-container">
+        
+        <div class="logo-wrapper">
+            <div class="pulse-ring"></div>
+            <div class="core-circle">
+                <span class="logo-letter">F</span>
+            </div>
         </div>
-        <h1>FUP ALM</h1>
-        <p>Toque para iniciar</p>
+
+        <div class="text-content">
+            <h1 class="brand-name">FUP ALM</h1>
+            <p class="status-message">Inicializando sistema...</p>
+            
+            <div class="loading-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
     </div>
+
+    <div id="particles"></div>
 
     <script src="intro.js"></script>
 </body>

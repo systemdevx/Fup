@@ -1,116 +1,139 @@
 /* --- intro.css --- */
+
+/* 1. CONFIGURAÇÃO DE CORES (VARIÁVEIS) */
+:root {
+    /* TEMA PADRÃO (Identidade FUP ALM) */
+    --bg-color: #F3F4F6;         /* Fundo do sistema */
+    --primary: #E67E22;          /* Laranja Vivara */
+    --primary-light: #fadbc5;    /* Laranja claro para o pulso */
+    --text-main: #333333;
+    --text-sub: #666666;
+    --font-stack: 'Calibre', 'Segoe UI', sans-serif;
+}
+
+/* TEMA: NATAL (Classe ativada via JS) */
+body.theme-christmas {
+    --bg-color: #0f2b1d;         /* Verde escuro elegante */
+    --primary: #D42426;          /* Vermelho Noel */
+    --primary-light: #f0b4b5;
+    --text-main: #ffffff;
+    --text-sub: #a8d5ba;
+}
+
+/* TEMA: ANO NOVO / PREMIUM */
+body.theme-gold {
+    --bg-color: #111111;         /* Preto Luxo */
+    --primary: #D4AF37;          /* Dourado Metálico */
+    --primary-light: #aa8c2c;
+    --text-main: #fcf6ba;
+    --text-sub: #999999;
+}
+
+/* 2. LAYOUT BASE */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    height: 100vh;
-    width: 100vw;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-    cursor: pointer;
-    
-    /* Fundo Gradiente Suave */
-    background: linear-gradient(-45deg, #eef2f3, #8e9eab, #eef2f3);
-    background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100vh; width: 100vw;
+    background-color: var(--bg-color);
+    font-family: var(--font-stack);
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden; cursor: pointer;
+    transition: background-color 0.8s ease; /* Transição suave de cor */
     user-select: none;
 }
 
-/* Container Central */
-.center-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease;
+.main-container {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 10;
 }
 
-/* O Círculo Pulsante (Logo Abstrato) */
-.logo-circle {
-    width: 80px;
-    height: 80px;
-    background-color: #E67E22; /* Laranja da marca */
+/* 3. LOGO PULSANTE */
+.logo-wrapper {
+    position: relative;
+    width: 100px; height: 100px;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 30px;
+}
+
+.core-circle {
+    width: 80px; height: 80px;
+    background-color: var(--primary);
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
-    box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
-    
-    /* Animação de Pulso */
-    animation: pulse-orange 2s infinite;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    z-index: 2;
+    transition: background-color 0.8s ease;
 }
 
-/* Texto */
-h1 {
-    color: #333;
-    font-size: 3rem;
+.logo-letter {
+    color: #FFF;
+    font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 10px;
-    letter-spacing: -1px;
+    font-family: 'Times New Roman', serif; /* Toque clássico no F */
+}
+
+/* Animação de "Respiração" (Onda) */
+.pulse-ring {
+    position: absolute;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
     opacity: 0;
-    animation: fadeInUp 1s ease forwards 0.5s; /* Aparece depois de 0.5s */
+    animation: pulseWave 2s infinite;
 }
 
-p {
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-    opacity: 0;
-    animation: fadeInUp 1s ease forwards 0.8s; /* Aparece depois de 0.8s */
+/* 4. TEXTO E BARRA */
+.text-content { text-align: center; }
+
+.brand-name {
+    font-size: 2rem; color: var(--text-main); margin-bottom: 5px; letter-spacing: -0.5px;
+    transition: color 0.8s;
 }
 
-/* --- ANIMAÇÕES (KEYFRAMES) --- */
-
-/* Fundo se movendo */
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.status-message {
+    font-size: 0.9rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 20px; transition: color 0.8s;
 }
 
-/* Efeito de Pulso (Respiração) */
-@keyframes pulse-orange {
-    0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
-    }
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 20px rgba(230, 126, 34, 0); /* A sombra cresce e desaparece */
-    }
-    100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
-    }
+/* Barra de Progresso Fina */
+.loading-bar {
+    width: 200px; height: 4px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto;
 }
 
-/* Entrada do Texto */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.progress {
+    height: 100%; width: 0%;
+    background-color: var(--primary);
+    animation: loadSystem 2.5s ease-in-out forwards;
 }
 
-/* --- ESTADOS DE SAÍDA (JS) --- */
-body.fade-out {
-    opacity: 0;
-    transition: opacity 0.6s ease;
+/* 5. ANIMAÇÕES */
+@keyframes pulseWave {
+    0% { transform: scale(0.8); opacity: 0.8; border-width: 4px; }
+    100% { transform: scale(1.6); opacity: 0; border-width: 0px; }
 }
 
-body.fade-out .logo-circle {
-    transform: scale(5); /* Efeito de zoom no logo ao sair */
-    transition: transform 0.6s ease-in;
+@keyframes loadSystem {
+    0% { width: 0%; }
+    50% { width: 40%; }
+    80% { width: 70%; }
+    100% { width: 100%; }
 }
+
+/* Saída (Fade Out) */
+body.fade-out { opacity: 0; transition: 0.6s ease; }
+body.fade-out .logo-wrapper { transform: scale(5); opacity: 0; transition: 0.6s; }
+
+/* 6. PARTÍCULAS (Neve / Brilho) */
+#particles {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1;
+}
+.dot {
+    position: absolute; background: white; border-radius: 50%; opacity: 0.6;
+    animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(110vh); } }
