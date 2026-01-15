@@ -1,0 +1,153 @@
+/* --- productalm.css --- */
+
+/* Fundo da Página Cheia */
+.fullscreen-bg {
+    background-color: #F3F4F6;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Header Minimalista */
+.header-fullscreen {
+    background-color: #FFFFFF;
+    height: 70px;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #E5E7EB;
+    flex-shrink: 0;
+}
+
+.btn-voltar-topo {
+    text-decoration: none;
+    color: #6B7280;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    background-color: #F9FAFB;
+    border: 1px solid #E5E7EB;
+}
+
+.btn-voltar-topo:hover {
+    background-color: #FEE2E2; /* Vermelho claro para indicar saída */
+    color: #DC2626;
+    border-color: #FECACA;
+}
+
+/* Container Centralizado */
+.main-fullscreen {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px; /* Espaço do topo */
+    padding-bottom: 40px;
+}
+
+.form-card-fullscreen {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 800px; /* Largura máxima do formulário */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 40px;
+    height: fit-content;
+    border: 1px solid #E5E7EB;
+}
+
+.form-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-header h2 {
+    font-size: 24px;
+    color: #1F2937;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: #6B7280;
+    font-size: 14px;
+}
+
+/* Estilos de Inputs (Herdados e Ajustados) */
+.input-wrapper label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 14px; /* Inputs um pouco maiores */
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-family: 'Calibri', sans-serif;
+    font-size: 16px;
+    color: #1F2937;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.input-field:focus {
+    border-color: #E67E22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+}
+
+/* Grid Layout */
+.row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.full-width {
+    margin-bottom: 20px;
+}
+
+.divider {
+    height: 1px;
+    background-color: #E5E7EB;
+    margin: 30px 0;
+}
+
+/* Botão de Ação Full */
+.btn-salvar-full {
+    width: 100%;
+    background-color: #E67E22;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-salvar-full:hover {
+    background-color: #D35400;
+}
+
+/* Utilitários */
+.hidden { display: none !important; }
+
+/* Mobile */
+@media (max-width: 850px) {
+    .main-fullscreen { padding: 20px; }
+    .form-card-fullscreen { padding: 25px; }
+    .row-2 { grid-template-columns: 1fr; }
+}
