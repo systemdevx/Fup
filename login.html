@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FUP ALM</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="bg-image"></div> <div class="login-container">
+        <div class="glass-card">
+            <div class="header">
+                <h2>Bem-vindo de volta</h2>
+                <p>Acesse o painel FUP ALM</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Usuário</label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-outlined">person</span>
+                        <input type="text" placeholder="Seu ID ou E-mail" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Senha</label>
+                    <div class="input-wrapper">
+                        <span class="material-icons-outlined">lock</span>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Entrar
+                    <span class="material-icons-outlined">arrow_forward</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

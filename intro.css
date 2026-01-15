@@ -1,0 +1,116 @@
+/* --- intro.css --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    cursor: pointer;
+    
+    /* Fundo Gradiente Suave */
+    background: linear-gradient(-45deg, #eef2f3, #8e9eab, #eef2f3);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+/* Container Central */
+.center-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+/* O Círculo Pulsante (Logo Abstrato) */
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #E67E22; /* Laranja da marca */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
+    
+    /* Animação de Pulso */
+    animation: pulse-orange 2s infinite;
+}
+
+/* Texto */
+h1 {
+    color: #333;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards 0.5s; /* Aparece depois de 0.5s */
+}
+
+p {
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards 0.8s; /* Aparece depois de 0.8s */
+}
+
+/* --- ANIMAÇÕES (KEYFRAMES) --- */
+
+/* Fundo se movendo */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efeito de Pulso (Respiração) */
+@keyframes pulse-orange {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 20px rgba(230, 126, 34, 0); /* A sombra cresce e desaparece */
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
+    }
+}
+
+/* Entrada do Texto */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- ESTADOS DE SAÍDA (JS) --- */
+body.fade-out {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+body.fade-out .logo-circle {
+    transform: scale(5); /* Efeito de zoom no logo ao sair */
+    transition: transform 0.6s ease-in;
+}
