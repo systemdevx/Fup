@@ -1,37 +1,35 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+// --- 1. CONFIGURAÇÃO REMOVIDA (MODO OFFLINE/LOCAL) ---
+// Supabase desconectado.
 
-// --- 1. CONFIGURAÇÃO DO SUPABASE ---
-const supabaseUrl = 'https://qolqfidcvvinetdkxeim.supabase.co'
-const supabaseKey = 'sb_publishable_rD7o5xhuNf1-rDBUK_4Wog_lCOzYCkS'
-const supabase = createClient(supabaseUrl, supabaseKey)
-
-// --- 2. FUNÇÕES GLOBAIS DE INTERFACE (Menu e Sidebar) ---
+// --- 2. FUNÇÕES DE INTERFACE (Menu e Sidebar) ---
 
 // Função chamada pelo botão "Novo Cadastro"
-window.toggleNovoMenu = function(event) {
-    if(event) event.stopPropagation(); // Impede que o clique feche o menu imediatamente
+function toggleNovoMenu(event) {
+    if(event) event.stopPropagation();
     
     const menu = document.getElementById("novo-cadastro-menu");
     if(menu) {
         menu.classList.toggle("show-menu");
+    } else {
+        console.error("Menu não encontrado! Verifique o ID 'novo-cadastro-menu'");
     }
 }
 
-// Fecha o menu se clicar em qualquer outro lugar da tela
-window.addEventListener('click', function(event) {
+// Fecha o menu se clicar fora
+window.onclick = function(event) {
     const menu = document.getElementById("novo-cadastro-menu");
     const btn = document.getElementById("btn-novo-cadastro");
     
-    // Se o menu está aberto E o clique NÃO foi no botão nem dentro do menu
     if (menu && menu.classList.contains('show-menu')) {
+        // Se o clique NÃO foi no botão e NÃO foi dentro do menu, fecha.
         if (!btn.contains(event.target) && !menu.contains(event.target)) {
             menu.classList.remove('show-menu');
         }
     }
-});
+}
 
 // Alternar Sidebar
-window.toggleSidebar = function() {
+function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const icon = document.getElementById('icon-toggle-menu');
     if (sidebar) {
@@ -44,8 +42,8 @@ window.toggleSidebar = function() {
     }
 }
 
-// Expandir/Recolher grupos do menu lateral
-window.toggleGroup = function(header) {
+// Expandir/Recolher grupos
+function toggleGroup(header) {
     const list = header.nextElementSibling; 
     const arrow = header.querySelector('.arrow-header');
     if (list.style.display === 'none') {
@@ -57,10 +55,10 @@ window.toggleGroup = function(header) {
     }
 }
 
-// --- 3. LÓGICA DE CARREGAMENTO (SUPABASE) ---
+// --- 3. LÓGICA DE CARREGAMENTO (SIMULAÇÃO LOCAL) ---
 
-window.carregarLista = async function(nomeModulo, element) {
-    // Atualiza visual do link ativo
+function carregarLista(nomeModulo, element) {
+    // UI Updates
     document.querySelectorAll('.sidebar-local a').forEach(link => link.classList.remove('active'));
     if(element) element.classList.add('active');
 
@@ -70,47 +68,57 @@ window.carregarLista = async function(nomeModulo, element) {
     const tbody = document.getElementById('lista-dados');
     const msgVazio = document.getElementById('msg-vazio');
     
-    // Mostra Carregando
-    if(tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Carregando dados...</td></tr>';
+    if(tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Carregando dados locais...</td></tr>';
     if(msgVazio) msgVazio.style.display = 'none';
 
-    let tabelaSupabase = '';
+    // Simulação de delay de rede
+    setTimeout(() => {
+        let dadosLocais = [];
 
-    if (nomeModulo === 'Almoxarifado') tabelaSupabase = 'almoxarifado';
-    else if (nomeModulo === 'Ativos') tabelaSupabase = 'ativos';
-    else if (nomeModulo === 'Fornecedores') tabelaSupabase = 'fornecedores';
-    else if (nomeModulo === 'Transportadoras') tabelaSupabase = 'transportadoras';
-    else {
-        tbody.innerHTML = '';
-        msgVazio.style.display = 'block';
-        msgVazio.innerText = 'Módulo ainda não conectado.';
-        return; 
-    }
-
-    try {
-        const { data, error } = await supabase
-            .from(tabelaSupabase)
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        tbody.innerHTML = '';
-
-        if (!data || data.length === 0) {
+        // DADOS FICTÍCIOS PARA VISUALIZAÇÃO
+        if (nomeModulo === 'Almoxarifado') {
+            dadosLocais = [
+                { id: 1, descricao: 'Papel A4 Chamex', codigo: 'MAT-001', grupo: 'Escritório' },
+                { id: 2, descricao: 'Caneta Azul Bic', codigo: 'MAT-002', grupo: 'Escritório' },
+                { id: 3, descricao: 'Luva de Proteção', codigo: 'EPI-055', grupo: 'EPI' }
+            ];
+        } 
+        else if (nomeModulo === 'Ativos') {
+            dadosLocais = [
+                { id: 101, equipamento: 'Notebook Dell Latitude' },
+                { id: 102, equipamento: 'Monitor Samsung 24pol' }
+            ];
+        }
+        else if (nomeModulo === 'Fornecedores') {
+            dadosLocais = [
+                { id: 5, razao_social: 'Kalunga Comércio LTDA', cnpj: '00.000.000/0001-99' },
+                { id: 6, razao_social: 'Amazon Servicos', cnpj: '11.222.333/0001-88' }
+            ];
+        }
+        else if (nomeModulo === 'Transportadoras') {
+            dadosLocais = [
+                { id: 8, razao_social: 'Fedex Brasil', cnpj: '99.888.777/0001-00' }
+            ];
+        }
+        else {
+            tbody.innerHTML = '';
             msgVazio.style.display = 'block';
-            msgVazio.innerText = 'Nenhum registro encontrado.';
+            msgVazio.innerText = 'Módulo desconhecido ou não implementado.';
+            return; 
+        }
+
+        tbody.innerHTML = '';
+
+        if (!dadosLocais || dadosLocais.length === 0) {
+            msgVazio.style.display = 'block';
+            msgVazio.innerText = 'Nenhum registro encontrado (Local).';
         } else {
-            data.forEach(item => {
+            dadosLocais.forEach(item => {
                 let rowHtml = montarLinhaTabela(nomeModulo, item);
                 tbody.insertAdjacentHTML('beforeend', rowHtml);
             });
         }
-
-    } catch (err) {
-        console.error(err);
-        tbody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">Erro: ${err.message}</td></tr>`;
-    }
+    }, 300); // Pequeno delay simulado
 }
 
 function montarLinhaTabela(modulo, item) {
@@ -139,7 +147,7 @@ function montarLinhaTabela(modulo, item) {
             <td>${tipo}</td>
             <td>${status}</td>
             <td>
-                <button class="btn-icon" onclick="window.deletarItem('${modulo}', ${id})" title="Excluir">
+                <button class="btn-icon" onclick="deletarItem('${modulo}', ${id})" title="Excluir">
                     <span class="material-icons-outlined">delete</span>
                 </button>
             </td>
@@ -147,26 +155,16 @@ function montarLinhaTabela(modulo, item) {
     `;
 }
 
-window.deletarItem = async function(modulo, id) {
-    if(!confirm("Deseja realmente excluir este registro?")) return;
-
-    let tabela = '';
-    if (modulo === 'Almoxarifado') tabela = 'almoxarifado';
-    else if (modulo === 'Ativos') tabela = 'ativos';
-    else if (modulo === 'Fornecedores') tabela = 'fornecedores';
-    else if (modulo === 'Transportadoras') tabela = 'transportadoras';
-
-    try {
-        const { error } = await supabase.from(tabela).delete().eq('id', id);
-        if (error) throw error;
-        
-        // Recarrega lista
-        const activeLink = document.querySelector('.sidebar-local a.active');
-        if(activeLink) {
-            const nomeModulo = document.getElementById('titulo-pagina').innerText;
-            window.carregarLista(nomeModulo, activeLink); 
-        }
-    } catch (err) {
-        alert("Erro ao excluir: " + err.message);
+function deletarItem(modulo, id) {
+    if(!confirm("Deseja realmente excluir este registro? (Simulação Local)")) return;
+    
+    // Apenas remove visualmente, já que não temos banco
+    alert(`Item #${id} do módulo ${modulo} seria excluído.`);
+    
+    // Simula recarregamento
+    const activeLink = document.querySelector('.sidebar-local a.active');
+    if(activeLink) {
+        // Nada acontece com os dados pois são hardcoded, mas a ação é simulada
+        console.log('Item deletado logicamente.');
     }
 }

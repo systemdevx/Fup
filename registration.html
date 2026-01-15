@@ -7,7 +7,7 @@
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="registration.css">
-</head>
+    </head>
 <body>
 
     <header>
@@ -34,14 +34,14 @@
     </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="window.toggleSidebar()" title="Alternar Menu">
+        <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
             <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
         </button>
 
         <div class="v-separator"></div>
 
         <div class="dropdown-container">
-            <button class="btn-subheader-action" id="btn-novo-cadastro" onclick="window.toggleNovoMenu(event)">
+            <button class="btn-subheader-action" id="btn-novo-cadastro" onclick="toggleNovoMenu(event)">
                 <span class="material-icons-outlined">add</span>
                 <span>Novo Cadastro</span>
                 <span class="material-icons-outlined" style="font-size: 16px; margin-left: 4px;">expand_more</span>
@@ -85,13 +85,13 @@
     <div class="layout-wrapper">
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
-                <div class="group-header" onclick="window.toggleGroup(this)">
+                <div class="group-header" onclick="toggleGroup(this)">
                     <span>ORGANIZAÇÃO</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="window.carregarLista('Centro de Custo', this)">
+                        <a href="#" onclick="carregarLista('Centro de Custo', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">account_balance_wallet</span>
                                 <span>Centro de Custo</span>
@@ -100,7 +100,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="window.carregarLista('Almoxarifado', this)">
+                        <a href="#" onclick="carregarLista('Almoxarifado', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">warehouse</span>
                                 <span>Almoxarifado</span>
@@ -109,7 +109,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="window.carregarLista('Ativos', this)">
+                        <a href="#" onclick="carregarLista('Ativos', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">inventory</span>
                                 <span>Ativos</span>
@@ -121,13 +121,13 @@
             </div>
 
             <div class="menu-group">
-                <div class="group-header" onclick="window.toggleGroup(this)">
+                <div class="group-header" onclick="toggleGroup(this)">
                     <span>PARCEIROS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="window.carregarLista('Fornecedores', this)">
+                        <a href="#" onclick="carregarLista('Fornecedores', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">storefront</span>
                                 <span>Fornecedores</span>
@@ -136,7 +136,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="window.carregarLista('Transportadoras', this)">
+                        <a href="#" onclick="carregarLista('Transportadoras', this)">
                             <div class="menu-text-icon">
                                 <span class="material-icons-outlined">local_shipping</span>
                                 <span>Transportadoras</span>
@@ -178,6 +178,6 @@
         </main>
     </div>
 
-    <script type="module" src="registration.js"></script>
+    <script src="registration.js"></script>
 </body>
 </html>
