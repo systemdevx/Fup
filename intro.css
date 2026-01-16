@@ -1,38 +1,11 @@
 /* --- intro.css --- */
 :root {
-    /* Base: Preto Fosco Profundo (Matte Black) */
-    --bg-color: #0a0a0a; 
-    
-    /* Gradiente Padrão: "Titanium Silk" (Cinza, Prata e Azul Gelo) */
-    --gradient-stops: 
-        #2c3e50, 
-        #bdc3c7, 
-        #ecf0f1, 
-        #bdc3c7, 
-        #2c3e50;
-    
+    /* Identidade Visual do Login */
+    --bg-base: #dbe4ea;
+    --accent: #E67E22; /* Laranja Padrão */
+    --accent-hover: #D35400;
+    --white: #ffffff;
     --font-stack: "Inter", system-ui, sans-serif;
-}
-
-/* Tema Natal: "Velvet Red" (Vermelho Profundo e Ouro) */
-body.theme-christmas {
-    --gradient-stops: 
-        #4a0e0e, 
-        #b91c1c, 
-        #ef4444, 
-        #ffd700, /* Toque de ouro */
-        #b91c1c, 
-        #4a0e0e;
-}
-
-/* Tema Ano Novo: "Liquid Gold" (Ouro Puro) */
-body.theme-gold {
-    --gradient-stops: 
-        #4f3805, 
-        #996e08, 
-        #fceeb5, 
-        #996e08, 
-        #4f3805;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,96 +13,99 @@ body.theme-gold {
 body {
     height: 100vh;
     width: 100vw;
-    background-color: var(--bg-color);
+    background-color: var(--bg-base);
     font-family: var(--font-stack);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     cursor: pointer;
-    user-select: none;
-    transition: background-color 1s ease;
 }
+
+/* Background igual ao Login */
+.bg-image {
+    position: fixed; inset: 0; z-index: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(8px) saturate(.9);
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+.bg-image.loaded { opacity: 1; }
 
 #hero-scene {
     position: relative;
     z-index: 10;
-    width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.logo-container {
+/* --- O Badge Animado --- */
+
+.loader-badge {
     position: relative;
-    /* Variáveis controladas pelo JS para mover a luz */
-    --mouse-x: 50%;
-    --mouse-y: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.hero-title {
-    font-size: clamp(4rem, 14vw, 10rem);
-    font-weight: 800;
-    letter-spacing: -0.05em; /* Letras bem juntas, estilo editorial */
+/* O Círculo Central Laranja com F */
+.circle-f {
+    width: 70px;
+    height: 70px;
+    background-color: var(--accent);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
-    /* A MÁGICA DO GRADIENTE */
-    background-image: linear-gradient(
-        135deg, 
-        var(--gradient-stops)
-    );
-    background-size: 300% 300%; /* Tamanho extra para podermos mover */
+    font-size: 42px;
+    font-weight: 800; /* Extra bold */
+    padding-bottom: 2px; /* Ajuste óptico vertical */
     
-    /* Recorta o fundo no formato do texto */
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent; /* Texto transparente para mostrar o fundo */
-    
-    /* Animação automática lenta + Posição controlada pelo mouse */
-    animation: shineFlow 8s ease-in-out infinite alternate;
-    
-    /* Sombra suave para destacar do fundo escuro */
-    filter: drop-shadow(0 0 30px rgba(255,255,255,0.05));
-    
-    transition: transform 0.2s ease-out;
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.3); /* Sombra laranja suave */
+    z-index: 2;
 }
 
-/* Um brilho extra muito sutil atrás */
-.reflection-glow {
+/* A Linha "Gerando" ao redor (Spinner) */
+.spinner-ring {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: -1;
+    width: 90px;  /* Levemente maior que o círculo */
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid transparent; /* Fundo transparente */
+    border-top-color: var(--accent); /* Apenas o topo tem cor */
+    /* border-left-color: var(--accent); Se quiser o arco maior, descomente */
+    
+    animation: spinAround 1.2s linear infinite;
+    z-index: 1;
 }
 
-/* Animação de Entrada Elegante */
-.hero-title {
+/* Animação de Rotação */
+@keyframes spinAround {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Efeito Hover (Interatividade) */
+body:hover .loader-badge {
+    transform: scale(1.05);
+}
+
+/* Saída (Fade Out) ao clicar */
+body.fade-out .loader-badge {
+    transform: scale(1.5);
     opacity: 0;
-    transform: translateY(20px);
-    animation: softRise 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, shineFlow 10s ease-in-out infinite;
-}
-
-@keyframes softRise {
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes shineFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Efeito ao Clicar (Cinematic Fade) */
-body.fade-out .hero-title {
-    transform: scale(1.05) translateY(-10px); /* Leve subida */
-    opacity: 0;
-    filter: blur(20px); /* Desfoque ao sair */
+    filter: blur(10px);
     transition: all 0.6s ease-in;
 }
 
 body.fade-out {
-    background-color: #000;
+    transition: background-color 0.8s ease;
 }
