@@ -6,46 +6,77 @@
     <title>FUP ALM | Login</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="login-card">
-            
-            <header>
-                <div class="brand-icon">F</div>
-                <h1>Acesso ao Sistema</h1>
-                <p>Insira suas credenciais para continuar.</p>
-            </header>
-
-            <form id="loginForm" autocomplete="off">
+    <main class="split-screen">
+        
+        <section class="brand-side">
+            <div class="brand-content">
+                <div class="brand-logo-large">
+                    <i class="ph-fill ph-cubes"></i> </div>
+                <h1>FUP ALM</h1>
+                <h2>Gestão Integrada</h2>
+                <p>Otimize seus processos, controle seu estoque e gerencie transações com segurança e agilidade.</p>
                 
-                <div class="input-group">
-                    <label for="user">Usuário</label>
-                    <input type="text" id="user" placeholder="Digite seu usuário" required>
+                <div class="copyright">
+                    © 2026 FUP Corporation. Todos os direitos reservados.
                 </div>
+            </div>
+            <div class="bg-pattern"></div>
+        </section>
 
-                <div class="input-group">
-                    <label for="pass">Senha</label>
-                    <div class="pass-wrapper">
-                        <input type="password" id="pass" placeholder="Digite sua senha" required>
-                        <button type="button" id="togglePass" tabindex="-1">
-                            <i class="ph ph-eye-slash"></i>
-                        </button>
+        <section class="login-side">
+            <div class="login-wrapper">
+                
+                <header>
+                    <div class="mobile-logo">F</div> <h3>Bem-vindo de volta!</h3>
+                    <p>Por favor, insira suas credenciais.</p>
+                </header>
+
+                <form id="loginForm" autocomplete="off">
+                    
+                    <div class="input-group">
+                        <label for="user">Usuário</label>
+                        <div class="input-icon-wrapper">
+                            <i class="ph ph-user input-icon"></i>
+                            <input type="text" id="user" placeholder="Ex: joao.silva" required>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" id="btnSubmit">
-                    Entrar
-                </button>
+                    <div class="input-group">
+                        <label for="pass">Senha</label>
+                        <div class="pass-wrapper input-icon-wrapper">
+                            <i class="ph ph-lock-key input-icon"></i>
+                            <input type="password" id="pass" placeholder="••••••••" required>
+                            <button type="button" id="togglePass" tabindex="-1">
+                                <i class="ph ph-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
 
-            </form>
-        </div>
-    </div>
+                    <div class="actions">
+                        <label class="remember-me">
+                            <input type="checkbox"> 
+                            <span>Lembrar de mim</span>
+                        </label>
+                        <a href="#" class="forgot-pass">Esqueceu a senha?</a>
+                    </div>
+
+                    <button type="submit" id="btnSubmit">
+                        Acessar Sistema
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
 
     <script src="login.js"></script>
 </body>

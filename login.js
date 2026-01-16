@@ -14,10 +14,14 @@
             passInput.type = isPass ? 'text' : 'password';
             
             const icon = toggleBtn.querySelector('i');
+            // Usando Phosphor Icons (classes mudam um pouco dependendo da versão, 
+            // mas mantendo a lógica do seu original ou do novo HTML)
             if(isPass) {
-                icon.classList.replace('ph-eye-slash', 'ph-eye');
+                icon.classList.remove('ph-eye-slash');
+                icon.classList.add('ph-eye');
             } else {
-                icon.classList.replace('ph-eye', 'ph-eye-slash');
+                icon.classList.remove('ph-eye');
+                icon.classList.add('ph-eye-slash');
             }
         });
     }
@@ -36,7 +40,6 @@
                     isValid = false;
                     input.classList.add('error');
                     
-                    // Remove o erro assim que digitar algo
                     input.addEventListener('input', () => {
                         input.classList.remove('error');
                     }, { once: true });
@@ -45,16 +48,20 @@
 
             if (!isValid) return;
 
-            // Feedback visual no botão
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Entrando...';
-            submitBtn.style.opacity = '0.7';
+            // Feedback visual no botão com Spinner opcional ou texto
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Entrando...';
+            submitBtn.style.opacity = '0.8';
             submitBtn.disabled = true;
 
-            // Redirecionamento simulado
+            // Simulação de delay
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
-            }, 1000);
+                
+                // Caso queira restaurar se o redirect falhar
+                // submitBtn.innerHTML = originalContent;
+                // submitBtn.disabled = false;
+            }, 1500);
         });
     }
 })();
