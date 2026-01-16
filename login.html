@@ -1,73 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUP ALM | Login</title>
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23E67E22%22/><text x=%2250%22 y=%2250%22 font-family=%22Arial%22 font-size=%2260%22 font-weight=%22bold%22 fill=%22white%22 text-anchor=%22middle%22 dy=%2220%22>F</text></svg>">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FUP ALM | Acesso</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <main class="split-screen">
-        
-        <section class="brand-side">
-            <div class="brand-content">
-                <i class="ph-duotone ph-cubes brand-icon-large"></i>
-                
-                <h1>FUP ALM</h1>
-                <h2>Gestão Integrada</h2>
-                
-                <div class="copyright">
-                    © 2026 FUP Corporation
-                </div>
+    <main class="main-container">
+        <section class="visual-panel">
+            <canvas id="organic-wires"></canvas>
+            
+            <div class="visual-content">
+                <div class="brand-mark">F</div>
+                <h1>FUP ALM.</h1>
+                <p>Ecossistema de Gestão</p>
             </div>
+            
+            <div class="footer-copy">© 2026 FUP Corp</div>
         </section>
 
-        <section class="login-side">
+        <section class="login-panel">
             <div class="login-wrapper">
-                
                 <header>
-                    <div class="mobile-logo">F</div>
-                    <h3>Bem-vindo de volta!</h3>
-                    </header>
+                    <h2>Bem-vindo</h2>
+                    <p>Informe suas credenciais de acesso.</p>
+                </header>
 
-                <form id="loginForm" autocomplete="off">
-                    
-                    <div class="input-group">
-                        <label for="user">Usuário</label>
-                        <div class="input-icon-wrapper">
-                            <i class="ph ph-user input-icon"></i>
-                            <input type="text" id="user" placeholder="Ex: joao.silva" required>
-                        </div>
+                <form id="loginForm">
+                    <div class="input-container">
+                        <label for="user">Identificação</label>
+                        <input type="text" id="user" placeholder="ex: usuario.corp" autocomplete="off" required>
                     </div>
 
-                    <div class="input-group">
-                        <label for="pass">Senha</label>
-                        <div class="pass-wrapper input-icon-wrapper">
-                            <i class="ph ph-lock-key input-icon"></i>
+                    <div class="input-container">
+                        <label for="pass">Chave de Acesso</label>
+                        <div class="pass-field">
                             <input type="password" id="pass" placeholder="••••••••" required>
-                            <button type="button" id="togglePass" tabindex="-1">
-                                <i class="ph ph-eye-slash"></i>
+                            <button type="button" id="togglePass" aria-label="Ver senha">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" id="btnSubmit">
-                        Acessar
-                        <i class="ph-bold ph-arrow-right"></i>
-                    </button>
+                    <div class="aux-actions">
+                        <a href="#" class="forgot-link">Esqueci minha senha</a>
+                    </div>
 
+                    <button type="submit" id="btnSubmit">Entrar</button>
                 </form>
             </div>
         </section>
-
     </main>
 
     <script src="login.js"></script>

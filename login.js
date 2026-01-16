@@ -1,67 +1,120 @@
-// --- login.js ---
 (() => {
     'use strict';
 
-    const loginForm = document.getElementById('loginForm');
+    // --- LÓGICA DO LOGIN ---
     const toggleBtn = document.getElementById('togglePass');
     const passInput = document.getElementById('pass');
-    const submitBtn = document.getElementById('btnSubmit');
+    const form = document.getElementById('loginForm');
+    const btn = document.getElementById('btnSubmit');
 
-    // Toggle de Senha
     if (toggleBtn && passInput) {
         toggleBtn.addEventListener('click', () => {
             const isPass = passInput.type === 'password';
             passInput.type = isPass ? 'text' : 'password';
-            
-            const icon = toggleBtn.querySelector('i');
-            // Usando Phosphor Icons (classes mudam um pouco dependendo da versão, 
-            // mas mantendo a lógica do seu original ou do novo HTML)
-            if(isPass) {
-                icon.classList.remove('ph-eye-slash');
-                icon.classList.add('ph-eye');
-            } else {
-                icon.classList.remove('ph-eye');
-                icon.classList.add('ph-eye-slash');
-            }
+            toggleBtn.style.color = isPass ? '#2563EB' : '';
         });
     }
 
-    // Processar Login
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+    if (form) {
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-
-            const user = document.getElementById('user');
-            let isValid = true;
-
-            // Validação visual simples
-            [user, passInput].forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
-                    input.classList.add('error');
-                    
-                    input.addEventListener('input', () => {
-                        input.classList.remove('error');
-                    }, { once: true });
-                }
-            });
-
-            if (!isValid) return;
-
-            // Feedback visual no botão com Spinner opcional ou texto
-            const originalContent = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Entrando...';
-            submitBtn.style.opacity = '0.8';
-            submitBtn.disabled = true;
-
-            // Simulação de delay
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Acessando...';
+            btn.style.opacity = '0.8';
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
-                
-                // Caso queira restaurar se o redirect falhar
-                // submitBtn.innerHTML = originalContent;
-                // submitBtn.disabled = false;
-            }, 1500);
+                alert("Login realizado com sucesso.");
+                btn.disabled = false;
+                btn.innerText = originalText;
+                btn.style.opacity = '1';
+            }, 1200);
         });
     }
+
+    // --- ANIMAÇÃO DE FIOS ORGÂNICOS (CANVAS) ---
+    const canvas = document.getElementById('organic-wires');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let lines = [];
+    
+    // Configurações dos Fios
+    const config = {
+        lineCount: 15,        // Quantidade de fios
+        color: 'rgba(255, 255, 255, 0.3)', // Cor branca translúcida
+        speedBase: 0.002,     // Velocidade do movimento
+    };
+
+    // Objeto Linha (Fio)
+    class Wire {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            // Posição inicial aleatória
+            this.y = Math.random() * height;
+            // Amplitude da onda (o quão curva ela é)
+            this.amplitude = Math.random() * 50 + 20; 
+            // Comprimento da onda
+            this.frequency = Math.random() * 0.01 + 0.002;
+            // Fase (posição atual na animação)
+            this.phase = Math.random() * Math.PI * 2;
+            // Velocidade individual
+            this.speed = config.speedBase + Math.random() * 0.002;
+            // Espessura fina (fio de cabelo)
+            this.lineWidth = Math.random() * 1.5 + 0.5; 
+        }
+
+        update() {
+            this.phase += this.speed;
+        }
+
+        draw(ctx) {
+            ctx.beginPath();
+            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = config.color;
+
+            // Desenha uma curva senoide suave através da tela
+            for (let x = 0; x <= width; x += 5) {
+                // Fórmula da onda: y base + (seno(x * frequencia + fase) * amplitude)
+                // Adicionamos um segundo seno para tornar o movimento mais "caótico/orgânico"
+                const y = this.y + 
+                          Math.sin(x * this.frequency + this.phase) * this.amplitude +
+                          Math.sin(x * this.frequency * 0.5 + this.phase * 0.5) * (this.amplitude * 0.5);
+                
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+    }
+
+    function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+        // Recria as linhas ao redimensionar para manter distribuição
+        lines = [];
+        for (let i = 0; i < config.lineCount; i++) {
+            lines.push(new Wire());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        lines.forEach(line => {
+            line.update();
+            line.draw(ctx);
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    // Inicialização
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+
 })();

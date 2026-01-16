@@ -1,262 +1,217 @@
-/* --- login.css --- */
 :root {
-    /* Laranja FUP ALM - Vibrante e Profissional */
-    --primary: #FF6B00; 
-    --primary-dark: #C2410C;
+    --primary-orange: #E67E22;
+    --deep-orange: #d35400;
+    --action-blue: #2563EB;     /* Azul vibrante para o botão */
+    --action-blue-hover: #1e40af;
     
-    /* Gradiente Invertido (Para combinar com o lado direito) */
-    --gradient-start: #FF881B; /* Laranja Claro */
-    --gradient-end: #9A2906;   /* Laranja Escuro */
+    --text-main: #374151;
+    --text-muted: #9ca3af;
+    --border-light: #e5e7eb;
+    --bg-white: #ffffff;
     
-    --text-main: #1F2937;
-    --text-muted: #6B7280;
-    --text-white: #FFFFFF;
-    
-    --bg-white: #FFFFFF;
-    --border-color: #E5E7EB;
-    
-    --font-family: 'Inter', sans-serif;
+    --font-stack: "Inter", sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: var(--font-family);
-    height: 100vh;
-    overflow: hidden;
-    color: var(--text-main);
-    background-color: var(--bg-white);
-}
-
-.split-screen {
-    display: grid;
-    /* ESPELHADO: Coluna da esquerda (Login) menor, Direita (Brand) maior */
-    grid-template-columns: 0.8fr 1.2fr; 
-    height: 100vh;
+body, html {
+    height: 100%;
     width: 100%;
+    font-family: var(--font-stack);
+    background-color: var(--bg-white);
+    overflow: hidden; /* Importante para o canvas não gerar scroll */
 }
 
-/* --- LADO ESQUERDO: LOGIN (Agora vem primeiro na ordem visual) --- */
-.login-side {
-    /* Força visualmente a ser o primeiro item */
-    order: 1; 
-    
-    background-color: var(--bg-white);
+.main-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- LADO ESQUERDO (Visual) --- */
+.visual-panel {
+    position: relative;
+    flex: 1.8; /* 65% da largura aprox */
+    background: linear-gradient(135deg, var(--primary-orange), var(--deep-orange));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Canvas fica atrás do texto */
+#organic-wires {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.4; /* Sutileza nos fios */
+}
+
+.visual-content {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; /* Deixa o mouse "passar" para o canvas se quiser interatividade futura */
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
-    position: relative;
-    z-index: 2; /* Fica levemente acima da borda da imagem */
-    
-    /* Sombra suave caindo sobre a imagem (efeito de camada) */
-    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px);
+}
+
+.visual-content h1 {
+    font-size: 2.2rem; /* Reduzido */
+    font-weight: 300;  /* Leve */
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.visual-content p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+.footer-copy {
+    position: absolute;
+    bottom: 2rem;
+    left: 4rem;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    z-index: 10;
+}
+
+/* --- LADO DIREITO (Login) --- */
+.login-panel {
+    flex: 1.2; /* 35% da largura aprox */
+    background: var(--bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
 .login-wrapper {
     width: 100%;
-    max-width: 360px;
-    animation: slideInLeft 0.8s ease-out;
+    max-width: 300px; /* Formulário bem compacto */
 }
 
-/* Animação vindo da esquerda */
-@keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
+header { margin-bottom: 2rem; }
 
-/* --- LADO DIREITO: BRAND / ARTE (Agora na direita) --- */
-.brand-side {
-    /* Força visualmente a ser o segundo item */
-    order: 2;
-    
-    background: linear-gradient(-135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 80px;
-    color: var(--text-white);
-    overflow: hidden;
-}
-
-/* Padrão Isométrico (Tech) - Espelhado e sutil */
-.brand-side::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    /* Padrão SVG de linhas geométricas finas */
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='68' viewBox='0 0 60 68' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23FFFFFF' stroke-width='1' stroke-opacity='0.12'%3E%3Cpath d='M30 68V34'/%3E%3Cpath d='M30 0v34'/%3E%3Cpath d='M0 17L30 34'/%3E%3Cpath d='M60 17L30 34'/%3E%3Cpath d='M0 51l30-17'/%3E%3Cpath d='M60 51l30-17'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    background-size: 60px 68px;
-    
-    /* Máscara radial para focar no centro */
-    mask-image: radial-gradient(circle at 60% 50%, black 20%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at 60% 50%, black 20%, transparent 100%);
-    
-    opacity: 0.8;
-}
-
-/* Formas Geométricas de "Vidro" flutuando no fundo */
-.brand-side::after {
-    content: "";
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: linear-gradient(45deg, rgba(255,255,255,0.05), transparent);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 40px;
-    transform: rotate(45deg);
-    top: -100px;
-    right: -200px; /* Posicionado no canto direito superior */
-    z-index: 0;
-}
-
-/* Outro elemento geométrico para equilíbrio */
-.brand-bg-circle {
-    position: absolute;
-    bottom: -150px;
-    left: -100px;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.05);
-    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-    z-index: 0;
-}
-
-.brand-content {
-    position: relative;
-    z-index: 10;
-    max-width: 500px;
-    margin-left: auto; /* Empurra o texto levemente para a direita para balancear */
-    margin-right: 40px;
-    text-align: right; /* Alinha o texto à direita (estilo espelhado) */
-}
-
-.brand-icon-large {
-    font-size: 72px;
-    margin-bottom: 24px;
-    display: inline-block;
-    color: #FFF;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
-}
-
-.brand-side h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 16px;
-    letter-spacing: -1px;
-}
-
-.brand-side h2 {
-    font-size: 1.25rem;
-    font-weight: 300;
-    opacity: 0.9;
-    border-right: 4px solid rgba(255,255,255,0.4); /* Borda na direita agora */
-    padding-right: 20px;
-}
-
-.copyright {
-    position: absolute;
-    bottom: 30px;
-    right: 60px; /* Copyright na direita */
-    left: auto;
-    font-size: 0.75rem;
-    opacity: 0.6;
-    font-family: monospace;
-}
-
-
-/* --- ESTILOS DO FORMULÁRIO (Mantidos Clean) --- */
-.login-side header { margin-bottom: 32px; }
-.mobile-logo { display: none; }
-
-.login-side h3 {
-    font-size: 1.8rem;
-    font-weight: 700;
+header h2 {
+    font-size: 1.25rem; /* Título pequeno */
     color: var(--text-main);
-    letter-spacing: -0.5px;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
 }
-.login-side p {
+
+header p {
+    font-size: 0.8rem;
     color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-top: 8px;
-    line-height: 1.5;
 }
 
-.input-group { margin-bottom: 20px; }
-.input-group label {
-    display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: #374151;
+/* Inputs - Estilo minimalista */
+.input-container { margin-bottom: 1.25rem; }
+
+.input-container label {
+    display: block;
+    font-size: 0.7rem; /* Label minúsculo */
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.input-icon-wrapper { position: relative; }
-.input-icon {
-    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-    color: #9CA3AF; font-size: 20px;
-}
-
-input {
+.input-container input {
     width: 100%;
-    padding: 14px 16px 14px 48px;
-    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.9rem;
     color: var(--text-main);
-    background-color: #F9FAFB;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-family: var(--font-family);
-    transition: all 0.2s;
+    background: transparent;
+    transition: border-color 0.3s;
+    border-radius: 0;
 }
 
-input:focus {
-    background-color: #FFF; outline: none; border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
-}
-input:focus + .input-icon { color: var(--primary); }
+.input-container input::placeholder { color: #d1d5db; }
 
-#togglePass {
-    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: #9CA3AF; cursor: pointer; font-size: 20px;
+.input-container input:focus {
+    outline: none;
+    border-bottom-color: var(--action-blue); /* Azul no foco */
 }
-#togglePass:hover { color: var(--text-main); }
 
+/* Senha e Olho */
+.pass-field { position: relative; }
+.pass-field button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+}
+.pass-field button:hover { color: var(--action-blue); }
+
+/* Ações */
+.aux-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.forgot-link {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.forgot-link:hover { color: var(--action-blue); }
+
+/* BOTÃO AZUL */
 button[type="submit"] {
-    width: 100%; padding: 14px; margin-top: 16px;
-    background: linear-gradient(to right, var(--primary), #EA580C);
-    color: white; border: none; border-radius: 8px;
-    font-size: 1rem; font-weight: 600; cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 4px 10px rgba(255, 107, 0, 0.25);
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--action-blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
 }
 
 button[type="submit"]:hover {
-    box-shadow: 0 8px 15px rgba(255, 107, 0, 0.35); transform: translateY(-1px);
+    background-color: var(--action-blue-hover);
 }
 
-input.error {
-    border-color: #EF4444; background-color: #FEF2F2;
-    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-}
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+button[type="submit"]:active {
+    transform: scale(0.98);
 }
 
-/* --- RESPONSIVO --- */
+/* Responsividade */
 @media (max-width: 900px) {
-    .split-screen { display: flex; flex-direction: column; }
-    /* No mobile, voltamos ao normal: Logo em cima (mas escondido), Login embaixo */
-    .brand-side { display: none; }
-    .login-side { order: 0; padding: 24px; min-height: 100vh; }
-    
-    .mobile-logo {
-        display: flex; width: 50px; height: 50px;
-        background: var(--primary); color: white;
-        border-radius: 12px; align-items: center; justify-content: center;
-        font-size: 24px; font-weight: bold; margin-bottom: 24px;
-        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
-    }
+    .main-container { flex-direction: column; }
+    .visual-panel { flex: 0.4; padding: 2rem; align-items: center; text-align: center; }
+    .visual-content h1 { font-size: 1.8rem; }
+    .footer-copy { display: none; }
+    .login-panel { flex: 1; padding: 2rem; }
 }
