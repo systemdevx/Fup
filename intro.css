@@ -1,139 +1,135 @@
 /* --- intro.css --- */
-/* Estilos responsivos, variáveis de tema, partículas e acessibilidade */
-
-:root{
-    --bg-color: #F3F4F6;
-    --primary: #E67E22;
-    --primary-light: #FADBC5;
-    --text-main: #222;
-    --text-sub: #666;
-    --font-stack: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-    --particle-color: rgba(255,255,255,0.9);
-    --max-width: 420px;
+:root {
+    /* Base: Preto Fosco Profundo (Matte Black) */
+    --bg-color: #0a0a0a; 
+    
+    /* Gradiente Padrão: "Titanium Silk" (Cinza, Prata e Azul Gelo) */
+    --gradient-stops: 
+        #2c3e50, 
+        #bdc3c7, 
+        #ecf0f1, 
+        #bdc3c7, 
+        #2c3e50;
+    
+    --font-stack: "Inter", system-ui, sans-serif;
 }
 
-/* Tema Natal */
-body.theme-christmas{
-    --bg-color: #0f2b1d;
-    --primary: #D42426;
-    --primary-light: #f0b4b5;
-    --text-main: #fff;
-    --text-sub: #a8d5ba;
-    --particle-color: rgba(255,255,255,0.95);
+/* Tema Natal: "Velvet Red" (Vermelho Profundo e Ouro) */
+body.theme-christmas {
+    --gradient-stops: 
+        #4a0e0e, 
+        #b91c1c, 
+        #ef4444, 
+        #ffd700, /* Toque de ouro */
+        #b91c1c, 
+        #4a0e0e;
 }
 
-/* Tema Ano Novo / Premium */
-body.theme-gold{
-    --bg-color: #111;
-    --primary: #D4AF37;
-    --primary-light: #aa8c2c;
-    --text-main: #fcf6ba;
-    --text-sub: #999;
-    --particle-color: rgba(212,175,55,0.6);
+/* Tema Ano Novo: "Liquid Gold" (Ouro Puro) */
+body.theme-gold {
+    --gradient-stops: 
+        #4f3805, 
+        #996e08, 
+        #fceeb5, 
+        #996e08, 
+        #4f3805;
 }
 
-/* Reset */
-*{box-sizing:border-box;margin:0;padding:0}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html,body{height:100%}
-
-body{
-    height:100vh;
-    width:100vw;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--bg-color);
-    color:var(--text-main);
-    font-family:var(--font-stack);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    user-select:none;
-    overflow:hidden;
-    transition:background-color .6s ease, color .6s ease;
-    cursor:pointer;
+body {
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--bg-color);
+    font-family: var(--font-stack);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 1s ease;
 }
 
-/* Container central (botão acessível) */
-.main-container{
-    width: min(var(--max-width), 92vw);
-    max-width: var(--max-width);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:18px;
-    padding:24px;
-    border-radius:12px;
-    text-align:center;
-    z-index:10;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+#hero-scene {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-/* Logo */
-.logo-wrapper{ position:relative; width:110px; height:110px; display:flex; align-items:center; justify-content:center; }
-.core-circle{
-    width:84px;height:84px;border-radius:50%;
-    background:var(--primary);display:flex;align-items:center;justify-content:center;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.18); transition:transform .25s ease, background .6s ease;
-}
-.logo-letter{ color:#fff;font-family:"Times New Roman",serif;font-weight:700;font-size:2.4rem;line-height:1 }
-
-/* Pulso ao redor */
-.pulse-ring{
-    position:absolute;width:128px;height:128px;border-radius:50%;
-    border:2px solid var(--primary); opacity:0; pointer-events:none;
-    animation:pulseWave 2000ms infinite;
+.logo-container {
+    position: relative;
+    /* Variáveis controladas pelo JS para mover a luz */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
 }
 
-/* Textos */
-.brand-name{ font-size:1.8rem; letter-spacing:-0.4px; color:var(--text-main) }
-.status-message{ font-size:.85rem; color:var(--text-sub); text-transform:uppercase; letter-spacing:1.4px }
-
-/* Barra de carregamento */
-.loading-bar{ width:200px;height:6px;background: rgba(0,0,0,0.06); border-radius:6px; overflow:hidden; margin-top:4px; }
-.progress{
-    height:100%; width:0; background:var(--primary); transition:width .6s ease; animation:loadSystem 2.5s ease-in-out forwards;
+.hero-title {
+    font-size: clamp(4rem, 14vw, 10rem);
+    font-weight: 800;
+    letter-spacing: -0.05em; /* Letras bem juntas, estilo editorial */
+    
+    /* A MÁGICA DO GRADIENTE */
+    background-image: linear-gradient(
+        135deg, 
+        var(--gradient-stops)
+    );
+    background-size: 300% 300%; /* Tamanho extra para podermos mover */
+    
+    /* Recorta o fundo no formato do texto */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Texto transparente para mostrar o fundo */
+    
+    /* Animação automática lenta + Posição controlada pelo mouse */
+    animation: shineFlow 8s ease-in-out infinite alternate;
+    
+    /* Sombra suave para destacar do fundo escuro */
+    filter: drop-shadow(0 0 30px rgba(255,255,255,0.05));
+    
+    transition: transform 0.2s ease-out;
 }
 
-/* Animações */
-@keyframes pulseWave{
-    0%{ transform:scale(.9); opacity:.9; border-width:3px }
-    70%{ transform:scale(1.35); opacity:0 }
-    100%{ transform:scale(1.5); opacity:0 }
+/* Um brilho extra muito sutil atrás */
+.reflection-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
 }
 
-@keyframes loadSystem{
-    0%{ width:0% }
-    50%{ width:40% }
-    80%{ width:70% }
-    100%{ width:100% }
+/* Animação de Entrada Elegante */
+.hero-title {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: softRise 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, shineFlow 10s ease-in-out infinite;
 }
 
-/* Saída */
-body.fade-out{ opacity:0; transition:opacity .6s ease }
-body.fade-out .logo-wrapper{ transform:scale(4); opacity:0; transition:transform .6s ease, opacity .6s ease }
-
-/* Partículas */
-#particles{ position:absolute; inset:0; pointer-events:none; z-index:1; }
-.dot{ position:absolute; border-radius:50%; background:var(--particle-color); opacity:.8; will-change:transform,opacity; animation:fall linear infinite; }
-@keyframes fall{ to{ transform:translateY(110vh) } }
-
-/* Foco acessível */
-#entry-button:focus{ outline:3px solid rgba(0,0,0,0.08); outline-offset:8px; border-radius:10px }
-
-/* No-js warning */
-.no-js-warning{ position:fixed; left:8px; bottom:8px; background:#000000cc; color:#fff; padding:8px 10px; border-radius:6px; font-size:.85rem }
-
-/* Sensors: reduce motion */
-@media (prefers-reduced-motion: reduce){
-    .pulse-ring, .progress, .dot, body.fade-out, .logo-wrapper{ animation:none !important; transition:none !important }
-    .progress{ width:100% !important }
+@keyframes softRise {
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Pequenos ajustes responsivos */
-@media (max-width:420px){
-    .logo-wrapper{ width:88px;height:88px }
-    .core-circle{ width:68px;height:68px }
-    .brand-name{ font-size:1.4rem }
-    .loading-bar{ width:160px }
+@keyframes shineFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efeito ao Clicar (Cinematic Fade) */
+body.fade-out .hero-title {
+    transform: scale(1.05) translateY(-10px); /* Leve subida */
+    opacity: 0;
+    filter: blur(20px); /* Desfoque ao sair */
+    transition: all 0.6s ease-in;
+}
+
+body.fade-out {
+    background-color: #000;
 }
