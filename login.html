@@ -1,77 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — FUP ALM</title>
-  <meta name="description" content="Acesse o painel FUP ALM — formulário de login acessível e responsivo." />
-  <link rel="stylesheet" href="login.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar - FUP ALM</title>
+    <link rel="stylesheet" href="login.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Fundo (imagem carregada de forma preguiçosa via JS para melhorar performance) -->
-  <div class="bg-image" data-bg="bloom.png" aria-hidden="true"></div>
+    <div class="split-layout">
+        
+        <section class="form-side">
+            <div class="form-content">
+                
+                <div class="brand-header">
+                    <div class="logo-mark">F</div>
+                    <span class="brand-name">FUP ALM</span>
+                </div>
 
-  <main class="login-wrap" role="main">
-    <section class="glass-card" aria-labelledby="login-title">
-      <header class="header">
-        <h1 id="login-title">Bem-vindo de volta</h1>
-        <p class="lead">Acesse o painel FUP ALM</p>
-      </header>
+                <div class="text-block">
+                    <h1>Bem-vindo</h1>
+                    <p>Insira suas credenciais para acessar.</p>
+                </div>
 
-      <form id="loginForm" class="login-form" action="/login" method="POST" novalidate>
-        <div class="input-group">
-          <label for="username">Usuário</label>
-          <div class="input-wrapper">
-            <span class="icon" aria-hidden="true">person</span>
-            <input id="username" name="username" type="text" inputmode="email" autocomplete="username"
-                   placeholder="Seu ID ou e‑mail" required aria-required="true" />
-          </div>
-          <p class="field-error" id="username-error" aria-live="polite"></p>
-        </div>
+                <form id="loginForm" novalidate>
+                    
+                    <div class="input-block">
+                        <label for="username">Usuário</label>
+                        <input type="text" id="username" placeholder="Seu ID corporativo" autocomplete="username" required>
+                    </div>
 
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <div class="input-wrapper">
-            <span class="icon" aria-hidden="true">lock</span>
-            <input id="password" name="password" type="password" autocomplete="current-password"
-                   placeholder="••••••••" required minlength="6" aria-required="true" />
-            <button type="button" id="togglePassword" class="btn-icon" aria-pressed="false" aria-label="Mostrar senha">
-              <!-- ícone simples, aparece apenas com JS habilitado -->
-              <span class="visually-hidden">Mostrar senha</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 5c-7 0-11 6.5-11 7s4 7 11 7 11-6.5 11-7-4-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10z"></path>
-              </svg>
-            </button>
-          </div>
-          <p class="field-error" id="password-error" aria-live="polite"></p>
-        </div>
+                    <div class="input-block">
+                        <label for="password">Senha</label>
+                        <div class="pass-wrapper">
+                            <input type="password" id="password" placeholder="Sua senha" autocomplete="current-password" required>
+                            <button type="button" id="togglePassword" class="eye-btn" aria-label="Ver senha"></button>
+                        </div>
+                    </div>
 
-        <div class="controls">
-          <label class="remember">
-            <input type="checkbox" name="remember" id="remember" />
-            <span>Manter-me conectado</span>
-          </label>
+                    <button type="submit" class="btn-hero" id="submitBtn">
+                        <span class="btn-text">Acessar Sistema</span>
+                        <div class="loader"></div>
+                    </button>
 
-          <a class="forgot" href="/forgot-password">Esqueceu a senha?</a>
-        </div>
+                </form>
 
-        <div class="actions">
-          <button type="submit" class="btn-login" id="btnLogin">
-            <span class="btn-text">Entrar</span>
-            <span class="spinner" aria-hidden="true"></span>
-          </button>
-        </div>
+                <footer class="mini-footer">
+                    &copy; 2026 FUP Corporation &bull; v2.0
+                </footer>
+            </div>
+        </section>
 
-        <div id="status" class="status" role="status" aria-live="polite"></div>
-      </form>
-    </section>
-  </main>
+        <section class="visual-side">
+            <div class="bg-layer" data-bg="bloom.png"></div>
+            <div class="overlay-content">
+                <h2>Gestão Inteligente</h2>
+                <p>Otimizando processos e conectando resultados.</p>
+            </div>
+        </section>
 
-  <noscript>
-    <div class="no-js-warning" role="status">JavaScript desabilitado — use o formulário normalmente.</div>
-  </noscript>
+    </div>
 
-  <script src="login.js" defer></script>
+    <script src="login.js" defer></script>
 </body>
 </html>
