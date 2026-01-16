@@ -1,11 +1,15 @@
 /* --- login.css --- */
 :root {
-    --primary: #E67E22;       /* Laranja FUP */
-    --primary-dark: #D35400;  /* Laranja mais escuro para hover/gradiente */
-    --primary-light: #FDEBD0; /* Fundo claro laranja */
+    /* Laranja FUP ALM - Vibrante e Profissional */
+    --primary: #FF6B00; 
+    --primary-dark: #C2410C;
     
-    --text-main: #1F2937;     /* Quase preto */
-    --text-muted: #6B7280;    /* Cinza médio */
+    /* Gradiente Invertido (Para combinar com o lado direito) */
+    --gradient-start: #FF881B; /* Laranja Claro */
+    --gradient-end: #9A2906;   /* Laranja Escuro */
+    
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
     --text-white: #FFFFFF;
     
     --bg-white: #FFFFFF;
@@ -19,263 +23,240 @@
 body {
     font-family: var(--font-family);
     height: 100vh;
-    overflow: hidden; /* Evita scroll na tela cheia */
+    overflow: hidden;
     color: var(--text-main);
+    background-color: var(--bg-white);
 }
 
-/* --- Container Principal (Grid) --- */
 .split-screen {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Divide a tela em 50% / 50% */
+    /* ESPELHADO: Coluna da esquerda (Login) menor, Direita (Brand) maior */
+    grid-template-columns: 0.8fr 1.2fr; 
     height: 100vh;
     width: 100%;
 }
 
-/* --- LADO ESQUERDO (Brand) --- */
-.brand-side {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 60px;
-    position: relative;
-    color: var(--text-white);
-}
-
-.brand-content {
-    z-index: 2;
-    max-width: 480px;
-    margin: 0 auto;
-}
-
-.brand-logo-large {
-    font-size: 64px;
-    margin-bottom: 24px;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 16px;
-    border-radius: 16px;
-    backdrop-filter: blur(5px);
-}
-
-.brand-side h1 {
-    font-size: 3rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -1px;
-}
-
-.brand-side h2 {
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin-bottom: 24px;
-    opacity: 0.9;
-}
-
-.brand-side p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    opacity: 0.8;
-    max-width: 400px;
-}
-
-.copyright {
-    position: absolute;
-    bottom: 30px;
-    left: 60px;
-    font-size: 0.8rem;
-    opacity: 0.5;
-}
-
-/* Padrão de fundo sutil (círculos) */
-.bg-pattern {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
-    z-index: 1;
-}
-
-/* --- LADO DIREITO (Login) --- */
+/* --- LADO ESQUERDO: LOGIN (Agora vem primeiro na ordem visual) --- */
 .login-side {
+    /* Força visualmente a ser o primeiro item */
+    order: 1; 
+    
     background-color: var(--bg-white);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 40px;
+    position: relative;
+    z-index: 2; /* Fica levemente acima da borda da imagem */
+    
+    /* Sombra suave caindo sobre a imagem (efeito de camada) */
+    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
 }
 
 .login-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 360px;
+    animation: slideInLeft 0.8s ease-out;
 }
 
-/* Cabeçalho do Form */
-.login-side header {
-    margin-bottom: 40px;
+/* Animação vindo da esquerda */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-.mobile-logo { display: none; } /* Escondido no desktop */
+/* --- LADO DIREITO: BRAND / ARTE (Agora na direita) --- */
+.brand-side {
+    /* Força visualmente a ser o segundo item */
+    order: 2;
+    
+    background: linear-gradient(-135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    color: var(--text-white);
+    overflow: hidden;
+}
+
+/* Padrão Isométrico (Tech) - Espelhado e sutil */
+.brand-side::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Padrão SVG de linhas geométricas finas */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='68' viewBox='0 0 60 68' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23FFFFFF' stroke-width='1' stroke-opacity='0.12'%3E%3Cpath d='M30 68V34'/%3E%3Cpath d='M30 0v34'/%3E%3Cpath d='M0 17L30 34'/%3E%3Cpath d='M60 17L30 34'/%3E%3Cpath d='M0 51l30-17'/%3E%3Cpath d='M60 51l30-17'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 68px;
+    
+    /* Máscara radial para focar no centro */
+    mask-image: radial-gradient(circle at 60% 50%, black 20%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at 60% 50%, black 20%, transparent 100%);
+    
+    opacity: 0.8;
+}
+
+/* Formas Geométricas de "Vidro" flutuando no fundo */
+.brand-side::after {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg, rgba(255,255,255,0.05), transparent);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 40px;
+    transform: rotate(45deg);
+    top: -100px;
+    right: -200px; /* Posicionado no canto direito superior */
+    z-index: 0;
+}
+
+/* Outro elemento geométrico para equilíbrio */
+.brand-bg-circle {
+    position: absolute;
+    bottom: -150px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.brand-content {
+    position: relative;
+    z-index: 10;
+    max-width: 500px;
+    margin-left: auto; /* Empurra o texto levemente para a direita para balancear */
+    margin-right: 40px;
+    text-align: right; /* Alinha o texto à direita (estilo espelhado) */
+}
+
+.brand-icon-large {
+    font-size: 72px;
+    margin-bottom: 24px;
+    display: inline-block;
+    color: #FFF;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+}
+
+.brand-side h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+}
+
+.brand-side h2 {
+    font-size: 1.25rem;
+    font-weight: 300;
+    opacity: 0.9;
+    border-right: 4px solid rgba(255,255,255,0.4); /* Borda na direita agora */
+    padding-right: 20px;
+}
+
+.copyright {
+    position: absolute;
+    bottom: 30px;
+    right: 60px; /* Copyright na direita */
+    left: auto;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    font-family: monospace;
+}
+
+
+/* --- ESTILOS DO FORMULÁRIO (Mantidos Clean) --- */
+.login-side header { margin-bottom: 32px; }
+.mobile-logo { display: none; }
 
 .login-side h3 {
-    font-size: 1.75rem;
-    font-weight: 600;
+    font-size: 1.8rem;
+    font-weight: 700;
     color: var(--text-main);
-    margin-bottom: 8px;
+    letter-spacing: -0.5px;
 }
-
 .login-side p {
     color: var(--text-muted);
-    font-weight: 300;
+    font-size: 0.95rem;
+    margin-top: 8px;
+    line-height: 1.5;
 }
 
-/* Inputs e Labels */
-.input-group {
-    margin-bottom: 24px;
-}
-
+.input-group { margin-bottom: 20px; }
 .input-group label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: var(--text-main);
+    display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: #374151;
 }
 
-/* Wrapper para ícones dentro do input */
-.input-icon-wrapper {
-    position: relative;
-}
-
+.input-icon-wrapper { position: relative; }
 .input-icon {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 20px;
-    pointer-events: none;
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: #9CA3AF; font-size: 20px;
 }
 
 input {
     width: 100%;
-    padding: 14px 16px 14px 48px; /* Padding left maior para o ícone */
+    padding: 14px 16px 14px 48px;
     font-size: 0.95rem;
     color: var(--text-main);
     background-color: #F9FAFB;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-family: var(--font-family);
-    transition: all 0.2s ease;
+    transition: all 0.2s;
 }
 
 input:focus {
-    outline: none;
-    background-color: #fff;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1);
+    background-color: #FFF; outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
 }
+input:focus + .input-icon { color: var(--primary); }
 
-/* Botão de Ver Senha */
 #togglePass {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #9CA3AF; cursor: pointer; font-size: 20px;
 }
 #togglePass:hover { color: var(--text-main); }
 
-/* Ações (Lembrar / Esqueci) */
-.actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    font-size: 0.9rem;
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    color: var(--text-muted);
-}
-.remember-me input {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    accent-color: var(--primary); /* Cor do checkbox */
-}
-
-.forgot-pass {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-}
-.forgot-pass:hover { text-decoration: underline; }
-
-/* Botão Submit */
 button[type="submit"] {
-    width: 100%;
-    padding: 16px;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    width: 100%; padding: 14px; margin-top: 16px;
+    background: linear-gradient(to right, var(--primary), #EA580C);
+    color: white; border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 4px 10px rgba(255, 107, 0, 0.25);
 }
 
 button[type="submit"]:hover {
-    background-color: var(--primary-dark);
+    box-shadow: 0 8px 15px rgba(255, 107, 0, 0.35); transform: translateY(-1px);
 }
 
-/* Estado de Erro */
 input.error {
-    border-color: #EF4444;
-    background-color: #FEF2F2;
+    border-color: #EF4444; background-color: #FEF2F2;
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-/* --- RESPONSIVIDADE (Mobile/Tablet) --- */
+/* --- RESPONSIVO --- */
 @media (max-width: 900px) {
-    .split-screen {
-        grid-template-columns: 1fr; /* 1 Coluna só */
-    }
-
-    .brand-side {
-        display: none; /* Esconde a parte corporativa em telas pequenas */
-        /* Alternativa: mudar para height: 150px e exibir só o logo */
-    }
-
-    .mobile-logo {
-        display: flex;
-        width: 48px; height: 48px;
-        background: rgba(230, 126, 34, 0.1);
-        color: var(--primary);
-        border-radius: 12px;
-        align-items: center; justify-content: center;
-        font-weight: bold;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
+    .split-screen { display: flex; flex-direction: column; }
+    /* No mobile, voltamos ao normal: Logo em cima (mas escondido), Login embaixo */
+    .brand-side { display: none; }
+    .login-side { order: 0; padding: 24px; min-height: 100vh; }
     
-    .login-side {
-        padding: 24px;
-        align-items: flex-start; /* Alinha mais ao topo no mobile */
-        padding-top: 60px;
+    .mobile-logo {
+        display: flex; width: 50px; height: 50px;
+        background: var(--primary); color: white;
+        border-radius: 12px; align-items: center; justify-content: center;
+        font-size: 24px; font-weight: bold; margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
     }
 }
