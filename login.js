@@ -2,88 +2,59 @@
 (() => {
     'use strict';
 
-    const bgLayer = document.querySelector('.bg-layer');
-    
-    // 1. Carregar Imagem
-    function initBackground() {
-        if(!bgLayer) return;
-        const src = bgLayer.getAttribute('data-bg');
-        if (!src) return;
-        
-        const img = new Image();
-        img.src = src;
-        img.onload = () => {
-            bgLayer.style.backgroundImage = `url('${src}')`;
-            bgLayer.classList.add('loaded');
-        };
-    }
+    const loginForm = document.getElementById('loginForm');
+    const toggleBtn = document.getElementById('togglePass');
+    const passInput = document.getElementById('pass');
+    const submitBtn = document.getElementById('btnSubmit');
 
-    // 2. Toggle Senha
-    function initPasswordToggle() {
-        const btn = document.getElementById('togglePassword');
-        const input = document.getElementById('password');
-        
-        if(btn && input) {
-            btn.addEventListener('click', () => {
-                const isPass = input.type === 'password';
-                input.type = isPass ? 'text' : 'password';
-                btn.style.opacity = isPass ? '1' : '0.5'; // Feedback visual no botão
-            });
-        }
-    }
-
-    // 3. Submit
-    function initForm() {
-        const form = document.getElementById('loginForm');
-        
-        if(form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const btn = document.getElementById('submitBtn');
-                const user = document.getElementById('username');
-                const pass = document.getElementById('password');
-                let valid = true;
-
-                // Validação Visual (Borda vermelha)
-                if(!user.value.trim()) {
-                    user.style.boxShadow = '0 0 0 2px #EF4444';
-                    valid = false;
-                } else {
-                    user.style.boxShadow = '';
-                }
-
-                if(!pass.value.trim()) {
-                    pass.style.boxShadow = '0 0 0 2px #EF4444';
-                    valid = false;
-                } else {
-                    pass.style.boxShadow = '';
-                }
-
-                if(!valid) return;
-
-                // Sucesso
-                btn.classList.add('loading');
-                btn.disabled = true;
-
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1200);
-            });
+    // Toggle de Senha
+    if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+            const isPass = passInput.type === 'password';
+            passInput.type = isPass ? 'text' : 'password';
             
-            // Limpar erro ao digitar
-            ['username', 'password'].forEach(id => {
-                document.getElementById(id).addEventListener('input', function() {
-                    this.style.boxShadow = '';
-                });
-            });
-        }
+            const icon = toggleBtn.querySelector('i');
+            if(isPass) {
+                icon.classList.replace('ph-eye-slash', 'ph-eye');
+            } else {
+                icon.classList.replace('ph-eye', 'ph-eye-slash');
+            }
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        initBackground();
-        initPasswordToggle();
-        initForm();
-    });
+    // Processar Login
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
+            const user = document.getElementById('user');
+            let isValid = true;
+
+            // Validação visual simples
+            [user, passInput].forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('error');
+                    
+                    // Remove o erro assim que digitar algo
+                    input.addEventListener('input', () => {
+                        input.classList.remove('error');
+                    }, { once: true });
+                }
+            });
+
+            if (!isValid) return;
+
+            // Feedback visual no botão
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Entrando...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.disabled = true;
+
+            // Redirecionamento simulado
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        });
+    }
 })();

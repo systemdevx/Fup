@@ -1,70 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entrar - FUP ALM</title>
-    <link rel="stylesheet" href="login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUP ALM | Login</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-    <div class="split-layout">
-        
-        <section class="form-side">
-            <div class="form-content">
+    <div class="main-container">
+        <div class="login-card">
+            
+            <header>
+                <div class="brand-icon">F</div>
+                <h1>Acesso ao Sistema</h1>
+                <p>Insira suas credenciais para continuar.</p>
+            </header>
+
+            <form id="loginForm" autocomplete="off">
                 
-                <div class="brand-header">
-                    <div class="logo-mark">F</div>
-                    <span class="brand-name">FUP ALM</span>
+                <div class="input-group">
+                    <label for="user">Usuário</label>
+                    <input type="text" id="user" placeholder="Digite seu usuário" required>
                 </div>
 
-                <div class="text-block">
-                    <h1>Bem-vindo</h1>
-                    <p>Insira suas credenciais para acessar.</p>
+                <div class="input-group">
+                    <label for="pass">Senha</label>
+                    <div class="pass-wrapper">
+                        <input type="password" id="pass" placeholder="Digite sua senha" required>
+                        <button type="button" id="togglePass" tabindex="-1">
+                            <i class="ph ph-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <form id="loginForm" novalidate>
-                    
-                    <div class="input-block">
-                        <label for="username">Usuário</label>
-                        <input type="text" id="username" placeholder="Seu ID corporativo" autocomplete="username" required>
-                    </div>
+                <button type="submit" id="btnSubmit">
+                    Entrar
+                </button>
 
-                    <div class="input-block">
-                        <label for="password">Senha</label>
-                        <div class="pass-wrapper">
-                            <input type="password" id="password" placeholder="Sua senha" autocomplete="current-password" required>
-                            <button type="button" id="togglePassword" class="eye-btn" aria-label="Ver senha"></button>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-hero" id="submitBtn">
-                        <span class="btn-text">Acessar Sistema</span>
-                        <div class="loader"></div>
-                    </button>
-
-                </form>
-
-                <footer class="mini-footer">
-                    &copy; 2026 FUP Corporation &bull; v2.0
-                </footer>
-            </div>
-        </section>
-
-        <section class="visual-side">
-            <div class="bg-layer" data-bg="bloom.png"></div>
-            <div class="overlay-content">
-                <h2>Gestão Inteligente</h2>
-                <p>Otimizando processos e conectando resultados.</p>
-            </div>
-        </section>
-
+            </form>
+        </div>
     </div>
 
-    <script src="login.js" defer></script>
+    <script src="login.js"></script>
 </body>
 </html>
