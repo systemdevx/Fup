@@ -1,180 +1,202 @@
-/* --- login.css ---
-   Versão melhorada: acessibilidade, responsividade, foco visível,
-   baixo contraste controlado, prefers-reduced-motion, performance
-*/
+/* --- login.css --- */
 
-:root{
-  --bg-base: #dbe4ea;
-  --card-bg: rgba(255,255,255,0.72);
-  --card-border: rgba(255,255,255,0.85);
-  --accent: #E67E22;
-  --accent-hover: #D35400;
-  --text: #1f2933;
-  --muted: #6b7280;
-  --radius: 12px;
-  --max-width: 420px;
-  --glass-blur: 14px;
-  --shadow: 0 8px 32px rgba(31,38,135,0.12);
-  --focus-ring: 3px;
-  --transition-fast: 180ms;
+:root {
+    /* Mesmas variáveis do intro.css para consistência */
+    --bg-color: #F3F4F6;
+    --primary: #E67E22;
+    --primary-light: #FADBC5;
+    --text-main: #222;
+    --text-sub: #666;
+    --font-stack: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    
+    /* Variáveis específicas do card */
+    --card-bg: rgba(255, 255, 255, 0.65);
+    --card-border: rgba(255, 255, 255, 0.4);
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --radius: 12px;
+    --max-width: 400px; /* Um pouco mais estreito para elegância */
+    --shadow: 0 10px 40px rgba(0,0,0,0.08);
+    --transition-fast: 200ms ease;
 }
 
-/* Reset simples */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--bg-base);
-  font-family: Inter, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow:hidden;
+/* Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-color);
+    font-family: var(--font-stack);
+    color: var(--text-main);
+    overflow: hidden; /* Evita scroll indesejado */
 }
 
-/* Fundo com imagem — escurece e desfoca levemente até carregar */
-.bg-image{
-  position:fixed; inset:0; z-index:0;
-  background-position:center center;
-  background-repeat:no-repeat;
-  background-size:cover;
-  filter: blur(10px) saturate(.9) brightness(.9);
-  transform: scale(1.06);
-  transition: filter 450ms ease, opacity 450ms ease;
-  opacity:0;
+/* Fundo opcional (se usar imagem, mantém sutil) */
+.bg-image {
+    position: fixed; inset: 0; z-index: -1;
+    background-size: cover; background-position: center;
+    opacity: 0.4; filter: blur(20px);
 }
 
-/* Quando carregada via JS, ficará visível e com menos blur */
-.bg-image.loaded{ filter: blur(6px) saturate(.95) brightness(.92); opacity:1 }
-
-/* Wrapper principal */
-.login-wrap{ position:relative; z-index:10; width:100%; padding:24px; display:flex; align-items:center; justify-content:center }
-
-/* O cartão (glassmorphism) */
-.glass-card{
-  width:min(var(--max-width), 92vw);
-  background:var(--card-bg);
-  border-radius:var(--radius);
-  border: 1px solid var(--card-border);
-  padding:28px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  transition: transform var(--transition-fast) ease, opacity 220ms ease;
+/* Wrapper Principal */
+.login-wrap {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
 }
 
-/* Header */
-.header{ text-align:center; margin-bottom:18px }
-.header h1{ font-size:1.35rem; margin-bottom:6px }
-.lead{ color:var(--muted); font-size:0.95rem }
-
-/* Inputs */
-.input-group{ margin-bottom:14px }
-.input-group label{ display:block; font-size:0.9rem; margin-bottom:8px; color:var(--text); font-weight:600 }
-
-.input-wrapper{
-  position:relative;
-  display:flex;
-  align-items:center;
-  background:rgba(255,255,255,0.9);
-  border-radius:10px;
-  border:1px solid transparent;
-  padding:8px 10px;
-  transition: box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease, background var(--transition-fast);
+/* O Cartão (Estilo Intro) */
+.glass-card {
+    width: min(var(--max-width), 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    text-align: center;
 }
 
-.input-wrapper:focus-within{
-  border-color:var(--accent);
-  box-shadow: 0 0 0 var(--focus-ring) rgba(230,126,34,0.12);
+/* Header & Logo (Cópia fiel do Intro) */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
-/* ícone à esquerda */
-.icon{
-  width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;
-  color:var(--muted); margin-right:8px; font-family: "Material Icons", sans-serif;
+.logo-wrapper {
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
 }
 
-/* Input básico */
-.input-wrapper input{
-  flex:1; border:0; outline:0; background:transparent; font-size:0.98rem; padding:10px 6px;
+.core-circle {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.25);
 }
 
-/* botão de mostrar senha */
-.btn-icon{
-  background:transparent; border:0; padding:6px; margin-left:6px; border-radius:8px; cursor:pointer;
-  display:inline-flex; align-items:center; justify-content:center;
-  color:var(--muted);
-}
-.btn-icon:hover{ color:var(--text) }
-.btn-icon:focus{ outline: 3px solid rgba(0,0,0,0.06); outline-offset:3px }
-
-/* Controls (remember / forgot) */
-.controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:4px; margin-bottom:14px; font-size:0.92rem }
-.remember{ display:flex; align-items:center; gap:8px; color:var(--muted) }
-.remember input{ width:16px; height:16px }
-
-/* Actions */
-.actions{ margin-top:6px }
-.btn-login{
-  width:100%;
-  display:inline-flex;
-  gap:10px;
-  align-items:center;
-  justify-content:center;
-  padding:12px 14px;
-  background:var(--accent);
-  color:white;
-  border:0;
-  border-radius:10px;
-  font-weight:700;
-  cursor:pointer;
-  transition: transform 120ms ease, background 120ms;
-}
-.btn-login:hover{ background:var(--accent-hover) }
-.btn-login:active{ transform:scale(.995) }
-.btn-login:disabled{ opacity:.7; cursor:not-allowed }
-
-/* Spinner (simples) */
-.spinner{
-  width:14px; height:14px; border-radius:50%;
-  border:2px solid rgba(255,255,255,0.25);
-  border-top-color:rgba(255,255,255,0.95);
-  animation: spin 800ms linear infinite;
-  display:inline-block; vertical-align:middle;
-  opacity:0; transform:scale(.9);
-  transition: opacity 140ms ease, transform 140ms ease;
-}
-.btn-login.loading .spinner{ opacity:1; transform:scale(1) }
-.btn-login.loading .btn-text{ opacity:0.85 }
-
-@keyframes spin{ to{ transform: rotate(360deg) } }
-
-/* Mensagens de erro/estado */
-.field-error{ font-size:0.85rem; color:#b91c1c; min-height:18px; margin-top:6px }
-.status{ margin-top:12px; min-height:20px; color:var(--muted); font-size:0.92rem }
-
-/* Acessibilidade: foco visível */
-:focus{ outline-offset:2px; }
-
-/* prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce){
-  .spinner, .bg-image, .btn-login, .glass-card{ animation: none !important; transition: none !important }
-  .spinner{ display:none }
+.logo-letter {
+    color: #fff; font-family: "Times New Roman", serif;
+    font-weight: 700; font-size: 1.8rem; line-height: 1;
 }
 
-/* Responsivo */
-@media (max-width:420px){
-  .glass-card{ padding:18px }
-  .lead{ font-size:0.9rem }
-  .btn-login{ padding:10px }
-  .input-wrapper{ padding:8px }
+.brand-name {
+    font-size: 1.5rem; letter-spacing: -0.5px;
+    color: var(--text-main); font-weight: 600;
 }
 
-/* utilitários */
-.visually-hidden{
-  position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap;
+/* Formulário e Inputs */
+.input-group { margin-bottom: 16px; text-align: left; }
+
+.input-wrapper {
+    display: flex; align-items: center;
+    background: var(--input-bg);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 2px 12px;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
-.no-js-warning{ position:fixed; left:10px; bottom:10px; background:#000a; color:#fff; padding:8px 10px; border-radius:8px; z-index:20 }
+
+.input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+}
+
+.icon {
+    font-family: "Material Icons", sans-serif;
+    color: #999; font-size: 1.2rem; margin-right: 8px;
+}
+
+.input-wrapper input {
+    flex: 1; border: 0; outline: 0;
+    background: transparent;
+    padding: 12px 0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-family: var(--font-stack);
+}
+
+.input-wrapper input::placeholder { color: #aaa; }
+
+/* Botão Olho */
+.btn-icon {
+    background: none; border: none; cursor: pointer;
+    color: #999; padding: 4px; display: flex;
+}
+.btn-icon:hover { color: var(--text-main); }
+
+/* Controls (Checkbox e Link) */
+.controls {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; color: var(--text-sub);
+    margin-bottom: 24px; margin-top: 4px;
+}
+
+.remember { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.remember input { accent-color: var(--primary); }
+
+.forgot {
+    color: var(--text-sub); text-decoration: none; font-weight: 500;
+    transition: color 0.2s;
+}
+.forgot:hover { color: var(--primary); }
+
+/* Botão de Ação */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login:hover { opacity: 0.9; }
+.btn-login:active { transform: scale(0.98); }
+
+/* Estado de Loading (Sutil, dentro do botão) */
+.spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.btn-login.loading .btn-text { display: none; }
+.btn-login.loading .spinner { display: inline-block; }
+.btn-login:disabled { opacity: 0.7; cursor: wait; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Erros */
+.field-error {
+    font-size: 0.75rem; color: #d32f2f; margin-top: 4px; margin-left: 4px; min-height: 14px;
+}
+
+.visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+}
+
+.no-js-warning {
+    position: fixed; bottom: 10px; left: 10px;
+    background: #000; color: #fff; padding: 8px 12px;
+    border-radius: 6px; font-size: 0.8rem;
+}
