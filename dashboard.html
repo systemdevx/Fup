@@ -26,7 +26,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="dashboard.html" class="active">
+                    <a href="#" onclick="mostrarTela('dashboard', this)" class="active">
                         <span class="material-icons-outlined">dashboard</span>
                         <span>Dashboard</span>
                     </a>
@@ -38,13 +38,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="#" onclick="mostrarTela('registros', this)">
                         <span class="material-icons-outlined">description</span>
                         <span>Registros Fiscais</span>
                     </a>
                 </li>
                 <li>
-                    <a href="" onclick="mostrarTela('sgq', this)">
+                    <a href="#" onclick="mostrarTela('sgq', this)">
                         <span class="material-icons-outlined">fact_check</span>
                         <span>Ativos SGQ</span>
                     </a>
@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="registration.html" onclick="mostrarTela('cadastros', this)">
+                    <a href="#" onclick="mostrarTela('cadastros', this)">
                         <span class="material-icons-outlined">app_registration</span>
                         <span>Cadastros</span>
                     </a>
@@ -108,7 +108,6 @@
 
     <main>
         <section id="dashboard" class="tela active-tela">
-            
             <div class="dashboard-grid-top">
                 <div class="card hero-card">
                     <div class="hero-content">
@@ -135,7 +134,7 @@
                     <div class="card-top">
                         <span class="material-icons-outlined icon-theme">link</span> <h3>Visualizar catálogo</h3>
                     </div>
-                    <a href="#" class="link-bottom">Ir para catálogo <span class="material-icons-outlined" style="font-size:14px;">arrow_forward</span></a>
+                    <a href="#" onclick="mostrarTela('catalogo', document.querySelector('nav a[onclick*=\'catalogo\']'))" class="link-bottom">Ir para catálogo <span class="material-icons-outlined" style="font-size:14px;">arrow_forward</span></a>
                 </div>
             </div>
 
@@ -167,22 +166,36 @@
             </div>
         </section>
 
-        <section id="fornecedores" class="tela"><h1>Fornecedores</h1></section>
-        <section id="catalogo" class="tela"><h1>Catálogos</h1></section>
-        <section id="cadastros" class="tela"><h1>Cadastros</h1></section>
-        <section id="usuarios" class="tela"><h1>Usuários</h1></section>
-        <section id="sgq" class="tela"><h1>Ativos SGQ</h1></section>
+        <section id="fornecedores" class="tela"><h1>Gestão de Fornecedores</h1></section>
+        <section id="catalogo" class="tela"><h1>Catálogo de Produtos</h1></section>
+        
+        <section id="cadastros" class="tela">
+            <h1>Cadastros Gerais</h1>
+            <p>Aqui você pode inserir o formulário de registro sem sair do dashboard.</p>
+            </section>
+        
+        <section id="usuarios" class="tela"><h1>Gestão de Usuários</h1></section>
+        <section id="sgq" class="tela"><h1>Controle de Qualidade (SGQ)</h1></section>
+        <section id="registros" class="tela"><h1>Registros Fiscais</h1></section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
 
     <script>
+        // Função para alternar as abas sem recarregar
         function mostrarTela(id, elemento) {
+            // Esconde todas as telas
             document.querySelectorAll('.tela').forEach(t => t.classList.remove('active-tela'));
+            
+            // Remove 'active' de todos os links do menu
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            
+            // Mostra a tela desejada
             const tela = document.getElementById(id);
             if(tela) tela.classList.add('active-tela');
+            
+            // Marca o link clicado como ativo
             if(elemento) elemento.classList.add('active');
         }
     </script>
