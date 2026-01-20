@@ -1,212 +1,137 @@
-// --- login.js ---
-// Melhorias:
-// - Lazy load do background (melhora LCP/paint)
-// - Mostrar/ocultar senha com acessibilidade
-// - Simulação de submissão assíncrona com feedback (spinner, status)
-// - Validação mínima com mensagens de erro
-// - Efeito parallax leve (requestAnimationFrame) respeitando prefers-reduced-motion
-// - Graceful fallback: se JS desativado, formulário age normalmente
-
+// --- login.js (Conectado ao Supabase) ---
 (() => {
   'use strict';
 
-  const CONFIG = {
-    bgSelector: '.bg-image',
-    bgAttr: 'data-bg',
-    minPasswordLength: 6,
-    fakeLoginDelay: 900, // ms - simulação de requisição
-    parallaxMax: 12 // px
-  };
+  // 1. Configuração do Supabase (Suas credenciais)
+  const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-  // Utilitários
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const prefersReducedMotion = () => {
-    try { return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
-    catch (e) { return false; }
-  };
+  // Verifica carregamento da lib
+  if (typeof supabase === 'undefined') {
+    console.error('ERRO: Supabase SDK não encontrado. Verifique se o script foi incluído no HTML.');
+  }
 
-  // Lazy load da imagem de fundo
+  // Inicializa Cliente
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = (sel) => document.querySelector(sel);
+
+  // --- Funções de UI ---
+
   function lazyLoadBackground() {
-    const bg = document.querySelector(CONFIG.bgSelector);
+    const bg = $('.bg-image');
     if (!bg) return;
-    const src = bg.getAttribute(CONFIG.bgAttr);
+    const src = bg.getAttribute('data-bg');
     if (!src) return;
-
+    
     const img = new Image();
-    img.decoding = 'async';
     img.src = src;
     img.onload = () => {
       bg.style.backgroundImage = `url("${src}")`;
       bg.classList.add('loaded');
     };
-    img.onerror = () => {
-      // se falhar, mantém cor de fundo neutra
-      bg.classList.add('loaded');
-    };
   }
 
-  // Mostrar/ocultar senha
   function setupPasswordToggle() {
-    const toggle = $('#togglePassword');
-    const password = $('#password');
-    if (!toggle || !password) return;
+    const btn = $('#togglePassword');
+    const input = $('#password');
+    if (!btn || !input) return;
 
-    toggle.addEventListener('click', () => {
-      const isMasked = password.type === 'password';
-      password.type = isMasked ? 'text' : 'password';
-      toggle.setAttribute('aria-pressed', String(isMasked));
-      toggle.setAttribute('aria-label', isMasked ? 'Ocultar senha' : 'Mostrar senha');
-    });
-
-    // Acessibilidade: permitir teclado visual com Enter / Space
-    toggle.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle.click();
-      }
+    btn.addEventListener('click', () => {
+      const type = input.type === 'password' ? 'text' : 'password';
+      input.type = type;
+      // Muda a cor para indicar ativo/inativo
+      btn.style.color = type === 'text' ? 'var(--accent)' : '';
     });
   }
 
-  // Validação simples com mensagens
-  function validateForm(username, password) {
-    const errors = {};
-    if (!username || username.trim().length === 0) {
-      errors.username = 'Informe seu usuário ou e‑mail.';
-    }
-    if (!password || password.length < CONFIG.minPasswordLength) {
-      errors.password = `Senha inválida — mínimo ${CONFIG.minPasswordLength} caracteres.`;
-    }
-    return errors;
-  }
-
-  // Simulação de envio (para demonstrar feedback). Substituir por fetch()/XHR real.
-  function fakeSubmit(formData) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Simula sucesso se username !== 'bloqueado'
-        if (formData.get('username') === 'bloqueado') {
-          resolve({ ok: false, message: 'Conta bloqueada. Contate o suporte.' });
-        } else {
-          resolve({ ok: true });
-        }
-      }, CONFIG.fakeLoginDelay);
-    });
-  }
-
-  // Gerenciar estado de UI enquanto "carregando"
-  function setLoading(loading) {
+  function setLoading(isLoading) {
     const btn = $('#btnLogin');
     if (!btn) return;
-    if (loading) {
+    
+    if (isLoading) {
       btn.classList.add('loading');
-      btn.setAttribute('disabled', 'disabled');
-      btn.querySelector('.btn-text')?.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('disabled', 'true');
     } else {
       btn.classList.remove('loading');
       btn.removeAttribute('disabled');
-      btn.querySelector('.btn-text')?.removeAttribute('aria-hidden');
     }
   }
 
-  // Setup do formulário
+  // --- Lógica de Auth ---
+
   function setupForm() {
     const form = $('#loginForm');
     if (!form) return;
-    const usernameEl = $('#username');
-    const passwordEl = $('#password');
-    const statusEl = $('#status');
-    const usernameErr = $('#username-error');
-    const passwordErr = $('#password-error');
 
-    form.addEventListener('submit', async (ev) => {
-      // Evita envio real; se quiser submeter sem JS, remova o preventDefault
-      ev.preventDefault();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Limpa estados anteriores
+      $('#username-error').textContent = '';
+      $('#password-error').textContent = '';
+      const statusEl = $('#status');
+      statusEl.textContent = '';
+      statusEl.style.color = 'var(--text-muted)';
 
-      // Reset mensagens
-      if (statusEl) statusEl.textContent = '';
-      if (usernameErr) usernameErr.textContent = '';
-      if (passwordErr) passwordErr.textContent = '';
+      const email = $('#username').value.trim();
+      const password = $('#password').value;
 
-      const username = usernameEl?.value ?? '';
-      const password = passwordEl?.value ?? '';
-
-      const errors = validateForm(username, password);
-      if (errors.username) {
-        if (usernameErr) usernameErr.textContent = errors.username;
-        usernameEl?.focus();
+      // Validação local
+      if (!email) {
+        $('#username-error').textContent = 'O e-mail é obrigatório.';
+        $('#username').focus();
         return;
       }
-      if (errors.password) {
-        if (passwordErr) passwordErr.textContent = errors.password;
-        passwordEl?.focus();
+      if (!password) {
+        $('#password-error').textContent = 'A senha é obrigatória.';
+        $('#password').focus();
         return;
       }
 
-      // Ativa estado de loading
       setLoading(true);
-      if (statusEl) statusEl.textContent = 'Entrando…';
 
       try {
-        const formData = new FormData();
-        formData.set('username', username);
-        formData.set('password', password);
-        formData.set('remember', $('#remember')?.checked ? '1' : '0');
+        // --- Chamada Real ao Supabase ---
+        const { data, error } = await _supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
 
-        // Aqui substitua por fetch('/api/login', { method:'POST', body: formData, ... })
-        const res = await fakeSubmit(formData);
+        if (error) throw error;
 
-        if (res.ok) {
-          if (statusEl) statusEl.textContent = 'Autenticado. Redirecionando…';
-          // Simula redirecionamento real
-          setTimeout(() => {
-            window.location.href = '/app'; // ajustar conforme rota real
-          }, 600);
-        } else {
-          if (statusEl) statusEl.textContent = res.message || 'Falha ao autenticar.';
-          // foco no status para leitores de tela
-          statusEl?.focus?.();
-        }
+        // Sucesso
+        statusEl.textContent = 'Login realizado com sucesso!';
+        statusEl.style.color = 'var(--accent)';
+        
+        // Redirecionamento
+        setTimeout(() => {
+          // Ajuste aqui para a rota do seu painel
+          window.location.href = '/dashboard.html'; 
+        }, 1000);
+
       } catch (err) {
-        if (statusEl) statusEl.textContent = 'Erro de rede. Tente novamente.';
-        console.error(err);
+        console.error('Login Error:', err);
+        let msg = 'Falha ao autenticar.';
+
+        // Tratamento de mensagens comuns
+        if (err.message.includes('Invalid login')) {
+          msg = 'E-mail ou senha incorretos.';
+        } else if (err.message.includes('Email not confirmed')) {
+          msg = 'Confirme seu e-mail antes de entrar.';
+        }
+
+        statusEl.textContent = msg;
+        statusEl.style.color = 'var(--danger)';
+
+        // Efeito Shake no erro
+        const card = $('.glass-card');
+        card.style.animation = 'none';
+        void card.offsetWidth; // trigger reflow
+        card.style.animation = 'shake 0.4s ease';
       } finally {
         setLoading(false);
       }
     });
-  }
-
-  // Parallax leve (usando requestAnimationFrame, respeitando prefers-reduced-motion)
-  function setupParallax() {
-    if (prefersReducedMotion()) return;
-    // cria alguns blobs ao fundo se quisermos efeito visual (opcional).
-    // Para simplicidade: aplica leve deslocamento na .bg-image com base no mouse.
-    const bg = document.querySelector('.bg-image');
-    if (!bg) return;
-
-    let raf = null;
-    let lastX = 0, lastY = 0;
-
-    function onMove(e) {
-      // normaliza posição (-0.5..0.5)
-      const nx = (e.clientX / window.innerWidth) - 0.5;
-      const ny = (e.clientY / window.innerHeight) - 0.5;
-      lastX = nx;
-      lastY = ny;
-      if (!raf) raf = requestAnimationFrame(render);
-    }
-
-    function render() {
-      // transforma suavemente em px
-      const tx = (lastX * CONFIG.parallaxMax).toFixed(2);
-      const ty = (lastY * CONFIG.parallaxMax).toFixed(2);
-      bg.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(1.06)`;
-      raf = null;
-    }
-
-    window.addEventListener('mousemove', onMove, { passive: true });
-    // reduzir efeito em touch para evitar overhead
-    window.addEventListener('deviceorientation', () => {}, { passive: true });
   }
 
   // Inicialização
@@ -214,14 +139,8 @@
     lazyLoadBackground();
     setupPasswordToggle();
     setupForm();
-    setupParallax();
-
-    // Pequeno ajuste de foco para fluxo de teclado
-    const username = $('#username');
-    if (username) username.focus();
   }
 
-  // Aguarda DOM pronto
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
