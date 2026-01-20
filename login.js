@@ -1,12 +1,10 @@
 // --- CONFIGURAÇÃO DO SUPABASE ---
-// URL do seu projeto (confirmado pelo seu print)
+// Seus dados reais já inseridos abaixo:
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-// ⚠️ COLE SUA CHAVE 'ANON PUBLIC' AQUI DENTRO DAS ASPAS ⚠️
-const SUPABASE_KEY = 'SUA_CHAVE_GIGANTE_QUE_COMECA_COM_ey_AQUI'; 
-
-// Inicializa a conexão
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Inicializa o cliente com nome 'supabaseClient' para não conflitar com a biblioteca global
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 (() => {
     'use strict';
@@ -35,26 +33,27 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             const email = userInput.value;
             const password = passInput.value;
 
-            // Feedback visual (Carregando...)
+            // Feedback visual no botão
             const originalText = btn.innerText;
             btn.disabled = true;
             btn.innerText = 'Acessando...';
             btn.style.opacity = '0.8';
 
-            // Tenta logar no Supabase
-            const { data, error } = await supabase.auth.signInWithPassword({
+            // Tenta logar no Supabase usando 'supabaseClient'
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
 
             if (error) {
-                alert('Erro ao entrar: ' + error.message);
+                alert('Erro ao entrar: ' + error.message); // Ex: "Invalid login credentials"
                 btn.disabled = false;
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
             } else {
                 console.log('Login realizado:', data);
-                // SUCESSO: Redireciona para o painel principal
+                // SUCESSO: Redireciona para o painel
+                // Certifique-se de que o arquivo 'dashboard.html' existe na pasta
                 window.location.href = "dashboard.html"; 
             }
         });
@@ -66,7 +65,6 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             e.preventDefault();
 
             let email = userInput.value;
-            // Se o campo de email estiver vazio, pede pro usuário digitar
             if (!email) {
                 email = prompt("Digite seu e-mail para recuperar a senha:");
             } else {
@@ -74,23 +72,20 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             }
 
             if (email) {
-                // Envia o e-mail de recuperação
-                const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-                    // Para onde o usuário volta depois de clicar no email?
-                    // Por enquanto, mandamos ele para o login para ele definir a senha depois
-                    redirectTo: window.location.origin + '/login.html', 
+                const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.href, 
                 });
 
                 if (error) {
                     alert('Erro ao enviar: ' + error.message);
                 } else {
-                    alert('Verifique sua caixa de entrada (e spam)! Enviamos um link para: ' + email);
+                    alert('Verifique sua caixa de entrada! Enviamos um link para: ' + email);
                 }
             }
         });
     }
 
-    // --- ANIMAÇÃO DOS FIOS (Mantida Original) ---
+    // --- ANIMAÇÃO DOS FIOS ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
