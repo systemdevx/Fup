@@ -3,61 +3,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FUP ALM | Acesso</title>
+    <title>FUP ALM</title>
+    <link rel="stylesheet" href="intro.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <main class="main-container">
-        <section class="visual-panel">
-            <canvas id="organic-wires"></canvas>
-            
-            <div class="visual-content">
-                <div class="brand-mark">F</div>
-                <h1>FUP ALM.</h1>
-                <p>Ecossistema de Gestão</p>
-            </div>
-            
-            <div class="footer-copy">© 2026 FUP Corp</div>
-        </section>
+    <div class="bg-image" data-bg="bloom.png" aria-hidden="true"></div>
 
-        <section class="login-panel">
-            <div class="login-wrapper">
-                <header>
-                    <h2>Bem-vindo</h2>
-                    <p>Informe suas credenciais de acesso.</p>
-                </header>
-
-                <form id="loginForm">
-                    <div class="input-container">
-                        <label for="user">Identificação (E-mail)</label>
-                        <input type="email" id="user" placeholder="ex: usuario@email.com" autocomplete="email" required>
-                    </div>
-
-                    <div class="input-container">
-                        <label for="pass">Chave de Acesso</label>
-                        <div class="pass-field">
-                            <input type="password" id="pass" placeholder="••••••••" required>
-                            <button type="button" id="togglePass" aria-label="Ver senha">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="aux-actions">
-                        <a href="#" class="forgot-link">Esqueci minha senha</a>
-                    </div>
-
-                    <button type="submit" id="btnSubmit">Entrar</button>
-                </form>
-            </div>
-        </section>
+    <main id="hero-scene">
+        <div class="loader-badge">
+            <div class="spinner-ring"></div>
+            <div class="circle-f">F</div>
+        </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="login.js"></script>
+    <script src="intro.js" defer></script>
 </body>
 </html>
