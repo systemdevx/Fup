@@ -1,4 +1,55 @@
-// --- DADOS DO CATÁLOGO ---
+// --- CONFIGURAÇÃO E SEGURANÇA (SUPABASE) ---
+const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+
+let supabaseClient;
+if (typeof supabase !== 'undefined') {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+    console.error('ERRO: Supabase não carregado. Verifique o HTML.');
+}
+
+// Lógica de Proteção e Inicialização do Usuário
+(async function checkSession() {
+    if (!supabaseClient) return;
+
+    // 1. Verifica sessão
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+    if (!session || error) {
+        // Se não logado, expulsa para o login IMEDIATAMENTE e mantém a tela oculta
+        window.location.href = 'login.html';
+        return; 
+    }
+
+    // 2. SUCESSO! Usuário verificado: Libera a visão da tela
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = '1';
+
+    // 3. Personaliza Avatar
+    if (session.user && session.user.email) {
+        const userEmail = session.user.email;
+        const initials = userEmail.substring(0, 2).toUpperCase();
+        const avatarEl = document.querySelector('.avatar');
+        if (avatarEl) avatarEl.innerText = initials;
+    }
+
+    // 4. Configura botão de Logout
+    const logoutBtn = document.querySelector('.right-actions .icon-action');
+    if (logoutBtn) {
+        logoutBtn.title = "Sair do Sistema";
+        logoutBtn.style.cursor = "pointer";
+        logoutBtn.onclick = async () => {
+            if (confirm("Deseja sair do sistema?")) {
+                await supabaseClient.auth.signOut();
+                window.location.href = 'login.html';
+            }
+        };
+    }
+})();
+
+
+// --- RESTANTE DO CÓDIGO (Lógica do Dashboard) ---
 const catalogo = [
     { id: 807735, nome: 'NF 68400 - Material Elétrico', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L030 - Prazo 30 DDD' },
     { id: 776596, nome: 'Material Elétrico Fab Life', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L045 - Prazo 45 DDD' },
@@ -11,14 +62,17 @@ const catalogo = [
 let carrinho = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarCatalogo(catalogo);
+    // Se a tabela existir nesta página, renderiza
+    const tabelaContainer = document.getElementById('table-body');
+    if (tabelaContainer) renderizarCatalogo(catalogo);
+    
     atualizarCarrinhoUI();
 });
 
 // --- RENDERIZAR TABELA ---
 function renderizarCatalogo(lista) {
     const container = document.getElementById('table-body');
-    if (!container) return; // Segurança caso a tabela não exista na view atual
+    if (!container) return; 
 
     container.innerHTML = '';
 
@@ -28,10 +82,8 @@ function renderizarCatalogo(lista) {
     }
 
     lista.forEach(item => {
-        // Formatações
         const precoFmt = item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         
-        // Grid Row (Sem negritos forçados no HTML)
         const row = `
             <div class="grid-row">
                 <div class="cell-id">${item.id}</div>
@@ -59,12 +111,15 @@ function renderizarCatalogo(lista) {
 }
 
 function filtrarCatalogo() {
-    const termo = document.getElementById('global-search').value.toLowerCase();
+    const termo = document.getElementById('global-search');
+    if (!termo) return;
+    
+    const valor = termo.value.toLowerCase();
     
     const filtrados = catalogo.filter(item => {
-        return item.nome.toLowerCase().includes(termo) || 
-               item.fornecedor.toLowerCase().includes(termo) ||
-               item.id.toString().includes(termo);
+        return item.nome.toLowerCase().includes(valor) || 
+               item.fornecedor.toLowerCase().includes(valor) ||
+               item.id.toString().includes(valor);
     });
 
     renderizarCatalogo(filtrados);
@@ -73,13 +128,13 @@ function filtrarCatalogo() {
 // --- CONTROLE DE QUANTIDADE ---
 function ajustarQtdInput(id, delta) {
     const input = document.getElementById(`qtd-input-${id}`);
-    // Converte de "1,000000" para número JS (1.0)
+    if(!input) return;
+
     let valorAtual = parseFloat(input.value.replace(',', '.'));
     let novoValor = valorAtual + delta;
 
     if (novoValor < 1) novoValor = 1;
 
-    // Formata de volta para 6 casas decimais com vírgula
     input.value = novoValor.toFixed(6).replace('.', ',');
 }
 
@@ -87,6 +142,8 @@ function ajustarQtdInput(id, delta) {
 function adicionarAoCarrinho(id) {
     const produto = catalogo.find(p => p.id === id);
     const inputQtd = document.getElementById(`qtd-input-${id}`);
+    if(!inputQtd) return;
+    
     const qtdSelecionada = parseFloat(inputQtd.value.replace(',', '.'));
 
     const itemExistente = carrinho.find(c => c.id === id);
@@ -97,10 +154,16 @@ function adicionarAoCarrinho(id) {
         carrinho.push({ ...produto, qtd: qtdSelecionada });
     }
 
-    // Reseta o input para 1
     inputQtd.value = "1,000000";
-
     atualizarCarrinhoUI();
+    
+    // Feedback visual
+    const btn = document.querySelector(`button[onclick="adicionarAoCarrinho(${id})"]`);
+    if(btn) {
+        const original = btn.innerHTML;
+        btn.innerHTML = '<span class="material-icons-outlined" style="color:#27ae60">check</span>';
+        setTimeout(() => btn.innerHTML = original, 1000);
+    }
 }
 
 function removerItem(id) {

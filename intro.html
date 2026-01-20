@@ -2,38 +2,23 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>FUP ALM — Entrada</title>
-    <meta name="description" content="Tela inicial do FUP ALM — animação de carregamento, temas sazonais e entrada acessível.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FUP ALM</title>
     <link rel="stylesheet" href="intro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- main container atua como "botão" acessível -->
-    <main id="entry-button" class="main-container" role="button" tabindex="0" aria-label="Abrir FUP ALM" aria-live="polite">
-        <div class="logo-wrapper" aria-hidden="true">
-            <div class="pulse-ring" aria-hidden="true"></div>
-            <div class="core-circle" aria-hidden="true">
-                <span class="logo-letter" aria-hidden="true">F</span>
-            </div>
-        </div>
+    <div class="bg-image" data-bg="bloom.png" aria-hidden="true"></div>
 
-        <div class="text-content">
-            <h1 class="brand-name">FUP ALM</h1>
-            <p class="status-message">Inicializando sistema...</p>
-
-            <div class="loading-bar" aria-hidden="true">
-                <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-            </div>
+    <main id="hero-scene">
+        <div class="loader-badge">
+            <div class="spinner-ring"></div>
+            <div class="circle-f">F</div>
         </div>
     </main>
-
-    <!-- contêiner das partículas (neve/brilho) -->
-    <div id="particles" aria-hidden="true"></div>
-
-    <noscript>
-        <div class="no-js-warning">JavaScript desabilitado — clique para continuar.</div>
-    </noscript>
 
     <script src="intro.js" defer></script>
 </body>

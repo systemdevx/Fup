@@ -27,8 +27,6 @@ input, button, select, textarea {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #E5E7EB;
-    
-    /* FIX DE SOBREPOSIÇÃO */
     flex-shrink: 0; 
     position: relative;
     z-index: 10;
@@ -189,6 +187,97 @@ input, button, select, textarea {
 }
 
 .hidden { display: none !important; }
+
+/* 7. MODAL / POPUP (NOVO) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(2px); /* Efeito de desfoque suave no fundo */
+}
+
+.modal-box {
+    background-color: #FFF;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-icon-area {
+    margin-bottom: 15px;
+}
+
+.modal-icon-area .material-icons-outlined {
+    font-size: 48px;
+    color: #F59E0B; /* Cor de alerta (Laranja/Amarelo) */
+}
+
+.modal-box h3 {
+    font-size: 18px;
+    color: #1F2937;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.modal-box p {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-actions button {
+    flex: 1;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ghost {
+    background-color: #FFF;
+    border: 1px solid #D1D5DB;
+    color: #374151;
+}
+
+.btn-ghost:hover {
+    background-color: #F3F4F6;
+    border-color: #9CA3AF;
+}
+
+.btn-danger {
+    background-color: #EF4444; /* Vermelho para ação destrutiva */
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #DC2626;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 @media (max-width: 768px) {
     .row-2 { grid-template-columns: 1fr; gap: 15px; }

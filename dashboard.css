@@ -1,11 +1,11 @@
 /* --- Variáveis (Tema Laranja Vivara) --- */
 :root {
-    --bg-body: #F3F4F6;      /* Fundo cinza igual Transações */
+    --bg-body: #F3F4F6;      /* Fundo cinza */
     --header-bg: #FFFFFF; 
     
-    --primary-orange: #E67E22; /* Laranja Vivara */
+    --primary-orange: #E67E22;
     --primary-orange-hover: #D35400;
-    --light-orange-bg: #FFF5E5; /* Fundo laranja claro para hovers */
+    --light-orange-bg: #FFF5E5;
     
     --text-dark: #333333;
     --text-grey: #666666;
@@ -14,7 +14,6 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Fonte Global: Base 16px para igualar PageTransacoes */
 body { 
     background-color: var(--bg-body); 
     color: var(--text-dark);
@@ -25,8 +24,6 @@ body {
     min-height: 100vh;
 }
 
-/* Regra Específica de Títulos (Igual ao PageTransacoes.css) 
-   Isso garante que o peso visual dos títulos seja idêntico */
 h1, h2, h3, h4, .group-title, th, .logo-area, .btn-cta {
     font-family: 'Calibre', 'Calibri', 'Segoe UI', sans-serif;
     font-weight: 700;
@@ -48,7 +45,6 @@ header {
     font-size: 20px; color: var(--primary-orange); letter-spacing: 0.5px; margin: 0;
 }
 
-/* Menu movido para a direita */
 nav { 
     margin-left: auto;   
     margin-right: 30px;  
@@ -56,7 +52,6 @@ nav {
 }
 
 nav ul { display: flex; height: 100%; gap: 30px; list-style: none; }
-
 nav ul li { height: 100%; display: flex; align-items: center; }
 
 nav ul li a {
@@ -71,7 +66,6 @@ nav ul li a {
 
 nav ul li a .material-icons-outlined { font-size: 24px; margin-bottom: 2px; }
 
-/* Estado Ativo e Hover */
 nav ul li a:hover, nav ul li a.active {
     color: #000;
     border-bottom-color: var(--primary-orange);
@@ -111,22 +105,18 @@ nav ul li a:hover, nav ul li a.active {
 }
 .btn-filter:hover { background-color: #F9FAFB; border-color: #9CA3AF; }
 
-/* Botões de Ação */
 .icon-action {
     background: transparent; border: none; color: var(--text-grey); cursor: pointer; padding: 6px;
     display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
 .icon-action:hover { color: var(--primary-orange); background-color: var(--light-orange-bg); }
-
 .icon-action .material-icons-outlined { font-size: 20px; }
 
 .divider { height: 20px; width: 1px; background: #E5E7EB; margin: 0 10px; }
 
-
 /* --- 3. DASHBOARD GRID --- */
 main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-/* Grid Superior */
 .dashboard-grid-top {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -138,7 +128,6 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
     padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-/* Estilo do HERO CARD */
 .hero-card {
     background: linear-gradient(135deg, #FFF8F0 0%, #FFFFFF 100%);
     border-color: #FFE0B2;
@@ -158,10 +147,8 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 }
 .btn-cta:hover { background-color: var(--primary-orange-hover); }
 
-/* Ícone de fundo ilustrativo */
 .hero-illustration { position: absolute; right: -10px; bottom: -10px; transform: rotate(-10deg); }
 
-/* Cards Pequenos */
 .simple-card { display: flex; flex-direction: column; justify-content: space-between; height: 180px; transition: border-color 0.2s; }
 .simple-card:hover { border-color: var(--primary-orange); }
 
@@ -170,7 +157,6 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 .link-bottom { text-decoration: none; color: #666; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .link-bottom:hover { color: var(--primary-orange); }
 
-/* Grid Inferior */
 .dashboard-grid-bottom {
     display: grid; grid-template-columns: 1fr 2fr; gap: 30px;
 }
@@ -194,7 +180,6 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 }
 .empty-state h4 { color: #555; margin-bottom: 5px; font-size: 16px; }
 
-/* Responsividade */
 @media (max-width: 900px) {
     .dashboard-grid-top, .dashboard-grid-bottom { grid-template-columns: 1fr; }
     header { padding: 0 10px; }
@@ -202,7 +187,6 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
     nav ul li a span:last-child { display: none; }
 }
 
-/* Lógica de Telas (SPA Simples) */
 .tela { display: none; }
 .active-tela { display: block; animation: fade 0.3s; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
