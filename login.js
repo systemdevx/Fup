@@ -1,9 +1,9 @@
 // --- CONFIGURAÇÃO DO SUPABASE ---
-// Seus dados reais já inseridos abaixo:
+// Seus dados do projeto 'qolqfidcvvinetdkxeim'
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-// Inicializa o cliente com nome 'supabaseClient' para não conflitar com a biblioteca global
+// Inicializa o cliente
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 (() => {
@@ -39,21 +39,22 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             btn.innerText = 'Acessando...';
             btn.style.opacity = '0.8';
 
-            // Tenta logar no Supabase usando 'supabaseClient'
+            // Tenta logar no Supabase
             const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
 
             if (error) {
-                alert('Erro ao entrar: ' + error.message); // Ex: "Invalid login credentials"
+                alert('Erro ao entrar: ' + error.message);
                 btn.disabled = false;
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
             } else {
-                console.log('Login realizado:', data);
-                // SUCESSO: Redireciona para o painel
-                // Certifique-se de que o arquivo 'dashboard.html' existe na pasta
+                console.log('Login realizado com sucesso:', data);
+                
+                // --- AQUI ESTÁ O REDIRECIONAMENTO ---
+                // Como seu arquivo se chama 'dashboard.html', isso vai funcionar:
                 window.location.href = "dashboard.html"; 
             }
         });
@@ -85,7 +86,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         });
     }
 
-    // --- ANIMAÇÃO DOS FIOS ---
+    // --- ANIMAÇÃO DOS FIOS (FUNDO) ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
