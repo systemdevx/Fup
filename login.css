@@ -1,203 +1,180 @@
-/* --- login.css v2 --- */
-:root {
-  --primary: #E67E22;       /* Laranja FUP */
-  --primary-dark: #d35400;
-  --text-dark: #1e293b;
-  --text-gray: #64748b;
-  --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-  --glass-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.8);
-  --error: #ef4444;
+/* --- login.css ---
+   Versão melhorada: acessibilidade, responsividade, foco visível,
+   baixo contraste controlado, prefers-reduced-motion, performance
+*/
+
+:root{
+  --bg-base: #dbe4ea;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.85);
+  --accent: #E67E22;
+  --accent-hover: #D35400;
+  --text: #1f2933;
+  --muted: #6b7280;
+  --radius: 12px;
+  --max-width: 420px;
+  --glass-blur: 14px;
+  --shadow: 0 8px 32px rgba(31,38,135,0.12);
+  --focus-ring: 3px;
+  --transition-fast: 180ms;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
-
-body {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-gradient);
-  overflow: hidden;
+/* Reset simples */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg-base);
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
 }
 
-/* Fundo Opcional */
-.bg-layer {
-  position: fixed; inset: 0; z-index: -1;
-  background-image: radial-gradient(circle at 50% 50%, rgba(230, 126, 34, 0.08), transparent 60%);
+/* Fundo com imagem — escurece e desfoca levemente até carregar */
+.bg-image{
+  position:fixed; inset:0; z-index:0;
+  background-position:center center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  filter: blur(10px) saturate(.9) brightness(.9);
+  transform: scale(1.06);
+  transition: filter 450ms ease, opacity 450ms ease;
+  opacity:0;
 }
 
-/* Painel de Vidro */
-.glass-panel {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 40px 32px;
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-  transform: translateY(0);
-  animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
+/* Quando carregada via JS, ficará visível e com menos blur */
+.bg-image.loaded{ filter: blur(6px) saturate(.95) brightness(.92); opacity:1 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Wrapper principal */
+.login-wrap{ position:relative; z-index:10; width:100%; padding:24px; display:flex; align-items:center; justify-content:center }
+
+/* O cartão (glassmorphism) */
+.glass-card{
+  width:min(var(--max-width), 92vw);
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  border: 1px solid var(--card-border);
+  padding:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: transform var(--transition-fast) ease, opacity 220ms ease;
 }
 
 /* Header */
-.brand-header { text-align: center; margin-bottom: 32px; }
+.header{ text-align:center; margin-bottom:18px }
+.header h1{ font-size:1.35rem; margin-bottom:6px }
+.lead{ color:var(--muted); font-size:0.95rem }
 
-.logo-circle {
-  width: 64px; height: 64px;
-  background: var(--primary);
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  margin-bottom: 16px;
-  box-shadow: 0 8px 16px rgba(230, 126, 34, 0.25);
+/* Inputs */
+.input-group{ margin-bottom:14px }
+.input-group label{ display:block; font-size:0.9rem; margin-bottom:8px; color:var(--text); font-weight:600 }
+
+.input-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+  background:rgba(255,255,255,0.9);
+  border-radius:10px;
+  border:1px solid transparent;
+  padding:8px 10px;
+  transition: box-shadow var(--transition-fast) ease, border-color var(--transition-fast) ease, background var(--transition-fast);
 }
 
-.logo-text { font-family: serif; font-weight: bold; font-size: 2rem; color: #fff; }
-
-h1 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 4px; font-weight: 700; }
-.subtitle { color: var(--text-gray); font-size: 0.9rem; }
-
-/* Inputs "Floating Label" */
-.input-box {
-  position: relative;
-  margin-bottom: 24px;
-  height: 56px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 12px 12px 0 0;
-  border-bottom: 2px solid #e2e8f0;
-  transition: all 0.3s;
+.input-wrapper:focus-within{
+  border-color:var(--accent);
+  box-shadow: 0 0 0 var(--focus-ring) rgba(230,126,34,0.12);
 }
 
-.input-box:focus-within {
-  background: #fff;
-  border-color: var(--primary);
+/* ícone à esquerda */
+.icon{
+  width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;
+  color:var(--muted); margin-right:8px; font-family: "Material Icons", sans-serif;
 }
 
-.input-box input {
-  width: 100%; height: 100%;
-  background: transparent;
-  border: none; outline: none;
-  padding: 20px 16px 6px 42px; /* Espaço para ícone e label */
-  font-size: 1rem;
-  color: var(--text-dark);
-  border-radius: 12px 12px 0 0;
+/* Input básico */
+.input-wrapper input{
+  flex:1; border:0; outline:0; background:transparent; font-size:0.98rem; padding:10px 6px;
 }
 
-/* Ícone Fixo à esquerda */
-.field-icon {
-  position: absolute; left: 12px; top: 18px;
-  color: var(--text-gray); font-size: 20px;
-  pointer-events: none;
+/* botão de mostrar senha */
+.btn-icon{
+  background:transparent; border:0; padding:6px; margin-left:6px; border-radius:8px; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  color:var(--muted);
 }
+.btn-icon:hover{ color:var(--text) }
+.btn-icon:focus{ outline: 3px solid rgba(0,0,0,0.06); outline-offset:3px }
 
-/* Label Flutuante */
-.input-box label {
-  position: absolute;
-  left: 42px; top: 18px;
-  color: var(--text-gray);
-  font-size: 1rem;
-  pointer-events: none;
-  transition: 0.2s ease all;
-}
+/* Controls (remember / forgot) */
+.controls{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:4px; margin-bottom:14px; font-size:0.92rem }
+.remember{ display:flex; align-items:center; gap:8px; color:var(--muted) }
+.remember input{ width:16px; height:16px }
 
-/* Mágica do CSS: Quando input tem texto ou foco, label sobe */
-.input-box input:focus ~ label,
-.input-box input:not(:placeholder-shown) ~ label {
-  top: 8px;
-  font-size: 0.75rem;
-  color: var(--primary);
-  font-weight: 600;
+/* Actions */
+.actions{ margin-top:6px }
+.btn-login{
+  width:100%;
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  padding:12px 14px;
+  background:var(--accent);
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform 120ms ease, background 120ms;
 }
+.btn-login:hover{ background:var(--accent-hover) }
+.btn-login:active{ transform:scale(.995) }
+.btn-login:disabled{ opacity:.7; cursor:not-allowed }
 
-/* Botão Olho */
-.icon-btn {
-  position: absolute; right: 12px; top: 16px;
-  background: none; border: none; cursor: pointer;
-  color: var(--text-gray);
-  display: flex; align-items: center;
+/* Spinner (simples) */
+.spinner{
+  width:14px; height:14px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.25);
+  border-top-color:rgba(255,255,255,0.95);
+  animation: spin 800ms linear infinite;
+  display:inline-block; vertical-align:middle;
+  opacity:0; transform:scale(.9);
+  transition: opacity 140ms ease, transform 140ms ease;
 }
-.icon-btn:hover { color: var(--text-dark); }
+.btn-login.loading .spinner{ opacity:1; transform:scale(1) }
+.btn-login.loading .btn-text{ opacity:0.85 }
 
-/* Erros */
-.error-msg {
-  color: var(--error); font-size: 0.75rem; margin-top: -20px; margin-bottom: 16px; margin-left: 4px;
-  min-height: 14px;
-}
+@keyframes spin{ to{ transform: rotate(360deg) } }
 
-/* Opções */
-.options-row {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 32px; font-size: 0.9rem;
-}
+/* Mensagens de erro/estado */
+.field-error{ font-size:0.85rem; color:#b91c1c; min-height:18px; margin-top:6px }
+.status{ margin-top:12px; min-height:20px; color:var(--muted); font-size:0.92rem }
 
-.custom-check {
-  display: flex; align-items: center; cursor: pointer; color: var(--text-dark);
-}
-.custom-check input { display: none; }
-.checkmark {
-  width: 18px; height: 18px;
-  border: 2px solid #cbd5e1; border-radius: 4px;
-  margin-right: 8px; position: relative;
-  transition: 0.2s;
-}
-.custom-check input:checked ~ .checkmark {
-  background: var(--primary); border-color: var(--primary);
-}
-.checkmark::after {
-  content: ''; position: absolute;
-  left: 5px; top: 1px; width: 4px; height: 9px;
-  border: solid white; border-width: 0 2px 2px 0;
-  transform: rotate(45deg); opacity: 0;
-}
-.custom-check input:checked ~ .checkmark::after { opacity: 1; }
+/* Acessibilidade: foco visível */
+:focus{ outline-offset:2px; }
 
-.link-forgot {
-  color: var(--primary); text-decoration: none; font-weight: 600;
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .spinner, .bg-image, .btn-login, .glass-card{ animation: none !important; transition: none !important }
+  .spinner{ display:none }
 }
-.link-forgot:hover { text-decoration: underline; }
-
-/* Botão Principal */
-.submit-btn {
-  width: 100%; height: 50px;
-  background: var(--primary);
-  color: white; border: none;
-  border-radius: 12px;
-  font-size: 1rem; font-weight: 700;
-  cursor: pointer;
-  position: relative; overflow: hidden;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.submit-btn:hover { background: var(--primary-dark); }
-.submit-btn:active { transform: scale(0.98); }
-.submit-btn:disabled { opacity: 0.7; cursor: wait; }
-
-/* Loader Spinner */
-.loader {
-  display: none;
-  width: 20px; height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto;
-}
-.submit-btn.loading .btn-content { display: none; }
-.submit-btn.loading .loader { display: block; }
-
-@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Responsivo */
-@media (max-width: 480px) {
-  .glass-panel { max-width: 90%; padding: 32px 20px; }
-  h1 { font-size: 1.25rem; }
+@media (max-width:420px){
+  .glass-card{ padding:18px }
+  .lead{ font-size:0.9rem }
+  .btn-login{ padding:10px }
+  .input-wrapper{ padding:8px }
 }
+
+/* utilitários */
+.visually-hidden{
+  position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap;
+}
+.no-js-warning{ position:fixed; left:10px; bottom:10px; background:#000a; color:#fff; padding:8px 10px; border-radius:8px; z-index:20 }
