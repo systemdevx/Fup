@@ -65,7 +65,6 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     flex-shrink: 0; gap: 10px; 
 }
 
-/* Botão Toggle Menu */
 .btn-toggle-menu {
     width: 30px; height: 30px; background: none; border: 1px solid transparent; border-radius: 4px;
     color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center;
@@ -76,7 +75,6 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 
 .v-separator { width: 1px; height: 20px; background-color: #E5E7EB; margin: 0 5px; }
 
-/* Botão de Ação (Novo Cadastro) */
 .btn-subheader-action {
     background-color: var(--primary-orange); 
     color: white; border: none; height: 32px; padding: 0 16px; 
@@ -86,7 +84,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .btn-subheader-action:hover { background-color: var(--primary-orange-hover); }
 .btn-subheader-action .material-icons-outlined { font-size: 16px; }
 
-/* --- DROPDOWN (Específico de Registration) --- */
+/* --- DROPDOWN --- */
 .dropdown-container { position: relative; display: inline-block; }
 
 .dropdown-content {
@@ -212,8 +210,9 @@ td { padding: 15px; border-bottom: 1px solid #F3F4F6; font-size: 14px; color: #3
 tr:last-child td { border-bottom: none; }
 tr:hover { background-color: #FFFDF8; }
 
-.status-badge {
-    padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+.badge-grupo {
+    background-color: #E0E7FF; color: #3730A3;
+    padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;
 }
 
 .btn-icon {
