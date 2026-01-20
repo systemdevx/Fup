@@ -2,20 +2,19 @@
 (() => {
   'use strict';
 
-  // 1. Configuração do Supabase (Suas credenciais)
+  // 1. Configuração do Supabase (Suas chaves)
   const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-  // Verifica carregamento da lib
   if (typeof supabase === 'undefined') {
-    console.error('ERRO: Supabase SDK não encontrado. Verifique se o script foi incluído no HTML.');
+    console.error('ERRO CRÍTICO: Supabase SDK não carregado no HTML.');
   }
 
-  // Inicializa Cliente
+  // Inicializa o Cliente
   const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const $ = (sel) => document.querySelector(sel);
 
-  // --- Funções de UI ---
+  // --- Funções Visuais (Background & UI) ---
 
   function lazyLoadBackground() {
     const bg = $('.bg-image');
@@ -39,7 +38,6 @@
     btn.addEventListener('click', () => {
       const type = input.type === 'password' ? 'text' : 'password';
       input.type = type;
-      // Muda a cor para indicar ativo/inativo
       btn.style.color = type === 'text' ? 'var(--accent)' : '';
     });
   }
@@ -66,7 +64,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      // Limpa estados anteriores
+      // Limpar mensagens
       $('#username-error').textContent = '';
       $('#password-error').textContent = '';
       const statusEl = $('#status');
@@ -76,7 +74,6 @@
       const email = $('#username').value.trim();
       const password = $('#password').value;
 
-      // Validação local
       if (!email) {
         $('#username-error').textContent = 'O e-mail é obrigatório.';
         $('#username').focus();
@@ -91,7 +88,7 @@
       setLoading(true);
 
       try {
-        // --- Chamada Real ao Supabase ---
+        // --- Login Real ---
         const { data, error } = await _supabase.auth.signInWithPassword({
           email: email,
           password: password,
@@ -100,33 +97,33 @@
         if (error) throw error;
 
         // Sucesso
-        statusEl.textContent = 'Login realizado com sucesso!';
+        statusEl.textContent = 'Login realizado! Redirecionando...';
         statusEl.style.color = 'var(--accent)';
         
-        // Redirecionamento
+        // Redirecionamento para o dashboard atualizado
         setTimeout(() => {
-          // Ajuste aqui para a rota do seu painel
-          window.location.href = '/dashboard.html'; 
-        }, 1000);
+          window.location.href = 'dashboard.html'; 
+        }, 800);
 
       } catch (err) {
-        console.error('Login Error:', err);
+        console.error('Erro de Login:', err);
         let msg = 'Falha ao autenticar.';
 
-        // Tratamento de mensagens comuns
         if (err.message.includes('Invalid login')) {
           msg = 'E-mail ou senha incorretos.';
         } else if (err.message.includes('Email not confirmed')) {
           msg = 'Confirme seu e-mail antes de entrar.';
+        } else if (err.message.includes('Network request failed')) {
+            msg = 'Erro de conexão. Verifique sua internet.';
         }
 
         statusEl.textContent = msg;
         statusEl.style.color = 'var(--danger)';
 
-        // Efeito Shake no erro
+        // Shake visual
         const card = $('.glass-card');
         card.style.animation = 'none';
-        void card.offsetWidth; // trigger reflow
+        void card.offsetWidth; // reset animation
         card.style.animation = 'shake 0.4s ease';
       } finally {
         setLoading(false);
@@ -134,7 +131,6 @@
     });
   }
 
-  // Inicialização
   function init() {
     lazyLoadBackground();
     setupPasswordToggle();
