@@ -1,4 +1,6 @@
-// --- CONFIGURAÇÃO E SEGURANÇA (SUPABASE) ---
+// --- dashboard.js ---
+
+// 1. Configuração do Supabase
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
@@ -6,41 +8,39 @@ let supabaseClient;
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 } else {
-    console.error('ERRO: Supabase não carregado. Verifique o HTML.');
+    console.error('ERRO CRÍTICO: Supabase não carregado.');
 }
 
-// Lógica de Proteção e Inicialização do Usuário
+// 2. Verificação de Sessão (O "Guarda-Costas")
 (async function checkSession() {
     if (!supabaseClient) return;
 
-    // 1. Verifica sessão
+    // Tenta pegar a sessão ativa
     const { data: { session }, error } = await supabaseClient.auth.getSession();
 
+    // Se não houver usuário logado, chuta para o login
     if (!session || error) {
-        // Se não logado, expulsa para o login IMEDIATAMENTE e mantém a tela oculta
         window.location.href = 'login.html';
         return; 
     }
 
-    // 2. SUCESSO! Usuário verificado: Libera a visão da tela
+    // Se passou, mostra o dashboard
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
 
-    // 3. Personaliza Avatar
+    // Personaliza Avatar com iniciais do email
     if (session.user && session.user.email) {
-        const userEmail = session.user.email;
-        const initials = userEmail.substring(0, 2).toUpperCase();
+        const email = session.user.email;
+        const initials = email.substring(0, 2).toUpperCase();
         const avatarEl = document.querySelector('.avatar');
         if (avatarEl) avatarEl.innerText = initials;
     }
 
-    // 4. Configura botão de Logout
-    const logoutBtn = document.querySelector('.right-actions .icon-action');
+    // Configura o Logout
+    const logoutBtn = document.getElementById('btn-logout');
     if (logoutBtn) {
-        logoutBtn.title = "Sair do Sistema";
-        logoutBtn.style.cursor = "pointer";
         logoutBtn.onclick = async () => {
-            if (confirm("Deseja sair do sistema?")) {
+            if (confirm("Tem certeza que deseja sair?")) {
                 await supabaseClient.auth.signOut();
                 window.location.href = 'login.html';
             }
@@ -49,30 +49,28 @@ if (typeof supabase !== 'undefined') {
 })();
 
 
-// --- RESTANTE DO CÓDIGO (Lógica do Dashboard) ---
+// --- LÓGICA DO CATÁLOGO E DADOS ---
+
 const catalogo = [
-    { id: 807735, nome: 'NF 68400 - Material Elétrico', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L030 - Prazo 30 DDD' },
-    { id: 776596, nome: 'Material Elétrico Fab Life', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L045 - Prazo 45 DDD' },
-    { id: 102030, nome: 'Seringa Descartável 10ml', fornecedor: 'MEDIX BRASIL', preco: 1.25, un: 'UN', condicao: 'À Vista' },
-    { id: 990022, nome: 'Luva Procedimento M', fornecedor: 'SAFEHAND PROTECTION', preco: 25.90, un: 'CX', condicao: 'L030 - Prazo 30 DDD' },
-    { id: 500100, nome: 'Oxigênio Medicinal', fornecedor: 'AIRLIFE GASES', preco: 150.00, un: 'M3', condicao: 'Faturado 15 Dias' },
-    { id: 200300, nome: 'Capacete de Segurança', fornecedor: 'PROT-TOTAL', preco: 45.50, un: 'UN', condicao: 'À Vista' },
+    { id: 807735, nome: 'Cabo Flexível 2.5mm', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'RL', condicao: 'Prazo 30 Dias' },
+    { id: 776596, nome: 'Disjuntor Bipolar 40A', fornecedor: 'B A ELETRICA LTDA', preco: 42.50, un: 'UN', condicao: 'Prazo 45 Dias' },
+    { id: 102030, nome: 'Seringa Desc. 10ml', fornecedor: 'MEDIX BRASIL', preco: 1.25, un: 'UN', condicao: 'À Vista' },
+    { id: 990022, nome: 'Luva Látex M', fornecedor: 'SAFEHAND', preco: 25.90, un: 'CX', condicao: 'Prazo 30 Dias' },
+    { id: 500100, nome: 'Cilindro Oxigênio', fornecedor: 'AIRLIFE GASES', preco: 150.00, un: 'M3', condicao: '15 Dias' },
 ];
 
 let carrinho = [];
 
+// Inicializa quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-    // Se a tabela existir nesta página, renderiza
-    const tabelaContainer = document.getElementById('table-body');
-    if (tabelaContainer) renderizarCatalogo(catalogo);
-    
+    // Renderiza o catálogo se o elemento existir (agora existe!)
+    renderizarCatalogo(catalogo);
     atualizarCarrinhoUI();
 });
 
-// --- RENDERIZAR TABELA ---
 function renderizarCatalogo(lista) {
     const container = document.getElementById('table-body');
-    if (!container) return; 
+    if (!container) return; // Se não achar o elemento, para aqui.
 
     container.innerHTML = '';
 
@@ -86,22 +84,22 @@ function renderizarCatalogo(lista) {
         
         const row = `
             <div class="grid-row">
-                <div class="cell-id">${item.id}</div>
-                <div class="cell-text">${item.nome}</div>
-                <div class="cell-text">${item.fornecedor}</div>
-                <div class="cell-text">${precoFmt}</div>
-                <div class="cell-text">${item.un}</div>
-                <div class="cell-secondary">${item.condicao}</div>
+                <div style="color:#888;">#${item.id}</div>
+                <div style="font-weight:600; color:#333;">${item.nome}</div>
+                <div>${item.fornecedor}</div>
+                <div style="color:var(--primary-orange); font-weight:bold;">${precoFmt}</div>
+                <div>${item.un}</div>
+                <div style="font-size:11px; color:#666;">${item.condicao}</div>
                 
                 <div class="qty-control">
-                    <button class="btn-qty" onclick="ajustarQtdInput(${item.id}, -1)">–</button>
-                    <input type="text" id="qtd-input-${item.id}" class="input-qty" value="1,000000" readonly>
+                    <button class="btn-qty" onclick="ajustarQtdInput(${item.id}, -1)">-</button>
+                    <input type="text" id="qtd-input-${item.id}" class="input-qty" value="1" readonly>
                     <button class="btn-qty" onclick="ajustarQtdInput(${item.id}, 1)">+</button>
                 </div>
 
                 <div>
-                    <button class="btn-add-cart" onclick="adicionarAoCarrinho(${item.id})">
-                        <span class="material-icons-outlined">shopping_cart</span>
+                    <button class="btn-add-cart" onclick="adicionarAoCarrinho(${item.id})" title="Adicionar">
+                        <span class="material-icons-outlined" style="font-size:18px;">add_shopping_cart</span>
                     </button>
                 </div>
             </div>
@@ -115,7 +113,6 @@ function filtrarCatalogo() {
     if (!termo) return;
     
     const valor = termo.value.toLowerCase();
-    
     const filtrados = catalogo.filter(item => {
         return item.nome.toLowerCase().includes(valor) || 
                item.fornecedor.toLowerCase().includes(valor) ||
@@ -125,54 +122,49 @@ function filtrarCatalogo() {
     renderizarCatalogo(filtrados);
 }
 
-// --- CONTROLE DE QUANTIDADE ---
 function ajustarQtdInput(id, delta) {
     const input = document.getElementById(`qtd-input-${id}`);
     if(!input) return;
 
-    let valorAtual = parseFloat(input.value.replace(',', '.'));
+    let valorAtual = parseInt(input.value);
     let novoValor = valorAtual + delta;
 
     if (novoValor < 1) novoValor = 1;
-
-    input.value = novoValor.toFixed(6).replace('.', ',');
+    input.value = novoValor;
 }
 
-// --- CARRINHO ---
 function adicionarAoCarrinho(id) {
     const produto = catalogo.find(p => p.id === id);
     const inputQtd = document.getElementById(`qtd-input-${id}`);
     if(!inputQtd) return;
     
-    const qtdSelecionada = parseFloat(inputQtd.value.replace(',', '.'));
-
+    const qtd = parseInt(inputQtd.value);
     const itemExistente = carrinho.find(c => c.id === id);
 
     if(itemExistente) {
-        itemExistente.qtd += qtdSelecionada;
+        itemExistente.qtd += qtd;
     } else {
-        carrinho.push({ ...produto, qtd: qtdSelecionada });
+        carrinho.push({ ...produto, qtd: qtd });
     }
 
-    inputQtd.value = "1,000000";
-    atualizarCarrinhoUI();
-    
     // Feedback visual
     const btn = document.querySelector(`button[onclick="adicionarAoCarrinho(${id})"]`);
     if(btn) {
-        const original = btn.innerHTML;
-        btn.innerHTML = '<span class="material-icons-outlined" style="color:#27ae60">check</span>';
-        setTimeout(() => btn.innerHTML = original, 1000);
+        const htmlOriginal = btn.innerHTML;
+        btn.innerHTML = '<span class="material-icons-outlined">check</span>';
+        btn.style.backgroundColor = '#27ae60';
+        setTimeout(() => {
+            btn.innerHTML = htmlOriginal;
+            btn.style.backgroundColor = '';
+        }, 1000);
     }
+
+    inputQtd.value = "1";
+    atualizarCarrinhoUI();
 }
 
 function removerItem(id) {
     carrinho = carrinho.filter(c => c.id !== id);
-    atualizarCarrinhoUI();
-}
-
-function limparCarrinho() {
-    carrinho = [];
     atualizarCarrinhoUI();
 }
 
@@ -186,8 +178,8 @@ function atualizarCarrinhoUI() {
     let totalGeral = 0;
 
     if(carrinho.length === 0) {
-        container.innerHTML = '<div class="empty-msg">Seu carrinho está vazio</div>';
-        totalEl.innerText = 'BRL 0,00';
+        container.innerHTML = '<div style="text-align:center; color:#999; margin-top:20px;">Seu carrinho está vazio</div>';
+        totalEl.innerText = 'R$ 0,00';
         return;
     }
 
@@ -197,13 +189,13 @@ function atualizarCarrinhoUI() {
 
         const cartItem = `
             <div class="cart-item">
-                <button class="cart-remove" onclick="removerItem(${item.id})">
-                    <span class="material-icons-outlined">close</span>
-                </button>
-                <div class="cart-item-title">${item.nome}</div>
-                <div class="cart-item-details">
-                    <span>${item.qtd.toFixed(2).replace('.',',')}x ${item.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-                    <strong>${subtotal.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</strong>
+                <div>
+                    <div style="font-weight:600;">${item.nome}</div>
+                    <div style="font-size:11px; color:#888;">${item.qtd}x ${item.preco.toLocaleString('pt-BR',{style:'currency', currency:'BRL'})}</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-weight:bold; color:var(--primary-orange);">${subtotal.toLocaleString('pt-BR',{style:'currency', currency:'BRL'})}</div>
+                    <span class="material-icons-outlined" onclick="removerItem(${item.id})" style="font-size:16px; color:#999; cursor:pointer; margin-top:4px;">delete</span>
                 </div>
             </div>
         `;
