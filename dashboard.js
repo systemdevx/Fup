@@ -17,12 +17,16 @@ if (typeof supabase !== 'undefined') {
     const { data: { session }, error } = await supabaseClient.auth.getSession();
 
     if (!session || error) {
-        // Se não logado, expulsa para o login
+        // Se não logado, expulsa para o login IMEDIATAMENTE e mantém a tela oculta
         window.location.href = 'login.html';
         return; 
     }
 
-    // 2. Personaliza Avatar com iniciais do e-mail
+    // 2. SUCESSO! Usuário verificado: Libera a visão da tela
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = '1';
+
+    // 3. Personaliza Avatar
     if (session.user && session.user.email) {
         const userEmail = session.user.email;
         const initials = userEmail.substring(0, 2).toUpperCase();
@@ -30,17 +34,13 @@ if (typeof supabase !== 'undefined') {
         if (avatarEl) avatarEl.innerText = initials;
     }
 
-    // 3. Configura botão de Logout (três pontinhos)
+    // 4. Configura botão de Logout
     const logoutBtn = document.querySelector('.right-actions .icon-action');
     if (logoutBtn) {
         logoutBtn.title = "Sair do Sistema";
         logoutBtn.style.cursor = "pointer";
-        
-        // Remove event listeners antigos clonando o elemento (opcional, mas seguro)
-        // Aqui vamos apenas sobrescrever o onclick
         logoutBtn.onclick = async () => {
-            const confirmacao = confirm("Deseja sair do sistema?");
-            if (confirmacao) {
+            if (confirm("Deseja sair do sistema?")) {
                 await supabaseClient.auth.signOut();
                 window.location.href = 'login.html';
             }
@@ -48,8 +48,8 @@ if (typeof supabase !== 'undefined') {
     }
 })();
 
-// --- CÓDIGO DO DASHBOARD (Original) ---
 
+// --- RESTANTE DO CÓDIGO (Lógica do Dashboard) ---
 const catalogo = [
     { id: 807735, nome: 'NF 68400 - Material Elétrico', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L030 - Prazo 30 DDD' },
     { id: 776596, nome: 'Material Elétrico Fab Life', fornecedor: 'B A ELETRICA LTDA', preco: 65.90, un: 'UND', condicao: 'L045 - Prazo 45 DDD' },
@@ -62,14 +62,17 @@ const catalogo = [
 let carrinho = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarCatalogo(catalogo);
+    // Se a tabela existir nesta página, renderiza
+    const tabelaContainer = document.getElementById('table-body');
+    if (tabelaContainer) renderizarCatalogo(catalogo);
+    
     atualizarCarrinhoUI();
 });
 
 // --- RENDERIZAR TABELA ---
 function renderizarCatalogo(lista) {
     const container = document.getElementById('table-body');
-    if (!container) return; // Segurança caso a tabela não esteja nesta tela
+    if (!container) return; 
 
     container.innerHTML = '';
 
@@ -154,7 +157,7 @@ function adicionarAoCarrinho(id) {
     inputQtd.value = "1,000000";
     atualizarCarrinhoUI();
     
-    // Feedback visual simples
+    // Feedback visual
     const btn = document.querySelector(`button[onclick="adicionarAoCarrinho(${id})"]`);
     if(btn) {
         const original = btn.innerHTML;

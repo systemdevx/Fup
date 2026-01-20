@@ -1,68 +1,160 @@
+/* --- VARIÁVEIS GLOBAIS --- */
+:root {
+    --primary-blue: #2563EB;
+    --primary-hover: #1D4ED8;
+    --bg-body: #F3F4F6;
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --border-light: #E5E7EB;
+    --white: #FFFFFF;
+    --gradient-visual: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body, html { height: 100%; overflow: hidden; }
+
+/* --- LAYOUT PRINCIPAL --- */
+.main-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Painel Visual (Esquerda) */
+.visual-panel {
+    flex: 1;
+    background: var(--gradient-visual);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    color: white;
+    overflow: hidden;
+}
+
+#organic-wires {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0.4; pointer-events: none;
+}
+
+.visual-content { position: relative; z-index: 2; margin-top: auto; margin-bottom: auto; }
+.brand-mark { 
+    width: 50px; height: 50px; background: var(--primary-blue); 
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 28px; margin-bottom: 20px;
+}
+.visual-content h1 { font-size: 3rem; font-weight: 300; letter-spacing: -1px; margin-bottom: 10px; }
+.visual-content p { color: #94A3B8; font-size: 1.1rem; }
+.footer-copy { font-size: 0.8rem; color: #64748B; position: relative; z-index: 2; }
+
+/* Painel Login (Direita) */
+.login-panel {
+    flex: 1; max-width: 600px; background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+}
+
+.login-wrapper { width: 100%; max-width: 400px; }
+.login-wrapper header { margin-bottom: 40px; }
+.login-wrapper h2 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 8px; }
+.login-wrapper p { color: var(--text-muted); font-size: 0.95rem; }
+
+/* Formulários e Inputs */
+.input-container { margin-bottom: 20px; }
+.input-container label { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-main); margin-bottom: 8px; }
+
+.input-wrapper {
+    position: relative; display: flex; align-items: center;
+    border: 1px solid var(--border-light); border-radius: 8px;
+    background: #F9FAFB; transition: all 0.2s;
+}
+.input-wrapper:focus-within { border-color: var(--primary-blue); background: white; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+.input-icon { padding: 0 12px; color: #9CA3AF; font-size: 20px; }
+
+input {
+    width: 100%; border: none; background: transparent; padding: 12px 0;
+    outline: none; color: var(--text-main); font-size: 0.95rem;
+}
+.pass-field input { padding-right: 40px; }
+
+.toggle-btn {
+    background: none; border: none; cursor: pointer;
+    padding: 8px; color: #9CA3AF; display: flex;
+}
+.toggle-btn:hover { color: var(--primary-blue); }
+
+.aux-actions { display: flex; justify-content: flex-end; margin-bottom: 30px; }
+.forgot-link { color: var(--primary-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+.forgot-link:hover { text-decoration: underline; }
+
+#btnSubmit {
+    width: 100%; background: var(--primary-blue); color: white;
+    border: none; padding: 14px; border-radius: 8px;
+    font-size: 1rem; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background 0.2s;
+}
+#btnSubmit:hover { background: var(--primary-hover); }
+#btnSubmit:disabled { opacity: 0.7; cursor: not-allowed; }
+
 /* --- MODAL (Janela Flutuante) --- */
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
     display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-    opacity: 1; visibility: visible;
+    z-index: 1000; opacity: 1; visibility: visible;
     transition: all 0.3s ease;
 }
-
-.modal-overlay.hidden {
-    opacity: 0; visibility: hidden; pointer-events: none;
-}
+.modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
 .modal-box {
-    background: white;
-    width: 90%; max-width: 400px;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    transform: translateY(0);
-    transition: transform 0.3s ease;
+    background: white; width: 90%; max-width: 400px;
+    padding: 2rem; border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(0); transition: transform 0.3s ease;
 }
 .modal-overlay.hidden .modal-box { transform: translateY(20px); }
 
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.modal-header h3 { color: var(--text-main); font-size: 1.1rem; font-weight: 600; }
-.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
-.modal-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.4; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.modal-header h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-main); }
+.close-btn { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
+.modal-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
 
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem; }
+.full-width-input { background: #F9FAFB; border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; width: 100%; }
+.full-width-input:focus { border-color: var(--primary-blue); outline: none; }
 
-.btn-ghost {
-    background: transparent; border: 1px solid var(--border-light);
-    color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer;
-}
-.btn-ghost:hover { background: #f9fafb; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.btn-ghost { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+.btn-primary { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+.btn-primary:hover { background: var(--primary-hover); }
 
-.btn-primary {
-    background: var(--action-blue); border: none;
-    color: white; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer;
-}
-.btn-primary:hover { background: var(--action-blue-hover); }
-
-/* --- TOAST NOTIFICATIONS (Avisos bonitos) --- */
+/* --- TOAST NOTIFICATIONS (Avisos) --- */
 .toast-container {
     position: fixed; bottom: 20px; right: 20px;
     display: flex; flex-direction: column; gap: 10px; z-index: 2000;
 }
-
 .toast {
-    background: white; padding: 12px 20px; border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.9rem; min-width: 280px;
+    background: white; padding: 14px 20px; border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.9rem; min-width: 300px;
     animation: slideIn 0.3s ease forwards;
     border-left: 4px solid #ddd;
 }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-.toast.success { border-left-color: #10B981; } /* Verde */
+.toast.success { border-left-color: #10B981; }
 .toast.success .material-icons-outlined { color: #10B981; }
 
-.toast.error { border-left-color: #EF4444; } /* Vermelho */
+.toast.error { border-left-color: #EF4444; }
 .toast.error .material-icons-outlined { color: #EF4444; }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .main-container { flex-direction: column; }
+    .visual-panel { display: none; }
+    .login-panel { max-width: 100%; padding: 20px; }
+}

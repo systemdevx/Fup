@@ -7,14 +7,14 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 (() => {
     'use strict';
 
-    // Elementos Login
+    // Elementos DOM
     const toggleBtn = document.getElementById('togglePass');
     const passInput = document.getElementById('pass');
     const userInput = document.getElementById('user'); 
     const form = document.getElementById('loginForm');
     const btn = document.getElementById('btnSubmit');
     
-    // Elementos Modal e Toast
+    // Modal & Toast Elementos
     const forgotLink = document.getElementById('openForgotModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModalBtn = document.getElementById('closeModal');
@@ -23,7 +23,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const resetEmailInput = document.getElementById('resetEmail');
     const btnReset = document.getElementById('btnReset');
 
-    // 1. Mostrar Notificação (Toast)
+    // 1. Função de Notificação (Toast)
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -38,7 +38,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
         container.appendChild(toast);
 
-        // Remove após 4 segundos
+        // Remove após 4 segundos (tempo para leitura)
         setTimeout(() => {
             toast.style.opacity = '0';
             setTimeout(() => toast.remove(), 300);
@@ -47,10 +47,9 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // 2. Lógica do Modal
     function openModal() {
-        // Se o usuário já digitou e-mail no login, copia para o modal
         if (userInput.value) resetEmailInput.value = userInput.value;
         modalOverlay.classList.remove('hidden');
-        resetEmailInput.focus();
+        setTimeout(() => resetEmailInput.focus(), 100); 
     }
     function closeModal() {
         modalOverlay.classList.add('hidden');
@@ -59,22 +58,20 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     if(forgotLink) forgotLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
     if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
     if(cancelResetBtn) cancelResetBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
 
-    // Fecha modal clicando fora
-    modalOverlay.addEventListener('click', (e) => {
-        if(e.target === modalOverlay) closeModal();
-    });
-
-    // 3. Alternar visualização da senha
+    // 3. Toggle Senha
     if (toggleBtn && passInput) {
         toggleBtn.addEventListener('click', () => {
             const isPass = passInput.type === 'password';
             passInput.type = isPass ? 'text' : 'password';
-            toggleBtn.style.color = isPass ? '#2563EB' : '';
+            // Alterna ícone
+            const iconSpan = toggleBtn.querySelector('span');
+            if(iconSpan) iconSpan.innerText = isPass ? 'visibility_off' : 'visibility';
         });
     }
 
-    // 4. Função de Login
+    // 4. Login Principal
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -82,9 +79,9 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             const email = userInput.value;
             const password = passInput.value;
 
-            const originalText = btn.innerText;
+            const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerText = 'Acessando...';
+            btn.innerHTML = '<span>Autenticando...</span>';
             btn.style.opacity = '0.8';
 
             const { data, error } = await supabaseClient.auth.signInWithPassword({
@@ -93,12 +90,12 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             });
 
             if (error) {
-                showToast('Erro ao entrar: Credenciais inválidas', 'error');
+                showToast('Falha no login: Verifique e-mail e senha.', 'error');
                 btn.disabled = false;
-                btn.innerText = originalText;
+                btn.innerHTML = originalText;
                 btn.style.opacity = '1';
             } else {
-                showToast('Login realizado com sucesso!', 'success');
+                showToast('Login autorizado! Redirecionando...', 'success');
                 setTimeout(() => {
                     window.location.href = "dashboard.html"; 
                 }, 1000);
@@ -106,14 +103,14 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         });
     }
 
-    // 5. Função Recuperar Senha (No Modal)
+    // 5. Reset de Senha
     if (resetForm) {
         resetForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const email = resetEmailInput.value;
-            
             const originalText = btnReset.innerText;
+            
             btnReset.innerText = 'Enviando...';
             btnReset.disabled = true;
 
@@ -123,22 +120,25 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
             if (error) {
                 showToast('Erro: ' + error.message, 'error');
+                btnReset.innerText = originalText;
+                btnReset.disabled = false;
             } else {
                 showToast(`Link enviado para: ${email}`, 'success');
-                setTimeout(closeModal, 2000); // Fecha o modal após sucesso
+                setTimeout(() => {
+                    closeModal();
+                    btnReset.innerText = originalText;
+                    btnReset.disabled = false;
+                }, 2000); 
             }
-
-            btnReset.innerText = originalText;
-            btnReset.disabled = false;
         });
     }
 
-    // --- ANIMAÇÃO DOS FIOS (Mantida) ---
+    // --- ANIMAÇÃO DE FUNDO (Visual Polish) ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let width, height, lines = [];
-    const config = { lineCount: 15, color: 'rgba(255, 255, 255, 0.3)', speedBase: 0.002 };
+    const config = { lineCount: 12, color: 'rgba(255, 255, 255, 0.15)', speedBase: 0.002 };
 
     class Wire {
         constructor() { this.init(); }
@@ -148,7 +148,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             this.frequency = Math.random() * 0.01 + 0.002;
             this.phase = Math.random() * Math.PI * 2;
             this.speed = config.speedBase + Math.random() * 0.002;
-            this.lineWidth = Math.random() * 1.5 + 0.5; 
+            this.lineWidth = Math.random() * 2 + 0.5; 
         }
         update() { this.phase += this.speed; }
         draw(ctx) {
@@ -157,8 +157,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             ctx.strokeStyle = config.color;
             for (let x = 0; x <= width; x += 5) {
                 const y = this.y + 
-                          Math.sin(x * this.frequency + this.phase) * this.amplitude +
-                          Math.sin(x * this.frequency * 0.5 + this.phase * 0.5) * (this.amplitude * 0.5);
+                          Math.sin(x * this.frequency + this.phase) * this.amplitude;
                 if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.stroke();

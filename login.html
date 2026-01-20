@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FUP ALM | Acesso</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
@@ -19,31 +21,35 @@
             <div class="visual-content">
                 <div class="brand-mark">F</div>
                 <h1>FUP ALM.</h1>
-                <p>Ecossistema de Gestão</p>
+                <p>Ecossistema de Gestão Integrada</p>
             </div>
             
-            <div class="footer-copy">© 2026 FUP Corp</div>
+            <div class="footer-copy">© 2026 FUP Corp • Todos os direitos reservados</div>
         </section>
 
         <section class="login-panel">
             <div class="login-wrapper">
                 <header>
-                    <h2>Bem-vindo</h2>
-                    <p>Informe suas credenciais de acesso.</p>
+                    <h2>Bem-vindo de volta</h2>
+                    <p>Informe suas credenciais para acessar o painel.</p>
                 </header>
 
                 <form id="loginForm">
                     <div class="input-container">
-                        <label for="user">Identificação (E-mail)</label>
-                        <input type="email" id="user" placeholder="ex: usuario@email.com" autocomplete="email" required>
+                        <label for="user">E-mail Corporativo</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-outlined input-icon">email</span>
+                            <input type="email" id="user" placeholder="nome@empresa.com" autocomplete="email" required>
+                        </div>
                     </div>
 
                     <div class="input-container">
-                        <label for="pass">Chave de Acesso</label>
-                        <div class="pass-field">
+                        <label for="pass">Senha</label>
+                        <div class="pass-field input-wrapper">
+                            <span class="material-icons-outlined input-icon">lock</span>
                             <input type="password" id="pass" placeholder="••••••••" required>
-                            <button type="button" id="togglePass" aria-label="Ver senha">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <button type="button" id="togglePass" aria-label="Ver senha" class="toggle-btn">
+                                <span class="material-icons-outlined">visibility</span>
                             </button>
                         </div>
                     </div>
@@ -52,7 +58,10 @@
                         <a href="#" class="forgot-link" id="openForgotModal">Esqueci minha senha</a>
                     </div>
 
-                    <button type="submit" id="btnSubmit">Entrar</button>
+                    <button type="submit" id="btnSubmit">
+                        <span>Acessar Plataforma</span>
+                        <span class="material-icons-outlined">arrow_forward</span>
+                    </button>
                 </form>
             </div>
         </section>
@@ -64,12 +73,12 @@
                 <h3>Recuperar Acesso</h3>
                 <button id="closeModal" class="close-btn">&times;</button>
             </div>
-            <p class="modal-desc">Informe seu e-mail corporativo para receber as instruções de redefinição.</p>
+            <p class="modal-desc">Informe seu e-mail cadastrado. Enviaremos um link seguro para você redefinir sua senha.</p>
             
             <form id="resetForm">
                 <div class="input-container">
-                    <label for="resetEmail">E-mail Cadastrado</label>
-                    <input type="email" id="resetEmail" placeholder="usuario@empresa.com" required>
+                    <label for="resetEmail">E-mail</label>
+                    <input type="email" id="resetEmail" placeholder="seu@email.com" required class="full-width-input">
                 </div>
                 <div class="modal-actions">
                     <button type="button" id="cancelReset" class="btn-ghost">Cancelar</button>
