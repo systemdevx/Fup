@@ -1,12 +1,23 @@
+// --- CONFIGURAÇÃO DO SUPABASE ---
+// URL do seu projeto (extraída da sua chave)
+const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+// Sua chave pública (Anon Key)
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+
+// Inicializa a conexão
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 (() => {
     'use strict';
 
-    // --- LÓGICA DO LOGIN ---
     const toggleBtn = document.getElementById('togglePass');
     const passInput = document.getElementById('pass');
+    const userInput = document.getElementById('user'); // Campo de Email
     const form = document.getElementById('loginForm');
     const btn = document.getElementById('btnSubmit');
+    const forgotLink = document.querySelector('.forgot-link'); // Link "Esqueci a senha"
 
+    // 1. Alternar visualização da senha
     if (toggleBtn && passInput) {
         toggleBtn.addEventListener('click', () => {
             const isPass = passInput.type === 'password';
@@ -15,106 +26,111 @@
         });
     }
 
+    // 2. Função de Login
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            const email = userInput.value;
+            const password = passInput.value;
+
+            // Muda botão para "Carregando"
             const originalText = btn.innerText;
             btn.disabled = true;
             btn.innerText = 'Acessando...';
             btn.style.opacity = '0.8';
-            setTimeout(() => {
-                alert("Login realizado com sucesso.");
+
+            // Tenta logar no Supabase
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                alert('Erro ao entrar: ' + error.message); // Senha errada ou usuário não existe
                 btn.disabled = false;
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
-            }, 1200);
+            } else {
+                // Sucesso! Salva a sessão e redireciona
+                console.log('Login realizado:', data);
+                // IMPORTANTE: Redireciona para o index.html (seu dashboard)
+                window.location.href = "index.html"; 
+            }
         });
     }
 
-    // --- ANIMAÇÃO DE FIOS ORGÂNICOS (CANVAS) ---
+    // 3. Função "Esqueci minha senha"
+    if (forgotLink) {
+        forgotLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            // Pega o email digitado ou pede num popup
+            let email = userInput.value;
+            if (!email) {
+                email = prompt("Digite seu e-mail para recuperar a senha:");
+            } else {
+                if(!confirm(`Deseja redefinir a senha para o e-mail: ${email}?`)) return;
+            }
+
+            if (email) {
+                const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+                    // Para onde o usuário vai ser levado quando clicar no link do email
+                    redirectTo: window.location.origin + '/index.html', 
+                });
+
+                if (error) {
+                    alert('Erro ao enviar: ' + error.message);
+                } else {
+                    alert('Verifique sua caixa de entrada! Enviamos um link para: ' + email);
+                }
+            }
+        });
+    }
+
+    // --- ANIMAÇÃO (Mantida Original) ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
-    let width, height;
-    let lines = [];
-    
-    // Configurações dos Fios
-    const config = {
-        lineCount: 15,        // Quantidade de fios
-        color: 'rgba(255, 255, 255, 0.3)', // Cor branca translúcida
-        speedBase: 0.002,     // Velocidade do movimento
-    };
+    let width, height, lines = [];
+    const config = { lineCount: 15, color: 'rgba(255, 255, 255, 0.3)', speedBase: 0.002 };
 
-    // Objeto Linha (Fio)
     class Wire {
-        constructor() {
-            this.init();
-        }
-
+        constructor() { this.init(); }
         init() {
-            // Posição inicial aleatória
             this.y = Math.random() * height;
-            // Amplitude da onda (o quão curva ela é)
             this.amplitude = Math.random() * 50 + 20; 
-            // Comprimento da onda
             this.frequency = Math.random() * 0.01 + 0.002;
-            // Fase (posição atual na animação)
             this.phase = Math.random() * Math.PI * 2;
-            // Velocidade individual
             this.speed = config.speedBase + Math.random() * 0.002;
-            // Espessura fina (fio de cabelo)
             this.lineWidth = Math.random() * 1.5 + 0.5; 
         }
-
-        update() {
-            this.phase += this.speed;
-        }
-
+        update() { this.phase += this.speed; }
         draw(ctx) {
             ctx.beginPath();
             ctx.lineWidth = this.lineWidth;
             ctx.strokeStyle = config.color;
-
-            // Desenha uma curva senoide suave através da tela
             for (let x = 0; x <= width; x += 5) {
-                // Fórmula da onda: y base + (seno(x * frequencia + fase) * amplitude)
-                // Adicionamos um segundo seno para tornar o movimento mais "caótico/orgânico"
                 const y = this.y + 
                           Math.sin(x * this.frequency + this.phase) * this.amplitude +
                           Math.sin(x * this.frequency * 0.5 + this.phase * 0.5) * (this.amplitude * 0.5);
-                
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.stroke();
         }
     }
-
     function resize() {
         width = canvas.width = canvas.parentElement.offsetWidth;
         height = canvas.height = canvas.parentElement.offsetHeight;
-        // Recria as linhas ao redimensionar para manter distribuição
         lines = [];
-        for (let i = 0; i < config.lineCount; i++) {
-            lines.push(new Wire());
-        }
+        for (let i = 0; i < config.lineCount; i++) lines.push(new Wire());
     }
-
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        
-        lines.forEach(line => {
-            line.update();
-            line.draw(ctx);
-        });
-
+        lines.forEach(line => { line.update(); line.draw(ctx); });
         requestAnimationFrame(animate);
     }
-
-    // Inicialização
     window.addEventListener('resize', resize);
     resize();
     animate();
-
 })();
