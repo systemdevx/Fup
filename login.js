@@ -1,6 +1,9 @@
 // --- CONFIGURAÇÃO DO SUPABASE ---
+// URL do seu projeto (confirmado pelo seu print)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+
+// ⚠️ COLE SUA CHAVE 'ANON PUBLIC' AQUI DENTRO DAS ASPAS ⚠️
+const SUPABASE_KEY = 'SUA_CHAVE_GIGANTE_QUE_COMECA_COM_ey_AQUI'; 
 
 // Inicializa a conexão
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -32,7 +35,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             const email = userInput.value;
             const password = passInput.value;
 
-            // Muda botão para "Carregando"
+            // Feedback visual (Carregando...)
             const originalText = btn.innerText;
             btn.disabled = true;
             btn.innerText = 'Acessando...';
@@ -50,9 +53,8 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
             } else {
-                // Sucesso!
                 console.log('Login realizado:', data);
-                // REDIRECIONA PARA O DASHBOARD (Arquivo que existe no seu Github)
+                // SUCESSO: Redireciona para o painel principal
                 window.location.href = "dashboard.html"; 
             }
         });
@@ -64,28 +66,31 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             e.preventDefault();
 
             let email = userInput.value;
+            // Se o campo de email estiver vazio, pede pro usuário digitar
             if (!email) {
                 email = prompt("Digite seu e-mail para recuperar a senha:");
             } else {
-                if(!confirm(`Deseja redefinir a senha para o e-mail: ${email}?`)) return;
+                if(!confirm(`Enviar link de recuperação para: ${email}?`)) return;
             }
 
             if (email) {
+                // Envia o e-mail de recuperação
                 const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-                    // Tenta redirecionar para a tela de login após clicar no email
-                    redirectTo: window.location.href, 
+                    // Para onde o usuário volta depois de clicar no email?
+                    // Por enquanto, mandamos ele para o login para ele definir a senha depois
+                    redirectTo: window.location.origin + '/login.html', 
                 });
 
                 if (error) {
                     alert('Erro ao enviar: ' + error.message);
                 } else {
-                    alert('Verifique sua caixa de entrada! Enviamos um link para: ' + email);
+                    alert('Verifique sua caixa de entrada (e spam)! Enviamos um link para: ' + email);
                 }
             }
         });
     }
 
-    // --- ANIMAÇÃO DOS FIOS ---
+    // --- ANIMAÇÃO DOS FIOS (Mantida Original) ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
