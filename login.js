@@ -1,22 +1,71 @@
 // --- CONFIGURAÇÃO DO SUPABASE ---
-// Seus dados do projeto 'qolqfidcvvinetdkxeim'
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-// Inicializa o cliente
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 (() => {
     'use strict';
 
+    // Elementos Login
     const toggleBtn = document.getElementById('togglePass');
     const passInput = document.getElementById('pass');
     const userInput = document.getElementById('user'); 
     const form = document.getElementById('loginForm');
     const btn = document.getElementById('btnSubmit');
-    const forgotLink = document.querySelector('.forgot-link');
+    
+    // Elementos Modal e Toast
+    const forgotLink = document.getElementById('openForgotModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const closeModalBtn = document.getElementById('closeModal');
+    const cancelResetBtn = document.getElementById('cancelReset');
+    const resetForm = document.getElementById('resetForm');
+    const resetEmailInput = document.getElementById('resetEmail');
+    const btnReset = document.getElementById('btnReset');
 
-    // 1. Alternar visualização da senha
+    // 1. Mostrar Notificação (Toast)
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? 'check_circle' : 'error_outline';
+        
+        toast.innerHTML = `
+            <span class="material-icons-outlined">${icon}</span>
+            <span>${message}</span>
+        `;
+        
+        container.appendChild(toast);
+
+        // Remove após 4 segundos
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // 2. Lógica do Modal
+    function openModal() {
+        // Se o usuário já digitou e-mail no login, copia para o modal
+        if (userInput.value) resetEmailInput.value = userInput.value;
+        modalOverlay.classList.remove('hidden');
+        resetEmailInput.focus();
+    }
+    function closeModal() {
+        modalOverlay.classList.add('hidden');
+    }
+
+    if(forgotLink) forgotLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+    if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if(cancelResetBtn) cancelResetBtn.addEventListener('click', closeModal);
+
+    // Fecha modal clicando fora
+    modalOverlay.addEventListener('click', (e) => {
+        if(e.target === modalOverlay) closeModal();
+    });
+
+    // 3. Alternar visualização da senha
     if (toggleBtn && passInput) {
         toggleBtn.addEventListener('click', () => {
             const isPass = passInput.type === 'password';
@@ -25,7 +74,7 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         });
     }
 
-    // 2. Função de Login
+    // 4. Função de Login
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -33,60 +82,58 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             const email = userInput.value;
             const password = passInput.value;
 
-            // Feedback visual no botão
             const originalText = btn.innerText;
             btn.disabled = true;
             btn.innerText = 'Acessando...';
             btn.style.opacity = '0.8';
 
-            // Tenta logar no Supabase
             const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
 
             if (error) {
-                alert('Erro ao entrar: ' + error.message);
+                showToast('Erro ao entrar: Credenciais inválidas', 'error');
                 btn.disabled = false;
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
             } else {
-                console.log('Login realizado com sucesso:', data);
-                
-                // --- AQUI ESTÁ O REDIRECIONAMENTO ---
-                // Como seu arquivo se chama 'dashboard.html', isso vai funcionar:
-                window.location.href = "dashboard.html"; 
+                showToast('Login realizado com sucesso!', 'success');
+                setTimeout(() => {
+                    window.location.href = "dashboard.html"; 
+                }, 1000);
             }
         });
     }
 
-    // 3. Função "Esqueci minha senha"
-    if (forgotLink) {
-        forgotLink.addEventListener('click', async (e) => {
+    // 5. Função Recuperar Senha (No Modal)
+    if (resetForm) {
+        resetForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            const email = resetEmailInput.value;
+            
+            const originalText = btnReset.innerText;
+            btnReset.innerText = 'Enviando...';
+            btnReset.disabled = true;
 
-            let email = userInput.value;
-            if (!email) {
-                email = prompt("Digite seu e-mail para recuperar a senha:");
+            const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.href, 
+            });
+
+            if (error) {
+                showToast('Erro: ' + error.message, 'error');
             } else {
-                if(!confirm(`Enviar link de recuperação para: ${email}?`)) return;
+                showToast(`Link enviado para: ${email}`, 'success');
+                setTimeout(closeModal, 2000); // Fecha o modal após sucesso
             }
 
-            if (email) {
-                const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.href, 
-                });
-
-                if (error) {
-                    alert('Erro ao enviar: ' + error.message);
-                } else {
-                    alert('Verifique sua caixa de entrada! Enviamos um link para: ' + email);
-                }
-            }
+            btnReset.innerText = originalText;
+            btnReset.disabled = false;
         });
     }
 
-    // --- ANIMAÇÃO DOS FIOS (FUNDO) ---
+    // --- ANIMAÇÃO DOS FIOS (Mantida) ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');

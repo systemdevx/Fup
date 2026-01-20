@@ -1,217 +1,68 @@
-:root {
-    --primary-orange: #E67E22;
-    --deep-orange: #d35400;
-    --action-blue: #2563EB;     /* Azul vibrante para o botão */
-    --action-blue-hover: #1e40af;
-    
-    --text-main: #374151;
-    --text-muted: #9ca3af;
-    --border-light: #e5e7eb;
-    --bg-white: #ffffff;
-    
-    --font-stack: "Inter", sans-serif;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body, html {
-    height: 100%;
-    width: 100%;
-    font-family: var(--font-stack);
-    background-color: var(--bg-white);
-    overflow: hidden; /* Importante para o canvas não gerar scroll */
-}
-
-.main-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-}
-
-/* --- LADO ESQUERDO (Visual) --- */
-.visual-panel {
-    position: relative;
-    flex: 1.8; /* 65% da largura aprox */
-    background: linear-gradient(135deg, var(--primary-orange), var(--deep-orange));
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 4rem;
-    color: #fff;
-    overflow: hidden;
-}
-
-/* Canvas fica atrás do texto */
-#organic-wires {
-    position: absolute;
+/* --- MODAL (Janela Flutuante) --- */
+.modal-overlay {
+    position: fixed;
     top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    opacity: 0.4; /* Sutileza nos fios */
-}
-
-.visual-content {
-    position: relative;
-    z-index: 10;
-    pointer-events: none; /* Deixa o mouse "passar" para o canvas se quiser interatividade futura */
-}
-
-.brand-mark {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 18px;
-    margin-bottom: 1.5rem;
-    background: rgba(255,255,255,0.1);
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 1; visibility: visible;
+    transition: all 0.3s ease;
 }
 
-.visual-content h1 {
-    font-size: 2.2rem; /* Reduzido */
-    font-weight: 300;  /* Leve */
-    letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
+.modal-overlay.hidden {
+    opacity: 0; visibility: hidden; pointer-events: none;
 }
 
-.visual-content p {
-    font-size: 0.95rem;
-    font-weight: 300;
-    opacity: 0.8;
-}
-
-.footer-copy {
-    position: absolute;
-    bottom: 2rem;
-    left: 4rem;
-    font-size: 0.7rem;
-    opacity: 0.5;
-    z-index: 10;
-}
-
-/* --- LADO DIREITO (Login) --- */
-.login-panel {
-    flex: 1.2; /* 35% da largura aprox */
-    background: var(--bg-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.modal-box {
+    background: white;
+    width: 90%; max-width: 400px;
     padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.hidden .modal-box { transform: translateY(20px); }
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.modal-header h3 { color: var(--text-main); font-size: 1.1rem; font-weight: 600; }
+.close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+.modal-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.4; }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem; }
+
+.btn-ghost {
+    background: transparent; border: 1px solid var(--border-light);
+    color: var(--text-main); padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer;
+}
+.btn-ghost:hover { background: #f9fafb; }
+
+.btn-primary {
+    background: var(--action-blue); border: none;
+    color: white; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer;
+}
+.btn-primary:hover { background: var(--action-blue-hover); }
+
+/* --- TOAST NOTIFICATIONS (Avisos bonitos) --- */
+.toast-container {
+    position: fixed; bottom: 20px; right: 20px;
+    display: flex; flex-direction: column; gap: 10px; z-index: 2000;
 }
 
-.login-wrapper {
-    width: 100%;
-    max-width: 300px; /* Formulário bem compacto */
+.toast {
+    background: white; padding: 12px 20px; border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.9rem; min-width: 280px;
+    animation: slideIn 0.3s ease forwards;
+    border-left: 4px solid #ddd;
 }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-header { margin-bottom: 2rem; }
+.toast.success { border-left-color: #10B981; } /* Verde */
+.toast.success .material-icons-outlined { color: #10B981; }
 
-header h2 {
-    font-size: 1.25rem; /* Título pequeno */
-    color: var(--text-main);
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-header p {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-/* Inputs - Estilo minimalista */
-.input-container { margin-bottom: 1.25rem; }
-
-.input-container label {
-    display: block;
-    font-size: 0.7rem; /* Label minúsculo */
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.input-container input {
-    width: 100%;
-    padding: 0.5rem 0;
-    border: none;
-    border-bottom: 1px solid var(--border-light);
-    font-size: 0.9rem;
-    color: var(--text-main);
-    background: transparent;
-    transition: border-color 0.3s;
-    border-radius: 0;
-}
-
-.input-container input::placeholder { color: #d1d5db; }
-
-.input-container input:focus {
-    outline: none;
-    border-bottom-color: var(--action-blue); /* Azul no foco */
-}
-
-/* Senha e Olho */
-.pass-field { position: relative; }
-.pass-field button {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-muted);
-    padding: 4px;
-}
-.pass-field button:hover { color: var(--action-blue); }
-
-/* Ações */
-.aux-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 2rem;
-}
-
-.forgot-link {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.2s;
-}
-.forgot-link:hover { color: var(--action-blue); }
-
-/* BOTÃO AZUL */
-button[type="submit"] {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: var(--action-blue);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-}
-
-button[type="submit"]:hover {
-    background-color: var(--action-blue-hover);
-}
-
-button[type="submit"]:active {
-    transform: scale(0.98);
-}
-
-/* Responsividade */
-@media (max-width: 900px) {
-    .main-container { flex-direction: column; }
-    .visual-panel { flex: 0.4; padding: 2rem; align-items: center; text-align: center; }
-    .visual-content h1 { font-size: 1.8rem; }
-    .footer-copy { display: none; }
-    .login-panel { flex: 1; padding: 2rem; }
-}
+.toast.error { border-left-color: #EF4444; } /* Vermelho */
+.toast.error .material-icons-outlined { color: #EF4444; }

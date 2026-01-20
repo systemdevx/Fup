@@ -13,10 +13,9 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-SEU-ID-AQUI');
     </script>
-    </head>
+</head>
 <body>
 
     <header>
@@ -94,7 +93,7 @@
             </div>
         </div>
         <div class="right-actions">
-             <span class="material-icons-outlined icon-action">more_vert</span>
+             <span class="material-icons-outlined icon-action" title="Opções">more_vert</span>
         </div>
     </div>
 
@@ -173,11 +172,14 @@
         <section id="cadastros" class="tela"><h1>Cadastros</h1></section>
         <section id="usuarios" class="tela"><h1>Usuários</h1></section>
         <section id="sgq" class="tela"><h1>Ativos SGQ</h1></section>
-        </main>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script src="dashboard.js"></script>
+
     <script>
-        // Script inline para garantir o funcionamento das outras abas (SPA)
+        // Script inline para SPA (Single Page Application)
         function mostrarTela(id, elemento) {
             document.querySelectorAll('.tela').forEach(t => t.classList.remove('active-tela'));
             document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
