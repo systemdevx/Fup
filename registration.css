@@ -25,7 +25,7 @@ body {
 /* --- TIPOGRAFIA --- */
 h1, h2, h3, h4, .logo-area, button { font-family: 'Calibre', 'Calibri', sans-serif; font-weight: 700; }
 
-/* --- HEADER SUPERIOR --- */
+/* --- HEADER SUPERIOR (ORIGINAL) --- */
 header {
     background-color: var(--header-bg); height: 75px;
     display: flex; align-items: center; padding: 0 30px;
@@ -56,7 +56,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
 }
 
-/* --- SUBHEADER BAR --- */
+/* --- SUBHEADER BAR (ORIGINAL) --- */
 .subheader-bar {
     width: 100%; height: 60px; background-color: #FFFFFF;
     border-bottom: 1px solid var(--border-color);
@@ -103,7 +103,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .dropdown-content a:hover { background-color: var(--light-orange-bg); color: var(--primary-orange); }
 .dropdown-divider { height: 1px; background-color: #E5E7EB; margin: 4px 0; }
 
-/* --- PESQUISA E FILTROS --- */
+/* --- PESQUISA E FILTROS (ORIGINAL) --- */
 .header-right-actions { margin-left: auto; display: flex; align-items: center; gap: 15px; }
 
 .search-styled-container {
@@ -136,7 +136,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .btn-view-icon .material-icons-outlined { font-size: 20px; }
 .btn-view-icon:hover { background-color: #F1F3F4; color: #202124; }
 
-/* --- LAYOUT E SIDEBAR --- */
+/* --- LAYOUT E SIDEBAR (ORIGINAL RESTAURADO) --- */
 .layout-wrapper {
     display: flex; flex-grow: 1; width: 100%;
     height: calc(100vh - 135px); overflow: hidden;
@@ -185,7 +185,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 }
 .group-list li a.active .menu-text-icon .material-icons-outlined { color: var(--primary-orange); }
 
-/* --- CONTEÚDO --- */
+/* --- CONTEÚDO (MELHORIAS DE TABELA) --- */
 .content-area {
     flex-grow: 1; padding: 30px 40px;
     background-color: var(--bg-body); overflow-y: auto;
@@ -197,7 +197,10 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 
 .table-container {
     background: white; border-radius: 8px; border: 1px solid #E5E5E5;
-    overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    /* Ajustado para overflow visible para permitir que o dropdown flutue */
+    overflow: visible; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    min-height: 300px;
 }
 table { width: 100%; border-collapse: collapse; }
 thead { background-color: #F9FAFB; border-bottom: 1px solid #E5E7EB; }
@@ -214,28 +217,26 @@ tr:hover { background-color: #FFFDF8; }
     padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;
 }
 
-.col-id { color: #666; font-family: monospace; }
+.col-id { color: #666; font-family: monospace; width: 60px; }
+.col-money { text-align: right; font-weight: 500; width: 100px; }
+.col-actions { width: 50px; text-align: center; }
 
 /* ESTADO DE LINHA BLOQUEADA */
 .row-blocked {
     background-color: #FAFAFA !important;
-    opacity: 0.6;
+    opacity: 0.7;
 }
-.row-blocked td {
-    color: #999;
-    font-style: italic;
-}
+.row-blocked td { color: #999; }
 .row-blocked strong { font-weight: 500; }
 .row-blocked .action-menu-container { opacity: 1; }
 
-/* --- NOVO MENU DE AÇÕES NA TABELA (...) --- */
+/* --- CORREÇÃO DO MENU DE AÇÕES NA TABELA (FIX) --- */
 
 .action-menu-container {
     position: relative;
     display: inline-block;
 }
 
-/* Botão Trigger (Três pontinhos) */
 .btn-more-actions {
     background: transparent;
     border: none;
@@ -248,20 +249,18 @@ tr:hover { background-color: #FFFDF8; }
     align-items: center;
     justify-content: center;
 }
-.btn-more-actions:hover, .btn-more-actions.active {
-    background-color: #F3F4F6;
-    color: var(--primary-orange);
-}
+.btn-more-actions:hover { background-color: #F3F4F6; color: var(--primary-orange); }
 
-/* Dropdown Suspenso */
+/* Dropdown Suspenso Corrigido */
 .action-dropdown-menu {
-    display: none; /* Oculto por padrão */
+    display: none; 
     position: absolute;
-    right: 0;
-    top: 32px;
+    right: 100%; /* Abre para a esquerda */
+    margin-right: 5px;
+    top: -10px;
     background-color: #FFFFFF;
     min-width: 180px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     border: 1px solid #E5E7EB;
     border-radius: 6px;
     z-index: 999;
@@ -271,7 +270,7 @@ tr:hover { background-color: #FFFDF8; }
 
 .action-dropdown-menu.show {
     display: flex;
-    animation: fadeInMenu 0.15s ease-out;
+    animation: fadeInMenu 0.1s ease-out;
 }
 
 @keyframes fadeInMenu {
@@ -281,94 +280,42 @@ tr:hover { background-color: #FFFDF8; }
 
 /* Itens do Menu */
 .action-item {
-    background: none;
-    border: none;
-    width: 100%;
-    text-align: left;
-    padding: 10px 16px;
-    font-size: 13px;
-    color: #374151;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: background 0.1s;
-    font-family: inherit;
+    background: none; border: none; width: 100%; text-align: left;
+    padding: 10px 16px; font-size: 13px; color: #374151; font-weight: 500;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    transition: background 0.1s; font-family: inherit;
 }
-.action-item:hover {
-    background-color: #F9FAFB;
-    color: var(--primary-orange);
-}
-.action-item .material-icons-outlined {
-    font-size: 18px;
-    color: #9CA3AF;
-}
-.action-item:hover .material-icons-outlined {
-    color: var(--primary-orange);
-}
+.action-item:hover { background-color: #F9FAFB; color: var(--primary-orange); }
+.action-item .material-icons-outlined { font-size: 18px; color: #9CA3AF; }
+.action-item:hover .material-icons-outlined { color: var(--primary-orange); }
 
-.action-item.danger-item:hover {
-    background-color: #FEF2F2;
-    color: #EF4444;
-}
-.action-item.danger-item:hover .material-icons-outlined {
-    color: #EF4444;
-}
+.action-item.danger-item:hover { background-color: #FEF2F2; color: #EF4444; }
+.action-item.danger-item:hover .material-icons-outlined { color: #EF4444; }
 
-/* --- MODAL / POPUP GLOBAL (Igual ao ProductAlm) --- */
+/* --- MODAL / POPUP GLOBAL (Mantido Original/Melhorado) --- */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); display: flex;
+    justify-content: center; align-items: center; z-index: 9999;
     backdrop-filter: blur(2px);
 }
 
 .modal-box {
-    background-color: #FFF;
-    width: 90%;
-    max-width: 420px;
-    border-radius: 8px;
-    padding: 30px 25px;
-    text-align: center;
+    background-color: #FFF; width: 90%; max-width: 420px;
+    border-radius: 8px; padding: 30px 25px; text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    animation: fadeIn 0.2s ease-out;
+    animation: fadeInMenu 0.2s ease-out;
 }
 
 .modal-icon-area { margin-bottom: 15px; }
 .modal-icon-area .material-icons-outlined { font-size: 48px; color: #F59E0B; }
-
-.modal-box h3 {
-    font-size: 18px;
-    color: #1F2937;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.modal-box p {
-    font-size: 14px;
-    color: #6B7280;
-    margin-bottom: 25px;
-    line-height: 1.5;
-}
-
+.modal-box h3 { font-size: 18px; color: #1F2937; margin-bottom: 10px; font-weight: 600; }
+.modal-box p { font-size: 14px; color: #6B7280; margin-bottom: 25px; line-height: 1.5; }
 .modal-actions { display: flex; gap: 12px; justify-content: center; }
 
 .modal-actions button {
-    flex: 1;
-    height: 40px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+    flex: 1; height: 40px; border-radius: 6px; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
 }
 
 .btn-ghost { background-color: #FFF; border: 1px solid #D1D5DB; color: #374151; }
@@ -376,19 +323,7 @@ tr:hover { background-color: #FFFDF8; }
 
 .btn-danger { background-color: #EF4444; border: none; color: white; }
 .btn-danger:hover { background-color: #DC2626; }
-.btn-primary { background-color: var(--primary-orange); border: none; color: white; } /* Caso precise de botão azul/laranja */
+.btn-primary { background-color: var(--primary-orange); border: none; color: white; }
 .btn-primary:hover { background-color: var(--primary-orange-hover); }
 
 .hidden { display: none !important; }
-
-@media (max-width: 900px) {
-    .subheader-bar { height: auto; padding: 10px; flex-wrap: wrap; }
-    .header-right-actions { width: 100%; margin-left: 0; margin-top: 10px; justify-content: space-between; }
-    .search-styled-container { width: 100%; }
-    .layout-wrapper { flex-direction: column; height: auto; }
-    .sidebar-local { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); height: auto; padding-bottom: 10px;}
-    .sidebar-local.sidebar-closed { height: 0; padding-bottom: 0; }
-    .group-list { display: none; } 
-    header { padding: 0 10px; }
-    nav ul { gap: 10px; }
-}

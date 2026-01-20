@@ -4,10 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!e.target.closest('.action-menu-container')) {
             fecharTodosMenus();
         }
+        // Fecha o menu Novo Cadastro também
+        if (!e.target.closest('.dropdown-container')) {
+             const menu = document.getElementById("novo-cadastro-menu");
+             if(menu) menu.classList.remove("show-menu");
+        }
     });
 });
 
-// --- DADOS SIMULADOS (PERSISTENTES) ---
+// --- DADOS SIMULADOS (Mantidos) ---
 const dbLocal = {
     'Almoxarifado': [
         { id: 1, grupo: 'Escritório', codigo: 'MAT-001', descricao: 'Papel A4 Chamex', unidade: 'CX', preco: '25.00', bloqueado: false },
@@ -52,6 +57,7 @@ function toggleSidebar() {
     }
 }
 
+// RESTAURADO PARA A LÓGICA ORIGINAL (FLEX)
 function toggleGroup(header) {
     const list = header.nextElementSibling; 
     const arrow = header.querySelector('.arrow-header');
@@ -64,18 +70,17 @@ function toggleGroup(header) {
     }
 }
 
-// --- CONTROLE DOS MENUS DE AÇÃO NA TABELA ---
+// --- CONTROLE DOS MENUS DE AÇÃO NA TABELA (CORRIGIDO) ---
 
 function toggleActionMenu(id) {
-    // 1. Fecha outros abertos primeiro
     const todosMenus = document.querySelectorAll('.action-dropdown-menu');
     const menuAlvo = document.getElementById(`menu-${id}`);
     
+    // Fecha todos antes de abrir o novo
     todosMenus.forEach(menu => {
         if (menu !== menuAlvo) menu.classList.remove('show');
     });
 
-    // 2. Alterna o atual
     if (menuAlvo) {
         menuAlvo.classList.toggle('show');
     }
@@ -102,16 +107,18 @@ function carregarLista(nomeModulo, element) {
     const dadosLocais = dbLocal[nomeModulo] || [];
     const tbody = document.getElementById('lista-dados');
     const msgVazio = document.getElementById('msg-vazio');
+    const tabela = document.getElementById('tabela-principal');
     
     let htmlFinal = '';
 
     if (!dadosLocais || dadosLocais.length === 0) {
-        if(tbody) tbody.innerHTML = '';
+        if(tabela) tabela.style.display = 'none';
         if(msgVazio) {
             msgVazio.style.display = 'block';
             msgVazio.innerText = 'Nenhum registro encontrado.';
         }
     } else {
+        if(tabela) tabela.style.display = 'table';
         if(msgVazio) msgVazio.style.display = 'none';
         dadosLocais.forEach(item => {
             htmlFinal += montarLinhaTabela(nomeModulo, item);
@@ -125,20 +132,19 @@ function atualizarCabecalhoTabela(modulo) {
     if (!theadRow) return;
 
     let html = '';
-    // Coluna ações pequena
-    const thAcoes = '<th style="width: 60px; text-align: center;"></th>';
+    const thAcoes = '<th class="col-actions"></th>';
 
     if (modulo === 'Centro de Custo') {
-        html = `<th style="width: 80px;">ID</th><th>Código</th><th>Descrição</th><th>Grupo</th>${thAcoes}`;
+        html = `<th class="col-id">ID</th><th>Código</th><th>Descrição</th><th>Grupo</th>${thAcoes}`;
     } 
     else if (modulo === 'Almoxarifado') {
-        html = `<th style="width: 80px;">ID</th><th>Grupo</th><th>Código</th><th style="width: 30%;">Descrição</th><th>Unidade / Preço</th>${thAcoes}`;
+        html = `<th class="col-id">ID</th><th>Grupo</th><th>Item (Cód / Desc)</th><th style="width: 80px;">Unid.</th><th class="col-money">Preço</th>${thAcoes}`;
     } 
     else if (modulo === 'Ativos') {
-        html = `<th style="width: 80px;">ID</th><th style="width: 50%;">Equipamento / Ativo</th><th>Status</th>${thAcoes}`;
+        html = `<th class="col-id">ID</th><th style="width: 50%;">Equipamento / Ativo</th><th>Status</th>${thAcoes}`;
     } 
     else if (modulo === 'Fornecedores' || modulo === 'Transportadoras') {
-        html = `<th style="width: 80px;">ID</th><th>CNPJ</th><th style="width: 40%;">Razão Social</th><th>Status</th>${thAcoes}`;
+        html = `<th class="col-id">ID</th><th>CNPJ</th><th style="width: 40%;">Razão Social</th><th>Status</th>${thAcoes}`;
     }
     theadRow.innerHTML = html;
 }
@@ -147,11 +153,9 @@ function montarLinhaTabela(modulo, item) {
     const isBlocked = item.bloqueado === true;
     const rowClass = isBlocked ? 'row-blocked' : '';
     
-    // Texto e ícone do bloqueio dinâmico
     const labelBloqueio = isBlocked ? 'Desbloquear' : 'Bloquear';
     const iconBloqueio = isBlocked ? 'lock_open' : 'lock';
 
-    // HTML do Dropdown Menu
     const actionsHtml = `
         <div class="action-menu-container">
             <button class="btn-more-actions" onclick="toggleActionMenu(${item.id})">
@@ -173,28 +177,36 @@ function montarLinhaTabela(modulo, item) {
     `;
 
     let cols = '';
-    // Montagem das colunas (igual anterior)
+    
     if (modulo === 'Centro de Custo') {
-        cols = `<td class="col-id">#${item.id}</td><td><strong>${item.codigo}</strong></td><td>${item.descricao}</td><td><span class="badge-grupo">${item.grupo}</span></td><td style="text-align: center;">${actionsHtml}</td>`;
+        cols = `<td class="col-id">#${item.id}</td><td><strong>${item.codigo}</strong></td><td>${item.descricao}</td><td><span class="badge-grupo">${item.grupo}</span></td><td class="col-actions">${actionsHtml}</td>`;
     } 
     else if (modulo === 'Almoxarifado') {
-        cols = `<td class="col-id">#${item.id}</td><td>${item.grupo}</td><td><strong>${item.codigo}</strong></td><td>${item.descricao}</td><td>${item.unidade} - R$ ${item.preco}</td><td style="text-align: center;">${actionsHtml}</td>`;
+        // Layout melhorado para item + codigo
+        cols = `<td class="col-id">#${item.id}</td><td>${item.grupo}</td>
+                <td>
+                    <div style="font-weight:600;">${item.descricao}</div>
+                    <div style="font-size:11px; color:#999;">${item.codigo}</div>
+                </td>
+                <td>${item.unidade}</td>
+                <td class="col-money">R$ ${item.preco}</td>
+                <td class="col-actions">${actionsHtml}</td>`;
     } 
     else if (modulo === 'Ativos') {
         const colorStatus = item.status === 'Ativo' ? '#059669' : '#D97706';
         const bgStatus = item.status === 'Ativo' ? '#D1FAE5' : '#FEF3C7';
-        cols = `<td class="col-id">#${item.id}</td><td><strong>${item.equipamento}</strong></td><td><span style="color:${colorStatus}; background:${bgStatus}; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">${item.status}</span></td><td style="text-align: center;">${actionsHtml}</td>`;
+        cols = `<td class="col-id">#${item.id}</td><td><strong>${item.equipamento}</strong></td><td><span style="color:${colorStatus}; background:${bgStatus}; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">${item.status}</span></td><td class="col-actions">${actionsHtml}</td>`;
     }
     else if (modulo === 'Fornecedores' || modulo === 'Transportadoras') {
         const colorStatus = item.status === 'Homologado' || item.status === 'Ativo' ? '#059669' : '#4B5563';
         const bgStatus = item.status === 'Homologado' || item.status === 'Ativo' ? '#D1FAE5' : '#F3F4F6';
-        cols = `<td class="col-id">#${item.id}</td><td>${item.cnpj}</td><td><strong>${item.razao_social}</strong></td><td><span style="color:${colorStatus}; background:${bgStatus}; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">${item.status}</span></td><td style="text-align: center;">${actionsHtml}</td>`;
+        cols = `<td class="col-id">#${item.id}</td><td>${item.cnpj}</td><td><strong>${item.razao_social}</strong></td><td><span style="color:${colorStatus}; background:${bgStatus}; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600;">${item.status}</span></td><td class="col-actions">${actionsHtml}</td>`;
     }
 
     return `<tr class="${rowClass}">${cols}</tr>`;
 }
 
-// --- LÓGICA DO MODAL PERSONALIZADO ---
+// --- LÓGICA DO MODAL PERSONALIZADO (MANTIDA) ---
 
 function showModal(title, message, type, onConfirm) {
     const modal = document.getElementById('modal-global');
@@ -209,28 +221,25 @@ function showModal(title, message, type, onConfirm) {
     elTitle.innerText = title;
     elMsg.innerText = message;
     
-    // Configurar Estilo (Perigo ou Aviso)
     if (type === 'danger') {
-        elIcon.style.color = '#EF4444'; // Vermelho
+        elIcon.style.color = '#EF4444';
         elIcon.innerText = 'delete_forever';
         btnConfirm.className = 'btn-danger';
         btnConfirm.innerText = 'Sim, excluir';
     } else {
-        elIcon.style.color = '#F59E0B'; // Laranja
+        elIcon.style.color = '#F59E0B';
         elIcon.innerText = 'warning_amber';
         btnConfirm.className = 'btn-primary'; 
         btnConfirm.style.backgroundColor = '#E67E22';
         btnConfirm.innerText = 'Confirmar';
     }
 
-    // Limpa eventos anteriores (para não acumular clicks)
     const newBtnConfirm = btnConfirm.cloneNode(true);
     btnConfirm.parentNode.replaceChild(newBtnConfirm, btnConfirm);
     
     const newBtnCancel = btnCancel.cloneNode(true);
     btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
 
-    // Eventos
     newBtnConfirm.addEventListener('click', () => {
         if(onConfirm) onConfirm();
         modal.classList.add('hidden');
@@ -240,9 +249,8 @@ function showModal(title, message, type, onConfirm) {
         modal.classList.add('hidden');
     });
 
-    // Exibir
     modal.classList.remove('hidden');
-    fecharTodosMenus(); // Fecha o dropdown se estiver aberto
+    fecharTodosMenus();
 }
 
 // --- AÇÕES DOS ITENS ---
@@ -273,7 +281,7 @@ function alternarBloqueio(modulo, id) {
         'warning',
         () => {
             item.bloqueado = !item.bloqueado;
-            carregarLista(modulo, null); // Recarrega para atualizar UI
+            carregarLista(modulo, null);
         }
     );
 }
