@@ -1,7 +1,5 @@
 // --- CONFIGURAÇÃO DO SUPABASE ---
-// URL do seu projeto (extraída da sua chave)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-// Sua chave pública (Anon Key)
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 // Inicializa a conexão
@@ -12,10 +10,10 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const toggleBtn = document.getElementById('togglePass');
     const passInput = document.getElementById('pass');
-    const userInput = document.getElementById('user'); // Campo de Email
+    const userInput = document.getElementById('user'); 
     const form = document.getElementById('loginForm');
     const btn = document.getElementById('btnSubmit');
-    const forgotLink = document.querySelector('.forgot-link'); // Link "Esqueci a senha"
+    const forgotLink = document.querySelector('.forgot-link');
 
     // 1. Alternar visualização da senha
     if (toggleBtn && passInput) {
@@ -47,15 +45,15 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             });
 
             if (error) {
-                alert('Erro ao entrar: ' + error.message); // Senha errada ou usuário não existe
+                alert('Erro ao entrar: ' + error.message);
                 btn.disabled = false;
                 btn.innerText = originalText;
                 btn.style.opacity = '1';
             } else {
-                // Sucesso! Salva a sessão e redireciona
+                // Sucesso!
                 console.log('Login realizado:', data);
-                // IMPORTANTE: Redireciona para o index.html (seu dashboard)
-                window.location.href = "index.html"; 
+                // REDIRECIONA PARA O DASHBOARD (Arquivo que existe no seu Github)
+                window.location.href = "dashboard.html"; 
             }
         });
     }
@@ -65,7 +63,6 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         forgotLink.addEventListener('click', async (e) => {
             e.preventDefault();
 
-            // Pega o email digitado ou pede num popup
             let email = userInput.value;
             if (!email) {
                 email = prompt("Digite seu e-mail para recuperar a senha:");
@@ -75,8 +72,8 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
             if (email) {
                 const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-                    // Para onde o usuário vai ser levado quando clicar no link do email
-                    redirectTo: window.location.origin + '/index.html', 
+                    // Tenta redirecionar para a tela de login após clicar no email
+                    redirectTo: window.location.href, 
                 });
 
                 if (error) {
@@ -88,7 +85,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         });
     }
 
-    // --- ANIMAÇÃO (Mantida Original) ---
+    // --- ANIMAÇÃO DOS FIOS ---
     const canvas = document.getElementById('organic-wires');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
