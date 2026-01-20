@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login — FUP ALM</title>
+  <title>Acesso — FUP ALM</title>
   
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
@@ -11,65 +11,58 @@
 </head>
 <body>
 
-  <div class="bg-image" data-bg="bloom.png" aria-hidden="true"></div>
+  <div class="bg-layer"></div>
 
-  <main class="login-wrap">
-    <section class="glass-card">
+  <main class="login-container">
+    <div class="glass-panel">
       
-      <header class="header">
-        <div class="logo-wrapper">
-            <div class="core-circle">
-                <span class="logo-letter">F</span>
-            </div>
+      <div class="brand-header">
+        <div class="logo-circle">
+          <span class="logo-text">F</span>
         </div>
-        <h1 class="brand-name">FUP ALM</h1>
-      </header>
+        <h1>Bem-vindo</h1>
+        <p class="subtitle">Faça login no FUP ALM</p>
+      </div>
 
-      <form id="loginForm" class="login-form" novalidate>
+      <form id="loginForm" autocomplete="off" novalidate>
         
-        <div class="input-group">
-          <label for="username" class="visually-hidden">Usuário</label>
-          <div class="input-wrapper">
-            <span class="material-icons icon">person</span>
-            <input id="username" name="username" type="text" autocomplete="username"
-                   placeholder="ID ou e-mail" required />
-          </div>
-          <p class="field-error" id="username-error"></p>
+        <div class="input-box">
+          <input type="text" id="username" name="username" required placeholder=" " autocomplete="username">
+          <label for="username">ID do Usuário</label>
+          <span class="material-icons field-icon">person_outline</span>
+          <div class="line-ripple"></div>
         </div>
+        <p class="error-msg" id="error-username"></p>
 
-        <div class="input-group">
-          <label for="password" class="visually-hidden">Senha</label>
-          <div class="input-wrapper">
-            <span class="material-icons icon">lock</span>
-            <input id="password" name="password" type="password" autocomplete="current-password"
-                   placeholder="Senha" required minlength="6" />
-            
-            <button type="button" id="togglePassword" class="btn-icon" aria-label="Mostrar senha">
-              <span class="material-icons">visibility</span>
-            </button>
-          </div>
-          <p class="field-error" id="password-error"></p>
-        </div>
-
-        <div class="controls">
-          <label class="remember">
-            <input type="checkbox" name="remember" id="remember" />
-            <span>Manter conectado</span>
-          </label>
-          <a class="forgot" href="#">Esqueceu?</a>
-        </div>
-
-        <div class="actions">
-          <button type="submit" class="btn-login" id="btnLogin">
-            <span class="btn-text">Entrar</span>
-            <span class="spinner"></span>
+        <div class="input-box">
+          <input type="password" id="password" name="password" required placeholder=" " autocomplete="current-password">
+          <label for="password">Senha</label>
+          
+          <button type="button" id="btnToggle" class="icon-btn" aria-label="Ver senha">
+            <span class="material-icons">visibility</span>
           </button>
+          <div class="line-ripple"></div>
         </div>
-        
+        <p class="error-msg" id="error-password"></p>
+
+        <div class="options-row">
+          <label class="custom-check">
+            <input type="checkbox" name="remember">
+            <span class="checkmark"></span>
+            <span class="label-text">Lembrar-me</span>
+          </label>
+          <a href="#" class="link-forgot">Recuperar senha</a>
+        </div>
+
+        <button type="submit" class="submit-btn" id="btnSubmit">
+          <span class="btn-content">Acessar Sistema</span>
+          <div class="loader"></div>
+        </button>
+
       </form>
-    </section>
+    </div>
   </main>
 
-  <script src="login.js" defer></script>
+  <script src="login.js"></script>
 </body>
 </html>

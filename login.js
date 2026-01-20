@@ -1,88 +1,82 @@
+// --- login.js v2 ---
 (() => {
   'use strict';
 
-  // Configurações
-  const CONFIG = {
-    bgImage: 'bloom.png', // Verifique se essa imagem existe no GitHub!
-    redirectUrl: '/app'   // Para onde vai depois de logar
-  };
+  // Configs
+  const REDIRECT_URL = '/app';
+  const MIN_PASS = 6;
 
   const $ = (s) => document.querySelector(s);
 
-  // Carregar imagem de fundo
-  function loadBackground() {
-    const bg = $('.bg-image');
-    if (bg) {
-      const img = new Image();
-      img.src = CONFIG.bgImage;
-      img.onload = () => {
-        bg.style.backgroundImage = `url('${CONFIG.bgImage}')`;
-      };
-      // Se não achar a imagem, o CSS já garante uma cor de fundo cinza
-    }
-  }
-
-  // Alternar senha (olho)
-  function setupPasswordToggle() {
-    const btn = $('#togglePassword');
+  // Toggle Senha
+  function initPasswordToggle() {
+    const btn = $('#btnToggle');
     const input = $('#password');
     if (!btn || !input) return;
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      // Evita submeter form se clicar sem querer
+      e.preventDefault(); 
       const isPass = input.type === 'password';
       input.type = isPass ? 'text' : 'password';
-      // Troca o ícone: visibility ou visibility_off
+      // Troca ícone: visibility -> visibility_off
       btn.querySelector('.material-icons').textContent = isPass ? 'visibility_off' : 'visibility';
     });
   }
 
-  // Lógica do Login
-  function setupForm() {
+  // Validação e Envio
+  function initForm() {
     const form = $('#loginForm');
-    const userErr = $('#username-error');
-    const passErr = $('#password-error');
-    const btn = $('#btnLogin');
+    const btn = $('#btnSubmit');
+    const errUser = $('#error-username');
+    const errPass = $('#error-password');
 
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      
-      // Limpa erros
-      userErr.textContent = '';
-      passErr.textContent = '';
-      
-      const user = $('#username').value.trim();
-      const pass = $('#password').value;
 
-      // Validação Simples
-      let hasError = false;
-      if (!user) {
-        userErr.textContent = 'Digite seu usuário.';
-        hasError = true;
-      }
-      if (!pass || pass.length < 6) {
-        passErr.textContent = 'Senha inválida.';
-        hasError = true;
-      }
-      if (hasError) return;
+      // Reset Erros
+      errUser.textContent = '';
+      errPass.textContent = '';
+      
+      const userVal = $('#username').value.trim();
+      const passVal = $('#password').value;
+      let valid = true;
 
-      // Simula carregamento
+      // Validação visual
+      if (!userVal) {
+        errUser.textContent = 'Campo obrigatório.';
+        valid = false;
+      }
+      if (!passVal || passVal.length < MIN_PASS) {
+        errPass.textContent = `Mínimo de ${MIN_PASS} caracteres.`;
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Estado de Carregamento
       btn.classList.add('loading');
       btn.disabled = true;
 
-      // Simula requisição ao servidor
+      // Simulação de Request (substitua por fetch real)
+      // O delay aqui é puramente estético (800ms) para mostrar o spinner
       setTimeout(() => {
-        // SUCESSO: Redireciona direto sem mensagem
-        window.location.href = CONFIG.redirectUrl;
+        // Lógica de sucesso - Redirecionar direto
+        window.location.href = REDIRECT_URL;
+        
+        // Se houver erro de API, você faria:
+        // btn.classList.remove('loading');
+        // btn.disabled = false;
+        // errUser.textContent = 'Usuário ou senha inválidos.';
       }, 800);
     });
   }
 
-  // Iniciar
+  // Inicializar
   document.addEventListener('DOMContentLoaded', () => {
-    loadBackground();
-    setupPasswordToggle();
-    setupForm();
+    initPasswordToggle();
+    initForm();
   });
 })();
