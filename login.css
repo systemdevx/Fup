@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 /* --- login.css --- */
 
 :root {
-    /* Mesmas variáveis do intro.css para consistência */
+    /* Variáveis globais (match com intro.css) */
     --bg-color: #F3F4F6;
     --primary: #E67E22;
     --primary-light: #FADBC5;
@@ -10,17 +9,17 @@
     --text-sub: #666;
     --font-stack: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
     
-    /* Variáveis específicas do card */
-    --card-bg: rgba(255, 255, 255, 0.65);
-    --card-border: rgba(255, 255, 255, 0.4);
+    /* Variáveis específicas do cartão de login */
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(255, 255, 255, 0.5);
     --input-bg: rgba(255, 255, 255, 0.9);
     --radius: 12px;
-    --max-width: 400px; /* Um pouco mais estreito para elegância */
-    --shadow: 0 10px 40px rgba(0,0,0,0.08);
-    --transition-fast: 200ms ease;
+    --max-width: 380px; 
+    --shadow: 0 10px 30px rgba(0,0,0,0.06);
+    --focus-ring: rgba(230, 126, 34, 0.2);
 }
 
-/* Reset */
+/* Reset Básico */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -31,17 +30,17 @@ body {
     background: var(--bg-color);
     font-family: var(--font-stack);
     color: var(--text-main);
-    overflow: hidden; /* Evita scroll indesejado */
+    overflow: hidden; 
 }
 
-/* Fundo opcional (se usar imagem, mantém sutil) */
+/* Background Imagem (Opcional) */
 .bg-image {
     position: fixed; inset: 0; z-index: -1;
     background-size: cover; background-position: center;
-    opacity: 0.4; filter: blur(20px);
+    opacity: 0; transition: opacity 0.5s ease;
 }
 
-/* Wrapper Principal */
+/* Wrapper */
 .login-wrap {
     width: 100%;
     padding: 20px;
@@ -50,203 +49,51 @@ body {
     z-index: 10;
 }
 
-/* O Cartão (Estilo Intro) */
+/* Cartão Glassmorphism */
 .glass-card {
     width: min(var(--max-width), 100%);
-    background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 32px 28px;
+    padding: 32px 24px;
     box-shadow: var(--shadow);
     text-align: center;
 }
 
-/* Header & Logo (Cópia fiel do Intro) */
+/* Logo (Copiado do Intro para consistência) */
 .header {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 24px;
-=======
-/* --- VARIÁVEIS GLOBAIS --- */
-:root {
-    --primary-blue: #2563EB;
-    --primary-hover: #1D4ED8;
-    --bg-body: #F3F4F6;
-    --text-main: #1F2937;
-    --text-muted: #6B7280;
-    --border-light: #E5E7EB;
-    --white: #FFFFFF;
-    --gradient-visual: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-body, html { height: 100%; overflow: hidden; }
-
-/* --- LAYOUT PRINCIPAL --- */
-.main-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-}
-
-/* Painel Visual (Esquerda) */
-.visual-panel {
-    flex: 1;
-    background: var(--gradient-visual);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 40px;
-    color: white;
-    overflow: hidden;
-}
-
-#organic-wires {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    opacity: 0.4; pointer-events: none;
-}
-
-.visual-content { position: relative; z-index: 2; margin-top: auto; margin-bottom: auto; }
-.brand-mark { 
-    width: 50px; height: 50px; background: var(--primary-blue); 
-    border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 28px; margin-bottom: 20px;
-}
-.visual-content h1 { font-size: 3rem; font-weight: 300; letter-spacing: -1px; margin-bottom: 10px; }
-.visual-content p { color: #94A3B8; font-size: 1.1rem; }
-.footer-copy { font-size: 0.8rem; color: #64748B; position: relative; z-index: 2; }
-
-/* Painel Login (Direita) */
-.login-panel {
-    flex: 1; max-width: 600px; background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px;
-}
-
-.login-wrapper { width: 100%; max-width: 400px; }
-.login-wrapper header { margin-bottom: 40px; }
-.login-wrapper h2 { font-size: 1.8rem; color: var(--text-main); margin-bottom: 8px; }
-.login-wrapper p { color: var(--text-muted); font-size: 0.95rem; }
-
-/* Formulários e Inputs */
-.input-container { margin-bottom: 20px; }
-.input-container label { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-main); margin-bottom: 8px; }
-
-.input-wrapper {
-    position: relative; display: flex; align-items: center;
-    border: 1px solid var(--border-light); border-radius: 8px;
-    background: #F9FAFB; transition: all 0.2s;
->>>>>>> 79ed9248bdc063eb4bddfd21eb29b4c911644444
-}
-.input-wrapper:focus-within { border-color: var(--primary-blue); background: white; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-
-<<<<<<< HEAD
 .logo-wrapper {
     width: 80px; height: 80px;
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 12px;
-=======
-.input-icon { padding: 0 12px; color: #9CA3AF; font-size: 20px; }
-
-input {
-    width: 100%; border: none; background: transparent; padding: 12px 0;
-    outline: none; color: var(--text-main); font-size: 0.95rem;
->>>>>>> 79ed9248bdc063eb4bddfd21eb29b4c911644444
+    margin-bottom: 10px;
 }
-.pass-field input { padding-right: 40px; }
 
-<<<<<<< HEAD
 .core-circle {
-    width: 64px; height: 64px; border-radius: 50%;
+    width: 60px; height: 60px; border-radius: 50%;
     background: var(--primary);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 20px rgba(230, 126, 34, 0.25);
-=======
-.toggle-btn {
-    background: none; border: none; cursor: pointer;
-    padding: 8px; color: #9CA3AF; display: flex;
->>>>>>> 79ed9248bdc063eb4bddfd21eb29b4c911644444
+    box-shadow: 0 8px 18px rgba(230, 126, 34, 0.25);
 }
-.toggle-btn:hover { color: var(--primary-blue); }
 
-<<<<<<< HEAD
 .logo-letter {
     color: #fff; font-family: "Times New Roman", serif;
     font-weight: 700; font-size: 1.8rem; line-height: 1;
 }
 
 .brand-name {
-    font-size: 1.5rem; letter-spacing: -0.5px;
+    font-size: 1.4rem; letter-spacing: -0.5px;
     color: var(--text-main); font-weight: 600;
-=======
-.aux-actions { display: flex; justify-content: flex-end; margin-bottom: 30px; }
-.forgot-link { color: var(--primary-blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-.forgot-link:hover { text-decoration: underline; }
-
-#btnSubmit {
-    width: 100%; background: var(--primary-blue); color: white;
-    border: none; padding: 14px; border-radius: 8px;
-    font-size: 1rem; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: background 0.2s;
 }
-#btnSubmit:hover { background: var(--primary-hover); }
-#btnSubmit:disabled { opacity: 0.7; cursor: not-allowed; }
 
-/* --- MODAL (Janela Flutuante) --- */
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000; opacity: 1; visibility: visible;
-    transition: all 0.3s ease;
-}
-.modal-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-.modal-box {
-    background: white; width: 90%; max-width: 400px;
-    padding: 2rem; border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    transform: translateY(0); transition: transform 0.3s ease;
-}
-.modal-overlay.hidden .modal-box { transform: translateY(20px); }
-
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.modal-header h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-main); }
-.close-btn { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
-.modal-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-
-.full-width-input { background: #F9FAFB; border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; width: 100%; }
-.full-width-input:focus { border-color: var(--primary-blue); outline: none; }
-
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.btn-ghost { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-.btn-primary { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-.btn-primary:hover { background: var(--primary-hover); }
-
-/* --- TOAST NOTIFICATIONS (Avisos) --- */
-.toast-container {
-    position: fixed; bottom: 20px; right: 20px;
-    display: flex; flex-direction: column; gap: 10px; z-index: 2000;
-}
-.toast {
-    background: white; padding: 14px 20px; border-radius: 8px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    display: flex; align-items: center; gap: 12px;
-    font-size: 0.9rem; min-width: 300px;
-    animation: slideIn 0.3s ease forwards;
-    border-left: 4px solid #ddd;
->>>>>>> 79ed9248bdc063eb4bddfd21eb29b4c911644444
-}
-@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-<<<<<<< HEAD
-/* Formulário e Inputs */
+/* Formulário */
 .input-group { margin-bottom: 16px; text-align: left; }
 
 .input-wrapper {
@@ -254,19 +101,19 @@ input {
     background: var(--input-bg);
     border: 1px solid transparent;
     border-radius: 8px;
-    padding: 2px 12px;
-    transition: all var(--transition-fast);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    padding: 0 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 
 .input-wrapper:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+    box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .icon {
-    font-family: "Material Icons", sans-serif;
-    color: #999; font-size: 1.2rem; margin-right: 8px;
+    font-family: "Material Icons", sans-serif; /* Se não carregar, fallback invisível */
+    color: #9ca3af; font-size: 1.2rem; margin-right: 8px; display: flex;
 }
 
 .input-wrapper input {
@@ -277,25 +124,25 @@ input {
     color: var(--text-main);
     font-family: var(--font-stack);
 }
-
 .input-wrapper input::placeholder { color: #aaa; }
 
-/* Botão Olho */
+/* Botão Mostrar Senha */
 .btn-icon {
     background: none; border: none; cursor: pointer;
-    color: #999; padding: 4px; display: flex;
+    color: #9ca3af; padding: 6px; display: flex;
+    transition: color 0.2s;
 }
 .btn-icon:hover { color: var(--text-main); }
 
-/* Controls (Checkbox e Link) */
+/* Controles (Remember/Forgot) */
 .controls {
     display: flex; justify-content: space-between; align-items: center;
     font-size: 0.85rem; color: var(--text-sub);
-    margin-bottom: 24px; margin-top: 4px;
+    margin: 4px 0 24px 0;
 }
 
 .remember { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.remember input { accent-color: var(--primary); }
+.remember input { accent-color: var(--primary); width: 14px; height: 14px; }
 
 .forgot {
     color: var(--text-sub); text-decoration: none; font-weight: 500;
@@ -303,10 +150,10 @@ input {
 }
 .forgot:hover { color: var(--primary); }
 
-/* Botão de Ação */
+/* Botão Principal */
 .btn-login {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     background: var(--primary);
     color: #fff;
     border: none;
@@ -314,15 +161,15 @@ input {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.1s, opacity 0.2s;
-    position: relative;
-    overflow: hidden;
+    transition: opacity 0.2s, transform 0.1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 
 .btn-login:hover { opacity: 0.9; }
 .btn-login:active { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.7; cursor: wait; }
 
-/* Estado de Loading (Sutil, dentro do botão) */
+/* Spinner Loading */
 .spinner {
     display: none;
     width: 16px; height: 16px;
@@ -332,17 +179,17 @@ input {
     animation: spin 0.8s linear infinite;
 }
 
+.btn-login.loading .spinner { display: block; }
 .btn-login.loading .btn-text { display: none; }
-.btn-login.loading .spinner { display: inline-block; }
-.btn-login:disabled { opacity: 0.7; cursor: wait; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Erros */
+/* Mensagens de Erro (Discretas) */
 .field-error {
-    font-size: 0.75rem; color: #d32f2f; margin-top: 4px; margin-left: 4px; min-height: 14px;
+    font-size: 0.75rem; color: #dc2626; margin-top: 4px; min-height: 1px;
 }
 
+/* Utilitários */
 .visually-hidden {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
@@ -352,17 +199,4 @@ input {
     position: fixed; bottom: 10px; left: 10px;
     background: #000; color: #fff; padding: 8px 12px;
     border-radius: 6px; font-size: 0.8rem;
-=======
-.toast.success { border-left-color: #10B981; }
-.toast.success .material-icons-outlined { color: #10B981; }
-
-.toast.error { border-left-color: #EF4444; }
-.toast.error .material-icons-outlined { color: #EF4444; }
-
-/* Mobile */
-@media (max-width: 768px) {
-    .main-container { flex-direction: column; }
-    .visual-panel { display: none; }
-    .login-panel { max-width: 100%; padding: 20px; }
->>>>>>> 79ed9248bdc063eb4bddfd21eb29b4c911644444
 }
