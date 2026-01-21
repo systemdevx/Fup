@@ -14,7 +14,7 @@ if (typeof supabase !== 'undefined') {
 // 2. Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    // Inicializa sem fornecedores fictícios, conforme solicitado.
+    // Inicializa sem fornecedores fictícios (lista vazia), aguardando integração.
     carregarFornecedores([]); 
 });
 
