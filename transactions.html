@@ -8,28 +8,28 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="transactions.css">
 </head>
-<body>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
     <header>
         <div class="logo-area">
             <h1>FUP ALM <span style="font-size: 0.5em; color: #999; font-weight:400;"></span></h1>
         </div>
         
-<nav>
+        <nav>
             <ul>
                 <li>
-                    <a href="dashboard.html" onclick="mostrarTela('dashboard', this)" class="active">
+                    <a href="dashboard.html">
                         <span class="material-icons-outlined">dashboard</span>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="transactions.html"> 
+                    <a href="transactions.html" class="active"> 
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
                     </a>
                 <li>
-                    <a href="#" onclick="mostrarTela('fornecedores', this)">
+                    <a href="#" onclick="alert('Em desenvolvimento')">
                         <span class="material-icons-outlined">storefront</span>
                         <span>Fornecedores</span>
                     </a>
@@ -38,7 +38,7 @@
         </nav>
 
         <div class="user-profile">
-            <div class="avatar">JS</div>
+            <div class="avatar">U</div>
         </div>
     </header>
 
@@ -49,7 +49,7 @@
 
         <div class="v-separator"></div>
 
-        <button class="btn-subheader-action" onclick="window.location.href='#'">
+        <button class="btn-subheader-action" onclick="window.location.href='dashboard.html'">
             <span class="material-icons-outlined">add</span>
             <span>Novo Pedido</span>
         </button>
@@ -58,7 +58,7 @@
             
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar">
+                <input type="text" class="search-input-clean" placeholder="Pesquisar ID ou Detalhe">
                 
                 <button class="btn-filter-inside">
                     <span class="material-icons-outlined">filter_alt</span>
@@ -67,14 +67,7 @@
             </div>
 
             <div class="view-actions">
-                <button class="btn-view-icon" title="Visualização em Gráfico">
-                    <span class="material-icons-outlined">bar_chart</span>
-                </button>
-                
-                <button class="btn-view-icon" title="Visualização em Grade">
-                    <span class="material-icons-outlined">grid_view</span>
-                    <span class="material-icons-outlined" style="font-size: 14px; margin-left: 2px;">expand_more</span>
-                </button>
+                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair" style="cursor: pointer;">logout</span>
             </div>
 
         </div>
@@ -116,9 +109,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" onclick="ativarItem(this)">
+                        <a href="#" onclick="ativarItem(this)" class="active">
                             <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
+                                <span class="material-icons-outlined">folder_open</span>
                                 <span>Pedidos</span>
                             </div>
                             <span class="material-icons-outlined icon-right">expand_more</span>
@@ -151,10 +144,14 @@
                     <tbody id="lista-pedidos">
                         </tbody>
                 </table>
+                <div id="empty-state-msg" style="display:none; padding: 30px; text-align: center; color: #666;">
+                    Nenhuma transação encontrada.
+                </div>
             </div>
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="transactions.js"></script>
 </body>
 </html>
