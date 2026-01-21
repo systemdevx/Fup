@@ -1,4 +1,5 @@
-/* --- Variáveis (Tema Laranja Vivara) --- */
+/* --- dashboard.css --- */
+/* Variáveis (Tema Laranja Vivara) */
 :root {
     --bg-body: #F3F4F6;      /* Fundo cinza */
     --header-bg: #FFFFFF; 
@@ -93,26 +94,12 @@ nav ul li a:hover, nav ul li a.active {
 }
 .dropdown:hover { color: var(--primary-orange); }
 
-.filter-bar {
-    padding: 15px 30px; display: flex; align-items: center; gap: 10px;
-}
-
-.btn-filter {
-    background: white; border: 1px solid #D1D5DB; color: #555;
-    padding: 6px 14px; border-radius: 4px; cursor: pointer;
-    display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
-    transition: all 0.2s;
-}
-.btn-filter:hover { background-color: #F9FAFB; border-color: #9CA3AF; }
-
 .icon-action {
     background: transparent; border: none; color: var(--text-grey); cursor: pointer; padding: 6px;
     display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
 .icon-action:hover { color: var(--primary-orange); background-color: var(--light-orange-bg); }
 .icon-action .material-icons-outlined { font-size: 20px; }
-
-.divider { height: 20px; width: 1px; background: #E5E7EB; margin: 0 10px; }
 
 /* --- 3. DASHBOARD GRID --- */
 main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
@@ -139,54 +126,15 @@ main { padding: 20px 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 .hero-content h2 { color: #333; font-size: 18px; margin-bottom: 5px; }
 .hero-content p { color: #666; font-size: 14px; margin-bottom: 20px; max-width: 300px; }
 
-.btn-cta {
-    background-color: var(--primary-orange); color: white;
-    border: 1px solid var(--primary-orange); padding: 8px 18px; border-radius: 4px;
-    font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;
-    transition: background 0.2s;
-}
-.btn-cta:hover { background-color: var(--primary-orange-hover); }
-
-.hero-illustration { position: absolute; right: -10px; bottom: -10px; transform: rotate(-10deg); }
-
 .simple-card { display: flex; flex-direction: column; justify-content: space-between; height: 180px; transition: border-color 0.2s; }
 .simple-card:hover { border-color: var(--primary-orange); }
 
 .card-top h3 { font-size: 15px; font-weight: 600; margin-top: 10px; color: #444; }
 .icon-theme { color: var(--primary-orange); font-size: 28px; }
-.link-bottom { text-decoration: none; color: #666; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
-.link-bottom:hover { color: var(--primary-orange); }
-
-.dashboard-grid-bottom {
-    display: grid; grid-template-columns: 1fr 2fr; gap: 30px;
-}
-
-.processos-container h3, .pendencias-container h3 {
-    font-size: 16px; color: #444; margin-bottom: 15px;
-}
-
-.stats-row { display: flex; gap: 20px; }
-.stat-card {
-    flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 25px;
-    border-left: 4px solid var(--primary-orange);
-}
-.icon-stat { color: var(--primary-orange); font-size: 24px; }
-.stat-number { font-size: 28px; font-weight: 700; color: #333; }
-.stat-label { font-size: 13px; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
-
-.empty-state {
-    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; color: #999; min-height: 200px;
-}
-.empty-state h4 { color: #555; margin-bottom: 5px; font-size: 16px; }
 
 @media (max-width: 900px) {
-    .dashboard-grid-top, .dashboard-grid-bottom { grid-template-columns: 1fr; }
+    .dashboard-grid-top { grid-template-columns: 1fr; }
     header { padding: 0 10px; }
     nav ul { gap: 10px; }
     nav ul li a span:last-child { display: none; }
 }
-
-.tela { display: none; }
-.active-tela { display: block; animation: fade 0.3s; }
-@keyframes fade { from { opacity: 0; } to { opacity: 1; } }

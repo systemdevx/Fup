@@ -17,64 +17,34 @@
         
         <nav>
             <ul>
-                <li>
-                    <a href="dashboard.html">
-                        <span class="material-icons-outlined">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="transactions.html" class="active"> 
-                        <span class="material-icons-outlined">receipt_long</span>
-                        <span>Transações</span>
-                    </a>
-                <li>
-                    <a href="supplier.html" class="active"> 
-                        <span class="material-icons-outlined">storefront</span>
-                        <span>Fornecedores</span>
-                    </a>
-                </li>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html" class="active"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
             </ul>
         </nav>
 
-        <div class="user-profile">
-            <div class="avatar">U</div>
-        </div>
+        <div class="user-profile"><div class="avatar">U</div></div>
     </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Alternar Menu">
-            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
-        </button>
-
+        <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
         <div class="v-separator"></div>
-
-        <button class="btn-subheader-action" onclick="window.location.href='dashboard.html'">
-            <span class="material-icons-outlined">add</span>
-            <span>Novo Pedido</span>
-        </button>
-
+        <button class="btn-subheader-action" onclick="window.location.href='#'"><span class="material-icons-outlined">add</span><span>Novo Pedido</span></button>
         <div class="header-right-actions">
-            
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
                 <input type="text" class="search-input-clean" placeholder="Pesquisar ID ou Detalhe">
-                
-                <button class="btn-filter-inside">
-                    <span class="material-icons-outlined">filter_alt</span>
-                    <span>Filtros</span>
-                </button>
+                <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
             </div>
-
             <div class="view-actions">
-                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair" style="cursor: pointer;">logout</span>
+                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
             </div>
-
         </div>
     </div>
 
     <div class="layout-wrapper">
-        
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
@@ -82,15 +52,7 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">fact_check</span>
-                                <span>Aprovações</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
+                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">fact_check</span><span>Aprovações</span></div></a></li>
                 </ul>
             </div>
             <div class="menu-group">
@@ -99,24 +61,8 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Contratos</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" onclick="ativarItem(this)" class="active">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder_open</span>
-                                <span>Pedidos</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
+                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">folder</span><span>Contratos</span></div></a></li>
+                    <li><a href="#" onclick="ativarItem(this)" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">folder_open</span><span>Pedidos</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -134,12 +80,9 @@
                             <th width="80" style="text-align: right;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-pedidos">
-                        </tbody>
+                    <tbody id="lista-pedidos"></tbody>
                 </table>
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999; font-size: 13px;">
-                    Nenhuma transação encontrada.
-                </div>
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhuma transação encontrada.</div>
             </div>
         </main>
     </div>

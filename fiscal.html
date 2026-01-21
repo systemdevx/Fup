@@ -3,40 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fornecedores - Portal de Compras</title>
-    
+    <title>Registros Fiscais - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="supplier.css">
+    <link rel="stylesheet" href="fiscal.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
     <header>
-        <div class="logo-area">
-            <h1>FUP ALM</h1>
-        </div>
-        
+        <div class="logo-area"><h1>FUP ALM</h1></div>
         <nav>
             <ul>
                 <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
                 <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
-                <li><a href="supplier.html" class="active"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
-                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html" class="active"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
                 <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
             </ul>
         </nav>
-
         <div class="user-profile"><div class="avatar">U</div></div>
     </header>
 
     <div class="subheader-bar">
         <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
         <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="alert('Em desenvolvimento')"><span class="material-icons-outlined">add_business</span><span>Cadastrar Fornecedor</span></button>
+        <button class="btn-subheader-action"><span class="material-icons-outlined">upload_file</span><span>Importar XML</span></button>
 
         <div class="header-right-actions">
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar Nome ou CNPJ">
+                <input type="text" class="search-input-clean" placeholder="Buscar Nota, CNPJ ou Valor">
                 <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
             </div>
             <div class="view-actions">
@@ -49,12 +44,21 @@
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
-                    <span>GESTÃO</span>
+                    <span>DOCUMENTOS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="#" onclick="ativarItem(this)" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">list_alt</span><span>Base de Fornecedores</span></div></a></li>
-                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">verified</span><span>Homologação</span></div></a></li>
+                    <li><a href="#" onclick="ativarItem(this)" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">receipt</span><span>Notas de Entrada</span></div></a></li>
+                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">outbox</span><span>Notas de Saída</span></div></a></li>
+                </ul>
+            </div>
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>APURAÇÃO</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">calculate</span><span>Impostos</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -64,22 +68,23 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="80">ID</th>
-                            <th>Razão Social / Fantasia</th>
-                            <th width="160">CNPJ</th>
-                            <th width="150">Categoria</th>
+                            <th width="100">Nº Nota</th>
+                            <th>Emissor / Razão Social</th>
+                            <th width="120">Emissão</th>
+                            <th width="120">Valor (R$)</th>
+                            <th width="120">Natureza</th>
                             <th width="100">Status</th>
                             <th width="80" style="text-align: right;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-fornecedores"></tbody>
+                    <tbody id="lista-fiscal"></tbody>
                 </table>
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhum fornecedor encontrado na base.</div>
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhum registro fiscal encontrado.</div>
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supplier.js"></script>
+    <script src="fiscal.js"></script>
 </body>
 </html>

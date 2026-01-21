@@ -7,26 +7,6 @@
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
-    
-    <style>
-        /* Estilos do Catálogo que faltavam */
-        .catalog-container { display: flex; gap: 20px; height: calc(100vh - 160px); }
-        .catalog-list { flex: 3; background: #fff; padding: 20px; border-radius: 8px; overflow-y: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .catalog-cart { flex: 1; background: #fff; padding: 20px; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        
-        .grid-header, .grid-row { display: grid; grid-template-columns: 60px 2fr 2fr 100px 60px 1fr 120px 60px; gap: 10px; align-items: center; padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }
-        .grid-header { font-weight: bold; background: #f9f9f9; color: #666; }
-        .qty-control { display: flex; align-items: center; gap: 5px; }
-        .input-qty { width: 50px; text-align: center; border: 1px solid #ddd; padding: 4px; border-radius: 4px; }
-        .btn-qty, .btn-add-cart { cursor: pointer; border: 1px solid #ddd; background: #f3f3f3; border-radius: 4px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
-        .btn-add-cart { width: 32px; height: 32px; background: var(--primary-orange); color: white; border: none; }
-        .btn-add-cart:hover { background: var(--primary-orange-hover); }
-
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 13px; }
-        .cart-footer { margin-top: auto; padding-top: 20px; border-top: 2px solid #eee; }
-        .total-price { font-size: 24px; font-weight: bold; color: var(--primary-orange); display: block; margin: 10px 0; }
-        .btn-checkout { width: 100%; background: #27ae60; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-    </style>
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
@@ -38,7 +18,7 @@
         <nav>
             <ul>
                 <li>
-                    <a href="dashboard.html" onclick="mostrarTela('dashboard', this)" class="active">
+                    <a href="dashboard.html" class="active">
                         <span class="material-icons-outlined">dashboard</span>
                         <span>Dashboard</span>
                     </a>
@@ -48,10 +28,23 @@
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
                     </a>
+                </li>
                 <li>
-                    <a href="supplier.html" class="active"> 
+                    <a href="supplier.html"> 
                         <span class="material-icons-outlined">storefront</span>
                         <span>Fornecedores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fiscal.html">
+                        <span class="material-icons-outlined">description</span>
+                        <span>Reg. Fiscais</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="sgq.html">
+                        <span class="material-icons-outlined">verified_user</span>
+                        <span>Ativos SGQ</span>
                     </a>
                 </li>
             </ul>
@@ -65,7 +58,7 @@
     <div class="sub-header">
         <div class="left-actions">
             <div class="dropdown">
-                <span>Painel de Controle</span>
+                <span>Visão Geral</span>
             </div>
         </div>
         <div class="right-actions">
@@ -74,79 +67,41 @@
     </div>
 
     <main>
-        <section id="dashboard" class="tela active-tela">
-            <div class="dashboard-grid-top">
-                <div class="card hero-card">
-                    <div class="hero-content">
-                        <h2>Bem-vindo ao Portal</h2>
-                        <p>Gerencie suas requisições e consulte o catálogo.</p>
-                        <button class="btn-cta" onclick="mostrarTela('catalogo', document.querySelector('nav a[onclick*=\'catalogo\']'))">
-                            <span class="material-icons-outlined">shopping_cart</span> Novo Pedido
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="card simple-card">
-                    <div class="card-top">
-                        <span class="material-icons-outlined icon-theme">inventory</span>
-                        <h3>Acesso Rápido</h3>
-                    </div>
-                    <a href="#" onclick="mostrarTela('catalogo', document.querySelector('nav a[onclick*=\'catalogo\']'))" class="link-bottom">Ir para Catálogo</a>
+        <div class="dashboard-grid-top">
+            <div class="card hero-card">
+                <div class="hero-content">
+                    <h2>Bem-vindo ao Portal</h2>
+                    <p>Selecione um módulo no menu acima para iniciar suas atividades.</p>
                 </div>
             </div>
-        </section>
-
-        <section id="catalogo" class="tela">
-            <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
-                <h1>Catálogo de Produtos</h1>
-                <input type="text" id="global-search" placeholder="Buscar produto..." onkeyup="filtrarCatalogo()" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 300px;">
-            </div>
-
-            <div class="catalog-container">
-                <div class="catalog-list">
-                    <div class="grid-header">
-                        <div>ID</div>
-                        <div>Produto</div>
-                        <div>Fornecedor</div>
-                        <div>Preço</div>
-                        <div>UN</div>
-                        <div>Condição</div>
-                        <div>Qtd</div>
-                        <div>Ação</div>
-                    </div>
-                    <div id="table-body"></div>
+            
+            <div class="card simple-card">
+                <div class="card-top">
+                    <span class="material-icons-outlined icon-theme">notifications_active</span>
+                    <h3>Avisos</h3>
                 </div>
-
-                <div class="catalog-cart">
-                    <h3><span class="material-icons-outlined" style="vertical-align: middle;">shopping_cart</span> Carrinho</h3>
-                    <div id="cart-items-container" style="flex: 1; overflow-y: auto; margin-top: 15px;">
-                        </div>
-                    <div class="cart-footer">
-                        <small>Total Estimado</small>
-                        <span class="total-price" id="cart-total-display">R$ 0,00</span>
-                        <button class="btn-checkout" onclick="alert('Funcionalidade de Checkout em desenvolvimento!')">Finalizar Requisição</button>
-                    </div>
-                </div>
+                <div style="font-size: 13px; color: #999; margin-top: 10px;">Sem notificações novas.</div>
             </div>
-        </section>
-        
-        <section id="fornecedores" class="tela"><h1>Gestão de Fornecedores</h1><p>Conteúdo em breve...</p></section>
-        <section id="transacoes" class="tela"><h1>Minhas Transações</h1><p>Conteúdo em breve...</p></section>
+            
+            <div class="card simple-card">
+                <div class="card-top">
+                    <span class="material-icons-outlined icon-theme">pending_actions</span>
+                    <h3>Pendências</h3>
+                </div>
+                <div style="font-size: 13px; color: #999; margin-top: 10px;">Tudo em dia.</div>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+        <div id="dashboard-content" style="text-align: center; padding: 40px; color: #999;">
+            <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; margin-bottom: 15px;">analytics</span>
+            <p>Os indicadores de desempenho serão carregados aqui após a integração com o banco de dados.</p>
+        </div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
-
-    <script>
-        function mostrarTela(id, elemento) {
-            document.querySelectorAll('.tela').forEach(t => t.classList.remove('active-tela'));
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            
-            const tela = document.getElementById(id);
-            if(tela) tela.classList.add('active-tela');
-            
-            if(elemento) elemento.classList.add('active');
-        }
-    </script>
 </body>
 </html>
