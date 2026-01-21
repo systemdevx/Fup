@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transações - Portal de Compras</title>
+    <title>Fornecedores - Portal de Compras</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="transactions.css">
+    <link rel="stylesheet" href="supplier.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
@@ -24,12 +24,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="transactions.html" class="active"> 
+                    <a href="transactions.html"> 
                         <span class="material-icons-outlined">receipt_long</span>
                         <span>Transações</span>
                     </a>
                 <li>
-                    <a href="supplier.html" class="active"> 
+                    <a href="supplier.html" class="active">
                         <span class="material-icons-outlined">storefront</span>
                         <span>Fornecedores</span>
                     </a>
@@ -49,16 +49,16 @@
 
         <div class="v-separator"></div>
 
-        <button class="btn-subheader-action" onclick="window.location.href='dashboard.html'">
-            <span class="material-icons-outlined">add</span>
-            <span>Novo Pedido</span>
+        <button class="btn-subheader-action" onclick="alert('Funcionalidade de Cadastro em desenvolvimento')">
+            <span class="material-icons-outlined">add_business</span>
+            <span>Cadastrar Fornecedor</span>
         </button>
 
         <div class="header-right-actions">
             
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar ID ou Detalhe">
+                <input type="text" class="search-input-clean" placeholder="Pesquisar Nome ou CNPJ">
                 
                 <button class="btn-filter-inside">
                     <span class="material-icons-outlined">filter_alt</span>
@@ -78,41 +78,24 @@
         <aside class="sidebar-local" id="sidebar">
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
-                    <span>PENDÊNCIAS</span>
+                    <span>GESTÃO</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">fact_check</span>
-                                <span>Aprovações</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
-                    <span>TRANSAÇÕES</span>
-                    <span class="material-icons-outlined arrow-header">expand_less</span>
-                </div>
-                <ul class="group-list">
-                    <li>
-                        <a href="#" onclick="ativarItem(this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder</span>
-                                <span>Contratos</span>
-                            </div>
-                            <span class="material-icons-outlined icon-right">expand_more</span>
-                        </a>
-                    </li>
                     <li>
                         <a href="#" onclick="ativarItem(this)" class="active">
                             <div class="menu-text-icon">
-                                <span class="material-icons-outlined">folder_open</span>
-                                <span>Pedidos</span>
+                                <span class="material-icons-outlined">list_alt</span>
+                                <span>Base de Fornecedores</span>
+                            </div>
+                            <span class="material-icons-outlined icon-right">expand_more</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="ativarItem(this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">verified</span>
+                                <span>Homologação</span>
                             </div>
                             <span class="material-icons-outlined icon-right">expand_more</span>
                         </a>
@@ -127,24 +110,26 @@
                     <thead>
                         <tr>
                             <th width="80">ID</th>
-                            <th width="150">Tipo</th>
-                            <th>Detalhes</th>
-                            <th width="120">Data</th>
+                            <th>Razão Social / Fantasia</th>
+                            <th width="160">CNPJ</th>
+                            <th width="150">Categoria</th>
                             <th width="100">Status</th>
                             <th width="80" style="text-align: right;">Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-pedidos">
+                    <tbody id="lista-fornecedores">
                         </tbody>
                 </table>
+                
                 <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999; font-size: 13px;">
-                    Nenhuma transação encontrada.
+                    <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; display: block; margin-bottom: 10px;">store_mall_directory</span>
+                    Nenhum fornecedor encontrado na base.
                 </div>
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="transactions.js"></script>
+    <script src="supplier.js"></script>
 </body>
 </html>
