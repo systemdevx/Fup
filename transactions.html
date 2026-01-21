@@ -12,7 +12,7 @@
 
     <header>
         <div class="logo-area">
-            <h1>FUP ALM <span style="font-size: 0.5em; color: #999; font-weight:400;"></span></h1>
+            <h1>FUP ALM</h1>
         </div>
         
         <nav>
@@ -122,29 +122,22 @@
         </aside>
 
         <main class="content-area">
-            <div class="page-header-row">
-                <div class="page-title">
-                    <h2 id="titulo-pagina">Transações</h2>
-                    <p>Gerencie todas as solicitações e pedidos.</p>
-                </div>
-            </div>
-
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Tipo</th>
+                            <th width="80">ID</th>
+                            <th width="150">Tipo</th>
                             <th>Detalhes</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                            <th>Ações</th>
+                            <th width="120">Data</th>
+                            <th width="100">Status</th>
+                            <th width="80" style="text-align: right;">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="lista-pedidos">
                         </tbody>
                 </table>
-                <div id="empty-state-msg" style="display:none; padding: 30px; text-align: center; color: #666;">
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999; font-size: 13px;">
                     Nenhuma transação encontrada.
                 </div>
             </div>
