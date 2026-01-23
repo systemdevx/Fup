@@ -1,82 +1,102 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Acesso — FUP ALM</title>
-  
-  <link rel="stylesheet" href="login.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativos SGQ - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="sgq.css">
 </head>
-<body>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
-  <div class="bg-image" data-bg="bloom.png" aria-hidden="true"></div>
+    <header>
+        <div class="logo-area"><h1>FUP ALM</h1></div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html" class="active"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">U</div></div>
+    </header>
 
-  <main class="login-container">
-    
-    <section class="glass-card fade-in-up">
-      
-      <div class="login-brand">
-        <div class="brand-badge">
-          <div class="circle-f">F</div>
-        </div>
-      </div>
-
-      <header class="header">
-        <h1>Bem-vindo</h1>
-        <p class="subtitle">Acesse o painel FUP ALM</p>
-      </header>
-
-      <form id="loginForm" class="login-form" novalidate>
-        
-        <div class="input-group">
-          <label for="username">E-mail</label>
-          <div class="input-field">
-            <input id="username" name="username" type="email" inputmode="email" autocomplete="username" placeholder="seu@email.com" required />
-            <span class="focus-border"></span>
-          </div>
-          <p class="field-error" id="username-error"></p>
-        </div>
-
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <div class="input-field">
-            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
-            <button type="button" id="togglePassword" class="btn-eye" aria-label="Mostrar senha">
-               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                 <circle cx="12" cy="12" r="3"></circle>
-               </svg>
-            </button>
-            <span class="focus-border"></span>
-          </div>
-          <p class="field-error" id="password-error"></p>
-        </div>
-
-        <div class="controls">
-          <label class="custom-checkbox">
-            <input type="checkbox" name="remember" id="remember" />
-            <span class="checkmark"></span>
-            <span>Lembrar de mim</span>
-          </label>
-          <a class="forgot-link" href="#">Esqueceu a senha?</a>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnLogin">
-          <span class="btn-text">Entrar</span>
-          <div class="btn-loader"></div>
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
+        <div class="v-separator"></div>
+        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
+            <span class="material-icons-outlined">add</span><span>Nova Entrada</span>
         </button>
 
-        <div id="status" class="status-msg" aria-live="polite"></div>
-      </form>
-    </section>
+        <div class="header-right-actions">
+            <div class="search-styled-container">
+                <span class="material-icons-outlined search-icon-left">search</span>
+                <input type="text" class="search-input-clean" placeholder="Buscar por Código, NF ou Equipamento..." onkeyup="filtrarTabela(this.value)">
+                <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
+            </div>
+            <div class="view-actions">
+                <span class="material-icons-outlined btn-view-icon" onclick="carregarSgq()" title="Atualizar Lista">refresh</span>
+                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
+            </div>
+        </div>
+    </div>
 
-    <footer class="login-footer">
-      <p>&copy; 2026 FUP ALM. Todos os direitos reservados.</p>
-    </footer>
-  </main>
+    <div class="layout-wrapper">
+        <aside class="sidebar-local" id="sidebar">
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>CONTROLE</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li><a href="#" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
+                    <li><a href="fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">notifications_active</span><span>Entrada (Fvy)</span></div></a></li>
+                </ul>
+            </div>
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>QUALIDADE</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li><a href="#"><div class="menu-text-icon"><span class="material-icons-outlined">warning</span><span>Não Conformidades</span></div></a></li>
+                </ul>
+            </div>
+        </aside>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="login.js" defer></script>
+        <main class="content-area">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="100">CÓDIGO</th>
+                            <th>EQUIPAMENTO</th>
+                            <th width="120">REQ. ME</th>
+                            <th width="120">NF</th>
+                            <th width="150">SETOR</th>
+                            <th width="120">DATA</th>
+                            <th width="100">STATUS</th>
+                            <th width="60" style="text-align: right;">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-sgq">
+                        </tbody>
+                </table>
+                
+                <div id="loading-msg" style="display:none; padding: 40px; text-align: center; color: #666;">
+                    <span class="material-icons-outlined spin">sync</span> Carregando ativos...
+                </div>
+
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
+                    Nenhum ativo encontrado. Clique em "Nova Entrada" para cadastrar.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="sgq.js"></script>
 </body>
 </html>

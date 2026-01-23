@@ -1,145 +1,130 @@
-// --- login.js (Conectado ao Supabase) ---
-(() => {
-  'use strict';
+// --- sgq.js ---
+const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-  // 1. Configuração do Supabase (Suas chaves)
-  const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+let supabaseClient;
+if (typeof supabase !== 'undefined') {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
 
-  if (typeof supabase === 'undefined') {
-    console.error('ERRO CRÍTICO: Supabase SDK não carregado no HTML.');
-  }
+document.addEventListener('DOMContentLoaded', async () => {
+    await checkSession();
+    carregarSgq(); 
+});
 
-  // Inicializa o Cliente
-  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  const $ = (sel) => document.querySelector(sel);
+async function checkSession() {
+    if (!supabaseClient) return;
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    if (!session || error) { window.location.href = 'login.html'; return; }
 
-  // --- Funções Visuais (Background & UI) ---
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = '1';
 
-  function lazyLoadBackground() {
-    const bg = $('.bg-image');
-    if (!bg) return;
-    const src = bg.getAttribute('data-bg');
-    if (!src) return;
-    
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      bg.style.backgroundImage = `url("${src}")`;
-      bg.classList.add('loaded');
-    };
-  }
-
-  function setupPasswordToggle() {
-    const btn = $('#togglePassword');
-    const input = $('#password');
-    if (!btn || !input) return;
-
-    btn.addEventListener('click', () => {
-      const type = input.type === 'password' ? 'text' : 'password';
-      input.type = type;
-      btn.style.color = type === 'text' ? 'var(--accent)' : '';
-    });
-  }
-
-  function setLoading(isLoading) {
-    const btn = $('#btnLogin');
-    if (!btn) return;
-    
-    if (isLoading) {
-      btn.classList.add('loading');
-      btn.setAttribute('disabled', 'true');
-    } else {
-      btn.classList.remove('loading');
-      btn.removeAttribute('disabled');
+    if (session.user && session.user.email) {
+        const avatar = document.querySelector('.avatar');
+        if(avatar) avatar.innerText = session.user.email.substring(0, 2).toUpperCase();
     }
-  }
+}
 
-  // --- Lógica de Auth ---
+// --- CARREGAR DADOS DO SUPABASE ---
+async function carregarSgq() {
+    const tbody = document.getElementById('lista-sgq');
+    const loading = document.getElementById('loading-msg');
+    const empty = document.getElementById('empty-state-msg');
+    
+    if(!tbody) return;
+    
+    // Limpa e mostra loading
+    tbody.innerHTML = '';
+    if(loading) loading.style.display = 'block';
+    if(empty) empty.style.display = 'none';
 
-  function setupForm() {
-    const form = $('#loginForm');
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      // Limpar mensagens
-      $('#username-error').textContent = '';
-      $('#password-error').textContent = '';
-      const statusEl = $('#status');
-      statusEl.textContent = '';
-      statusEl.style.color = 'var(--text-muted)';
-
-      const email = $('#username').value.trim();
-      const password = $('#password').value;
-
-      if (!email) {
-        $('#username-error').textContent = 'O e-mail é obrigatório.';
-        $('#username').focus();
-        return;
-      }
-      if (!password) {
-        $('#password-error').textContent = 'A senha é obrigatória.';
-        $('#password').focus();
-        return;
-      }
-
-      setLoading(true);
-
-      try {
-        // --- Login Real ---
-        const { data, error } = await _supabase.auth.signInWithPassword({
-          email: email,
-          password: password,
-        });
+    try {
+        // Busca dados reais ordenados pelos mais recentes
+        const { data, error } = await supabaseClient
+            .from('ativos_fvy')
+            .select('*')
+            .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        // Sucesso
-        statusEl.textContent = 'Login realizado! Redirecionando...';
-        statusEl.style.color = 'var(--accent)';
-        
-        // Redirecionamento para o dashboard atualizado
-        setTimeout(() => {
-          window.location.href = 'dashboard.html'; 
-        }, 800);
+        if (loading) loading.style.display = 'none';
 
-      } catch (err) {
-        console.error('Erro de Login:', err);
-        let msg = 'Falha ao autenticar.';
-
-        if (err.message.includes('Invalid login')) {
-          msg = 'E-mail ou senha incorretos.';
-        } else if (err.message.includes('Email not confirmed')) {
-          msg = 'Confirme seu e-mail antes de entrar.';
-        } else if (err.message.includes('Network request failed')) {
-            msg = 'Erro de conexão. Verifique sua internet.';
+        if (!data || data.length === 0) {
+            if(empty) empty.style.display = 'block';
+            return;
         }
 
-        statusEl.textContent = msg;
-        statusEl.style.color = 'var(--danger)';
+        renderizarTabela(data);
 
-        // Shake visual
-        const card = $('.glass-card');
-        card.style.animation = 'none';
-        void card.offsetWidth; // reset animation
-        card.style.animation = 'shake 0.4s ease';
-      } finally {
-        setLoading(false);
-      }
+    } catch (err) {
+        console.error('Erro ao buscar dados:', err);
+        if (loading) {
+            loading.style.display = 'none';
+            loading.innerText = 'Erro ao carregar dados.';
+        }
+    }
+}
+
+function renderizarTabela(lista) {
+    const tbody = document.getElementById('lista-sgq');
+    
+    lista.forEach(item => {
+        // Formata data
+        const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
+        
+        // Define classe do status
+        let statusClass = 'status-calibracao'; // Amarelo (Pendente)
+        if (item.status === 'Aprovado') statusClass = 'status-conforme';
+        if (item.status === 'Rejeitado') statusClass = 'status-nao-conforme';
+
+        const row = `
+            <tr>
+                <td><strong>${item.codigo || '-'}</strong></td>
+                <td>
+                    <div style="display:flex; flex-direction:column;">
+                        <span style="font-weight:600; color:#333;">${item.equipamento}</span>
+                        ${item.arquivo_nome ? `<span style="font-size:10px; color:#E67E22; display:flex; align-items:center; gap:2px;"><span class="material-icons-outlined" style="font-size:10px;">attach_file</span> ${item.arquivo_nome}</span>` : ''}
+                    </div>
+                </td>
+                <td>${item.requisicao || '-'}</td>
+                <td>${item.nota_fiscal || '-'}</td>
+                <td>${item.setor || '-'}</td>
+                <td>${dataCriacao}</td>
+                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
+                <td style="text-align: right;">
+                    <button class="btn-icon" title="Ver Detalhes"><span class="material-icons-outlined">visibility</span></button>
+                </td>
+            </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
     });
-  }
+}
 
-  function init() {
-    lazyLoadBackground();
-    setupPasswordToggle();
-    setupForm();
-  }
+// Filtro simples no front-end
+function filtrarTabela(texto) {
+    const rows = document.querySelectorAll('#lista-sgq tr');
+    const term = texto.toUpperCase();
+    
+    rows.forEach(row => {
+        const txt = row.innerText.toUpperCase();
+        row.style.display = txt.includes(term) ? '' : 'none';
+    });
+}
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
+// Funções de UI (Sidebar)
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const icon = document.getElementById('icon-toggle-menu');
+    if (sidebar) {
+        sidebar.classList.toggle('sidebar-closed');
+        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
+    }
+}
+
+function toggleGroup(header) {
+    const list = header.nextElementSibling; 
+    const arrow = header.querySelector('.arrow-header');
+    list.style.display = list.style.display === 'none' ? 'flex' : 'none';
+    arrow.innerText = list.style.display === 'none' ? 'expand_more' : 'expand_less'; 
+}

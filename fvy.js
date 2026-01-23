@@ -1,8 +1,19 @@
 // --- fvy.js ---
 
+const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+
 const SETORES = [
     "ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"
 ];
+
+let supabaseClient;
+let currentUserEmail = 'anonimo'; // Fallback
+
+// Inicialização
+if (typeof supabase !== 'undefined') {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
 
 let items = [
     {
@@ -18,9 +29,25 @@ let items = [
     }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await checkSession(); // Verifica login antes
     renderItems();
 });
+
+// --- AUTENTICAÇÃO ---
+async function checkSession() {
+    if (!supabaseClient) return;
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    
+    // Se não tiver sessão, redireciona (opcional, igual ao dashboard)
+    /* if (!session || error) { window.location.href = 'login.html'; return; } */
+
+    if (session && session.user) {
+        currentUserEmail = session.user.email;
+    }
+}
+
+// --- RENDERIZAÇÃO E INTERFACE ---
 
 function renderItems() {
     const container = document.getElementById('items-container');
@@ -222,6 +249,7 @@ function validarEAvançar() {
 
     renderItems();
 
+    // Validação visual
     setTimeout(() => {
         const inputs = document.querySelectorAll('.input-me, select.input-me');
         inputs.forEach(input => {
@@ -237,9 +265,7 @@ function validarEAvançar() {
     }
 }
 
-function solicitingCancelamento() {
-    document.getElementById('modal-cancel-confirm').style.display = 'flex';
-}
+// --- MODAIS ---
 function solicitarCancelamento() {
     document.getElementById('modal-cancel-confirm').style.display = 'flex';
 }
@@ -297,12 +323,55 @@ function fecharModalEmail() {
     document.getElementById('email-modal').style.display = 'none';
 }
 
-function confirmarEnvio() {
-    const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
-    btn.disabled = true;
-    btn.innerHTML = 'ENVIANDO...';
+// --- ENVIO REAL AO SUPABASE ---
+async function confirmarEnvio() {
+    if (!supabaseClient) {
+        alert('Erro: Supabase não conectado.');
+        return;
+    }
 
-    setTimeout(() => {
-        window.location.href = 'sgq.html';
-    }, 1500);
+    const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> ENVIANDO...';
+
+    // Prepara os dados para inserção no formato da tabela criada
+    const dadosParaInserir = items.map(item => ({
+        codigo: item.codigo,
+        equipamento: item.equipamento,
+        requisicao: item.req_me,
+        nota_fiscal: item.nf,
+        quantidade: item.qtd,
+        setor: item.setor,
+        arquivo_nome: item.arquivoNome || null,
+        user_email: currentUserEmail,
+        status: 'Pendente'
+    }));
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('ativos_fvy')
+            .insert(dadosParaInserir);
+
+        if (error) throw error;
+
+        // Sucesso
+        btn.innerHTML = '<span class="material-icons-outlined">check</span> ENVIADO!';
+        setTimeout(() => {
+            window.location.href = 'sgq.html';
+        }, 1000);
+
+    } catch (err) {
+        console.error("Erro ao enviar:", err);
+        btn.innerHTML = '<span class="material-icons-outlined">error</span> ERRO';
+        btn.style.backgroundColor = '#E74C3C';
+        
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = '#E67E22';
+            alert("Erro ao salvar dados. Verifique o console.");
+        }, 2000);
+    }
 }
