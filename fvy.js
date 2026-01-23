@@ -90,14 +90,14 @@ function abrirModalPreview() {
 }
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA DE SALVAR ---
+// --- LÓGICA DE SALVAR E ENVIAR EMAIL ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro Crítico: Banco de Dados desconectado.'); return; }
     
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
     const originalText = btn.innerHTML;
     btn.disabled = true; 
-    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> SALVANDO DADOS...';
+    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> PROCESSANDO...';
 
     // Prepara dados para o Supabase
     const dadosParaInserir = items.map(item => ({
@@ -113,31 +113,40 @@ async function confirmarEnvio() {
     }));
 
     try {
-        // Tenta inserir na tabela 'ativos_fvy'
-        // AVISO: Se a tabela não tiver sido criada no SQL Editor do Supabase, vai dar erro aqui.
+        // 1. Salvar no Supabase
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
         
-        if (error) {
-            console.error("Erro detalhado:", error);
-            throw new Error(error.message); // Lança o erro para o catch
-        }
+        if (error) throw new Error("Erro Supabase: " + error.message);
+
+        // 2. Enviar E-mail via EmailJS (Um loop para enviar um e-mail por item)
+        // ⚠️ ATENÇÃO: Substitua 'service_ID' e 'template_ID' pelos seus dados do EmailJS
+        const promisesEmail = items.map(item => {
+            return emailjs.send("service_SEU_SERVICE_ID", "template_SEU_TEMPLATE_ID", {
+                codigo: item.codigo,
+                equipamento: item.equipamento,
+                req_me: item.req_me,
+                nota_fiscal: item.nf,
+                setor: item.setor,
+                user_email: currentUserEmail,
+                to_email: "001827@conipaind.com.br" // Quem recebe
+            });
+        });
+
+        await Promise.all(promisesEmail); // Aguarda todos os e-mails serem despachados
 
         // Sucesso
-        btn.innerHTML = '<span class="material-icons-outlined">check</span> DADOS SALVOS!';
+        btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
         btn.style.backgroundColor = '#27AE60';
-        
-        // AVISO: Sem terminal, removemos o envio de e-mail por código.
-        // O e-mail deve ser configurado via Make.com ou Zapier se não quiser usar terminal.
         
         setTimeout(() => { 
             window.location.href = 'sgq.html'; 
-        }, 1500);
+        }, 2000);
 
     } catch (err) {
-        console.error("Erro ao salvar:", err);
-        btn.innerHTML = 'ERRO AO SALVAR';
+        console.error("Erro:", err);
+        btn.innerHTML = 'ERRO (VER CONSOLE)';
         btn.style.backgroundColor = '#E74C3C';
-        alert("Erro ao salvar no banco: " + err.message + "\n\n(Verifique se você rodou o código SQL no Supabase)");
+        alert("Erro: " + err.message);
         
         setTimeout(() => { 
             btn.disabled = false; 
