@@ -35,7 +35,7 @@ async function checkSession() {
     }
 }
 
-// --- FUNÇÃO PRINCIPAL: CARREGAR DADOS ---
+// --- BUSCA DADOS NO SUPABASE ---
 async function carregarSgq() {
     const tbody = document.getElementById('lista-sgq');
     const loading = document.getElementById('loading-msg');
@@ -43,13 +43,11 @@ async function carregarSgq() {
     
     if(!tbody) return;
     
-    // Limpa e mostra loading
     tbody.innerHTML = '';
     if(loading) loading.style.display = 'block';
     if(empty) empty.style.display = 'none';
 
     try {
-        // Busca na tabela 'ativos_fvy'
         const { data, error } = await supabaseClient
             .from('ativos_fvy')
             .select('*')
@@ -70,7 +68,7 @@ async function carregarSgq() {
         console.error('Erro ao buscar dados:', err);
         if (loading) {
             loading.style.display = 'none';
-            // Opcional: mostrar mensagem de erro na tela
+            alert('Erro ao carregar dados do banco.');
         }
     }
 }

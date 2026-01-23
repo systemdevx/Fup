@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes dos Itens - FUP ME</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="sgq.css">
     <link rel="stylesheet" href="fvy.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body class="me-body">
 
@@ -59,7 +59,7 @@
                 <span class="material-icons-outlined">priority_high</span>
             </div>
             <h3>DESEJA REALMENTE CANCELAR?</h3>
-            <p>TODOS OS DADOS PREENCHIDOS SERÃO PERDIDOS AO SAIR DESTA TELA.</p>
+            <p>TODOS OS DADOS PREENCHIDOS SERÃO PERDIDOS.</p>
             <div class="modal-alert-actions">
                 <button class="btn-me-outline" onclick="fecharModalCancel()">NÃO, CONTINUAR</button>
                 <button class="btn-me-danger" onclick="confirmarSaida()">SIM, CANCELAR</button>
@@ -70,7 +70,7 @@
     <div id="email-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-top-bar">
-                <span>Pré-visualização do E-mail</span>
+                <span>PRÉ-VISUALIZAÇÃO DO E-MAIL</span>
                 <button onclick="fecharModalEmail()" class="btn-close-modal">&times;</button>
             </div>
             
@@ -92,7 +92,6 @@
                         <span class="meta-label">ASSUNTO:</span>
                         <span class="meta-value">NOTIFICAÇÃO DE ENTRADA DE ATIVOS</span>
                     </div>
-                    
                     <div class="meta-row attachment-row" id="attachment-area" style="display:none;">
                         <span class="meta-label"><span class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">attach_file</span> ANEXOS:</span>
                         <div class="attachment-list" id="attachment-list-content"></div>

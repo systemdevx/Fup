@@ -8,9 +8,8 @@ const SETORES = [
 ];
 
 let supabaseClient;
-let currentUserEmail = 'anonimo'; // Fallback
+let currentUserEmail = 'anonimo';
 
-// Inicialização
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
@@ -30,24 +29,17 @@ let items = [
 ];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await checkSession(); // Verifica login antes
+    await checkSession();
     renderItems();
 });
 
-// --- AUTENTICAÇÃO ---
 async function checkSession() {
     if (!supabaseClient) return;
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-    
-    // Se não tiver sessão, redireciona (opcional, igual ao dashboard)
-    /* if (!session || error) { window.location.href = 'login.html'; return; } */
-
+    const { data: { session } } = await supabaseClient.auth.getSession();
     if (session && session.user) {
         currentUserEmail = session.user.email;
     }
 }
-
-// --- RENDERIZAÇÃO E INTERFACE ---
 
 function renderItems() {
     const container = document.getElementById('items-container');
@@ -79,73 +71,47 @@ function renderItems() {
 
                 <div class="item-details">
                     <div class="form-grid">
-                        
                         <div class="input-wrapper">
                             <label>CÓDIGO</label>
-                            <input type="text" class="input-me" 
-                                value="${item.codigo}" 
-                                oninput="handleInput(this, ${item.id}, 'codigo')"
-                                onblur="validateField(this)">
+                            <input type="text" class="input-me" value="${item.codigo}" oninput="handleInput(this, ${item.id}, 'codigo')" onblur="validateField(this)">
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper" style="grid-column: span 2;">
                             <label>EQUIPAMENTO</label>
-                            <input type="text" class="input-me" 
-                                value="${item.equipamento}" 
-                                oninput="handleInput(this, ${item.id}, 'equipamento')"
-                                onblur="validateField(this)">
+                            <input type="text" class="input-me" value="${item.equipamento}" oninput="handleInput(this, ${item.id}, 'equipamento')" onblur="validateField(this)">
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper">
                             <label>REQUISIÇÃO ME</label>
-                            <input type="text" class="input-me" 
-                                value="${item.req_me}" 
-                                oninput="handleInput(this, ${item.id}, 'req_me')"
-                                onblur="validateField(this)">
+                            <input type="text" class="input-me" value="${item.req_me}" oninput="handleInput(this, ${item.id}, 'req_me')" onblur="validateField(this)">
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper">
                             <label>NOTA FISCAL</label>
-                            <input type="text" class="input-me" 
-                                value="${item.nf}" 
-                                oninput="handleInput(this, ${item.id}, 'nf')"
-                                onblur="validateField(this)">
+                            <input type="text" class="input-me" value="${item.nf}" oninput="handleInput(this, ${item.id}, 'nf')" onblur="validateField(this)">
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper">
                             <label>QUANTIDADE</label>
-                            <input type="text" class="input-me" 
-                                value="${item.qtd}" 
-                                oninput="handleInput(this, ${item.id}, 'qtd')"
-                                onblur="validateField(this)">
+                            <input type="text" class="input-me" value="${item.qtd}" oninput="handleInput(this, ${item.id}, 'qtd')" onblur="validateField(this)">
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper">
                             <label>SETOR</label>
-                            <select class="input-me" 
-                                onchange="handleInput(this, ${item.id}, 'setor')"
-                                onblur="validateField(this)">
+                            <select class="input-me" onchange="handleInput(this, ${item.id}, 'setor')" onblur="validateField(this)">
                                 <option value="">SELECIONE...</option>
                                 ${optionsSetor}
                             </select>
                             <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-
                         <div class="input-wrapper">
                             <label>DOCUMENTOS</label>
                             <div class="file-upload-wrapper" onclick="document.getElementById('file-${item.id}').click()">
                                 <span class="file-upload-text" id="filename-${item.id}" style="${arquivoClass}">${arquivoTexto}</span>
                                 <span class="material-icons-outlined file-icon">${arquivoIcone}</span>
                             </div>
-                            <input type="file" id="file-${item.id}" style="display:none" 
-                                onchange="handleFileSelect(${item.id}, this)">
+                            <input type="file" id="file-${item.id}" style="display:none" onchange="handleFileSelect(${item.id}, this)">
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -157,7 +123,6 @@ function renderItems() {
 function handleInput(input, id, field) {
     input.value = input.value.toUpperCase();
     updateItem(id, field, input.value);
-    
     if(input.value.trim() !== "") {
         input.classList.remove('error');
         if(input.parentElement) input.parentElement.classList.remove('has-error');
@@ -170,12 +135,8 @@ function updateItem(id, field, value) {
         item[field] = value;
         const row = document.getElementById(`row-${id}`);
         if(row) {
-            if (field === 'codigo') {
-                row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>';
-            }
-            if (field === 'equipamento') {
-                row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>';
-            }
+            if (field === 'codigo') row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>';
+            if (field === 'equipamento') row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>';
             if (field === 'req_me') row.querySelector('.col-req').innerText = value || '-';
             if (field === 'nf') row.querySelector('.col-nf').innerText = value || '-';
         }
@@ -187,7 +148,6 @@ function handleFileSelect(id, input) {
         const fileName = input.files[0].name.toUpperCase();
         const item = items.find(i => i.id === id);
         if(item) item.arquivoNome = fileName;
-        
         const textEl = document.getElementById(`filename-${id}`);
         textEl.innerText = fileName;
         textEl.style.color = '#E67E22';
@@ -217,7 +177,7 @@ function adicionarNovoItem() {
 }
 
 function removerItem(id) {
-    if (items.length <= 1) return; 
+    if (items.length <= 1) return;
     items = items.filter(i => i.id !== id);
     renderItems();
 }
@@ -248,8 +208,6 @@ function validarEAvançar() {
     });
 
     renderItems();
-
-    // Validação visual
     setTimeout(() => {
         const inputs = document.querySelectorAll('.input-me, select.input-me');
         inputs.forEach(input => {
@@ -260,21 +218,12 @@ function validarEAvançar() {
         });
     }, 50);
 
-    if(isValid) {
-        abrirModalPreview();
-    }
+    if(isValid) abrirModalPreview();
 }
 
-// --- MODAIS ---
-function solicitarCancelamento() {
-    document.getElementById('modal-cancel-confirm').style.display = 'flex';
-}
-function fecharModalCancel() {
-    document.getElementById('modal-cancel-confirm').style.display = 'none';
-}
-function confirmarSaida() {
-    window.location.href = 'sgq.html';
-}
+function solicitarCancelamento() { document.getElementById('modal-cancel-confirm').style.display = 'flex'; }
+function fecharModalCancel() { document.getElementById('modal-cancel-confirm').style.display = 'none'; }
+function confirmarSaida() { window.location.href = 'sgq.html'; }
 
 function abrirModalPreview() {
     const tbody = document.getElementById('email-tbody');
@@ -310,25 +259,16 @@ function abrirModalPreview() {
         }
     });
 
-    if(hasAttachments) {
-        attachmentArea.style.display = 'flex';
-    } else {
-        attachmentArea.style.display = 'none';
-    }
+    if(hasAttachments) attachmentArea.style.display = 'flex';
+    else attachmentArea.style.display = 'none';
 
     document.getElementById('email-modal').style.display = 'flex';
 }
 
-function fecharModalEmail() {
-    document.getElementById('email-modal').style.display = 'none';
-}
+function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- ENVIO REAL AO SUPABASE ---
 async function confirmarEnvio() {
-    if (!supabaseClient) {
-        alert('Erro: Supabase não conectado.');
-        return;
-    }
+    if (!supabaseClient) { alert('Erro: Supabase não conectado.'); return; }
 
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
     const originalText = btn.innerHTML;
@@ -336,7 +276,6 @@ async function confirmarEnvio() {
     btn.disabled = true;
     btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> ENVIANDO...';
 
-    // Prepara os dados para inserção no formato da tabela criada
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
@@ -350,28 +289,21 @@ async function confirmarEnvio() {
     }));
 
     try {
-        const { data, error } = await supabaseClient
-            .from('ativos_fvy')
-            .insert(dadosParaInserir);
-
+        const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
         if (error) throw error;
 
-        // Sucesso
-        btn.innerHTML = '<span class="material-icons-outlined">check</span> ENVIADO!';
-        setTimeout(() => {
-            window.location.href = 'sgq.html';
-        }, 1000);
+        btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
+        setTimeout(() => { window.location.href = 'sgq.html'; }, 1000);
 
     } catch (err) {
-        console.error("Erro ao enviar:", err);
-        btn.innerHTML = '<span class="material-icons-outlined">error</span> ERRO';
+        console.error("Erro:", err);
+        btn.innerHTML = 'ERRO';
         btn.style.backgroundColor = '#E74C3C';
-        
         setTimeout(() => {
             btn.disabled = false;
             btn.innerHTML = originalText;
             btn.style.backgroundColor = '#E67E22';
-            alert("Erro ao salvar dados. Verifique o console.");
+            alert("Erro ao salvar dados.");
         }, 2000);
     }
 }
