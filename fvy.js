@@ -1,5 +1,4 @@
-// --- fvy.js ---
-// Configuração do Supabase
+// --- fvy.js (CORRIGIDO) ---
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
@@ -7,11 +6,11 @@ const SETORES = ["ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUT
 let supabaseClient;
 let currentUserEmail = 'usuario.anonimo@fup.com';
 
-// Inicializa o Cliente Supabase
+// Inicializa Supabase
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 } else {
-    console.error("ERRO: Biblioteca Supabase não carregada no HTML.");
+    console.error("ERRO: Biblioteca Supabase não carregada.");
 }
 
 let items = [{ id: Date.now(), codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true }];
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderItems();
 });
 
-// --- FUNÇÕES DE INTERFACE (UI) ---
+// --- FUNÇÕES DE INTERFACE (IGUAIS AO ANTERIOR) ---
 function renderItems() {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
@@ -90,16 +89,15 @@ function abrirModalPreview() {
 }
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA DE SALVAR E ENVIAR EMAIL ---
+// --- LÓGICA DE SALVAR E ENVIAR EMAIL (CORRIGIDA) ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro Crítico: Banco de Dados desconectado.'); return; }
     
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
     const originalText = btn.innerHTML;
     btn.disabled = true; 
-    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> PROCESSANDO...';
+    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> SALVANDO...';
 
-    // Prepara dados para o Supabase
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
@@ -113,31 +111,31 @@ async function confirmarEnvio() {
     }));
 
     try {
-        // 1. Salvar no Supabase
+        // 1. Supabase
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
-        
         if (error) throw new Error("Erro Supabase: " + error.message);
 
-        // 2. Enviar E-mail via EmailJS
-        // ✅ SEUS CÓDIGOS JÁ CONFIGURADOS AQUI:
+        // 2. EmailJS - Configuração
         const serviceID = "service_23msfhl"; 
         const templateID = "template_s594y2j";
+        const publicKey = "-DKjfP3rVtClUmmEE"; // Sua chave pública aqui direto
 
         const promisesEmail = items.map(item => {
-            return emailjs.send(serviceID, templateID, {
+            const params = {
                 codigo: item.codigo,
                 equipamento: item.equipamento,
                 req_me: item.req_me,
                 nota_fiscal: item.nf,
                 setor: item.setor,
                 user_email: currentUserEmail,
-                to_email: "001827@conipaind.com.br" // Quem recebe
-            });
+                to_email: "001827@conipaind.com.br"
+            };
+            // Envia passando a chave pública explicitamente no 4º parâmetro
+            return emailjs.send(serviceID, templateID, params, publicKey);
         });
 
-        await Promise.all(promisesEmail); // Aguarda todos os e-mails serem despachados
+        await Promise.all(promisesEmail);
 
-        // Sucesso
         btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
         btn.style.backgroundColor = '#27AE60';
         
@@ -146,15 +144,18 @@ async function confirmarEnvio() {
         }, 2000);
 
     } catch (err) {
-        console.error("Erro:", err);
-        btn.innerHTML = 'ERRO (VER CONSOLE)';
+        console.error("Erro Completo:", err);
+        btn.innerHTML = 'ERRO NO ENVIO';
         btn.style.backgroundColor = '#E74C3C';
-        alert("Erro: " + err.message);
+        
+        // Aqui está o segredo: Mostra o erro real (texto) se existir
+        const mensagemErro = err.text || err.message || JSON.stringify(err);
+        alert("Ops! O banco salvou, mas o e-mail falhou.\nDetalhe do erro: " + mensagemErro);
         
         setTimeout(() => { 
             btn.disabled = false; 
             btn.innerHTML = originalText; 
             btn.style.backgroundColor = '#E67E22'; 
-        }, 3000);
+        }, 5000);
     }
 }
