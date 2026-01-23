@@ -1,10 +1,13 @@
-// --- fvy.js (CORRIGIDO) ---
+// --- fvy.js ---
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 const SETORES = ["ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"];
 let supabaseClient;
-let currentUserEmail = 'usuario.anonimo@fup.com';
+// E-mail padrão caso não esteja logado
+let currentUserEmail = 'usuario.anonimo@fup.com'; 
+// E-mail fixo de quem recebe (SGQ)
+const RECIPIENT_EMAIL = "001827@conipaind.com.br"; 
 
 // Inicializa Supabase
 if (typeof supabase !== 'undefined') {
@@ -25,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderItems();
 });
 
-// --- FUNÇÕES DE INTERFACE (IGUAIS AO ANTERIOR) ---
+// --- FUNÇÕES DE INTERFACE ---
 function renderItems() {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
@@ -75,21 +78,36 @@ function solicitarCancelamento() { document.getElementById('modal-cancel-confirm
 function fecharModalCancel() { document.getElementById('modal-cancel-confirm').style.display = 'none'; }
 function confirmarSaida() { window.location.href = 'sgq.html'; }
 
+// --- CORRIGIDO: PREENCHIMENTO DINÂMICO DO PREVIEW ---
 function abrirModalPreview() { 
+    // 1. Atualiza os textos do cabeçalho do e-mail
+    const elFrom = document.getElementById('preview-from');
+    const elTo = document.getElementById('preview-to');
+
+    // Usa o e-mail do usuário logado (ou anônimo)
+    if(elFrom) elFrom.textContent = currentUserEmail || 'USUARIO.DESCONHECIDO@FUP.COM';
+    
+    // Usa a constante definida no topo do arquivo para quem recebe
+    if(elTo) elTo.textContent = `SGQ <${RECIPIENT_EMAIL}>`;
+
+    // 2. Preenche a tabela
     const tbody = document.getElementById('email-tbody'); 
     const attachmentArea = document.getElementById('attachment-area'); 
     const attachmentList = document.getElementById('attachment-list-content'); 
     tbody.innerHTML = ''; attachmentList.innerHTML = ''; let hasAttachments = false; 
+    
     items.forEach(item => { 
         tbody.insertAdjacentHTML('beforeend', `<tr><td>${item.codigo}</td><td>${item.equipamento}</td><td>${item.req_me}</td><td>${item.nf}</td><td>${item.qtd}</td><td>${item.setor}</td></tr>`); 
         if(item.arquivoNome) { hasAttachments = true; attachmentList.insertAdjacentHTML('beforeend', `<div class="attach-chip"><span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>${item.arquivoNome}</div>`); } 
     }); 
+    
     attachmentArea.style.display = hasAttachments ? 'flex' : 'none'; 
     document.getElementById('email-modal').style.display = 'flex'; 
 }
+
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA DE SALVAR E ENVIAR EMAIL (CORRIGIDA) ---
+// --- LÓGICA DE SALVAR E ENVIAR EMAIL ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro Crítico: Banco de Dados desconectado.'); return; }
     
@@ -118,7 +136,7 @@ async function confirmarEnvio() {
         // 2. EmailJS - Configuração
         const serviceID = "service_23msfhl"; 
         const templateID = "template_s594y2j";
-        const publicKey = "-DKjfP3rVtClUmmEE"; // Sua chave pública aqui direto
+        const publicKey = "-DKjfP3rVtClUmmEE"; 
 
         const promisesEmail = items.map(item => {
             const params = {
@@ -128,9 +146,9 @@ async function confirmarEnvio() {
                 nota_fiscal: item.nf,
                 setor: item.setor,
                 user_email: currentUserEmail,
-                to_email: "001827@conipaind.com.br"
+                to_email: RECIPIENT_EMAIL // Usa a mesma constante
             };
-            // Envia passando a chave pública explicitamente no 4º parâmetro
+            
             return emailjs.send(serviceID, templateID, params, publicKey);
         });
 
@@ -148,7 +166,6 @@ async function confirmarEnvio() {
         btn.innerHTML = 'ERRO NO ENVIO';
         btn.style.backgroundColor = '#E74C3C';
         
-        // Aqui está o segredo: Mostra o erro real (texto) se existir
         const mensagemErro = err.text || err.message || JSON.stringify(err);
         alert("Ops! O banco salvou, mas o e-mail falhou.\nDetalhe do erro: " + mensagemErro);
         

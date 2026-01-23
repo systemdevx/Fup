@@ -70,8 +70,8 @@
             
             <div class="email-preview-container">
                 <div class="email-meta-header">
-                    <div class="meta-row"><span class="meta-label">DE:</span><span class="meta-value">NOTIFICAÇÃO FUP &lt;noreply@app-fup.com&gt;</span></div>
-                    <div class="meta-row"><span class="meta-label">PARA:</span><span class="meta-value">SGQ &lt;001827@conipaind.com.br&gt;</span></div>
+                    <div class="meta-row"><span class="meta-label">DE:</span><span class="meta-value" id="preview-from">CARREGANDO...</span></div>
+                    <div class="meta-row"><span class="meta-label">PARA:</span><span class="meta-value" id="preview-to">CARREGANDO...</span></div>
                     <div class="meta-row"><span class="meta-label">CC:</span><span class="meta-value">GERÊNCIA ALMOXARIFADO; PCP</span></div>
                     <div class="meta-row"><span class="meta-label">ASSUNTO:</span><span class="meta-value">NOVO ATIVO CADASTRADO - REQ. SGQ</span></div>
                     
@@ -115,7 +115,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          // ✅ SUA CHAVE PÚBLICA JÁ CONFIGURADA AQUI:
           emailjs.init("-DKjfP3rVtClUmmEE"); 
        })();
     </script>
