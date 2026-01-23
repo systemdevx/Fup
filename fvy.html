@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Ativo - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="sgq.css">
+    <link rel="stylesheet" href="fvy.css">
+</head>
+<body class="fullscreen-body">
+
+    <div class="center-container">
+        
+        <div class="form-card compact-card">
+            <div class="form-header-clean">
+                <h2>Novo Ativo</h2>
+                <p>Preencha os dados para notificação automática ao SGQ.</p>
+            </div>
+            
+            <form id="form-ativo">
+                <div class="form-grid compact-grid">
+                    <div class="form-group">
+                        <label for="codigo">Código do Ativo</label>
+                        <input type="text" id="codigo" required autofocus>
+                    </div>
+
+                    <div class="form-group span-2">
+                        <label for="equipamento">Equipamento / Descrição</label>
+                        <input type="text" id="equipamento" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="req_compra">Requisição de Compra</label>
+                        <input type="text" id="req_compra" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nota_fiscal">Nota Fiscal</label>
+                        <input type="text" id="nota_fiscal" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="centro_custo">Centro de Custo</label>
+                        <input type="text" id="centro_custo">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="local_ai">Local AI (Localização Física / Setor)</label>
+                        <input type="text" id="local_ai" required>
+                    </div>
+                </div>
+
+                <div class="form-actions space-between">
+                    <button type="button" class="btn-cancel" onclick="solicitarCancelamento()">
+                        <span class="material-icons-outlined" style="font-size:16px;">arrow_back</span>
+                        Cancelar e Sair
+                    </button>
+                    <div class="actions-right">
+                        <button type="button" class="btn-secondary" onclick="limparFormulario()">Limpar</button>
+                        <button type="submit" class="btn-primary">
+                            <span class="material-icons-outlined">send</span>
+                            Gerar Notificação
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="modal-cancel-confirm" class="modal-overlay">
+        <div class="modal-alert">
+            <div class="modal-alert-icon"><span class="material-icons-outlined">help_outline</span></div>
+            <h3>Cancelar Operação?</h3>
+            <p>Você voltará para a lista de ativos e os dados preenchidos serão perdidos.</p>
+            <div class="modal-alert-actions">
+                <button class="btn-secondary" onclick="fecharModalCancel()">Continuar Editando</button>
+                <button class="btn-danger" onclick="confirmarSaida()">Sair</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="email-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header-actions">
+                <span class="modal-title-lg">Pré-visualização do E-mail</span>
+                <button onclick="fecharModalEmail()" class="btn-close">&times;</button>
+            </div>
+            
+            <div class="email-template">
+                <div class="email-brand">FUP<span style="color:#333">.</span></div>
+                <div class="email-divider"></div>
+                
+                <p class="email-greeting">Prezado(a) responsável do SGQ,</p>
+                <p>O Almoxarifado cadastrou um novo ativo na empresa.</p>
+                <p>A Requisição <strong id="preview-req">---</strong> está vinculada a este ativo.</p>
+
+                <table class="email-table">
+                    <thead>
+                        <tr>
+                            <th>Código do Ativo</th>
+                            <th>Equipamento</th>
+                            <th>Req. Compra</th>
+                            <th>Nota Fiscal</th>
+                            <th>Local AI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="preview-codigo"></td>
+                            <td id="preview-equipamento"></td>
+                            <td id="preview-req-table"></td>
+                            <td id="preview-nf"></td>
+                            <td id="preview-local"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="font-size: 11px; color: #666; font-style: italic;">NOTIFICAÇÃO AUTOMÁTICA DE ENTRADA</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 20px;">Por favor, iniciar procedimentos de controle de qualidade e inventário para este novo ativo.</p>
+                <p>Atenciosamente,<br><strong>Equipe Almoxarifado</strong></p>
+                
+                <div class="email-footer">FUP Systems © 2026</div>
+            </div>
+
+            <div class="modal-footer-actions">
+                <button class="btn-secondary" onclick="fecharModalEmail()">Voltar</button>
+                <button class="btn-primary" onclick="enviarNotificacaoReal()">
+                    <span class="material-icons-outlined">email</span> Confirmar Envio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="fvy.js"></script>
+</body>
+</html>
