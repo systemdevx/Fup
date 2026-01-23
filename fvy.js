@@ -1,5 +1,5 @@
 // --- fvy.js ---
-// Configuração do Supabase
+// Configuração do Supabase (Já está correta com suas chaves!)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
@@ -118,10 +118,15 @@ async function confirmarEnvio() {
         
         if (error) throw new Error("Erro Supabase: " + error.message);
 
-        // 2. Enviar E-mail via EmailJS (Um loop para enviar um e-mail por item)
-        // ⚠️ ATENÇÃO: Substitua 'service_ID' e 'template_ID' pelos seus dados do EmailJS
+        // 2. Enviar E-mail via EmailJS
+        // ⚠️ IMPORTANTE: PREENCHA OS DOIS CAMPOS ABAIXO COM SEUS DADOS DO EMAILJS
+        // 'service_...' você pega na aba "Email Services"
+        // 'template_...' você pega na aba "Email Templates"
+        const serviceID = "COLE_SEU_SERVICE_ID_AQUI"; 
+        const templateID = "COLE_SEU_TEMPLATE_ID_AQUI";
+
         const promisesEmail = items.map(item => {
-            return emailjs.send("service_SEU_SERVICE_ID", "template_SEU_TEMPLATE_ID", {
+            return emailjs.send(serviceID, templateID, {
                 codigo: item.codigo,
                 equipamento: item.equipamento,
                 req_me: item.req_me,
