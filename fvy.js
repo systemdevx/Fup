@@ -1,19 +1,19 @@
 // --- fvy.js ---
 
-// Lista de Setores para o Select (Local AI)
 const SETORES = [
-    "Almoxarifado Central", "Produção", "Qualidade", "TI", "Manutenção", "Expedição", "Consumo"
+    "ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"
 ];
 
-// Estado Inicial (1 Item Vazio)
 let items = [
     {
         id: Date.now(),
         codigo: '',
         equipamento: '',
-        req: '',
+        req_me: '',
         nf: '',
-        local: '',
+        qtd: '',
+        setor: '',
+        arquivoNome: '',
         expanded: true
     }
 ];
@@ -22,14 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
 });
 
-// Renderiza a lista na tela
 function renderItems() {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
 
     items.forEach((item, index) => {
-        // Gera opções do select para Local AI
-        const options = SETORES.map(s => `<option value="${s}" ${item.local === s ? 'selected' : ''}>${s}</option>`).join('');
+        const optionsSetor = SETORES.map(s => `<option value="${s}" ${item.setor === s ? 'selected' : ''}>${s}</option>`).join('');
+        const arquivoTexto = item.arquivoNome || 'ANEXAR DOCUMENTO';
+        const arquivoIcone = item.arquivoNome ? 'description' : 'attach_file';
+        const arquivoClass = item.arquivoNome ? 'color: #E67E22; font-weight:bold;' : '';
 
         const html = `
             <div class="item-row ${item.expanded ? 'expanded' : ''}" id="row-${item.id}">
@@ -38,14 +39,13 @@ function renderItems() {
                         <span class="material-icons-outlined arrow-toggle">expand_more</span>
                         ${index + 1}
                     </div>
-                    <div class="col-code">${item.codigo || '<span style="color:#ccc">Novo</span>'}</div>
-                    <div class="col-desc">
-                        ${item.equipamento ? `<span class="icon-g">G</span> ${item.equipamento}` : '<span style="color:#ccc">Preencha os detalhes</span>'}
-                    </div>
-                    <div class="col-req">${item.req || '-'}</div>
+                    <div class="col-code">${item.codigo || '<span style="color:#ccc">NOVO</span>'}</div>
+                    <div class="col-equip">${item.equipamento || '<span style="color:#ccc">PREENCHA OS DETALHES</span>'}</div>
+                    <div class="col-req">${item.req_me || '-'}</div>
+                    <div class="col-nf">${item.nf || '-'}</div>
                     <div class="col-actions">
-                        <button class="btn-remove" onclick="event.stopPropagation(); removerItem(${item.id})">
-                            <span class="material-icons-outlined">delete</span>
+                        <button class="btn-remove-icon" onclick="event.stopPropagation(); removerItem(${item.id})" title="Remover item">
+                            <span class="material-icons-outlined" style="font-size:18px;">close</span>
                         </button>
                     </div>
                 </div>
@@ -53,51 +53,70 @@ function renderItems() {
                 <div class="item-details">
                     <div class="form-grid">
                         
-                        <div class="form-group">
-                            <label>Código do Ativo</label>
-                            <input type="text" class="input-me required-field" 
-                                value="${item.codigo}" 
-                                placeholder="Ex: A001"
-                                oninput="updateItem(${item.id}, 'codigo', this.value)">
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label>Equipamento / Descrição</label>
-                            <input type="text" class="input-me required-field" 
-                                value="${item.equipamento}" 
-                                placeholder="Ex: Servidor Dell..."
-                                oninput="updateItem(${item.id}, 'equipamento', this.value)">
-                        </div>
-
-                         <div class="form-group">
-                            <label>Local AI (Setor)</label>
-                            <select class="input-me required-field" onchange="updateItem(${item.id}, 'local', this.value)">
-                                <option value="">Selecione...</option>
-                                ${options}
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Requisição de Compra</label>
+                        <div class="input-wrapper">
+                            <label>CÓDIGO</label>
                             <input type="text" class="input-me" 
-                                value="${item.req}" 
-                                oninput="updateItem(${item.id}, 'req', this.value)">
+                                value="${item.codigo}" 
+                                oninput="handleInput(this, ${item.id}, 'codigo')"
+                                onblur="validateField(this)">
+                            <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
 
-                        <div class="form-group">
-                            <label>Nota Fiscal</label>
+                        <div class="input-wrapper" style="grid-column: span 2;">
+                            <label>EQUIPAMENTO</label>
+                            <input type="text" class="input-me" 
+                                value="${item.equipamento}" 
+                                oninput="handleInput(this, ${item.id}, 'equipamento')"
+                                onblur="validateField(this)">
+                            <span class="error-msg">OBRIGATÓRIO</span>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label>REQUISIÇÃO ME</label>
+                            <input type="text" class="input-me" 
+                                value="${item.req_me}" 
+                                oninput="handleInput(this, ${item.id}, 'req_me')"
+                                onblur="validateField(this)">
+                            <span class="error-msg">OBRIGATÓRIO</span>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label>NOTA FISCAL</label>
                             <input type="text" class="input-me" 
                                 value="${item.nf}" 
-                                oninput="updateItem(${item.id}, 'nf', this.value)">
+                                oninput="handleInput(this, ${item.id}, 'nf')"
+                                onblur="validateField(this)">
+                            <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
 
-                        <div class="form-group">
-                            <label>Unidade</label>
-                            <input type="text" class="input-me" value="UN" disabled style="background:#F9F9F9">
+                        <div class="input-wrapper">
+                            <label>QUANTIDADE</label>
+                            <input type="text" class="input-me" 
+                                value="${item.qtd}" 
+                                oninput="handleInput(this, ${item.id}, 'qtd')"
+                                onblur="validateField(this)">
+                            <span class="error-msg">OBRIGATÓRIO</span>
                         </div>
-                         <div class="form-group">
-                            <label>Data Entrada</label>
-                            <input type="date" class="input-me" disabled style="background:#F9F9F9">
+
+                        <div class="input-wrapper">
+                            <label>SETOR</label>
+                            <select class="input-me" 
+                                onchange="handleInput(this, ${item.id}, 'setor')"
+                                onblur="validateField(this)">
+                                <option value="">SELECIONE...</option>
+                                ${optionsSetor}
+                            </select>
+                            <span class="error-msg">OBRIGATÓRIO</span>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <label>DOCUMENTOS</label>
+                            <div class="file-upload-wrapper" onclick="document.getElementById('file-${item.id}').click()">
+                                <span class="file-upload-text" id="filename-${item.id}" style="${arquivoClass}">${arquivoTexto}</span>
+                                <span class="material-icons-outlined file-icon">${arquivoIcone}</span>
+                            </div>
+                            <input type="file" id="file-${item.id}" style="display:none" 
+                                onchange="handleFileSelect(${item.id}, this)">
                         </div>
 
                     </div>
@@ -108,105 +127,182 @@ function renderItems() {
     });
 }
 
-// Atualiza o estado
+function handleInput(input, id, field) {
+    input.value = input.value.toUpperCase();
+    updateItem(id, field, input.value);
+    
+    if(input.value.trim() !== "") {
+        input.classList.remove('error');
+        if(input.parentElement) input.parentElement.classList.remove('has-error');
+    }
+}
+
 function updateItem(id, field, value) {
     const item = items.find(i => i.id === id);
     if (item) {
         item[field] = value;
-        // Atualiza cabeçalho em tempo real se for código ou equipamento
-        if (field === 'codigo' || field === 'equipamento') {
-            // Pequeno delay para não quebrar a digitação com re-render total
-            // Em app real usaríamos VirtualDOM, aqui manipulamos o DOM direto se necessário
-            // Por simplicidade, faremos re-render no blur ou mantemos o binding visual simples:
-            // Vamos apenas atualizar o DOM específico para performance
-            const row = document.getElementById(`row-${id}`);
+        const row = document.getElementById(`row-${id}`);
+        if(row) {
             if (field === 'codigo') {
-                row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">Novo</span>';
+                row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>';
             }
             if (field === 'equipamento') {
-                row.querySelector('.col-desc').innerHTML = value ? `<span class="icon-g">G</span> ${value}` : '<span style="color:#ccc">Preencha os detalhes</span>';
+                row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>';
             }
+            if (field === 'req_me') row.querySelector('.col-req').innerText = value || '-';
+            if (field === 'nf') row.querySelector('.col-nf').innerText = value || '-';
         }
     }
 }
 
-// Expande/Colapsa item
+function handleFileSelect(id, input) {
+    if (input.files && input.files[0]) {
+        const fileName = input.files[0].name.toUpperCase();
+        const item = items.find(i => i.id === id);
+        if(item) item.arquivoNome = fileName;
+        
+        const textEl = document.getElementById(`filename-${id}`);
+        textEl.innerText = fileName;
+        textEl.style.color = '#E67E22';
+        textEl.style.fontWeight = 'bold';
+    }
+}
+
 function toggleExpand(id) {
     const item = items.find(i => i.id === id);
     if (item) {
-        // Fecha outros se quiser comportamento de acordeão exclusivo
-        // items.forEach(i => i.expanded = false); 
         item.expanded = !item.expanded;
         renderItems();
     }
 }
 
-// Adiciona novo item
 function adicionarNovoItem() {
-    items.forEach(i => i.expanded = false); // Fecha anteriores
+    items.forEach(i => i.expanded = false);
     items.push({
         id: Date.now(),
-        codigo: '', equipamento: '', req: '', nf: '', local: '', expanded: true
+        codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true
     });
     renderItems();
-    // Scroll para o fim
-    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
+    setTimeout(() => {
+        const els = document.querySelectorAll('.item-row');
+        els[els.length - 1].scrollIntoView({ behavior: 'smooth' });
+    }, 100);
 }
 
-// Remove item
 function removerItem(id) {
-    if (items.length <= 1) {
-        alert("A lista deve conter pelo menos um item.");
-        return;
-    }
-    if (confirm("Deseja remover este item?")) {
-        items = items.filter(i => i.id !== id);
-        renderItems();
+    if (items.length <= 1) return; 
+    items = items.filter(i => i.id !== id);
+    renderItems();
+}
+
+function validateField(input) {
+    const wrapper = input.parentElement;
+    if (!input.value || input.value.trim() === "") {
+        input.classList.add('error');
+        wrapper.classList.add('has-error');
+    } else {
+        input.classList.remove('error');
+        wrapper.classList.remove('has-error');
     }
 }
 
-// --- MODAL & ENVIO ---
+function validarEAvançar() {
+    let isValid = true;
+    items.forEach(item => {
+        const fields = ['codigo', 'equipamento', 'req_me', 'nf', 'qtd', 'setor'];
+        let itemValid = true;
+        fields.forEach(key => {
+            if(!item[key] || item[key].trim() === "") {
+                itemValid = false;
+                isValid = false;
+            }
+        });
+        if(!itemValid) item.expanded = true;
+    });
+
+    renderItems();
+
+    setTimeout(() => {
+        const inputs = document.querySelectorAll('.input-me, select.input-me');
+        inputs.forEach(input => {
+            if(!input.value) {
+                input.classList.add('error');
+                input.parentElement.classList.add('has-error');
+            }
+        });
+    }, 50);
+
+    if(isValid) {
+        abrirModalPreview();
+    }
+}
+
+function solicitingCancelamento() {
+    document.getElementById('modal-cancel-confirm').style.display = 'flex';
+}
+function solicitarCancelamento() {
+    document.getElementById('modal-cancel-confirm').style.display = 'flex';
+}
+function fecharModalCancel() {
+    document.getElementById('modal-cancel-confirm').style.display = 'none';
+}
+function confirmarSaida() {
+    window.location.href = 'sgq.html';
+}
 
 function abrirModalPreview() {
-    // Validação simples
-    const invalid = items.some(i => !i.codigo || !i.equipamento || !i.local);
-    if(invalid) {
-        alert("Por favor, preencha os campos obrigatórios (Código, Equipamento, Local AI) de todos os itens.");
-        return;
-    }
-
     const tbody = document.getElementById('email-tbody');
+    const attachmentArea = document.getElementById('attachment-area');
+    const attachmentList = document.getElementById('attachment-list-content');
+    
     tbody.innerHTML = '';
+    attachmentList.innerHTML = '';
+    let hasAttachments = false;
 
     items.forEach(item => {
         const row = `
             <tr>
                 <td>${item.codigo}</td>
                 <td>${item.equipamento}</td>
-                <td>${item.req || '-'}</td>
-                <td>${item.nf || '-'}</td>
-                <td>${item.local}</td>
+                <td>${item.req_me}</td>
+                <td>${item.nf}</td>
+                <td>${item.qtd}</td>
+                <td>${item.setor}</td>
             </tr>
         `;
         tbody.insertAdjacentHTML('beforeend', row);
+
+        if(item.arquivoNome) {
+            hasAttachments = true;
+            const chip = `
+                <div class="attach-chip">
+                    <span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>
+                    ${item.arquivoNome}
+                </div>
+            `;
+            attachmentList.insertAdjacentHTML('beforeend', chip);
+        }
     });
+
+    if(hasAttachments) {
+        attachmentArea.style.display = 'flex';
+    } else {
+        attachmentArea.style.display = 'none';
+    }
 
     document.getElementById('email-modal').style.display = 'flex';
 }
 
-function fecharModal() {
+function fecharModalEmail() {
     document.getElementById('email-modal').style.display = 'none';
 }
 
 function confirmarEnvio() {
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
-    const originalText = btn.innerHTML;
-    
     btn.disabled = true;
-    btn.innerHTML = 'Enviando...';
+    btn.innerHTML = 'ENVIANDO...';
 
     setTimeout(() => {
-        // Redireciona para SGQ
         window.location.href = 'sgq.html';
     }, 1500);
 }

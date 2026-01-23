@@ -7,24 +7,22 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="sgq.css">
     <link rel="stylesheet" href="fvy.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body class="me-body">
 
     <header class="me-header">
         <div class="breadcrumb-area">
-            <span class="crumb-bold">Nº do documento FUP</span>
+            <span class="crumb-bold">Nº DO DOCUMENTO FUP</span>
             <span class="crumb-divider">></span>
-            <span class="crumb-current">Detalhes dos Itens</span>
+            <span class="crumb-current">DETALHES DOS ITENS</span>
         </div>
         <div class="header-actions">
-            <button class="btn-me-outline" onclick="window.location.href='sgq.html'">
-                <span class="material-icons-outlined">cancel</span> Cancelar
+            <button class="btn-me-outline" onclick="solicitarCancelamento()">
+                <span class="material-icons-outlined">cancel</span> CANCELAR
             </button>
-            <button class="btn-me-outline" onclick="window.history.back()">
-                <span class="material-icons-outlined">arrow_back</span> Voltar
-            </button>
-            <button class="btn-me-solid" onclick="abrirModalPreview()">
-                Avançar
+            <button class="btn-me-solid" onclick="validarEAvançar()">
+                AVANÇAR
             </button>
         </div>
     </header>
@@ -33,65 +31,111 @@
         
         <div class="section-trigger">
             <div class="trigger-icon"><span class="material-icons-outlined">expand_less</span></div>
-            <h3>Itens</h3>
+            <h3>ITENS</h3>
         </div>
 
         <div class="list-header-row">
             <div class="col-idx">#</div>
-            <div class="col-code">Código</div>
-            <div class="col-desc">Equipamento / Descrição</div>
-            <div class="col-req">Requisição</div>
-            <div class="col-actions">Ações</div>
+            <div class="col-code">CÓDIGO</div>
+            <div class="col-equip">EQUIPAMENTO</div>
+            <div class="col-req">REQUISIÇÃO ME</div>
+            <div class="col-nf">NOTA FISCAL</div>
+            <div class="col-actions"></div>
         </div>
 
         <div id="items-container"></div>
 
         <div class="add-action-row">
             <a href="#" onclick="adicionarNovoItem()">
-                <span class="material-icons-outlined">add</span> Adicionar outro item
+                + ADICIONAR OUTRO ITEM
             </a>
         </div>
 
     </main>
 
+    <div id="modal-cancel-confirm" class="modal-overlay">
+        <div class="modal-alert-box">
+            <div class="modal-alert-icon">
+                <span class="material-icons-outlined">priority_high</span>
+            </div>
+            <h3>DESEJA REALMENTE CANCELAR?</h3>
+            <p>TODOS OS DADOS PREENCHIDOS SERÃO PERDIDOS AO SAIR DESTA TELA.</p>
+            <div class="modal-alert-actions">
+                <button class="btn-me-outline" onclick="fecharModalCancel()">NÃO, CONTINUAR</button>
+                <button class="btn-me-danger" onclick="confirmarSaida()">SIM, CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
     <div id="email-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-top-bar">
                 <span>Pré-visualização do E-mail</span>
-                <button onclick="fecharModal()" class="btn-close-modal">&times;</button>
+                <button onclick="fecharModalEmail()" class="btn-close-modal">&times;</button>
             </div>
             
-            <div class="email-preview-body">
-                <div class="brand-area">FUP<span style="color:#333">.</span></div>
-                <div class="brand-line"></div>
-                
-                <p class="email-text"><strong>Prezado(a) responsável do SGQ,</strong></p>
-                <p class="email-text">O Almoxarifado registrou a entrada física dos seguintes ativos:</p>
+            <div class="email-preview-container">
+                <div class="email-meta-header">
+                    <div class="meta-row">
+                        <span class="meta-label">DE:</span>
+                        <span class="meta-value">SISTEMA FUP ALM &lt;nao-responda@fup.com.br&gt;</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">PARA:</span>
+                        <span class="meta-value">TIME SGQ (QUALIDADE)</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">CC:</span>
+                        <span class="meta-value">GERÊNCIA ALMOXARIFADO; PCP; DIRETORIA</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">ASSUNTO:</span>
+                        <span class="meta-value">NOTIFICAÇÃO DE ENTRADA DE ATIVOS</span>
+                    </div>
+                    
+                    <div class="meta-row attachment-row" id="attachment-area" style="display:none;">
+                        <span class="meta-label"><span class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">attach_file</span> ANEXOS:</span>
+                        <div class="attachment-list" id="attachment-list-content"></div>
+                    </div>
+                </div>
 
-                <table class="email-table">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Equipamento</th>
-                            <th>Req. Compra</th>
-                            <th>Nota Fiscal</th>
-                            <th>Local AI</th>
-                        </tr>
-                    </thead>
-                    <tbody id="email-tbody">
-                        </tbody>
-                </table>
+                <div class="email-body-content">
+                    <div class="email-brand-header">
+                        <div class="brand-logo-circle">F</div>
+                        <span class="brand-name">FUP ALM</span>
+                    </div>
+                    <div class="blue-separator"></div>
 
-                <p class="email-footer-text">
-                    Por favor, iniciar procedimentos de controle de qualidade e inventário.<br>
-                    <em>Notificação automática - FUP Systems.</em>
-                </p>
+                    <p class="email-p">Prezado Time SGQ,</p>
+                    <p class="email-p">Informamos que o Almoxarifado registrou a entrada física dos seguintes ativos:</p>
+
+                    <div class="table-wrap">
+                        <table class="email-table-blue">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Equipamento</th>
+                                    <th>Requisição ME</th>
+                                    <th>Nota Fiscal</th>
+                                    <th>Quantidade</th>
+                                    <th>Setor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="email-tbody"></tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="email-signature">
+                        Atenciosamente,<br>
+                        <strong>FUP ALM Systems</strong>
+                    </div>
+                </div>
             </div>
 
             <div class="modal-bottom-bar">
-                <button class="btn-me-outline" onclick="fecharModal()">Voltar e Editar</button>
+                <button class="btn-me-outline" onclick="fecharModalEmail()">VOLTAR E EDITAR</button>
                 <button class="btn-me-solid" onclick="confirmarEnvio()">
-                    <span class="material-icons-outlined">send</span> Confirmar Envio
+                    <span class="material-icons-outlined">send</span> CONFIRMAR ENVIO
                 </button>
             </div>
         </div>
