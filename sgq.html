@@ -26,15 +26,18 @@
     <div class="subheader-bar">
         <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
         <div class="v-separator"></div>
-        <button class="btn-subheader-action"><span class="material-icons-outlined">add</span><span>Novo Equipamento</span></button>
+        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
+            <span class="material-icons-outlined">add</span><span>Nova Entrada</span>
+        </button>
 
         <div class="header-right-actions">
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Buscar Tag ou Equipamento">
+                <input type="text" class="search-input-clean" placeholder="Buscar por Código, NF ou Equipamento..." onkeyup="filtrarTabela(this.value)">
                 <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
             </div>
             <div class="view-actions">
+                <span class="material-icons-outlined btn-view-icon" onclick="carregarSgq()" title="Atualizar Lista">refresh</span>
                 <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
             </div>
         </div>
@@ -48,8 +51,9 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="#" onclick="ativarItem(this)" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
+                    <li><a href="#" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
                     <li><a href="fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">notifications_active</span><span>Fvy SGQ</span></div></a></li>
+                    <li><a href="historico_fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">history</span><span>Histórico Fvy SGQ</span></div></a></li>
                 </ul>
             </div>
             <div class="menu-group">
@@ -58,7 +62,7 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">warning</span><span>Não Conformidades</span></div></a></li>
+                    <li><a href="#"><div class="menu-text-icon"><span class="material-icons-outlined">warning</span><span>Não Conformidades</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -68,18 +72,27 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="80">ID</th>
-                            <th>Equipamento / Descrição</th>
-                            <th width="120">TAG</th>
-                            <th width="150">Responsável</th>
-                            <th width="140">Próx. Calibração</th>
-                            <th width="100">Status</th>
-                            <th width="80" style="text-align: right;">Ações</th>
+                            <th width="100">CÓDIGO</th>
+                            <th>EQUIPAMENTO</th>
+                            <th width="120">REQ. ME</th>
+                            <th width="120">NF</th>
+                            <th width="150">SETOR</th>
+                            <th width="120">DATA</th>
+                            <th width="100">STATUS</th>
+                            <th width="60" style="text-align: right;">AÇÕES</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-sgq"></tbody>
+                    <tbody id="lista-sgq">
+                        </tbody>
                 </table>
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhum ativo SGQ encontrado.</div>
+                
+                <div id="loading-msg" style="display:none; padding: 40px; text-align: center; color: #666;">
+                    <span class="material-icons-outlined spin">sync</span> Carregando ativos...
+                </div>
+
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
+                    Nenhum ativo encontrado. Clique em "Nova Entrada" para cadastrar.
+                </div>
             </div>
         </main>
     </div>

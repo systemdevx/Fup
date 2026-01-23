@@ -9,7 +9,7 @@ if (typeof supabase !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    carregarSgq([]); 
+    carregarSgq(); 
 });
 
 async function checkSession() {
@@ -21,7 +21,8 @@ async function checkSession() {
     document.body.style.opacity = '1';
 
     if (session.user && session.user.email) {
-        document.querySelector('.avatar').innerText = session.user.email.substring(0, 2).toUpperCase();
+        const avatar = document.querySelector('.avatar');
+        if(avatar) avatar.innerText = session.user.email.substring(0, 2).toUpperCase();
     }
     const logoutBtn = document.getElementById('btn-logout');
     if (logoutBtn) {
@@ -32,6 +33,88 @@ async function checkSession() {
             }
         };
     }
+}
+
+// --- FUNÇÃO PRINCIPAL: CARREGAR DADOS ---
+async function carregarSgq() {
+    const tbody = document.getElementById('lista-sgq');
+    const loading = document.getElementById('loading-msg');
+    const empty = document.getElementById('empty-state-msg');
+    
+    if(!tbody) return;
+    
+    // Limpa e mostra loading
+    tbody.innerHTML = '';
+    if(loading) loading.style.display = 'block';
+    if(empty) empty.style.display = 'none';
+
+    try {
+        // Busca na tabela 'ativos_fvy'
+        const { data, error } = await supabaseClient
+            .from('ativos_fvy')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (loading) loading.style.display = 'none';
+
+        if (!data || data.length === 0) {
+            if(empty) empty.style.display = 'block';
+            return;
+        }
+
+        renderizarTabela(data);
+
+    } catch (err) {
+        console.error('Erro ao buscar dados:', err);
+        if (loading) {
+            loading.style.display = 'none';
+            // Opcional: mostrar mensagem de erro na tela
+        }
+    }
+}
+
+function renderizarTabela(lista) {
+    const tbody = document.getElementById('lista-sgq');
+    
+    lista.forEach(item => {
+        const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
+        
+        let statusClass = 'status-calibracao'; 
+        if (item.status === 'Aprovado') statusClass = 'status-conforme';
+        
+        const row = `
+            <tr>
+                <td><strong>${item.codigo || '-'}</strong></td>
+                <td>
+                    <div style="display:flex; flex-direction:column;">
+                        <span style="font-weight:600; color:#333;">${item.equipamento}</span>
+                        ${item.arquivo_nome ? `<span style="font-size:10px; color:#E67E22; display:flex; align-items:center; gap:2px;"><span class="material-icons-outlined" style="font-size:10px;">attach_file</span> ${item.arquivo_nome}</span>` : ''}
+                    </div>
+                </td>
+                <td>${item.requisicao || '-'}</td>
+                <td>${item.nota_fiscal || '-'}</td>
+                <td>${item.setor || '-'}</td>
+                <td>${dataCriacao}</td>
+                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
+                <td style="text-align: right;">
+                    <button class="btn-icon" title="Ver Detalhes"><span class="material-icons-outlined">visibility</span></button>
+                </td>
+            </tr>
+        `;
+        tbody.insertAdjacentHTML('beforeend', row);
+    });
+}
+
+function filtrarTabela(texto) {
+    const rows = document.querySelectorAll('#lista-sgq tr');
+    const term = texto.toUpperCase();
+    
+    rows.forEach(row => {
+        const txt = row.innerText.toUpperCase();
+        row.style.display = txt.includes(term) ? '' : 'none';
+    });
 }
 
 function toggleSidebar() {
@@ -48,22 +131,4 @@ function toggleGroup(header) {
     const arrow = header.querySelector('.arrow-header');
     list.style.display = list.style.display === 'none' ? 'flex' : 'none';
     arrow.innerText = list.style.display === 'none' ? 'expand_more' : 'expand_less'; 
-}
-
-function ativarItem(element) {
-    document.querySelectorAll('.sidebar-local a').forEach(link => link.classList.remove('active'));
-    element.classList.add('active');
-}
-
-function carregarSgq(lista) {
-    const tbody = document.getElementById('lista-sgq');
-    const emptyMsg = document.getElementById('empty-state-msg');
-    if(!tbody) return;
-    tbody.innerHTML = ''; 
-
-    if (!lista || lista.length === 0) {
-        if(emptyMsg) emptyMsg.style.display = 'block';
-        return;
-    }
-    if(emptyMsg) emptyMsg.style.display = 'none';
 }
