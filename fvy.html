@@ -5,66 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes dos Itens - FUP ME</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="sgq.css"> <link rel="stylesheet" href="fvy.css"> </head>
-<body class="me-layout">
+    <link rel="stylesheet" href="sgq.css">
+    <link rel="stylesheet" href="fvy.css">
+</head>
+<body class="me-body">
 
     <header class="me-header">
-        <div class="breadcrumb">
-            <strong>Nº do documento ME</strong> <span class="divider">></span> Detalhes dos Itens
+        <div class="breadcrumb-area">
+            <span class="crumb-bold">Nº do documento FUP</span>
+            <span class="crumb-divider">></span>
+            <span class="crumb-current">Detalhes dos Itens</span>
         </div>
-        <div class="me-actions">
-            <button class="btn-me-default" onclick="window.location.href='sgq.html'">
+        <div class="header-actions">
+            <button class="btn-me-outline" onclick="window.location.href='sgq.html'">
                 <span class="material-icons-outlined">cancel</span> Cancelar
             </button>
-            <button class="btn-me-default" onclick="window.history.back()">
+            <button class="btn-me-outline" onclick="window.history.back()">
                 <span class="material-icons-outlined">arrow_back</span> Voltar
             </button>
-            <button class="btn-me-orange" onclick="abrirModalPreview()">
+            <button class="btn-me-solid" onclick="abrirModalPreview()">
                 Avançar
             </button>
         </div>
     </header>
 
-    <main class="me-container">
+    <main class="me-content">
         
-        <div class="section-title">
-            <span class="material-icons-outlined expand-trigger">expand_less</span>
+        <div class="section-trigger">
+            <div class="trigger-icon"><span class="material-icons-outlined">expand_less</span></div>
             <h3>Itens</h3>
         </div>
 
-        <div class="items-table-header">
-            <div class="col-id">#</div>
-            <div class="col-code">Código Produto</div>
-            <div class="col-code-cli">Código Produto Cliente</div>
-            <div class="col-desc">Descrição</div>
-            <div class="col-total">Valor Total</div>
+        <div class="list-header-row">
+            <div class="col-idx">#</div>
+            <div class="col-code">Código</div>
+            <div class="col-desc">Equipamento / Descrição</div>
+            <div class="col-req">Requisição</div>
             <div class="col-actions">Ações</div>
         </div>
 
-        <div id="items-list">
-            </div>
+        <div id="items-container"></div>
 
-        <div class="add-new-row">
-            <a href="#" onclick="adicionarNovoItem()">+ Adicionar outro item</a>
+        <div class="add-action-row">
+            <a href="#" onclick="adicionarNovoItem()">
+                <span class="material-icons-outlined">add</span> Adicionar outro item
+            </a>
         </div>
 
     </main>
 
     <div id="email-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div class="modal-top">
-                <span class="modal-title">Pré-visualização do E-mail</span>
-                <button onclick="fecharModal()" class="close-modal">&times;</button>
+        <div class="modal-card">
+            <div class="modal-top-bar">
+                <span>Pré-visualização do E-mail</span>
+                <button onclick="fecharModal()" class="btn-close-modal">&times;</button>
             </div>
             
-            <div class="email-body">
-                <div class="brand-fup">FUP<span class="dot">.</span></div>
-                <hr class="brand-line">
+            <div class="email-preview-body">
+                <div class="brand-area">FUP<span style="color:#333">.</span></div>
+                <div class="brand-line"></div>
                 
-                <p class="greeting">Prezado(a),</p>
-                <p>O Almoxarifado registrou a entrada dos seguintes ativos:</p>
+                <p class="email-text"><strong>Prezado(a) responsável do SGQ,</strong></p>
+                <p class="email-text">O Almoxarifado registrou a entrada física dos seguintes ativos:</p>
 
-                <table class="preview-table">
+                <table class="email-table">
                     <thead>
                         <tr>
                             <th>Código</th>
@@ -74,16 +78,21 @@
                             <th>Local AI</th>
                         </tr>
                     </thead>
-                    <tbody id="preview-tbody">
+                    <tbody id="email-tbody">
                         </tbody>
                 </table>
 
-                <p class="footer-text">Notificação automática do sistema FUP.</p>
+                <p class="email-footer-text">
+                    Por favor, iniciar procedimentos de controle de qualidade e inventário.<br>
+                    <em>Notificação automática - FUP Systems.</em>
+                </p>
             </div>
 
-            <div class="modal-bottom">
-                <button class="btn-me-default" onclick="fecharModal()">Voltar e Editar</button>
-                <button class="btn-me-orange" onclick="enviarReal()">Confirmar Envio</button>
+            <div class="modal-bottom-bar">
+                <button class="btn-me-outline" onclick="fecharModal()">Voltar e Editar</button>
+                <button class="btn-me-solid" onclick="confirmarEnvio()">
+                    <span class="material-icons-outlined">send</span> Confirmar Envio
+                </button>
             </div>
         </div>
     </div>

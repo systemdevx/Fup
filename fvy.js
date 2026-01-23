@@ -1,17 +1,19 @@
 // --- fvy.js ---
 
-// Estado inicial: 1 item vazio
+// Lista de Setores para o Select (Local AI)
+const SETORES = [
+    "Almoxarifado Central", "Produção", "Qualidade", "TI", "Manutenção", "Expedição", "Consumo"
+];
+
+// Estado Inicial (1 Item Vazio)
 let items = [
     {
-        id: 1,
-        code: 'INS150311', // Exemplo da imagem
-        cliCode: 'INS150311',
-        desc: 'LÂMINAS DE BISTURI Nº11',
-        req: 'AX - ALMOXARIFADO', // Campo "Grupo/Catálogo" na imagem
-        nf: '', // Campo "Código Produto ERP" na imagem
-        unit: 'UN',
-        qty: '1,000000',
-        local: 'Consumo', // Campo "Aplicação" na imagem
+        id: Date.now(),
+        codigo: '',
+        equipamento: '',
+        req: '',
+        nf: '',
+        local: '',
         expanded: true
     }
 ];
@@ -20,144 +22,169 @@ document.addEventListener('DOMContentLoaded', () => {
     renderItems();
 });
 
-// Renderiza a lista de itens
+// Renderiza a lista na tela
 function renderItems() {
-    const listContainer = document.getElementById('items-list');
-    listContainer.innerHTML = '';
+    const container = document.getElementById('items-container');
+    container.innerHTML = '';
 
     items.forEach((item, index) => {
-        const itemHTML = `
+        // Gera opções do select para Local AI
+        const options = SETORES.map(s => `<option value="${s}" ${item.local === s ? 'selected' : ''}>${s}</option>`).join('');
+
+        const html = `
             <div class="item-row ${item.expanded ? 'expanded' : ''}" id="row-${item.id}">
                 <div class="item-summary" onclick="toggleExpand(${item.id})">
-                    <div class="col-id">
-                        <span class="material-icons-outlined arrow-icon">expand_less</span>
+                    <div class="col-idx">
+                        <span class="material-icons-outlined arrow-toggle">expand_more</span>
                         ${index + 1}
                     </div>
-                    <div class="col-code"><span class="code-text">${item.code || 'Novo Item'}</span></div>
-                    <div class="col-code-cli"><span class="cli-text">${item.cliCode || '-'}</span></div>
+                    <div class="col-code">${item.codigo || '<span style="color:#ccc">Novo</span>'}</div>
                     <div class="col-desc">
-                        <div class="desc-wrapper">
-                            <div><span class="icon-g">G</span></div>
-                            <span class="desc-text">${item.desc || 'SEM DESCRIÇÃO'}</span>
-                        </div>
+                        ${item.equipamento ? `<span class="icon-g">G</span> ${item.equipamento}` : '<span style="color:#ccc">Preencha os detalhes</span>'}
                     </div>
-                    <div class="col-total"><span class="total-text">BRL 0,0000</span></div>
+                    <div class="col-req">${item.req || '-'}</div>
                     <div class="col-actions">
-                        <div class="action-icons">
-                            <span class="material-icons-outlined" onclick="event.stopPropagation(); alert('Duplicar indisponível')">content_copy</span>
-                            <span class="material-icons-outlined" onclick="event.stopPropagation(); removerItem(${item.id})">highlight_off</span>
-                        </div>
+                        <button class="btn-remove" onclick="event.stopPropagation(); removerItem(${item.id})">
+                            <span class="material-icons-outlined">delete</span>
+                        </button>
                     </div>
                 </div>
 
                 <div class="item-details">
                     <div class="form-grid">
                         
-                        <div class="field-group">
-                            <label>Grupo / Requisição Compra</label>
-                            <input type="text" class="input-styled" value="${item.req}" oninput="updateItem(${item.id}, 'req', this.value)">
-                        </div>
-                        <div class="field-group">
-                            <label>Código Produto (ERP) / NF</label>
-                            <input type="text" class="input-styled" value="${item.nf}" oninput="updateItem(${item.id}, 'nf', this.value)">
-                        </div>
-                        <div class="field-group">
-                            <label>Prazo Estimado</label>
-                            <input type="text" class="input-styled" disabled style="background:#f9f9f9">
-                        </div>
-                        <div class="field-group">
-                            <label>Quantidade</label>
-                            <input type="text" class="input-styled required-border" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)">
+                        <div class="form-group">
+                            <label>Código do Ativo</label>
+                            <input type="text" class="input-me required-field" 
+                                value="${item.codigo}" 
+                                placeholder="Ex: A001"
+                                oninput="updateItem(${item.id}, 'codigo', this.value)">
                         </div>
 
-                        <div class="field-group">
-                            <label>Ultimo Preço Pago</label>
-                            <input type="text" class="input-styled" value="BRL 0,00">
+                        <div class="form-group full-width">
+                            <label>Equipamento / Descrição</label>
+                            <input type="text" class="input-me required-field" 
+                                value="${item.equipamento}" 
+                                placeholder="Ex: Servidor Dell..."
+                                oninput="updateItem(${item.id}, 'equipamento', this.value)">
                         </div>
-                        <div class="field-group">
+
+                         <div class="form-group">
+                            <label>Local AI (Setor)</label>
+                            <select class="input-me required-field" onchange="updateItem(${item.id}, 'local', this.value)">
+                                <option value="">Selecione...</option>
+                                ${options}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Requisição de Compra</label>
+                            <input type="text" class="input-me" 
+                                value="${item.req}" 
+                                oninput="updateItem(${item.id}, 'req', this.value)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nota Fiscal</label>
+                            <input type="text" class="input-me" 
+                                value="${item.nf}" 
+                                oninput="updateItem(${item.id}, 'nf', this.value)">
+                        </div>
+
+                        <div class="form-group">
                             <label>Unidade</label>
-                            <input type="text" class="input-styled" value="${item.unit}" disabled style="background:#f9f9f9">
+                            <input type="text" class="input-me" value="UN" disabled style="background:#F9F9F9">
                         </div>
-                        <div class="field-group">
-                            <label>Aplicação / Local AI</label>
-                            <div style="position:relative">
-                                <input type="text" class="input-styled required-border" value="${item.local}" oninput="updateItem(${item.id}, 'local', this.value)">
-                                <span style="position:absolute; right:5px; top:5px; font-size:10px; color:#999">▼</span>
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <label>Data Estimada</label>
-                            <input type="date" class="input-styled required-border">
-                        </div>
-
-                        <div class="field-group">
-                            <label>Código Produto (Ativo)</label>
-                            <input type="text" class="input-styled required-border" value="${item.code}" oninput="updateItem(${item.id}, 'code', this.value)">
-                        </div>
-                        <div class="field-group full-width">
-                            <label>Descrição do Equipamento</label>
-                            <textarea class="input-styled" oninput="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
+                         <div class="form-group">
+                            <label>Data Entrada</label>
+                            <input type="date" class="input-me" disabled style="background:#F9F9F9">
                         </div>
 
                     </div>
                 </div>
             </div>
         `;
-        listContainer.insertAdjacentHTML('beforeend', itemHTML);
+        container.insertAdjacentHTML('beforeend', html);
     });
 }
 
-// Atualiza dados no array e na UI (Resumo)
+// Atualiza o estado
 function updateItem(id, field, value) {
     const item = items.find(i => i.id === id);
     if (item) {
         item[field] = value;
-        // Se alterar código ou descrição, atualiza o cabeçalho imediatamente
-        if (field === 'code' || field === 'desc') {
+        // Atualiza cabeçalho em tempo real se for código ou equipamento
+        if (field === 'codigo' || field === 'equipamento') {
+            // Pequeno delay para não quebrar a digitação com re-render total
+            // Em app real usaríamos VirtualDOM, aqui manipulamos o DOM direto se necessário
+            // Por simplicidade, faremos re-render no blur ou mantemos o binding visual simples:
+            // Vamos apenas atualizar o DOM específico para performance
             const row = document.getElementById(`row-${id}`);
-            if (field === 'code') row.querySelector('.code-text').innerText = value || 'Novo';
-            if (field === 'desc') row.querySelector('.desc-text').innerText = value || 'SEM DESCRIÇÃO';
+            if (field === 'codigo') {
+                row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">Novo</span>';
+            }
+            if (field === 'equipamento') {
+                row.querySelector('.col-desc').innerHTML = value ? `<span class="icon-g">G</span> ${value}` : '<span style="color:#ccc">Preencha os detalhes</span>';
+            }
         }
     }
 }
 
+// Expande/Colapsa item
 function toggleExpand(id) {
     const item = items.find(i => i.id === id);
     if (item) {
+        // Fecha outros se quiser comportamento de acordeão exclusivo
+        // items.forEach(i => i.expanded = false); 
         item.expanded = !item.expanded;
-        renderItems(); // Re-renderiza para atualizar classes (poderia ser feito só com classList toggle para performance)
+        renderItems();
     }
 }
 
+// Adiciona novo item
 function adicionarNovoItem() {
-    const newId = items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
-    items.forEach(i => i.expanded = false); // Fecha os outros
+    items.forEach(i => i.expanded = false); // Fecha anteriores
     items.push({
-        id: newId,
-        code: '', cliCode: '', desc: '', req: '', nf: '', unit: 'UN', qty: '1,000000', local: '', expanded: true
+        id: Date.now(),
+        codigo: '', equipamento: '', req: '', nf: '', local: '', expanded: true
     });
     renderItems();
+    // Scroll para o fim
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 100);
 }
 
+// Remove item
 function removerItem(id) {
-    if (confirm('Deseja excluir este item?')) {
+    if (items.length <= 1) {
+        alert("A lista deve conter pelo menos um item.");
+        return;
+    }
+    if (confirm("Deseja remover este item?")) {
         items = items.filter(i => i.id !== id);
         renderItems();
     }
 }
 
-// --- MODAL ---
+// --- MODAL & ENVIO ---
+
 function abrirModalPreview() {
-    const tbody = document.getElementById('preview-tbody');
+    // Validação simples
+    const invalid = items.some(i => !i.codigo || !i.equipamento || !i.local);
+    if(invalid) {
+        alert("Por favor, preencha os campos obrigatórios (Código, Equipamento, Local AI) de todos os itens.");
+        return;
+    }
+
+    const tbody = document.getElementById('email-tbody');
     tbody.innerHTML = '';
 
     items.forEach(item => {
         const row = `
             <tr>
-                <td>${item.code}</td>
-                <td>${item.desc}</td>
-                <td>${item.req}</td>
-                <td>${item.nf}</td>
+                <td>${item.codigo}</td>
+                <td>${item.equipamento}</td>
+                <td>${item.req || '-'}</td>
+                <td>${item.nf || '-'}</td>
                 <td>${item.local}</td>
             </tr>
         `;
@@ -171,10 +198,15 @@ function fecharModal() {
     document.getElementById('email-modal').style.display = 'none';
 }
 
-function enviarReal() {
-    const btn = document.querySelector('.modal-bottom .btn-me-orange');
+function confirmarEnvio() {
+    const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true;
     btn.innerHTML = 'Enviando...';
+
     setTimeout(() => {
+        // Redireciona para SGQ
         window.location.href = 'sgq.html';
-    }, 1000);
+    }, 1500);
 }
