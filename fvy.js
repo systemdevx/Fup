@@ -2,18 +2,22 @@
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
+// --- CONFIGURAÇÕES DE E-MAIL ---
+const APP_EMAIL = "iaeclaudiox@gmail.com"; 
+const RECIPIENT_EMAIL = "001827@conipaind.com.br";
+// ⚠️ SEU NOVO TEMPLATE AQUI:
+const TEMPLATE_ID_EMAILJS = "template_fqpktv3"; 
+const SERVICE_ID_EMAILJS = "service_23msfhl";
+const PUBLIC_KEY_EMAILJS = "-DKjfP3rVtClUmmEE";
+
 const SETORES = ["ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"];
+
 let supabaseClient;
-// E-mail padrão caso não esteja logado
-let currentUserEmail = 'usuario.anonimo@fup.com'; 
-// E-mail fixo de quem recebe (SGQ)
-const RECIPIENT_EMAIL = "001827@conipaind.com.br"; 
+let currentUserEmail = 'usuario.anonimo@fup.com';
 
 // Inicializa Supabase
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-    console.error("ERRO: Biblioteca Supabase não carregada.");
 }
 
 let items = [{ id: Date.now(), codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true }];
@@ -78,19 +82,19 @@ function solicitarCancelamento() { document.getElementById('modal-cancel-confirm
 function fecharModalCancel() { document.getElementById('modal-cancel-confirm').style.display = 'none'; }
 function confirmarSaida() { window.location.href = 'sgq.html'; }
 
-// --- CORRIGIDO: PREENCHIMENTO DINÂMICO DO PREVIEW ---
+// --- PREENCHIMENTO DO PREVIEW (AGORA COM E-MAILS REAIS) ---
 function abrirModalPreview() { 
-    // 1. Atualiza os textos do cabeçalho do e-mail
+    // Atualiza o visual da janela para mostrar os e-mails reais
     const elFrom = document.getElementById('preview-from');
     const elTo = document.getElementById('preview-to');
 
-    // Usa o e-mail do usuário logado (ou anônimo)
-    if(elFrom) elFrom.textContent = currentUserEmail || 'USUARIO.DESCONHECIDO@FUP.COM';
+    // Mostra: FUP ALM (iaeclaudiox@gmail.com)
+    if(elFrom) elFrom.textContent = `FUP ALM (${APP_EMAIL})`;
     
-    // Usa a constante definida no topo do arquivo para quem recebe
-    if(elTo) elTo.textContent = `SGQ <${RECIPIENT_EMAIL}>`;
+    // Mostra: SGQ (001827@conipaind.com.br)
+    if(elTo) elTo.textContent = `SGQ (${RECIPIENT_EMAIL})`;
 
-    // 2. Preenche a tabela
+    // Preenche a tabela
     const tbody = document.getElementById('email-tbody'); 
     const attachmentArea = document.getElementById('attachment-area'); 
     const attachmentList = document.getElementById('attachment-list-content'); 
@@ -104,10 +108,9 @@ function abrirModalPreview() {
     attachmentArea.style.display = hasAttachments ? 'flex' : 'none'; 
     document.getElementById('email-modal').style.display = 'flex'; 
 }
-
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA DE SALVAR E ENVIAR EMAIL ---
+// --- ENVIO ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro Crítico: Banco de Dados desconectado.'); return; }
     
@@ -133,11 +136,7 @@ async function confirmarEnvio() {
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
         if (error) throw new Error("Erro Supabase: " + error.message);
 
-        // 2. EmailJS - Configuração
-        const serviceID = "service_23msfhl"; 
-        const templateID = "template_s594y2j";
-        const publicKey = "-DKjfP3rVtClUmmEE"; 
-
+        // 2. EmailJS (Usando as constantes definidas no topo)
         const promisesEmail = items.map(item => {
             const params = {
                 codigo: item.codigo,
@@ -146,10 +145,9 @@ async function confirmarEnvio() {
                 nota_fiscal: item.nf,
                 setor: item.setor,
                 user_email: currentUserEmail,
-                to_email: RECIPIENT_EMAIL // Usa a mesma constante
+                to_email: RECIPIENT_EMAIL
             };
-            
-            return emailjs.send(serviceID, templateID, params, publicKey);
+            return emailjs.send(SERVICE_ID_EMAILJS, TEMPLATE_ID_EMAILJS, params, PUBLIC_KEY_EMAILJS);
         });
 
         await Promise.all(promisesEmail);
@@ -167,7 +165,7 @@ async function confirmarEnvio() {
         btn.style.backgroundColor = '#E74C3C';
         
         const mensagemErro = err.text || err.message || JSON.stringify(err);
-        alert("Ops! O banco salvou, mas o e-mail falhou.\nDetalhe do erro: " + mensagemErro);
+        alert("Ops! O banco salvou, mas o e-mail falhou.\n\nERRO: " + mensagemErro);
         
         setTimeout(() => { 
             btn.disabled = false; 
