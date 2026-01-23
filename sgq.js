@@ -15,21 +15,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function checkSession() {
     if (!supabaseClient) return;
     const { data: { session }, error } = await supabaseClient.auth.getSession();
-    if (!session || error) { window.location.href = 'login.html'; return; }
+    
+    // Se não tiver sessão, redirecionar (ou permitir ver como anonimo dependendo da regra de negocio)
+    // if (!session || error) { window.location.href = 'login.html'; return; }
 
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
 
-    if (session.user && session.user.email) {
+    if (session && session.user && session.user.email) {
         const avatar = document.querySelector('.avatar');
         if(avatar) avatar.innerText = session.user.email.substring(0, 2).toUpperCase();
     }
+    
     const logoutBtn = document.getElementById('btn-logout');
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
             if (confirm("Tem certeza que deseja sair?")) {
                 await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
+                window.location.href = 'login.html'; // Ajuste conforme sua pagina de login
             }
         };
     }
@@ -48,11 +51,10 @@ async function carregarSgq() {
     if(empty) empty.style.display = 'none';
 
     try {
-        // Seleciona tudo da tabela ativos_fvy criada no passo 1
         const { data, error } = await supabaseClient
             .from('ativos_fvy')
             .select('*')
-            .order('created_at', { ascending: false }); // Mais recentes primeiro
+            .order('created_at', { ascending: false });
 
         if (error) throw error;
 
@@ -69,7 +71,12 @@ async function carregarSgq() {
         console.error('Erro ao buscar dados:', err);
         if (loading) {
             loading.style.display = 'none';
-            alert('Erro ao carregar histórico.');
+            // Mensagem amigavel se a tabela ainda nao existir
+            if(err.message.includes('relation "public.ativos_fvy" does not exist')) {
+                alert('A tabela do banco de dados ainda não foi criada. Por favor, execute o script SQL.');
+            } else {
+                alert('Erro ao carregar histórico: ' + err.message);
+            }
         }
     }
 }
@@ -80,9 +87,10 @@ function renderizarTabela(lista) {
     lista.forEach(item => {
         const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
         
-        // Define status
-        let statusClass = 'status-calibracao'; // Pendente
-        if (item.status === 'Aprovado') statusClass = 'status-conforme';
+        // Define cor do status
+        let statusClass = 'status-calibracao'; // Pendente (Padrão)
+        if (item.status === 'Aprovado' || item.status === 'Conforme') statusClass = 'status-conforme';
+        if (item.status === 'Rejeitado' || item.status === 'Não Conforme') statusClass = 'status-nao-conforme';
         
         const row = `
             <tr>
@@ -115,7 +123,7 @@ function filtrarTabela(texto) {
         row.style.display = txt.includes(term) ? '' : 'none';
     });
 }
-
+// Funções UI Sidebar
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const icon = document.getElementById('icon-toggle-menu');
@@ -124,7 +132,6 @@ function toggleSidebar() {
         if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
     }
 }
-
 function toggleGroup(header) {
     const list = header.nextElementSibling; 
     const arrow = header.querySelector('.arrow-header');

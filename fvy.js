@@ -1,11 +1,10 @@
 // --- fvy.js ---
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-// OBS: Em produção, evite expor a chave pública assim se possível, mas para teste funciona
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 const SETORES = ["ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"];
 let supabaseClient;
-let currentUserEmail = 'anonimo';
+let currentUserEmail = 'usuario.anonimo@fup.com'; // Default se não logado
 
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -21,13 +20,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function checkSession() {
     if (!supabaseClient) return;
     const { data: { session } } = await supabaseClient.auth.getSession();
-    if (session && session.user) currentUserEmail = session.user.email;
+    if (session && session.user) {
+        currentUserEmail = session.user.email;
+    }
 }
 
-// ... (Funções renderItems, handleInput, updateItem, handleFileSelect, toggleExpand, adicionarNovoItem, removerItem, validateField, validarEAvançar mantidas iguais às anteriores pois são visuais) ...
-// Vou incluir apenas a parte que muda (o envio):
-
-// ... (Copie as funções de UI do código anterior aqui) ...
 function renderItems() {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
@@ -58,6 +55,7 @@ function renderItems() {
         container.insertAdjacentHTML('beforeend', html);
     });
 }
+
 function handleInput(input, id, field) { input.value = input.value.toUpperCase(); updateItem(id, field, input.value); if(input.value.trim() !== "") { input.classList.remove('error'); if(input.parentElement) input.parentElement.classList.remove('has-error'); } }
 function updateItem(id, field, value) { const item = items.find(i => i.id === id); if (item) { item[field] = value; const row = document.getElementById(`row-${id}`); if(row) { if (field === 'codigo') row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>'; if (field === 'equipamento') row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>'; if (field === 'req_me') row.querySelector('.col-req').innerText = value || '-'; if (field === 'nf') row.querySelector('.col-nf').innerText = value || '-'; } } }
 function handleFileSelect(id, input) { if (input.files && input.files[0]) { const fileName = input.files[0].name.toUpperCase(); const item = items.find(i => i.id === id); if(item) item.arquivoNome = fileName; const textEl = document.getElementById(`filename-${id}`); textEl.innerText = fileName; textEl.style.color = '#E67E22'; textEl.style.fontWeight = 'bold'; } }
@@ -69,54 +67,87 @@ function validarEAvançar() { let isValid = true; items.forEach(item => { ['codi
 function solicitarCancelamento() { document.getElementById('modal-cancel-confirm').style.display = 'flex'; }
 function fecharModalCancel() { document.getElementById('modal-cancel-confirm').style.display = 'none'; }
 function confirmarSaida() { window.location.href = 'sgq.html'; }
-function abrirModalPreview() { const tbody = document.getElementById('email-tbody'); const attachmentArea = document.getElementById('attachment-area'); const attachmentList = document.getElementById('attachment-list-content'); tbody.innerHTML = ''; attachmentList.innerHTML = ''; let hasAttachments = false; items.forEach(item => { tbody.insertAdjacentHTML('beforeend', `<tr><td>${item.codigo}</td><td>${item.equipamento}</td><td>${item.req_me}</td><td>${item.nf}</td><td>${item.qtd}</td><td>${item.setor}</td></tr>`); if(item.arquivoNome) { hasAttachments = true; attachmentList.insertAdjacentHTML('beforeend', `<div class="attach-chip"><span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>${item.arquivoNome}</div>`); } }); attachmentArea.style.display = hasAttachments ? 'flex' : 'none'; document.getElementById('email-modal').style.display = 'flex'; }
+
+function abrirModalPreview() { 
+    const tbody = document.getElementById('email-tbody'); 
+    const attachmentArea = document.getElementById('attachment-area'); 
+    const attachmentList = document.getElementById('attachment-list-content'); 
+    
+    tbody.innerHTML = ''; 
+    attachmentList.innerHTML = ''; 
+    let hasAttachments = false; 
+
+    items.forEach(item => { 
+        tbody.insertAdjacentHTML('beforeend', `<tr><td>${item.codigo}</td><td>${item.equipamento}</td><td>${item.req_me}</td><td>${item.nf}</td><td>${item.qtd}</td><td>${item.setor}</td></tr>`); 
+        if(item.arquivoNome) { 
+            hasAttachments = true; 
+            attachmentList.insertAdjacentHTML('beforeend', `<div class="attach-chip"><span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>${item.arquivoNome}</div>`); 
+        } 
+    }); 
+    
+    attachmentArea.style.display = hasAttachments ? 'flex' : 'none'; 
+    document.getElementById('email-modal').style.display = 'flex'; 
+}
+
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA DE ENVIO CORRIGIDA ---
+// --- LÓGICA DE ENVIO ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro: Supabase não conectado.'); return; }
     
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
+    const originalText = btn.innerHTML;
     btn.disabled = true; 
-    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> PROCESSANDO...';
+    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> SALVANDO...';
 
-    // Mapeia para os nomes exatos das colunas no Banco SQL (Passo 1)
+    // 1. Prepara dados para o banco (nomes das colunas devem bater com o passo SQL)
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
-        requisicao: item.req_me,   // Mapeia req_me -> requisicao
-        nota_fiscal: item.nf,      // Mapeia nf -> nota_fiscal
-        quantidade: item.qtd,      // Mapeia qtd -> quantidade
+        requisicao: item.req_me,
+        nota_fiscal: item.nf,
+        quantidade: item.qtd,
         setor: item.setor,
         arquivo_nome: item.arquivoNome || null,
         user_email: currentUserEmail,
-        status: 'Pendente'
+        status: 'Pendente' // Status inicial para o SGQ
     }));
 
     try {
-        // 1. Salva no Banco (ativos_fvy)
+        // A. Inserção no Banco
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
         if (error) throw error;
 
-        // 2. Tenta enviar o E-mail via Edge Function (Não trava se falhar, apenas loga)
-        // OBS: Você precisa configurar a Edge Function no Supabase para isso funcionar
-        supabaseClient.functions.invoke('enviar-notificacao', {
-            body: { items: items, usuario_envio: currentUserEmail }
-        }).then(res => console.log("Email status:", res));
+        // B. Disparo de E-mail (Edge Function)
+        // Nota: O e-mail 001827@conipaind.com.br é passado aqui para a função backend usar
+        btn.innerHTML = '<span class="material-icons-outlined spin">mail</span> ENVIANDO E-MAIL...';
+        
+        await supabaseClient.functions.invoke('enviar-notificacao', {
+            body: { 
+                items: items, 
+                destinatario: '001827@conipaind.com.br', 
+                remetente_user: currentUserEmail 
+            }
+        });
 
-        // 3. Sucesso
+        // Sucesso
         btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
-        setTimeout(() => { window.location.href = 'sgq.html'; }, 1000);
+        btn.style.backgroundColor = '#27AE60';
+        
+        setTimeout(() => { 
+            window.location.href = 'sgq.html'; // Volta para a tela de histórico
+        }, 1500);
 
     } catch (err) {
-        console.error("Erro crítico:", err);
+        console.error("Erro no processo:", err);
         btn.innerHTML = 'ERRO AO SALVAR';
         btn.style.backgroundColor = '#E74C3C';
+        alert("Ocorreu um erro: " + err.message);
+        
         setTimeout(() => { 
             btn.disabled = false; 
-            btn.innerHTML = 'CONFIRMAR ENVIO'; 
+            btn.innerHTML = originalText; 
             btn.style.backgroundColor = '#E67E22'; 
-            alert("Erro ao salvar no banco: " + err.message);
         }, 3000);
     }
 }
