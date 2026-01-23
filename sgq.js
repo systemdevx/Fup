@@ -9,7 +9,7 @@ if (typeof supabase !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    carregarSgq(); // Carrega o histórico ao iniciar
+    carregarSgq(); 
 });
 
 async function checkSession() {
@@ -35,7 +35,7 @@ async function checkSession() {
     }
 }
 
-// --- LÊ DADOS DA TABELA ativos_fvy ---
+// --- BUSCA DADOS DO HISTÓRICO ---
 async function carregarSgq() {
     const tbody = document.getElementById('lista-sgq');
     const loading = document.getElementById('loading-msg');
@@ -48,10 +48,11 @@ async function carregarSgq() {
     if(empty) empty.style.display = 'none';
 
     try {
+        // Seleciona tudo da tabela ativos_fvy criada no passo 1
         const { data, error } = await supabaseClient
             .from('ativos_fvy')
             .select('*')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false }); // Mais recentes primeiro
 
         if (error) throw error;
 
@@ -68,7 +69,7 @@ async function carregarSgq() {
         console.error('Erro ao buscar dados:', err);
         if (loading) {
             loading.style.display = 'none';
-            // Pode colocar um aviso visual se quiser
+            alert('Erro ao carregar histórico.');
         }
     }
 }
@@ -79,8 +80,8 @@ function renderizarTabela(lista) {
     lista.forEach(item => {
         const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
         
-        // Define cor do status
-        let statusClass = 'status-calibracao'; 
+        // Define status
+        let statusClass = 'status-calibracao'; // Pendente
         if (item.status === 'Aprovado') statusClass = 'status-conforme';
         
         const row = `
@@ -109,7 +110,6 @@ function renderizarTabela(lista) {
 function filtrarTabela(texto) {
     const rows = document.querySelectorAll('#lista-sgq tr');
     const term = texto.toUpperCase();
-    
     rows.forEach(row => {
         const txt = row.innerText.toUpperCase();
         row.style.display = txt.includes(term) ? '' : 'none';

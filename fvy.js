@@ -1,5 +1,6 @@
 // --- fvy.js ---
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
+// OBS: Em produção, evite expor a chave pública assim se possível, mas para teste funciona
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 const SETORES = ["ALMOXARIFADO CENTRAL", "PRODUÇÃO", "QUALIDADE", "TI", "MANUTENÇÃO", "EXPEDIÇÃO", "CONSUMO"];
@@ -23,6 +24,10 @@ async function checkSession() {
     if (session && session.user) currentUserEmail = session.user.email;
 }
 
+// ... (Funções renderItems, handleInput, updateItem, handleFileSelect, toggleExpand, adicionarNovoItem, removerItem, validateField, validarEAvançar mantidas iguais às anteriores pois são visuais) ...
+// Vou incluir apenas a parte que muda (o envio):
+
+// ... (Copie as funções de UI do código anterior aqui) ...
 function renderItems() {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
@@ -53,87 +58,35 @@ function renderItems() {
         container.insertAdjacentHTML('beforeend', html);
     });
 }
-
-function handleInput(input, id, field) {
-    input.value = input.value.toUpperCase();
-    updateItem(id, field, input.value);
-    if(input.value.trim() !== "") { input.classList.remove('error'); if(input.parentElement) input.parentElement.classList.remove('has-error'); }
-}
-
-function updateItem(id, field, value) {
-    const item = items.find(i => i.id === id);
-    if (item) {
-        item[field] = value;
-        const row = document.getElementById(`row-${id}`);
-        if(row) {
-            if (field === 'codigo') row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>';
-            if (field === 'equipamento') row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>';
-            if (field === 'req_me') row.querySelector('.col-req').innerText = value || '-';
-            if (field === 'nf') row.querySelector('.col-nf').innerText = value || '-';
-        }
-    }
-}
-
-function handleFileSelect(id, input) {
-    if (input.files && input.files[0]) {
-        const fileName = input.files[0].name.toUpperCase();
-        const item = items.find(i => i.id === id);
-        if(item) item.arquivoNome = fileName;
-        const textEl = document.getElementById(`filename-${id}`);
-        textEl.innerText = fileName; textEl.style.color = '#E67E22'; textEl.style.fontWeight = 'bold';
-    }
-}
-
+function handleInput(input, id, field) { input.value = input.value.toUpperCase(); updateItem(id, field, input.value); if(input.value.trim() !== "") { input.classList.remove('error'); if(input.parentElement) input.parentElement.classList.remove('has-error'); } }
+function updateItem(id, field, value) { const item = items.find(i => i.id === id); if (item) { item[field] = value; const row = document.getElementById(`row-${id}`); if(row) { if (field === 'codigo') row.querySelector('.col-code').innerHTML = value || '<span style="color:#ccc">NOVO</span>'; if (field === 'equipamento') row.querySelector('.col-equip').innerHTML = value || '<span style="color:#ccc">PREENCHA OS DETALHES</span>'; if (field === 'req_me') row.querySelector('.col-req').innerText = value || '-'; if (field === 'nf') row.querySelector('.col-nf').innerText = value || '-'; } } }
+function handleFileSelect(id, input) { if (input.files && input.files[0]) { const fileName = input.files[0].name.toUpperCase(); const item = items.find(i => i.id === id); if(item) item.arquivoNome = fileName; const textEl = document.getElementById(`filename-${id}`); textEl.innerText = fileName; textEl.style.color = '#E67E22'; textEl.style.fontWeight = 'bold'; } }
 function toggleExpand(id) { const item = items.find(i => i.id === id); if (item) { item.expanded = !item.expanded; renderItems(); } }
 function adicionarNovoItem() { items.forEach(i => i.expanded = false); items.push({ id: Date.now(), codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true }); renderItems(); setTimeout(() => { document.querySelectorAll('.item-row')[items.length-1].scrollIntoView({ behavior: 'smooth' }); }, 100); }
 function removerItem(id) { if (items.length <= 1) return; items = items.filter(i => i.id !== id); renderItems(); }
 function validateField(input) { if (!input.value || input.value.trim() === "") { input.classList.add('error'); input.parentElement.classList.add('has-error'); } else { input.classList.remove('error'); input.parentElement.classList.remove('has-error'); } }
-
-function validarEAvançar() {
-    let isValid = true;
-    items.forEach(item => {
-        ['codigo', 'equipamento', 'req_me', 'nf', 'qtd', 'setor'].forEach(key => { if(!item[key] || item[key].trim() === "") isValid = false; });
-        if(!isValid) item.expanded = true;
-    });
-    renderItems();
-    setTimeout(() => { document.querySelectorAll('.input-me, select.input-me').forEach(input => { if(!input.value) { input.classList.add('error'); input.parentElement.classList.add('has-error'); } }); }, 50);
-    if(isValid) abrirModalPreview();
-}
-
+function validarEAvançar() { let isValid = true; items.forEach(item => { ['codigo', 'equipamento', 'req_me', 'nf', 'qtd', 'setor'].forEach(key => { if(!item[key] || item[key].trim() === "") isValid = false; }); if(!isValid) item.expanded = true; }); renderItems(); setTimeout(() => { document.querySelectorAll('.input-me, select.input-me').forEach(input => { if(!input.value) { input.classList.add('error'); input.parentElement.classList.add('has-error'); } }); }, 50); if(isValid) abrirModalPreview(); }
 function solicitarCancelamento() { document.getElementById('modal-cancel-confirm').style.display = 'flex'; }
 function fecharModalCancel() { document.getElementById('modal-cancel-confirm').style.display = 'none'; }
 function confirmarSaida() { window.location.href = 'sgq.html'; }
-
-function abrirModalPreview() {
-    const tbody = document.getElementById('email-tbody');
-    const attachmentArea = document.getElementById('attachment-area');
-    const attachmentList = document.getElementById('attachment-list-content');
-    tbody.innerHTML = ''; attachmentList.innerHTML = ''; let hasAttachments = false;
-
-    items.forEach(item => {
-        tbody.insertAdjacentHTML('beforeend', `<tr><td>${item.codigo}</td><td>${item.equipamento}</td><td>${item.req_me}</td><td>${item.nf}</td><td>${item.qtd}</td><td>${item.setor}</td></tr>`);
-        if(item.arquivoNome) {
-            hasAttachments = true;
-            attachmentList.insertAdjacentHTML('beforeend', `<div class="attach-chip"><span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>${item.arquivoNome}</div>`);
-        }
-    });
-    attachmentArea.style.display = hasAttachments ? 'flex' : 'none';
-    document.getElementById('email-modal').style.display = 'flex';
-}
-
+function abrirModalPreview() { const tbody = document.getElementById('email-tbody'); const attachmentArea = document.getElementById('attachment-area'); const attachmentList = document.getElementById('attachment-list-content'); tbody.innerHTML = ''; attachmentList.innerHTML = ''; let hasAttachments = false; items.forEach(item => { tbody.insertAdjacentHTML('beforeend', `<tr><td>${item.codigo}</td><td>${item.equipamento}</td><td>${item.req_me}</td><td>${item.nf}</td><td>${item.qtd}</td><td>${item.setor}</td></tr>`); if(item.arquivoNome) { hasAttachments = true; attachmentList.insertAdjacentHTML('beforeend', `<div class="attach-chip"><span class="material-icons-outlined" style="font-size:14px; color:#E67E22;">description</span>${item.arquivoNome}</div>`); } }); attachmentArea.style.display = hasAttachments ? 'flex' : 'none'; document.getElementById('email-modal').style.display = 'flex'; }
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
+// --- LÓGICA DE ENVIO CORRIGIDA ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro: Supabase não conectado.'); return; }
+    
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
-    btn.disabled = true; btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> ENVIANDO...';
+    btn.disabled = true; 
+    btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> PROCESSANDO...';
 
+    // Mapeia para os nomes exatos das colunas no Banco SQL (Passo 1)
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
-        requisicao: item.req_me,
-        nota_fiscal: item.nf,
-        quantidade: item.qtd,
+        requisicao: item.req_me,   // Mapeia req_me -> requisicao
+        nota_fiscal: item.nf,      // Mapeia nf -> nota_fiscal
+        quantidade: item.qtd,      // Mapeia qtd -> quantidade
         setor: item.setor,
         arquivo_nome: item.arquivoNome || null,
         user_email: currentUserEmail,
@@ -141,13 +94,29 @@ async function confirmarEnvio() {
     }));
 
     try {
+        // 1. Salva no Banco (ativos_fvy)
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
         if (error) throw error;
+
+        // 2. Tenta enviar o E-mail via Edge Function (Não trava se falhar, apenas loga)
+        // OBS: Você precisa configurar a Edge Function no Supabase para isso funcionar
+        supabaseClient.functions.invoke('enviar-notificacao', {
+            body: { items: items, usuario_envio: currentUserEmail }
+        }).then(res => console.log("Email status:", res));
+
+        // 3. Sucesso
         btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
         setTimeout(() => { window.location.href = 'sgq.html'; }, 1000);
+
     } catch (err) {
-        console.error("Erro:", err);
-        btn.innerHTML = 'ERRO'; btn.style.backgroundColor = '#E74C3C';
-        setTimeout(() => { btn.disabled = false; btn.innerHTML = 'CONFIRMAR ENVIO'; btn.style.backgroundColor = '#E67E22'; alert("Erro ao salvar dados."); }, 2000);
+        console.error("Erro crítico:", err);
+        btn.innerHTML = 'ERRO AO SALVAR';
+        btn.style.backgroundColor = '#E74C3C';
+        setTimeout(() => { 
+            btn.disabled = false; 
+            btn.innerHTML = 'CONFIRMAR ENVIO'; 
+            btn.style.backgroundColor = '#E67E22'; 
+            alert("Erro ao salvar no banco: " + err.message);
+        }, 3000);
     }
 }
