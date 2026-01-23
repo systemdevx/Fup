@@ -9,16 +9,13 @@ if (typeof supabase !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    carregarSgq(); 
+    carregarSgq(); // Chama o carregamento da lista
 });
 
 async function checkSession() {
     if (!supabaseClient) return;
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    const { data: { session } } = await supabaseClient.auth.getSession();
     
-    // Se não tiver sessão, redirecionar (ou permitir ver como anonimo dependendo da regra de negocio)
-    // if (!session || error) { window.location.href = 'login.html'; return; }
-
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
 
@@ -30,9 +27,9 @@ async function checkSession() {
     const logoutBtn = document.getElementById('btn-logout');
     if (logoutBtn) {
         logoutBtn.onclick = async () => {
-            if (confirm("Tem certeza que deseja sair?")) {
+            if (confirm("Deseja sair?")) {
                 await supabaseClient.auth.signOut();
-                window.location.href = 'login.html'; // Ajuste conforme sua pagina de login
+                window.location.reload();
             }
         };
     }
@@ -51,10 +48,11 @@ async function carregarSgq() {
     if(empty) empty.style.display = 'none';
 
     try {
+        // Busca na tabela 'ativos_fvy'
         const { data, error } = await supabaseClient
             .from('ativos_fvy')
             .select('*')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false }); // Mais recentes primeiro
 
         if (error) throw error;
 
@@ -69,15 +67,10 @@ async function carregarSgq() {
 
     } catch (err) {
         console.error('Erro ao buscar dados:', err);
-        if (loading) {
-            loading.style.display = 'none';
-            // Mensagem amigavel se a tabela ainda nao existir
-            if(err.message.includes('relation "public.ativos_fvy" does not exist')) {
-                alert('A tabela do banco de dados ainda não foi criada. Por favor, execute o script SQL.');
-            } else {
-                alert('Erro ao carregar histórico: ' + err.message);
-            }
-        }
+        if (loading) loading.style.display = 'none';
+        
+        // Se der erro, mostra alerta, mas não trava a tela inteira
+        alert('Erro ao carregar lista: ' + err.message);
     }
 }
 
@@ -85,16 +78,22 @@ function renderizarTabela(lista) {
     const tbody = document.getElementById('lista-sgq');
     
     lista.forEach(item => {
-        const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
+        // Formata data
+        let dataFormatada = '-';
+        if(item.created_at) {
+            const dateObj = new Date(item.created_at);
+            dataFormatada = dateObj.toLocaleDateString('pt-BR') + ' ' + dateObj.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+        }
         
-        // Define cor do status
-        let statusClass = 'status-calibracao'; // Pendente (Padrão)
-        if (item.status === 'Aprovado' || item.status === 'Conforme') statusClass = 'status-conforme';
-        if (item.status === 'Rejeitado' || item.status === 'Não Conforme') statusClass = 'status-nao-conforme';
+        // Define classe CSS do status
+        let statusClass = 'status-calibracao'; // Pendente
+        const st = (item.status || '').toLowerCase();
+        if (st.includes('aprovado') || st.includes('conforme')) statusClass = 'status-conforme';
+        if (st.includes('rejeitado') || st.includes('não') || st.includes('cancelado')) statusClass = 'status-nao-conforme';
         
         const row = `
             <tr>
-                <td><strong>${item.codigo || '-'}</strong></td>
+                <td><strong>${item.codigo || 'Novo'}</strong></td>
                 <td>
                     <div style="display:flex; flex-direction:column;">
                         <span style="font-weight:600; color:#333;">${item.equipamento}</span>
@@ -104,8 +103,8 @@ function renderizarTabela(lista) {
                 <td>${item.requisicao || '-'}</td>
                 <td>${item.nota_fiscal || '-'}</td>
                 <td>${item.setor || '-'}</td>
-                <td>${dataCriacao}</td>
-                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
+                <td style="font-size:11px;">${dataFormatada}</td>
+                <td><span class="status-badge ${statusClass}">${item.status || 'Pendente'}</span></td>
                 <td style="text-align: right;">
                     <button class="btn-icon" title="Ver Detalhes"><span class="material-icons-outlined">visibility</span></button>
                 </td>
@@ -123,18 +122,11 @@ function filtrarTabela(texto) {
         row.style.display = txt.includes(term) ? '' : 'none';
     });
 }
-// Funções UI Sidebar
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const icon = document.getElementById('icon-toggle-menu');
-    if (sidebar) {
-        sidebar.classList.toggle('sidebar-closed');
-        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
-    }
+    if (sidebar) sidebar.classList.toggle('sidebar-closed');
 }
 function toggleGroup(header) {
     const list = header.nextElementSibling; 
-    const arrow = header.querySelector('.arrow-header');
-    list.style.display = list.style.display === 'none' ? 'flex' : 'none';
-    arrow.innerText = list.style.display === 'none' ? 'expand_more' : 'expand_less'; 
+    if(list) list.style.display = list.style.display === 'none' ? 'flex' : 'none';
 }
