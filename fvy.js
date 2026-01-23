@@ -17,7 +17,6 @@ if (typeof supabase !== 'undefined') {
 let items = [{ id: Date.now(), codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true }];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Tenta pegar o usuário logado, se houver
     if (supabaseClient) {
         const { data } = await supabaseClient.auth.getSession();
         if (data && data.session && data.session.user) {
@@ -64,7 +63,6 @@ function renderItems() {
     });
 }
 
-// Funções Auxiliares de UI (Mantidas iguais ao seu original para funcionamento do layout)
 function handleInput(input, id, field) { input.value = input.value.toUpperCase(); updateItem(id, field, input.value); if(input.value.trim() !== "") { input.classList.remove('error'); if(input.parentElement) input.parentElement.classList.remove('has-error'); } }
 function updateItem(id, field, value) { const item = items.find(i => i.id === id); if (item) { item[field] = value; renderSummary(id); } }
 function renderSummary(id) { const item = items.find(i => i.id === id); const row = document.getElementById(`row-${id}`); if(row && item) { row.querySelector('.col-code').innerHTML = item.codigo || '<span style="color:#ccc">NOVO</span>'; row.querySelector('.col-equip').innerHTML = item.equipamento || '<span style="color:#ccc">PREENCHA OS DETALHES</span>'; row.querySelector('.col-req').innerText = item.req_me || '-'; row.querySelector('.col-nf').innerText = item.nf || '-'; } }
@@ -92,7 +90,7 @@ function abrirModalPreview() {
 }
 function fecharModalEmail() { document.getElementById('email-modal').style.display = 'none'; }
 
-// --- LÓGICA PRINCIPAL: SALVAR NO BANCO E ENVIAR E-MAIL ---
+// --- LÓGICA DE SALVAR ---
 async function confirmarEnvio() {
     if (!supabaseClient) { alert('Erro Crítico: Banco de Dados desconectado.'); return; }
     
@@ -101,7 +99,7 @@ async function confirmarEnvio() {
     btn.disabled = true; 
     btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> SALVANDO DADOS...';
 
-    // Preparar dados para o formato do Banco de Dados
+    // Prepara dados para o Supabase
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
@@ -111,45 +109,35 @@ async function confirmarEnvio() {
         setor: item.setor,
         arquivo_nome: item.arquivoNome || null,
         user_email: currentUserEmail,
-        status: 'Pendente' // Status inicial
+        status: 'Pendente'
     }));
 
     try {
-        // 1. Inserir no Banco de Dados (Tabela ativos_fvy)
+        // Tenta inserir na tabela 'ativos_fvy'
+        // AVISO: Se a tabela não tiver sido criada no SQL Editor do Supabase, vai dar erro aqui.
         const { error } = await supabaseClient.from('ativos_fvy').insert(dadosParaInserir);
-        if (error) throw error;
-
-        // 2. Disparo de E-mail via Edge Function
-        // Se a função não estiver criada no Supabase, isso vai gerar um erro no console,
-        // mas o dado já estará salvo no banco.
-        btn.innerHTML = '<span class="material-icons-outlined spin">mail</span> ENVIANDO NOTIFICAÇÃO...';
         
-        try {
-            const { error: funcError } = await supabaseClient.functions.invoke('enviar-notificacao', {
-                body: { 
-                    items: items, 
-                    destinatario: '001827@conipaind.com.br', 
-                    remetente_user: currentUserEmail 
-                }
-            });
-            if (funcError) console.warn("Aviso: Falha ao invocar função de e-mail (verifique se ela foi feito o Deploy).", funcError);
-        } catch (e) {
-            console.warn("Função de e-mail não configurada ou erro de rede.", e);
+        if (error) {
+            console.error("Erro detalhado:", error);
+            throw new Error(error.message); // Lança o erro para o catch
         }
 
-        // 3. Sucesso Final
-        btn.innerHTML = '<span class="material-icons-outlined">check</span> SUCESSO!';
+        // Sucesso
+        btn.innerHTML = '<span class="material-icons-outlined">check</span> DADOS SALVOS!';
         btn.style.backgroundColor = '#27AE60';
         
+        // AVISO: Sem terminal, removemos o envio de e-mail por código.
+        // O e-mail deve ser configurado via Make.com ou Zapier se não quiser usar terminal.
+        
         setTimeout(() => { 
-            window.location.href = 'sgq.html'; // Redireciona para o Histórico
+            window.location.href = 'sgq.html'; 
         }, 1500);
 
     } catch (err) {
         console.error("Erro ao salvar:", err);
         btn.innerHTML = 'ERRO AO SALVAR';
         btn.style.backgroundColor = '#E74C3C';
-        alert("Erro ao salvar no banco: " + err.message);
+        alert("Erro ao salvar no banco: " + err.message + "\n\n(Verifique se você rodou o código SQL no Supabase)");
         
         setTimeout(() => { 
             btn.disabled = false; 
