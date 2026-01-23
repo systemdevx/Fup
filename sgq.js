@@ -9,7 +9,7 @@ if (typeof supabase !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    carregarSgq(); 
+    carregarSgq(); // Carrega o histórico ao iniciar
 });
 
 async function checkSession() {
@@ -35,7 +35,7 @@ async function checkSession() {
     }
 }
 
-// --- BUSCA DADOS NO SUPABASE ---
+// --- LÊ DADOS DA TABELA ativos_fvy ---
 async function carregarSgq() {
     const tbody = document.getElementById('lista-sgq');
     const loading = document.getElementById('loading-msg');
@@ -68,7 +68,7 @@ async function carregarSgq() {
         console.error('Erro ao buscar dados:', err);
         if (loading) {
             loading.style.display = 'none';
-            // Pode colocar um aviso visual na tela se preferir
+            // Pode colocar um aviso visual se quiser
         }
     }
 }
@@ -79,6 +79,7 @@ function renderizarTabela(lista) {
     lista.forEach(item => {
         const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
         
+        // Define cor do status
         let statusClass = 'status-calibracao'; 
         if (item.status === 'Aprovado') statusClass = 'status-conforme';
         

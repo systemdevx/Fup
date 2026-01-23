@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ativos SGQ - FUP ALM</title>
+    <title>Histórico Fvy - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="sgq.css">
 </head>
@@ -26,14 +26,15 @@
     <div class="subheader-bar">
         <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
         <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
-            <span class="material-icons-outlined">add</span><span>Nova Entrada</span>
+        
+        <button class="btn-subheader-action" onclick="alert('Funcionalidade de Registro de Equipamento (Padrão)')">
+            <span class="material-icons-outlined">add</span><span>Novo Equipamento</span>
         </button>
 
         <div class="header-right-actions">
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Buscar por Código, NF ou Equipamento..." onkeyup="filtrarTabela(this.value)">
+                <input type="text" class="search-input-clean" placeholder="Buscar no Histórico..." onkeyup="filtrarTabela(this.value)">
                 <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
             </div>
             <div class="view-actions">
@@ -51,7 +52,21 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="sgq.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">history</span><span>Histórico de Entradas</span></div></a></li>
+                    <li><a href="#"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
+                    
+                    <li><a href="fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">post_add</span><span>Fvy SGQ</span></div></a></li>
+                    
+                    <li><a href="sgq.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">history</span><span>Histórico Fvy</span></div></a></li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>QUALIDADE</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li><a href="#"><div class="menu-text-icon"><span class="material-icons-outlined">warning</span><span>Não Conformidades</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -73,8 +88,14 @@
                     </thead>
                     <tbody id="lista-sgq"></tbody>
                 </table>
-                <div id="loading-msg" style="display:none; padding: 40px; text-align: center; color: #666;"><span class="material-icons-outlined spin">sync</span> Carregando ativos...</div>
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhum ativo encontrado.</div>
+                
+                <div id="loading-msg" style="display:none; padding: 40px; text-align: center; color: #666;">
+                    <span class="material-icons-outlined spin">sync</span> Carregando histórico...
+                </div>
+
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
+                    Nenhum registro encontrado no histórico.
+                </div>
             </div>
         </main>
     </div>

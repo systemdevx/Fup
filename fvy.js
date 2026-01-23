@@ -128,7 +128,6 @@ async function confirmarEnvio() {
     const btn = document.querySelector('.modal-bottom-bar .btn-me-solid');
     btn.disabled = true; btn.innerHTML = '<span class="material-icons-outlined spin">sync</span> ENVIANDO...';
 
-    // Mapeamento correto para a tabela nova criada
     const dadosParaInserir = items.map(item => ({
         codigo: item.codigo,
         equipamento: item.equipamento,
