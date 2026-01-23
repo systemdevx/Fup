@@ -68,7 +68,7 @@ async function carregarSgq() {
         console.error('Erro ao buscar dados:', err);
         if (loading) {
             loading.style.display = 'none';
-            alert('Erro ao carregar dados do banco.');
+            // Pode colocar um aviso visual na tela se preferir
         }
     }
 }
