@@ -12,40 +12,59 @@
 </head>
 <body>
 
-    <div class="bg-image"></div>
-
-    <div class="login-card">
-        <div class="header">
-            <div class="logo">F</div>
-            <h2>Bem-vindo ao FUP ALM</h2>
-            <p>Faça login para acessar o painel de gestão.</p>
-        </div>
-
-        <form id="login-form">
-            <div class="input-group">
-                <label for="email">E-mail</label>
-                <div class="input-wrapper">
-                    <span class="material-icons-outlined">email</span>
-                    <input type="email" id="email" placeholder="ex: usuario@empresa.com" required>
-                </div>
+    <main class="split-screen-container">
+        
+        <section class="brand-side">
+            <div class="brand-header">
+                <div class="logo-circle-small">F</div>
+                <span class="brand-name">FUP ALM</span>
+            </div>
+            
+            <div class="brand-hero-text">
+                <h1>Gestão inteligente<br>e integrada.</h1>
+                <p>Acesse o portal para gerenciar transações, fornecedores e qualidade.</p>
             </div>
 
-            <div class="input-group">
-                <label for="password">Senha</label>
-                <div class="input-wrapper">
-                    <span class="material-icons-outlined">lock</span>
-                    <input type="password" id="password" placeholder="Sua senha" required>
+            <div class="pattern-overlay"></div>
+        </section>
+
+        <section class="form-side">
+            <div class="form-container">
+                <h2>Entre na sua conta</h2>
+                
+                <form id="login-form">
+                    
+                    <label for="email">Usuário ou E-mail</label>
+                    <div class="input-wrapper gray-bg">
+                        <span class="material-icons-outlined">person</span>
+                        <input type="email" id="email" placeholder="ex: seu.email@empresa.com" required>
+                    </div>
+
+                    <label for="password">Senha</label>
+                    <div class="input-wrapper gray-bg">
+                        <span class="material-icons-outlined">lock</span>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="forgot-link">
+                        <a href="#">Esqueci minha senha</a>
+                    </div>
+
+                    <div id="error-msg" class="error-box hidden"></div>
+
+                    <button type="submit" id="btn-login">
+                        <span class="btn-text">Entrar</span>
+                        <div class="loader hidden"></div>
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    <p>Não possui acesso? <a href="#">Contate o administrador</a></p>
                 </div>
             </div>
+        </section>
 
-            <div id="error-msg" class="error-box hidden"></div>
-
-            <button type="submit" id="btn-login">
-                <span class="btn-text">Entrar</span>
-                <div class="loader hidden"></div>
-            </button>
-        </form>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="login.js"></script>
