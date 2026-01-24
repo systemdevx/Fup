@@ -3,100 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ativos SGQ - FUP ALM</title>
+    <title>Login - FUP ALM</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="sgq.css">
+    
+    <link rel="stylesheet" href="login.css">
 </head>
-<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+<body>
 
-    <header>
-        <div class="logo-area"><h1>FUP ALM</h1></div>
-        <nav>
-            <ul>
-                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
-                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
-                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
-                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
-                <li><a href="sgq.html" class="active"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
-            </ul>
-        </nav>
-        <div class="user-profile"><div class="avatar">U</div></div>
-    </header>
+    <div class="bg-image"></div>
 
-    <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
-        <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
-            <span class="material-icons-outlined">add</span><span>Nova Entrada</span>
-        </button>
-
-        <div class="header-right-actions">
-            <div class="search-styled-container">
-                <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Buscar por Código, NF ou Equipamento..." onkeyup="filtrarTabela(this.value)">
-                <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
-            </div>
-            <div class="view-actions">
-                <span class="material-icons-outlined btn-view-icon" onclick="carregarSgq()" title="Atualizar Lista">refresh</span>
-                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
-            </div>
+    <div class="login-card">
+        <div class="header">
+            <div class="logo">F</div>
+            <h2>Bem-vindo ao FUP ALM</h2>
+            <p>Faça login para acessar o painel de gestão.</p>
         </div>
-    </div>
 
-    <div class="layout-wrapper">
-        <aside class="sidebar-local" id="sidebar">
-            <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
-                    <span>CONTROLE</span>
-                    <span class="material-icons-outlined arrow-header">expand_less</span>
-                </div>
-                <ul class="group-list">
-                    <li><a href="#" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
-                    <li><a href="fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">notifications_active</span><span>Entrada (Fvy)</span></div></a></li>
-                </ul>
-            </div>
-            <div class="menu-group">
-                <div class="group-header" onclick="toggleGroup(this)">
-                    <span>QUALIDADE</span>
-                    <span class="material-icons-outlined arrow-header">expand_less</span>
-                </div>
-                <ul class="group-list">
-                    <li><a href="#"><div class="menu-text-icon"><span class="material-icons-outlined">warning</span><span>Não Conformidades</span></div></a></li>
-                </ul>
-            </div>
-        </aside>
-
-        <main class="content-area">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th width="100">CÓDIGO</th>
-                            <th>EQUIPAMENTO</th>
-                            <th width="120">REQ. ME</th>
-                            <th width="120">NF</th>
-                            <th width="150">SETOR</th>
-                            <th width="120">DATA</th>
-                            <th width="100">STATUS</th>
-                            <th width="60" style="text-align: right;">AÇÕES</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-sgq">
-                        </tbody>
-                </table>
-                
-                <div id="loading-msg" style="display:none; padding: 40px; text-align: center; color: #666;">
-                    <span class="material-icons-outlined spin">sync</span> Carregando ativos...
-                </div>
-
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
-                    Nenhum ativo encontrado. Clique em "Nova Entrada" para cadastrar.
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <span class="material-icons-outlined">email</span>
+                    <input type="email" id="email" placeholder="ex: usuario@empresa.com" required>
                 </div>
             </div>
-        </main>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <span class="material-icons-outlined">lock</span>
+                    <input type="password" id="password" placeholder="Sua senha" required>
+                </div>
+            </div>
+
+            <div id="error-msg" class="error-box hidden"></div>
+
+            <button type="submit" id="btn-login">
+                <span class="btn-text">Entrar</span>
+                <div class="loader hidden"></div>
+            </button>
+        </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="sgq.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>

@@ -1,130 +1,66 @@
-// --- sgq.js ---
+// --- login.js ---
+
+// 1. Conexão com Supabase (Suas chaves fornecidas)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
-let supabaseClient;
-if (typeof supabase !== 'undefined') {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-}
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await checkSession();
-    carregarSgq(); 
-});
+// 2. Elementos
+const form = document.getElementById('login-form');
+const emailInput = document.getElementById('email');
+const passInput = document.getElementById('password');
+const btnLogin = document.getElementById('btn-login');
+const btnText = document.querySelector('.btn-text');
+const loader = document.querySelector('.loader');
+const errorMsg = document.getElementById('error-msg');
 
-async function checkSession() {
-    if (!supabaseClient) return;
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-    if (!session || error) { window.location.href = 'login.html'; return; }
-
-    document.body.style.visibility = 'visible';
-    document.body.style.opacity = '1';
-
-    if (session.user && session.user.email) {
-        const avatar = document.querySelector('.avatar');
-        if(avatar) avatar.innerText = session.user.email.substring(0, 2).toUpperCase();
-    }
-}
-
-// --- CARREGAR DADOS DO SUPABASE ---
-async function carregarSgq() {
-    const tbody = document.getElementById('lista-sgq');
-    const loading = document.getElementById('loading-msg');
-    const empty = document.getElementById('empty-state-msg');
+// 3. Ação de Login
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     
-    if(!tbody) return;
-    
-    // Limpa e mostra loading
-    tbody.innerHTML = '';
-    if(loading) loading.style.display = 'block';
-    if(empty) empty.style.display = 'none';
+    // Limpa erros anteriores e ativa carregamento
+    errorMsg.classList.add('hidden');
+    setLoading(true);
+
+    const email = emailInput.value;
+    const password = passInput.value;
 
     try {
-        // Busca dados reais ordenados pelos mais recentes
-        const { data, error } = await supabaseClient
-            .from('ativos_fvy')
-            .select('*')
-            .order('created_at', { ascending: false });
+        // Autentica no Supabase
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
 
         if (error) throw error;
 
-        if (loading) loading.style.display = 'none';
-
-        if (!data || data.length === 0) {
-            if(empty) empty.style.display = 'block';
-            return;
-        }
-
-        renderizarTabela(data);
+        // Sucesso: Redireciona
+        console.log("Login OK:", data);
+        window.location.href = "dashboard.html";
 
     } catch (err) {
-        console.error('Erro ao buscar dados:', err);
-        if (loading) {
-            loading.style.display = 'none';
-            loading.innerText = 'Erro ao carregar dados.';
-        }
-    }
-}
-
-function renderizarTabela(lista) {
-    const tbody = document.getElementById('lista-sgq');
-    
-    lista.forEach(item => {
-        // Formata data
-        const dataCriacao = new Date(item.created_at).toLocaleDateString('pt-BR');
+        // Erro: Mostra mensagem
+        console.error("Erro login:", err);
+        let mensagem = "Erro ao conectar.";
         
-        // Define classe do status
-        let statusClass = 'status-calibracao'; // Amarelo (Pendente)
-        if (item.status === 'Aprovado') statusClass = 'status-conforme';
-        if (item.status === 'Rejeitado') statusClass = 'status-nao-conforme';
+        if (err.message.includes("Invalid login")) mensagem = "E-mail ou senha incorretos.";
+        if (err.message.includes("Email not confirmed")) mensagem = "Confirme seu e-mail antes de entrar.";
 
-        const row = `
-            <tr>
-                <td><strong>${item.codigo || '-'}</strong></td>
-                <td>
-                    <div style="display:flex; flex-direction:column;">
-                        <span style="font-weight:600; color:#333;">${item.equipamento}</span>
-                        ${item.arquivo_nome ? `<span style="font-size:10px; color:#E67E22; display:flex; align-items:center; gap:2px;"><span class="material-icons-outlined" style="font-size:10px;">attach_file</span> ${item.arquivo_nome}</span>` : ''}
-                    </div>
-                </td>
-                <td>${item.requisicao || '-'}</td>
-                <td>${item.nota_fiscal || '-'}</td>
-                <td>${item.setor || '-'}</td>
-                <td>${dataCriacao}</td>
-                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
-                <td style="text-align: right;">
-                    <button class="btn-icon" title="Ver Detalhes"><span class="material-icons-outlined">visibility</span></button>
-                </td>
-            </tr>
-        `;
-        tbody.insertAdjacentHTML('beforeend', row);
-    });
-}
-
-// Filtro simples no front-end
-function filtrarTabela(texto) {
-    const rows = document.querySelectorAll('#lista-sgq tr');
-    const term = texto.toUpperCase();
-    
-    rows.forEach(row => {
-        const txt = row.innerText.toUpperCase();
-        row.style.display = txt.includes(term) ? '' : 'none';
-    });
-}
-
-// Funções de UI (Sidebar)
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const icon = document.getElementById('icon-toggle-menu');
-    if (sidebar) {
-        sidebar.classList.toggle('sidebar-closed');
-        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
+        errorMsg.textContent = mensagem;
+        errorMsg.classList.remove('hidden');
+        setLoading(false);
     }
-}
+});
 
-function toggleGroup(header) {
-    const list = header.nextElementSibling; 
-    const arrow = header.querySelector('.arrow-header');
-    list.style.display = list.style.display === 'none' ? 'flex' : 'none';
-    arrow.innerText = list.style.display === 'none' ? 'expand_more' : 'expand_less'; 
+function setLoading(isLoading) {
+    if (isLoading) {
+        btnText.classList.add('hidden');
+        loader.classList.remove('hidden');
+        btnLogin.disabled = true;
+    } else {
+        btnText.classList.remove('hidden');
+        loader.classList.add('hidden');
+        btnLogin.disabled = false;
+    }
 }
