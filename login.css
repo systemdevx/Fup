@@ -1,129 +1,99 @@
-/* --- login.css --- */
 :root {
     --primary-orange: #E67E22;
     --primary-hover: #D35400;
-    --text-dark: #333333;
-    --text-grey: #666666;
-    --input-bg: #F0F2F5;
     --white: #ffffff;
+    --text-dark: #333333;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-body, html { height: 100%; }
-
-.split-screen-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+/* Reset Estrito */
+* { 
+    margin: 0; padding: 0; box-sizing: border-box; 
+    font-family: 'Inter', sans-serif; font-weight: 400 !important; 
 }
 
-/* --- LADO ESQUERDO (Marca) --- */
+*:not(.app-logo):not(.loader) { border-radius: 0 !important; }
+
+body, html { height: 100%; overflow: hidden; background: var(--white); }
+.split-screen-container { display: flex; height: 100vh; width: 100vw; }
+
+/* LADO LARANJA (MAIOR) */
 .brand-side {
-    flex: 1.4;
-    /* Gradiente Laranja de Fundo */
+    flex: 2.5; /* Aumentado para dar mais palco aos fios */
     background: linear-gradient(135deg, #E67E22 0%, #D35400 100%);
-    color: var(--white);
-    padding: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden; /* Importante para cortar as linhas que sobram */
+    color: var(--white); padding: 60px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
 }
 
-/* --- EFEITO FIOS ORGÂNICOS --- */
-.organic-lines {
-    position: absolute;
-    inset: 0;
-    opacity: 0.35; /* Transparência para ficar sutil */
-    /* SVG gerado para parecer fios aleatórios e curvos */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,300 Q150,100 300,300 T600,300 M-50,150 Q200,400 400,200 T700,450 M50,550 Q300,250 500,500 T800,100 M-100,50 Q200,200 400,50 T900,300 M100,0 Q250,500 400,100 T700,600' stroke='white' stroke-width='0.8' fill='none' /%3E%3Cpath d='M0,100 C150,400 350,0 600,500 M-50,500 C200,100 500,600 700,200' stroke='white' stroke-width='0.5' fill='none' opacity='0.7'/%3E%3C/svg%3E");
-    background-size: cover;
-    mix-blend-mode: overlay; /* Mistura com o laranja para brilhar */
-    pointer-events: none;
+/* FIOS GRACIOSOS E LENTOS */
+.threads-container { position: absolute; inset: 0; pointer-events: none; }
+.threads-container svg { width: 100%; height: 100%; }
+
+.thread {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5); 
+    stroke-width: 0.8px;
+    stroke-linecap: round;
+    /* Brilho etéreo */
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    /* Movimento ultra lento e suave */
+    animation: gracefulFlow 25s ease-in-out infinite alternate;
 }
 
-.brand-header { display: flex; align-items: center; gap: 15px; z-index: 2; }
+/* Movimentos individuais para cada fio */
+.t1 { animation-duration: 22s; animation-delay: 0s; opacity: 0.4; }
+.t2 { animation-duration: 30s; animation-delay: -5s; opacity: 0.6; }
+.t3 { animation-duration: 35s; animation-delay: -2s; opacity: 0.3; }
+.t4 { animation-duration: 28s; animation-delay: -10s; opacity: 0.5; }
+.t5 { animation-duration: 40s; animation-delay: -15s; opacity: 0.4; }
+.t6 { animation-duration: 26s; animation-delay: -7s; opacity: 0.6; }
 
-.logo-circle-small {
-    width: 40px; height: 40px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 20px;
-    backdrop-filter: blur(5px);
-}
-.brand-name { font-weight: 700; font-size: 20px; letter-spacing: 0.5px; z-index: 2; }
-
-.brand-hero-text { margin-bottom: auto; margin-top: auto; z-index: 2; position: relative; }
-.brand-hero-text h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.brand-hero-text p { font-size: 18px; opacity: 0.95; max-width: 450px; font-weight: 400; }
-
-/* --- LADO DIREITO (Formulário) --- */
-.form-side {
-    flex: 1;
-    background: var(--white);
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px;
+@keyframes gracefulFlow {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.2; }
+    50% { transform: translate(60px, -50px) rotate(1.5deg) scale(1.02); opacity: 0.6; }
+    100% { transform: translate(-30px, 40px) rotate(-1deg) scale(0.98); opacity: 0.2; }
 }
 
-.form-container { width: 100%; max-width: 400px; }
-
-h2 { font-size: 28px; color: var(--text-dark); margin-bottom: 40px; font-weight: 700; }
-
-label { display: block; font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; margin-top: 24px; }
-
-/* Inputs Cinzas */
-.input-wrapper.gray-bg {
-    background: var(--input-bg);
-    border-radius: 8px;
-    display: flex; align-items: center;
-    padding: 0 15px;
-    border: 2px solid transparent;
-    transition: all 0.2s;
+/* LOGO E CABEÇALHO */
+.brand-header { display: flex; align-items: center; gap: 20px; z-index: 2; }
+.app-logo {
+    width: 50px; height: 50px; background: var(--primary-orange); color: var(--white);
+    border-radius: 50% !important; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 800 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-.input-wrapper.gray-bg:focus-within { 
-    border-color: var(--primary-orange); 
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.1);
+.brand-hero-text h1 { font-size: 42px; line-height: 1.1; margin-bottom: 20px; z-index: 2; }
+.brand-hero-text p { font-size: 16px; opacity: 0.85; z-index: 2; }
+
+/* LADO LOGIN (COMPACTO) */
+.form-side { flex: 1; display: flex; align-items: center; justify-content: center; }
+.form-container { width: 100%; max-width: 280px; }
+h2 { font-size: 18px; margin-bottom: 40px; color: var(--text-dark); }
+
+.input-group { position: relative; margin-bottom: 30px; }
+label { display: block; font-size: 12px; color: #999; margin-bottom: 8px; }
+input {
+    width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #eee;
+    background: transparent; font-size: 14px; outline: none;
 }
 
-.input-wrapper .material-icons-outlined { color: #999; font-size: 22px; margin-right: 12px; }
-
-.input-wrapper input {
-    width: 100%; padding: 16px 0;
-    border: none; background: transparent;
-    font-size: 15px; outline: none; color: var(--text-dark);
+.bar { position: relative; display: block; width: 100%; }
+.bar:before {
+    content: ''; height: 2px; width: 0; bottom: 0px; position: absolute;
+    background: var(--primary-orange); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    left: 0;
 }
+input:focus ~ .bar:before { width: 100%; }
 
-/* Botão */
 button {
-    width: 100%; padding: 16px;
-    background: var(--primary-orange); color: white;
-    border: none; border-radius: 8px;
-    font-size: 16px; font-weight: 700;
-    cursor: pointer; transition: transform 0.1s, background 0.2s;
-    display: flex; justify-content: center; align-items: center;
-    margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+    width: 100%; padding: 14px; background: var(--primary-orange); color: white;
+    border: none; cursor: pointer; transition: 0.3s; margin-top: 10px;
 }
-button:hover { background: var(--primary-hover); transform: translateY(-1px); }
-button:active { transform: translateY(1px); }
-button:disabled { opacity: 0.7; cursor: not-allowed; }
+button:hover { background: var(--primary-hover); }
 
-/* Mensagens de Erro e Loader */
-.error-box { background: #ffecec; color: #d63031; font-size: 13px; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 500;}
+.error-box { color: #d63031; font-size: 12px; margin-top: 15px; text-align: center; }
 .hidden { display: none; }
-.loader { width: 20px; height: 20px; border: 3px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loader { width: 18px; height: 18px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Mobile */
-@media (max-width: 900px) {
-    .split-screen-container { flex-direction: column; }
-    .brand-side { flex: none; padding: 40px 30px; min-height: 220px; }
-    .brand-hero-text h1 { font-size: 28px; }
-    .brand-hero-text p { display: none; } /* Simplifica no mobile */
-    .form-side { flex: 1; padding: 40px 30px; align-items: flex-start; }
-}
+@media (max-width: 900px) { .brand-side { display: none; } }

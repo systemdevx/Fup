@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - FUP ALM</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
     <main class="split-screen-container">
-        
         <section class="brand-side">
-            <div class="organic-lines"></div>
+            <div class="threads-container">
+                <svg viewBox="0 0 800 600" preserveAspectRatio="none">
+                    <path class="thread t1" d="M-100,150 C200,50 600,250 900,100" />
+                    <path class="thread t2" d="M-100,400 C300,500 500,200 900,450" />
+                    <path class="thread t3" d="M-100,50 Q400,400 900,50" />
+                    <path class="thread t4" d="M400,-100 Q300,300 400,700" />
+                    <path class="thread t5" d="M900,200 C600,400 200,0 -100,300" />
+                    <path class="thread t6" d="M-100,550 Q400,450 900,550" />
+                </svg>
+            </div>
 
             <div class="brand-header">
-                <div class="logo-circle-small">F</div>
+                <div class="app-logo">F</div>
                 <span class="brand-name">FUP ALM</span>
             </div>
             
@@ -31,22 +36,18 @@
         <section class="form-side">
             <div class="form-container">
                 <h2>Entre na sua conta</h2>
-                
                 <form id="login-form">
-                    
-                    <label for="email">Usuário ou E-mail</label>
-                    <div class="input-wrapper gray-bg">
-                        <span class="material-icons-outlined">person</span>
-                        <input type="email" id="email" placeholder="ex: seu.email@empresa.com" required>
+                    <div class="input-group">
+                        <label for="email">Usuário ou E-mail</label>
+                        <input type="email" id="email" required>
+                        <span class="bar"></span>
                     </div>
 
-                    <label for="password">Senha</label>
-                    <div class="input-wrapper gray-bg">
-                        <span class="material-icons-outlined">lock</span>
-                        <input type="password" id="password" placeholder="••••••••" required>
+                    <div class="input-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" required>
+                        <span class="bar"></span>
                     </div>
-
-                    <div style="margin-bottom: 30px;"></div>
 
                     <div id="error-msg" class="error-box hidden"></div>
 
@@ -57,7 +58,6 @@
                 </form>
             </div>
         </section>
-
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
