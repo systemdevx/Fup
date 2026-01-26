@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Cadastros - FUP ALM</title>
+    <title>Catálogo - Portal de Compras</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="catalog.css">
 </head>
@@ -13,35 +13,71 @@
         <div class="logo-area">
             <h1>FUP ALM</h1>
         </div>
+        
         <nav>
             <ul>
-                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
-                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
-                <li><a href="catalog.html" class="active"><span class="material-icons-outlined">inventory_2</span><span>Cadastros</span></a></li>
-                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
-                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
-                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+                <li>
+                    <a href="dashboard.html">
+                        <span class="material-icons-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="transactions.html"> 
+                        <span class="material-icons-outlined">receipt_long</span>
+                        <span>Transações</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="catalog.html" class="active">
+                        <span class="material-icons-outlined">folder_shared</span>
+                        <span>Cadastros</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="supplier.html"> 
+                        <span class="material-icons-outlined">storefront</span>
+                        <span>Fornecedores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fiscal.html">
+                        <span class="material-icons-outlined">description</span>
+                        <span>Reg. Fiscais</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="sgq.html">
+                        <span class="material-icons-outlined">verified_user</span>
+                        <span>Ativos SGQ</span>
+                    </a>
+                </li>
             </ul>
         </nav>
+
         <div class="user-profile">
-            <div class="avatar">U</div>
+            <div class="avatar" id="user-avatar">U</div>
         </div>
     </header>
 
     <div class="subheader-bar">
         <button class="btn-toggle-menu" onclick="toggleSidebar()">
-            <span class="material-icons-outlined" id="icon-toggle-menu">menu</span>
+            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
         </button>
         <div class="v-separator"></div>
-        <h2 id="titulo-pagina">Itens / Materiais</h2>
-        
+        <button class="btn-subheader-action" onclick="abrirModalNovo()">
+            <span class="material-icons-outlined">add</span>
+            <span>Novo Item</span>
+        </button>
+
         <div class="header-right-actions">
-            <button class="btn-subheader-action" onclick="abrirModalNovo()">
-                <span class="material-icons-outlined">add</span><span>Novo Cadastro</span>
-            </button>
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar no catálogo..." onkeyup="filtrarCatalogo(this.value)">
+                <input type="text" class="search-input-clean" placeholder="Pesquisar por código ou descrição..." onkeyup="filtrarCatalogo(this.value)">
+                <button class="btn-filter-inside">
+                    <span class="material-icons-outlined">filter_alt</span>
+                    <span>Filtros</span>
+                </button>
             </div>
             <div class="view-actions">
                 <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
@@ -75,7 +111,6 @@
                     </li>
                 </ul>
             </div>
-
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
                     <span>ATIVOS</span>
@@ -90,33 +125,20 @@
                             </div>
                         </a>
                     </li>
-                    <li>
-                        <a href="#" onclick="alterarCategoria('tipos_ativos', this)">
-                            <div class="menu-text-icon">
-                                <span class="material-icons-outlined">account_tree</span>
-                                <span>Tipos de Ativos</span>
-                            </div>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </aside>
 
         <main class="content-area">
             <div class="table-container">
-                <table id="tabela-catalogo">
+                <table>
                     <thead>
-                        <tr id="cabecalho-tabela">
-                            </tr>
+                        <tr id="cabecalho-tabela"></tr>
                     </thead>
                     <tbody id="corpo-tabela"></tbody>
                 </table>
-                <div id="loading-msg" style="display:none; padding: 50px; text-align: center; color: #666;">
-                    <span class="material-icons-outlined">sync</span><br>Carregando dados...
-                </div>
-                <div id="empty-state-msg" style="display:none; padding: 50px; text-align: center; color: #999;">
-                    <span class="material-icons-outlined" style="font-size: 48px;">inventory_2</span><br>
-                    Nenhum registro encontrado nesta categoria.
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
+                    Nenhum registro encontrado.
                 </div>
             </div>
         </main>
