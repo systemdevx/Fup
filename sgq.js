@@ -11,6 +11,10 @@ if (typeof supabase !== 'undefined') {
     alert("Erro: Biblioteca Supabase não carregada. Verifique sua conexão.");
 }
 
+// Variável para controlar o temporizador
+let inactivityTimer;
+const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Animação suave de entrada
     document.body.style.visibility = 'visible';
@@ -22,9 +26,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function checkSession() {
     if (!supabaseClient) return;
-    // Verifica sessão apenas para mostrar iniciais do usuário
+    
+    // Verifica sessão 
     const { data } = await supabaseClient.auth.getSession();
-    if (data && data.session && data.session.user) {
+    
+    // Se não tiver sessão, manda para o login (igual aos outros módulos)
+    if (!data || !data.session) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Inicia a contagem de segurança
+    iniciarMonitoramentoInatividade();
+
+    if (data.session.user) {
         const avatar = document.querySelector('.avatar');
         if(avatar) avatar.innerText = data.session.user.email.substring(0, 2).toUpperCase();
     }
@@ -35,10 +50,32 @@ async function checkSession() {
         logoutBtn.onclick = async () => {
             if (confirm("Deseja desconectar?")) {
                 await supabaseClient.auth.signOut();
-                window.location.reload();
+                window.location.href = 'login.html';
             }
         };
     }
+}
+
+// --- FUNÇÃO DE SEGURANÇA (30 Minutos) ---
+function iniciarMonitoramentoInatividade() {
+    function resetTimer() {
+        clearTimeout(inactivityTimer);
+        // Reinicia a contagem para 30 minutos
+        inactivityTimer = setTimeout(async () => {
+            alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            window.location.href = 'login.html';
+        }, TEMPO_LIMITE);
+    }
+
+    // Eventos que consideram o usuário "ativo"
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.onclick = resetTimer;
+    document.onscroll = resetTimer;
 }
 
 // --- FUNÇÃO PRINCIPAL: CARREGAR DADOS ---

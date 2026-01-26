@@ -20,17 +20,63 @@ if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
+// Variável para controlar o temporizador
+let inactivityTimer;
+const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+
 let items = [{ id: Date.now(), codigo: '', equipamento: '', req_me: '', nf: '', qtd: '', setor: '', arquivoNome: '', expanded: true }];
 
 document.addEventListener('DOMContentLoaded', async () => {
-    if (supabaseClient) {
-        const { data } = await supabaseClient.auth.getSession();
-        if (data && data.session && data.session.user) {
-            currentUserEmail = data.session.user.email;
-        }
-    }
+    // 1. Verifica segurança antes de qualquer coisa
+    await checkSession();
+    
+    // 2. Renderiza a interface
     renderItems();
 });
+
+// --- FUNÇÕES DE SEGURANÇA ---
+
+async function checkSession() {
+    if (!supabaseClient) return;
+
+    // Tenta pegar a sessão ativa
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+    // Se não houver sessão, redireciona para login imediatamente
+    if (!session || error) {
+        window.location.href = 'login.html';
+        return; 
+    }
+
+    // Atualiza o e-mail do usuário atual com o da sessão real
+    if (session.user && session.user.email) {
+        currentUserEmail = session.user.email;
+    }
+
+    // Inicia o monitoramento de inatividade
+    iniciarMonitoramentoInatividade();
+}
+
+function iniciarMonitoramentoInatividade() {
+    function resetTimer() {
+        clearTimeout(inactivityTimer);
+        // Reinicia a contagem para 30 minutos
+        inactivityTimer = setTimeout(async () => {
+            alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            window.location.href = 'login.html';
+        }, TEMPO_LIMITE);
+    }
+
+    // Eventos que consideram o usuário "ativo"
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.onclick = resetTimer;
+    document.onscroll = resetTimer;
+}
 
 // --- FUNÇÕES DE INTERFACE ---
 function renderItems() {

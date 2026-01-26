@@ -12,6 +12,15 @@ const btnText = document.querySelector('.btn-text');
 const loader = document.querySelector('.loader');
 const errorMsg = document.getElementById('error-msg');
 
+// NOVO: Impede que o usuário veja o login se já estiver autenticado
+async function checkActiveSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+        window.location.href = "dashboard.html";
+    }
+}
+checkActiveSession();
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.classList.add('hidden');

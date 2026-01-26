@@ -11,6 +11,10 @@ if (typeof supabase !== 'undefined') {
     console.error('ERRO CRÍTICO: Supabase não carregado.');
 }
 
+// Variável para controlar o temporizador
+let inactivityTimer;
+const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+
 // 2. Verificação de Sessão e Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
@@ -30,9 +34,12 @@ async function checkSession() {
         return; 
     }
 
-    // Mostra a tela
+    // Mostra a tela e inicia segurança
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
+    
+    // Inicia a contagem de segurança
+    iniciarMonitoramentoInatividade();
 
     // Personaliza Avatar
     if (session.user && session.user.email) {
@@ -51,6 +58,28 @@ async function checkSession() {
             }
         };
     }
+}
+
+// --- FUNÇÃO DE SEGURANÇA (30 Minutos) ---
+function iniciarMonitoramentoInatividade() {
+    function resetTimer() {
+        clearTimeout(inactivityTimer);
+        // Reinicia a contagem para 30 minutos
+        inactivityTimer = setTimeout(async () => {
+            alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            window.location.href = 'login.html';
+        }, TEMPO_LIMITE);
+    }
+
+    // Eventos que consideram o usuário "ativo"
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.onclick = resetTimer;
+    document.onscroll = resetTimer;
 }
 
 /* --- LÓGICA DO MENU LATERAL --- */
