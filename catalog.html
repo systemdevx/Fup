@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Cadastros - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="catalog.css">
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+
+    <header>
+        <div class="logo-area">
+            <h1>FUP ALM</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html" class="active"><span class="material-icons-outlined">inventory_2</span><span>Cadastros</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile">
+            <div class="avatar">U</div>
+        </div>
+    </header>
+
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="toggleSidebar()">
+            <span class="material-icons-outlined" id="icon-toggle-menu">menu</span>
+        </button>
+        <div class="v-separator"></div>
+        <h2 id="titulo-pagina">Itens / Materiais</h2>
+        
+        <div class="header-right-actions">
+            <button class="btn-subheader-action" onclick="abrirModalNovo()">
+                <span class="material-icons-outlined">add</span><span>Novo Cadastro</span>
+            </button>
+            <div class="search-styled-container">
+                <span class="material-icons-outlined search-icon-left">search</span>
+                <input type="text" class="search-input-clean" placeholder="Pesquisar no catálogo..." onkeyup="filtrarCatalogo(this.value)">
+            </div>
+            <div class="view-actions">
+                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-wrapper">
+        <aside class="sidebar-local" id="sidebar">
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>ALMOXARIFADO</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" class="active" onclick="alterarCategoria('materiais', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">category</span>
+                                <span>Itens / Materiais</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="alterarCategoria('unidades', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">straighten</span>
+                                <span>Unidades de Medida</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>ATIVOS</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" onclick="alterarCategoria('equipamentos', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">precision_manufacturing</span>
+                                <span>Equipamentos</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="alterarCategoria('tipos_ativos', this)">
+                            <div class="menu-text-icon">
+                                <span class="material-icons-outlined">account_tree</span>
+                                <span>Tipos de Ativos</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="table-container">
+                <table id="tabela-catalogo">
+                    <thead>
+                        <tr id="cabecalho-tabela">
+                            </tr>
+                    </thead>
+                    <tbody id="corpo-tabela"></tbody>
+                </table>
+                <div id="loading-msg" style="display:none; padding: 50px; text-align: center; color: #666;">
+                    <span class="material-icons-outlined">sync</span><br>Carregando dados...
+                </div>
+                <div id="empty-state-msg" style="display:none; padding: 50px; text-align: center; color: #999;">
+                    <span class="material-icons-outlined" style="font-size: 48px;">inventory_2</span><br>
+                    Nenhum registro encontrado nesta categoria.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="catalog.js"></script>
+</body>
+</html>
