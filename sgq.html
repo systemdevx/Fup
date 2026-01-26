@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico Fvy - FUP ALM</title>
+    <title>Fvy SGQ - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="sgq.css">
@@ -28,8 +28,8 @@
         <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined">menu</span></button>
         <div class="v-separator"></div>
         
-        <button class="btn-subheader-action" onclick="window.location.href='#'">
-            <span class="material-icons-outlined">add</span><span>Novo Registro AI</span>
+        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
+            <span class="material-icons-outlined">add</span><span>Novo Fvy SGQ</span>
         </button>
 
         <div class="header-right-actions">
@@ -52,8 +52,8 @@
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="fvy.html"><div class="menu-text-icon"><span class="material-icons-outlined">post_add</span><span>Fvy SGQ</span></div></a></li>
-                    <li><a href="sgq.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">history</span><span>Histórico Fvy</span></div></a></li>
+                    <li><a href="sgq.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">assignment</span><span>Fvy SGQ</span></div></a></li>
+                    <li><a href="equipment.html"><div class="menu-text-icon"><span class="material-icons-outlined">build</span><span>Equipamentos</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -73,19 +73,17 @@
                             <th width="60" style="text-align: right;">AÇÕES</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-sgq">
-                        </tbody>
+                    <tbody id="lista-sgq"></tbody>
                 </table>
                 
                 <div id="loading-msg" style="display:none; padding: 50px; text-align: center; color: #666;">
-                    <span class="material-icons-outlined spin" style="font-size: 24px;">sync</span><br>
+                    <span class="material-icons-outlined" style="font-size: 24px;">sync</span><br>
                     <span style="font-size: 13px; margin-top: 10px; display: block;">Sincronizando com o banco de dados...</span>
                 </div>
 
                 <div id="empty-state-msg" style="display:none; padding: 50px; text-align: center; color: #999;">
                     <span class="material-icons-outlined" style="font-size: 40px; color: #DDD;">inbox</span><br>
                     <span style="font-size: 14px; margin-top: 10px; display: block;">Nenhum registro encontrado.</span>
-                    <a href="fvy.html" style="color: #E67E22; font-size: 13px; font-weight: bold; text-decoration: none; display: block; margin-top: 5px;">CRIAR NOVO REGISTRO</a>
                 </div>
             </div>
         </main>

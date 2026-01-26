@@ -1,0 +1,63 @@
+/* equipment.css */
+
+/* Reutiliza variáveis e base do sgq.css, aqui adicionamos apenas o Modal */
+
+.modal-overlay {
+    display: none; /* Oculto por padrão */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 2000;
+    align-items: center; justify-content: center;
+}
+
+.modal-card {
+    background: white; width: 500px; max-width: 90%;
+    border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column; overflow: hidden;
+    font-family: 'Calibri', sans-serif;
+}
+
+.modal-top {
+    padding: 15px 25px; border-bottom: 1px solid #EEE;
+    display: flex; justify-content: space-between; align-items: center;
+    background-color: #FAFAFA;
+}
+.modal-top h3 { margin: 0; color: #333; font-size: 16px; text-transform: uppercase; }
+
+.btn-close-modal {
+    background: none; border: none; font-size: 24px; cursor: pointer; color: #999;
+}
+.btn-close-modal:hover { color: #E67E22; }
+
+.modal-body { padding: 25px; }
+
+.form-group { margin-bottom: 15px; display: flex; flex-direction: column; }
+.form-group label { font-size: 12px; font-weight: bold; color: #666; margin-bottom: 5px; text-transform: uppercase; }
+.form-group input, .form-group select {
+    padding: 10px; border: 1px solid #DDD; border-radius: 4px;
+    font-family: inherit; font-size: 14px; outline: none;
+}
+.form-group input:focus, .form-group select:focus { border-color: #E67E22; }
+
+.form-row { display: flex; gap: 15px; }
+.form-row .form-group { flex: 1; }
+
+.modal-footer {
+    padding: 15px 25px; border-top: 1px solid #EEE;
+    display: flex; justify-content: flex-end; gap: 10px;
+    background-color: #FAFAFA;
+}
+
+.btn-outline {
+    background: white; border: 1px solid #CCC; color: #555;
+    padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;
+}
+.btn-solid {
+    background: #E67E22; border: 1px solid #D35400; color: white;
+    padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;
+}
+.btn-solid:hover { background: #D35400; }
+
+/* Status Badges Específicos */
+.status-ativo { background-color: #E6F4EA; color: #137333; border: 1px solid #CEEAD6; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+.status-manutencao { background-color: #FEF7E0; color: #B06000; border: 1px solid #FEEFC3; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+.status-inativo { background-color: #FCE8E6; color: #C5221F; border: 1px solid #FAD2CF; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
