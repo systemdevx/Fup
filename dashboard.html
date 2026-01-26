@@ -4,68 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - FUP ALM</title>
-    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
-
     <header>
-        <div class="logo-area">
-            <h1>FUP ALM</h1>
-        </div>
-        
+        <div class="logo-area"><h1>FUP ALM</h1></div>
         <nav>
             <ul>
-                <li>
-                    <a href="dashboard.html" class="active">
-                        <span class="material-icons-outlined">dashboard</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="transactions.html"> 
-                        <span class="material-icons-outlined">receipt_long</span>
-                        <span>Transações</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="supplier.html"> 
-                        <span class="material-icons-outlined">storefront</span>
-                        <span>Fornecedores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="fiscal.html">
-                        <span class="material-icons-outlined">description</span>
-                        <span>Reg. Fiscais</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="sgq.html">
-                        <span class="material-icons-outlined">verified_user</span>
-                        <span>Ativos SGQ</span>
-                    </a>
-                </li>
+                <li><a href="dashboard.html" class="active"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
             </ul>
         </nav>
-
-        <div class="user-profile">
-            <div class="avatar">U</div>
-        </div>
+        <div class="user-profile"><div class="avatar">U</div></div>
     </header>
-
     <div class="sub-header">
-        <div class="left-actions">
-            <div class="dropdown">
-                <span>Visão Geral</span>
-            </div>
-        </div>
-        <div class="right-actions">
-             <span id="btn-logout" class="material-icons-outlined icon-action" title="Sair">logout</span>
-        </div>
+        <div class="left-actions"><div class="dropdown"><span>Visão Geral</span></div></div>
+        <div class="right-actions"><span id="btn-logout" class="material-icons-outlined icon-action" title="Sair">logout</span></div>
     </div>
-
     <main>
         <div class="dashboard-grid-top">
             <div class="card hero-card">
@@ -74,7 +34,6 @@
                     <p>Selecione um módulo no menu acima para iniciar suas atividades.</p>
                 </div>
             </div>
-            
             <div class="card simple-card">
                 <div class="card-top">
                     <span class="material-icons-outlined icon-theme">notifications_active</span>
@@ -82,7 +41,6 @@
                 </div>
                 <div style="font-size: 13px; color: #999; margin-top: 10px;">Sem notificações novas.</div>
             </div>
-            
             <div class="card simple-card">
                 <div class="card-top">
                     <span class="material-icons-outlined icon-theme">pending_actions</span>
@@ -91,16 +49,12 @@
                 <div style="font-size: 13px; color: #999; margin-top: 10px;">Tudo em dia.</div>
             </div>
         </div>
-
         <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-
         <div id="dashboard-content" style="text-align: center; padding: 40px; color: #999;">
             <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; margin-bottom: 15px;">analytics</span>
             <p>Os indicadores de desempenho serão carregados aqui após a integração com o banco de dados.</p>
         </div>
-
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
 </body>

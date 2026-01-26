@@ -1,28 +1,20 @@
 // --- supplier.js ---
-
-// 1. Configuração do Supabase (Mesma chave dos outros módulos)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 let supabaseClient;
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-    console.error('ERRO CRÍTICO: Supabase não carregado.');
 }
 
-// Variável para controlar o temporizador
 let inactivityTimer;
-const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+const TEMPO_LIMITE = 30 * 60 * 1000;
 
-// 2. Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    // Inicializa sem fornecedores fictícios (lista vazia), aguardando integração.
     carregarFornecedores([]); 
 });
 
-// 3. Verificação de Sessão (Guard)
 async function checkSession() {
     if (!supabaseClient) return;
 
@@ -35,8 +27,6 @@ async function checkSession() {
 
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
-
-    // Inicia a contagem de segurança
     iniciarMonitoramentoInatividade();
 
     if (session.user && session.user.email) {
@@ -56,69 +46,28 @@ async function checkSession() {
     }
 }
 
-// --- FUNÇÃO DE SEGURANÇA (30 Minutos) ---
 function iniciarMonitoramentoInatividade() {
     function resetTimer() {
         clearTimeout(inactivityTimer);
-        // Reinicia a contagem para 30 minutos
         inactivityTimer = setTimeout(async () => {
-            alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-            }
+            alert("Sessão expirada por inatividade.");
+            if (supabaseClient) await supabaseClient.auth.signOut();
             window.location.href = 'login.html';
         }, TEMPO_LIMITE);
     }
-
-    // Eventos que consideram o usuário "ativo"
     window.onload = resetTimer;
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-    document.onscroll = resetTimer;
 }
-
-/* --- LÓGICA DO MENU LATERAL (Sidebar) --- */
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const icon = document.getElementById('icon-toggle-menu');
-
     if (sidebar) {
         sidebar.classList.toggle('sidebar-closed');
-        
-        if (sidebar.classList.contains('sidebar-closed')) {
-            if(icon) icon.innerText = 'chevron_right'; 
-        } else {
-            if(icon) icon.innerText = 'chevron_left'; 
-        }
+        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
     }
 }
-
-function toggleGroup(header) {
-    const list = header.nextElementSibling; 
-    const arrow = header.querySelector('.arrow-header');
-    
-    if (list.style.display === 'none') {
-        list.style.display = 'flex'; 
-        arrow.innerText = 'expand_less'; 
-    } else {
-        list.style.display = 'none'; 
-        arrow.innerText = 'expand_more'; 
-    }
-}
-
-function ativarItem(element) {
-    // Remove classe active de todos os links
-    document.querySelectorAll('.sidebar-local a').forEach(link => {
-        link.classList.remove('active');
-    });
-
-    // Adiciona ao clicado
-    element.classList.add('active');
-}
-
-/* --- LÓGICA DA TABELA DE FORNECEDORES --- */
 
 function carregarFornecedores(lista) {
     const tbody = document.getElementById('lista-fornecedores');
@@ -127,20 +76,14 @@ function carregarFornecedores(lista) {
     if(!tbody) return;
     tbody.innerHTML = ''; 
 
-    // Verifica se a lista está vazia
     if (!lista || lista.length === 0) {
         if(emptyMsg) emptyMsg.style.display = 'block';
         return;
     }
-
     if(emptyMsg) emptyMsg.style.display = 'none';
 
     lista.forEach(item => {
-        let statusClass = '';
-        if(item.status === 'Ativo') statusClass = 'status-ativo';
-        else if(item.status === 'Em Análise') statusClass = 'status-analise';
-        else statusClass = 'status-inativo';
-        
+        let statusClass = item.status === 'Ativo' ? 'status-ativo' : (item.status === 'Em Análise' ? 'status-analise' : 'status-inativo');
         const row = `
             <tr>
                 <td><strong>${item.id}</strong></td>
@@ -151,12 +94,10 @@ function carregarFornecedores(lista) {
                 <td>${item.cnpj}</td>
                 <td>${item.categoria}</td>
                 <td><span class="status-badge ${statusClass}">${item.status}</span></td>
-                <td>
+                <td style="text-align: right;">
                     <button class="btn-icon" title="Editar"><span class="material-icons-outlined">edit</span></button>
-                    <button class="btn-icon" title="Histórico"><span class="material-icons-outlined">history</span></button>
                 </td>
-            </tr>
-        `;
+            </tr>`;
         tbody.insertAdjacentHTML('beforeend', row);
     });
 }

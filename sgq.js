@@ -1,3 +1,4 @@
+// --- sgq.js ---
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
@@ -27,9 +28,22 @@ async function checkSession() {
         return;
     }
     iniciarMonitoramentoInatividade();
-    if (data.session.user) {
+    
+    // Atualiza Avatar
+    if (data.session.user && data.session.user.email) {
         const avatar = document.querySelector('.avatar');
         if(avatar) avatar.innerText = data.session.user.email.substring(0, 2).toUpperCase();
+    }
+
+    // Botão Logout
+    const logoutBtn = document.getElementById('btn-logout');
+    if (logoutBtn) {
+        logoutBtn.onclick = async () => {
+            if (confirm("Deseja realmente sair?")) {
+                await supabaseClient.auth.signOut();
+                window.location.href = 'login.html';
+            }
+        };
     }
 }
 
@@ -73,7 +87,7 @@ async function carregarSgq() {
     } catch (err) {
         console.error('Erro:', err);
         if (loading) loading.style.display = 'none';
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red;">Erro ao carregar dados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red;">Erro ao carregar dados do Supabase.</td></tr>`;
     }
 }
 
@@ -118,7 +132,8 @@ function filtrarTabela(texto) {
 }
 
 function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('sidebar-closed');
+    const sidebar = document.getElementById('sidebar');
+    if(sidebar) sidebar.classList.toggle('sidebar-closed');
 }
 
 function toggleGroup(header) {

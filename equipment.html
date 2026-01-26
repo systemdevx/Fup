@@ -17,6 +17,7 @@
             <ul>
                 <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
                 <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
                 <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
                 <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
                 <li><a href="sgq.html" class="active"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
@@ -29,7 +30,7 @@
         <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined">menu</span></button>
         <div class="v-separator"></div>
         
-        <button class="btn-subheader-action" onclick="abrirModalEquipamento()">
+        <button class="btn-subheader-action" onclick="window.location.href='addequipt.html'">
             <span class="material-icons-outlined">add</span><span>Novo Equipamento</span>
         </button>
 
@@ -67,74 +68,14 @@
                             <th width="100">CÓDIGO</th>
                             <th>NOME DO EQUIPAMENTO</th>
                             <th width="150">TIPO</th>
-                            <th width="150">MODELO</th>
                             <th width="120">STATUS</th>
                             <th width="60" style="text-align: right;">AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody id="lista-equipamentos"></tbody>
                 </table>
-                
-                <div id="loading-msg" style="display:none; padding: 50px; text-align: center; color: #666;">
-                    <span class="material-icons-outlined" style="font-size: 24px;">sync</span><br>
-                    <span style="font-size: 13px; margin-top: 10px; display: block;">Carregando equipamentos...</span>
-                </div>
-
-                <div id="empty-state-msg" style="display:none; padding: 50px; text-align: center; color: #999;">
-                    <span class="material-icons-outlined" style="font-size: 40px; color: #DDD;">build</span><br>
-                    <span style="font-size: 14px; margin-top: 10px; display: block;">Nenhum equipamento cadastrado.</span>
-                    <a href="#" onclick="abrirModalEquipamento()" style="color: #E67E22; font-size: 13px; font-weight: bold; text-decoration: none; display: block; margin-top: 5px;">CADASTRAR PRIMEIRO</a>
-                </div>
             </div>
         </main>
-    </div>
-
-    <div id="modal-equipamento" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-top">
-                <h3>Novo Equipamento</h3>
-                <button onclick="fecharModalEquipamento()" class="btn-close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="form-equipamento">
-                    <div class="form-group">
-                        <label>Código (Tag)</label>
-                        <input type="text" id="eq-codigo" placeholder="EX: EQ-001" required style="text-transform: uppercase;">
-                    </div>
-                    <div class="form-group">
-                        <label>Nome do Equipamento</label>
-                        <input type="text" id="eq-nome" placeholder="EX: FURADEIRA DE BANCADA" required style="text-transform: uppercase;">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tipo</label>
-                            <select id="eq-tipo">
-                                <option value="MAQUINA">MÁQUINA</option>
-                                <option value="FERRAMENTA">FERRAMENTA</option>
-                                <option value="VEICULO">VEÍCULO</option>
-                                <option value="TI">TI / INFORMÁTICA</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Modelo</label>
-                            <input type="text" id="eq-modelo" placeholder="Modelo X" style="text-transform: uppercase;">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Status Inicial</label>
-                        <select id="eq-status">
-                            <option value="ATIVO">ATIVO</option>
-                            <option value="MANUTENCAO">EM MANUTENÇÃO</option>
-                            <option value="INATIVO">INATIVO</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-outline" onclick="fecharModalEquipamento()">Cancelar</button>
-                <button class="btn-solid" onclick="salvarEquipamento()">Salvar</button>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

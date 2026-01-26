@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Ativo - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="sgq.css">
+    <link rel="stylesheet" href="addequipt.css">
+</head>
+<body class="me-body">
+    <header class="me-header">
+        <div class="breadcrumb-area">
+            <span class="crumb-bold">EQUIPAMENTOS</span> > <span class="crumb-current">CADASTRAR UNIDADES</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn-me-outline" onclick="window.location.href='equipment.html'">CANCELAR</button>
+            <button class="btn-me-solid" onclick="salvarAtivos()">SALVAR TUDO</button>
+        </div>
+    </header>
+
+    <main class="me-content">
+        <div class="selector-card">
+            <label>1. SELECIONE O EQUIPAMENTO BASE</label>
+            <select id="select-base" onchange="atualizarLista()"></select>
+        </div>
+
+        <div id="unidades-container"></div>
+
+        <div class="add-row">
+            <button onclick="addUnidade()">+ ADICIONAR UNIDADE / N° SÉRIE</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="addequipt.js"></script>
+</body>
+</html>
