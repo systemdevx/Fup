@@ -1,136 +1,115 @@
-// --- catalog.js ---
-const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
-
-let supabaseClient;
-if (typeof supabase !== 'undefined') {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-}
-
-let categoriaAtual = 'materiais';
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await checkSession();
-    carregarCatalogo(); 
-});
-
-async function checkSession() {
-    if (!supabaseClient) return;
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-    
-    if (error || !session) {
-        window.location.href = 'login.html';
-        return;
-    }
-
-    // Libera visibilidade
+document.addEventListener('DOMContentLoaded', () => {
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
+    carregarCatalogoProdutos();
+});
 
-    if (session.user && session.user.email) {
-        const initials = session.user.email.substring(0, 2).toUpperCase();
-        const avatar = document.getElementById('user-avatar');
-        if (avatar) avatar.innerText = initials;
+// Dados Reais do Catálogo
+let listaProdutos = [
+    { 
+        id_sistema: 'PROD-1050', 
+        data_cadastro: '27/01/2026', 
+        codigo: 'MAT-1050', 
+        descricao_produto: 'PAPEL A4 75G RECICLADO', 
+        unidade_medida: 'CX', 
+        grupo_material: 'AX', 
+        referencia_erp: 'MERCADO ELETRÔNICO', 
+        status_item: 'ativo' 
     }
+];
 
-    // Configuração Logout
-    const btnLogout = document.getElementById('btn-logout');
-    if (btnLogout) {
-        btnLogout.onclick = async () => {
-            if (confirm("Deseja sair do sistema?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
-    }
-}
-
-function carregarCatalogo() {
-    const tbody = document.getElementById('corpo-tabela');
-    const head = document.getElementById('cabecalho-tabela');
-    const empty = document.getElementById('empty-state-msg');
+function carregarCatalogoProdutos() {
+    const tabelaBody = document.getElementById('corpo-tabela-produtos');
+    if(!tabelaBody) return;
+    tabelaBody.innerHTML = '';
     
-    if(!tbody || !head) return;
-    
-    tbody.innerHTML = '';
-    empty.style.display = 'none';
+    listaProdutos.forEach(item => {
+        const linha = document.createElement('tr');
+        const eAtivo = item.status_item === 'ativo';
+        const statusBadge = eAtivo 
+            ? '<span class="status-badge status-ativo">Ativo</span>' 
+            : '<span class="status-badge status-bloqueado">Bloqueado</span>';
 
-    if (categoriaAtual === 'materiais') {
-        head.innerHTML = `
-            <th width="120">CÓDIGO</th>
-            <th>DESCRIÇÃO DO MATERIAL</th>
-            <th width="150">CATEGORIA</th>
-            <th width="80">UN</th>
-            <th width="80" style="text-align:right">AÇÕES</th>
+        linha.innerHTML = `
+            <td style="color:#666; font-size:11px;">${item.id_sistema}</td>
+            <td style="font-size:12px;">${item.data_cadastro}</td>
+            <td style="font-weight:600; color:#555;">${item.codigo}</td>
+            <td>${item.descricao_produto}</td>
+            <td>${item.unidade_medida}</td>
+            <td>${item.grupo_material}</td>
+            <td>${item.referencia_erp}</td>
+            <td>${statusBadge}</td>
+            <td class="action-col">
+                <div class="dropdown-container">
+                    <button class="btn-icon-more" onclick="alternarMenuDropdown(event, '${item.id_sistema}')">
+                        <span class="material-icons-outlined">more_vert</span>
+                    </button>
+                    <div id="menu-${item.id_sistema}" class="dropdown-content">
+                        <button onclick="editarProduto('${item.id_sistema}')">
+                            <span class="material-icons-outlined">edit</span> Editar Cadastro
+                        </button>
+                        <button onclick="verHistorico('${item.id_sistema}')">
+                            <span class="material-icons-outlined">history</span> Histórico de Alteração
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="alterarStatusProduto('${item.id_sistema}', '${eAtivo ? 'bloqueado' : 'ativo'}')" class="${eAtivo ? 'danger-action' : ''}">
+                            <span class="material-icons-outlined">${eAtivo ? 'block' : 'check_circle'}</span>
+                            ${eAtivo ? 'Bloquear Item' : 'Desbloquear Item'}
+                        </button>
+                    </div>
+                </div>
+            </td>
         `;
-        
-        // Mock de dados (Simulação)
-        const mock = [
-            {cod: 'ALM-001', desc: 'Lâmpada LED 10W - 6500k', cat: 'Elétrica', un: 'UN'},
-            {cod: 'ALM-002', desc: 'Cabo de Rede CAT6 Azul', cat: 'Informática', un: 'M'},
-            {cod: 'ALM-003', desc: 'Luva de Proteção Látex G', cat: 'EPI', un: 'PAR'}
-        ];
-        
-        mock.forEach(item => {
-            const row = `
-                <tr>
-                    <td><strong>${item.cod}</strong></td>
-                    <td>${item.desc}</td>
-                    <td>${item.cat}</td>
-                    <td>${item.un}</td>
-                    <td style="text-align:right">
-                        <button class="btn-icon" title="Editar"><span class="material-icons-outlined">edit</span></button>
-                    </td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', row);
-        });
+        tabelaBody.appendChild(linha);
+    });
+}
 
-    } else {
-        empty.style.display = 'block';
+function alternarMenuDropdown(event, id) {
+    event.stopPropagation();
+    const todosMenus = document.querySelectorAll('.dropdown-content');
+    todosMenus.forEach(menu => {
+        if(menu.id !== `menu-${id}`) menu.classList.remove('show');
+    });
+    document.getElementById(`menu-${id}`).classList.toggle('show');
+}
+
+function alterarStatusProduto(id, novoStatus) {
+    const produto = listaProdutos.find(p => p.id_sistema === id);
+    if (produto) {
+        produto.status_item = novoStatus;
+        carregarCatalogoProdutos();
+        const mensagem = novoStatus === 'ativo' ? 'Produto desbloqueado!' : 'Produto bloqueado com sucesso!';
+        mostrarNotificacao(mensagem);
     }
 }
 
-/* --- FUNÇÕES DE UI (Idênticas ao Transactions) --- */
+function verHistorico(id) {
+    mostrarNotificacao(`Carregando histórico do item ${id}...`);
+    // Aqui seria implementada a abertura do modal de histórico real
+}
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const icon = document.getElementById('icon-toggle-menu');
+function mostrarNotificacao(mensagem) {
+    const toast = document.getElementById('toast');
+    const toastMsg = toast.querySelector('.toast-message');
+    toastMsg.textContent = mensagem;
+    toast.classList.add('toast-visible');
+    setTimeout(() => { toast.classList.remove('toast-visible'); }, 3000);
+}
 
-    if (sidebar) {
-        sidebar.classList.toggle('sidebar-closed');
-        if(icon) {
-            icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left';
-        }
-    }
+function editarProduto(id) {
+    localStorage.setItem('controle_modo_edicao', 'true');
+    window.location.href = 'formeprodut.html';
+}
+
+function toggleSidebar() { 
+    document.getElementById('sidebar').classList.toggle('sidebar-closed'); 
 }
 
 function toggleGroup(header) {
-    const list = header.nextElementSibling; 
-    const arrow = header.querySelector('.arrow-header');
-    
-    if (list.style.display === 'none') {
-        list.style.display = 'flex'; 
-        arrow.innerText = 'expand_less'; 
-    } else {
-        list.style.display = 'none'; 
-        arrow.innerText = 'expand_more'; 
-    }
+    const lista = header.parentElement.querySelector('.group-list');
+    lista.style.display = (lista.style.display === 'none' || lista.style.display === '') ? 'flex' : 'none';
 }
 
-function alterarCategoria(novaCat, element) {
-    document.querySelectorAll('.sidebar-local a').forEach(link => link.classList.remove('active'));
-    element.classList.add('active');
-    categoriaAtual = novaCat;
-    carregarCatalogo();
-}
-
-// Placeholder para o botão "Novo Item"
-function abrirModalNovo() {
-    alert("Funcionalidade de Novo Item em desenvolvimento.");
-}
-
-function filtrarCatalogo(valor) {
-    console.log("Filtrando por:", valor);
-    // Aqui entra a lógica de filtro futuramente
-}
+window.onclick = function() {
+    document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+};

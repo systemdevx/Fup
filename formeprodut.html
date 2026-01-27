@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Produto - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+
+    <link rel="stylesheet" href="catalog.css">
+    <link rel="stylesheet" href="formeprodut.css">
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+
+    <header>
+        <div class="logo-area"><h1>FUP ALM</h1></div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html" class="active"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+            </ul>
+        </nav>
+        <div class="user-profile"><div class="avatar">U</div></div>
+    </header>
+
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="verificarCancelamento()" title="Voltar para Lista">
+            <span class="material-icons-outlined">arrow_back</span>
+        </button>
+        <div class="v-separator"></div>
+        <span style="font-weight: 600; color: #555; font-size: 14px;">Cadastro de Produto</span>
+    </div>
+
+    <div class="layout-wrapper-full">
+        <main class="content-area-full">
+            <div class="form-card-wide">
+                <div class="form-header">
+                    <h2>Dados do Produto</h2>
+                    <p>Preencha as informações para registrar um novo material no catálogo.</p>
+                </div>
+                
+                <form id="form-produto" onsubmit="salvarProduto(event)">
+                    <div class="form-grid-wide">
+                        
+                        <div class="form-group">
+                            <label>ID Sistema</label>
+                            <input type="text" id="id_cadastro" class="input-readonly" value="Carregando..." readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Código *</label>
+                            <input type="text" id="codigo" placeholder="Ex: MAT-1050" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unidade *</label>
+                            <select id="unidade" required>
+                                <option value="UN">UN - Unidade</option>
+                                <option value="CX">CX - Caixa</option>
+                                <option value="PCT">PCT - Pacote</option>
+                                <option value="KG">KG - Quilograma</option>
+                                <option value="MT">MT - Metro</option>
+                                <option value="LT">LT - Litro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group span-3">
+                            <label>Descrição do Produto *</label>
+                            <input type="text" id="descricao" placeholder="Ex: PAPEL A4 75G REICLADO (PCT 500)" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Grupo</label>
+                            <select id="grupo" required>
+                                <option value="AX">AX - ALMOXARIFADO</option>
+                                <option value="AXA">AXA - ALMOXARIFADO</option>
+                                <option value="AXM">AXM - ALMOXARIFADO</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Referência ERP</label>
+                            <select id="ref_erp" class="input-readonly">
+                                <option value="ME">Mercado Eletrônico</option>
+                                <option disabled>Sem mais opções</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Data Cadastro</label>
+                            <div class="date-input-wrapper">
+                                <input type="text" id="data_cadastro" placeholder="Selecione a data..." required>
+                                <span class="material-icons-outlined calendar-icon">calendar_today</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions-bottom">
+                        <button type="button" class="btn-cancel" onclick="verificarCancelamento()">Cancelar</button>
+                        <button type="submit" class="btn-save">
+                            <span class="material-icons-outlined">save</span>
+                            Salvar Produto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-cancel" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <span class="material-icons-outlined modal-icon">warning_amber</span>
+            <h3>Cancelar Cadastro?</h3>
+            <p>Se voltar agora, os dados preenchidos serão perdidos.</p>
+            <div class="modal-actions">
+                <button class="btn-modal-back" onclick="fecharModal()">Continuar Editando</button>
+                <button class="btn-modal-confirm" onclick="confirmarSaida()">Sim, Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast-notification">
+        <span class="material-icons-outlined toast-icon">check_circle</span>
+        <span class="toast-message">Novo produto cadastrado com sucesso!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+    <script src="formeprodut.js"></script>
+</body>
+</html>

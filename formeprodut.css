@@ -1,0 +1,156 @@
+/* --- formeprodut.css --- */
+
+/* Layout Principal */
+.layout-wrapper-full {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 135px);
+    overflow-y: auto;
+    background-color: #F3F4F6;
+    padding: 30px;
+}
+
+.content-area-full {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Cartão do Formulário */
+.form-card-wide {
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    padding: 35px; /* Espaçamento interno */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+/* Cabeçalho do Form */
+.form-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+.form-header h2 { font-size: 16px; color: #333; margin-bottom: 5px; }
+.form-header p { font-size: 12px; color: #666; }
+
+/* Grid de Layout (3 Colunas) */
+.form-grid-wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: span 3; } /* Ocupa a linha inteira */
+
+/* Estilo dos Inputs */
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+
+.form-group label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4B5563; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input, .form-group select {
+    padding: 8px 10px;
+    border: 1px solid #D1D5DB;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: 'Calibri', sans-serif;
+    color: #1F2937;
+    background-color: #fff;
+    transition: all 0.2s;
+    outline: none;
+    width: 100%;
+    height: 36px;
+    
+    /* Força visualmente Maiúsculas */
+    text-transform: uppercase;
+}
+
+.form-group input:focus, .form-group select:focus {
+    border-color: #E67E22;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.15);
+}
+
+/* Ícone do Calendário */
+.date-input-wrapper { position: relative; width: 100%; }
+.date-input-wrapper input { padding-right: 30px; background-color: #fff !important; }
+.calendar-icon {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    color: #E67E22; pointer-events: none; font-size: 18px;
+}
+
+/* Campos Readonly (Cinza) */
+.input-readonly {
+    background-color: #F3F4F6;
+    color: #555;
+    border-color: #E5E7EB;
+    cursor: default;
+    font-weight: 600;
+}
+
+/* Botões do Rodapé */
+.form-actions-bottom {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-cancel {
+    background-color: white; border: 1px solid #D1D5DB; color: #374151;
+    padding: 8px 20px; border-radius: 5px; cursor: pointer;
+    font-weight: 600; font-size: 12px; transition: 0.2s;
+}
+.btn-cancel:hover { background-color: #F3F4F6; }
+
+.btn-save {
+    background-color: #E67E22; border: none; color: white;
+    padding: 8px 25px; border-radius: 5px; cursor: pointer;
+    font-weight: 600; display: flex; align-items: center; gap: 6px;
+    font-size: 12px; transition: 0.2s;
+}
+.btn-save:hover { background-color: #D35400; transform: translateY(-1px); }
+
+/* Notificação Toast */
+.toast-notification {
+    position: fixed; top: 25px; right: 25px;
+    background-color: #FFFFFF; color: #333;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 50px; padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px; z-index: 2000;
+    transform: translateY(-150%); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.toast-visible { transform: translateY(0); opacity: 1; }
+.toast-icon { color: #10B981; font-size: 20px; }
+.toast-message { font-size: 13px; font-weight: 600; color: #374151; white-space: nowrap; }
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-box {
+    background-color: white; width: 320px; padding: 25px;
+    border-radius: 8px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.modal-icon { font-size: 36px; color: #F59E0B; margin-bottom: 10px; }
+.modal-box h3 { font-size: 15px; color: #333; margin-bottom: 8px; }
+.modal-box p { font-size: 12px; color: #666; margin-bottom: 20px; }
+.modal-actions { display: flex; justify-content: center; gap: 10px; }
+.btn-modal-back {
+    background: #fff; border: 1px solid #ddd; padding: 8px 16px; 
+    border-radius: 4px; cursor: pointer; color: #555; font-size: 11px; font-weight: 600;
+}
+.btn-modal-confirm {
+    background: #EF4444; border: none; padding: 8px 16px; 
+    border-radius: 4px; cursor: pointer; color: white; font-size: 11px; font-weight: 600;
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Produtos - FUP ALM</title>
+    <title>Catálogo de Equipamentos - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="catalog.css">
     <link rel="stylesheet" href="catalogadd.css">
@@ -30,9 +30,9 @@
             <span class="material-icons-outlined">chevron_left</span>
         </button>
         <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="window.location.href='formeprodut.html'">
+        <button class="btn-subheader-action" onclick="window.location.href='formequipt.html'">
             <span class="material-icons-outlined">add</span>
-            <span>Novo Produto</span>
+            <span>Novo Equipamento</span>
         </button>
     </div>
 
@@ -43,7 +43,7 @@
                     <span>ALMOXARIFADO</span><span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="catalog.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">category</span><span>Produtos</span></div></a></li>
+                    <li><a href="catalog.html"><div class="menu-text-icon"><span class="material-icons-outlined">category</span><span>Produtos</span></div></a></li>
                 </ul>
             </div>
             <div class="menu-group">
@@ -51,7 +51,7 @@
                     <span>ATIVOS</span><span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="catalogadd.html"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
+                    <li><a href="catalogadd.html" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">precision_manufacturing</span><span>Equipamentos</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -64,7 +64,7 @@
                             <th width="110">ID SISTEMA</th>
                             <th width="110">DATA CADASTRO</th>
                             <th width="120">CÓDIGO</th>
-                            <th>DESCRIÇÃO DO PRODUTO</th>
+                            <th>DESCRIÇÃO DO EQUIPAMENTO</th>
                             <th width="80">UNIDADE</th>
                             <th width="100">GRUPO</th>
                             <th width="150">REFERÊNCIA ERP</th>
@@ -72,18 +72,55 @@
                             <th width="80" style="text-align:right">AÇÕES</th>
                         </tr>
                     </thead>
-                    <tbody id="corpo-tabela-produtos">
+                    <tbody id="corpo-tabela-equipamentos">
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
 
-    <div id="toast" class="toast-notification" style="position: fixed; top: 25px; right: 25px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 50px; padding: 10px 20px; display: flex; align-items: center; gap: 10px; z-index: 2000; transform: translateY(-150%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);">
-        <span class="material-icons-outlined toast-icon" style="color: #10B981; font-size: 20px;">check_circle</span>
-        <span class="toast-message" style="font-size: 13px; font-weight: 600; color: #374151; white-space: nowrap;">Operação realizada!</span>
+    <div id="modal-confirm-action" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <span class="material-icons-outlined modal-icon">help_outline</span>
+            <h3 id="modal-title">Confirmar Ação</h3>
+            <p id="modal-text">Deseja realmente prosseguir com esta alteração?</p>
+            <div class="modal-actions">
+                <button class="btn-modal-back" onclick="fecharModalConfirmacao()">Cancelar</button>
+                <button class="btn-modal-confirm" id="btn-confirm-execute">Confirmar</button>
+            </div>
+        </div>
     </div>
 
-    <script src="catalog.js"></script>
+    <div id="modal-history" class="modal-overlay" style="display: none;">
+        <div class="modal-box modal-box-large">
+            <div class="modal-header-history">
+                <h3>Histórico de Alterações <span id="hist-id-display" style="color: #6B7280; font-size: 13px; margin-left: 8px;"></span></h3>
+                <button class="btn-close-modal" onclick="fecharModalHistorico()">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="history-content">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>DATA/HORA</th>
+                            <th>USUÁRIO</th>
+                            <th>AÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-historico">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast-notification">
+        <span class="material-icons-outlined toast-icon">check_circle</span>
+        <span class="toast-message">Operação realizada!</span>
+    </div>
+
+    <script src="catalogadd.js"></script>
 </body>
 </html>
