@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarCatalogoProdutos();
 });
 
-// Dados Reais do Catálogo
+// Dados Mockados do Catálogo de Produtos
 let listaProdutos = [
     { 
         id_sistema: 'PROD-1050', 
@@ -15,6 +15,16 @@ let listaProdutos = [
         grupo_material: 'AX', 
         referencia_erp: 'MERCADO ELETRÔNICO', 
         status_item: 'ativo' 
+    },
+    { 
+        id_sistema: 'PROD-1051', 
+        data_cadastro: '26/01/2026', 
+        codigo: 'MAT-2000', 
+        descricao_produto: 'CANETA ESFEROGRÁFICA AZUL (CX 50)', 
+        unidade_medida: 'CX', 
+        grupo_material: 'AX', 
+        referencia_erp: 'MERCADO ELETRÔNICO', 
+        status_item: 'bloqueado' 
     }
 ];
 
@@ -48,11 +58,11 @@ function carregarCatalogoProdutos() {
                         <button onclick="editarProduto('${item.id_sistema}')">
                             <span class="material-icons-outlined">edit</span> Editar Cadastro
                         </button>
-                        <button onclick="verHistorico('${item.id_sistema}')">
+                        <button onclick="verHistoricoProduto('${item.id_sistema}')">
                             <span class="material-icons-outlined">history</span> Histórico de Alteração
                         </button>
                         <div class="dropdown-divider"></div>
-                        <button onclick="alterarStatusProduto('${item.id_sistema}', '${eAtivo ? 'bloqueado' : 'ativo'}')" class="${eAtivo ? 'danger-action' : ''}">
+                        <button onclick="solicitarConfirmacaoStatus('${item.id_sistema}', '${eAtivo ? 'bloqueado' : 'ativo'}')" class="${eAtivo ? 'danger-action' : ''}">
                             <span class="material-icons-outlined">${eAtivo ? 'block' : 'check_circle'}</span>
                             ${eAtivo ? 'Bloquear Item' : 'Desbloquear Item'}
                         </button>
@@ -64,6 +74,7 @@ function carregarCatalogoProdutos() {
     });
 }
 
+// --- Funções de Dropdown ---
 function alternarMenuDropdown(event, id) {
     event.stopPropagation();
     const todosMenus = document.querySelectorAll('.dropdown-content');
@@ -73,32 +84,106 @@ function alternarMenuDropdown(event, id) {
     document.getElementById(`menu-${id}`).classList.toggle('show');
 }
 
-function alterarStatusProduto(id, novoStatus) {
+// --- Funções de Edição ---
+function editarProduto(id) {
+    // Redireciona via URL Parameter para manter consistência com formequipt
+    window.location.href = `formeprodut.html?id=${id}`;
+}
+
+// --- Funções de Histórico ---
+function verHistoricoProduto(id) {
+    const modalHistory = document.getElementById('modal-history');
+    const tbody = document.getElementById('lista-historico');
+    document.getElementById('hist-id-display').textContent = `(${id})`;
+    
+    tbody.innerHTML = ''; // Limpa tabela antiga
+
+    // Dados Mockados (Simulação)
+    const historicoMock = [
+        { data: '27/01/2026 14:30', usuario: 'Admin', acao: 'Edição de Cadastro', tipo: 'edit' },
+        { data: '25/01/2026 09:15', usuario: 'Almoxarife', acao: 'Desbloqueio de Item', tipo: 'create' },
+        { data: '24/01/2026 18:00', usuario: 'Sistema', acao: 'Criação Automática', tipo: 'create' }
+    ];
+
+    historicoMock.forEach(log => {
+        const tr = document.createElement('tr');
+        
+        let tagClass = 'hist-create';
+        if(log.tipo === 'block') tagClass = 'hist-block';
+        if(log.tipo === 'edit') tagClass = 'hist-edit';
+
+        tr.innerHTML = `
+            <td style="color:#555;">${log.data}</td>
+            <td style="font-weight:600;">${log.usuario}</td>
+            <td><span class="hist-tag ${tagClass}">${log.acao}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    modalHistory.style.display = 'flex';
+}
+
+function fecharModalHistorico() {
+    document.getElementById('modal-history').style.display = 'none';
+}
+
+// --- Funções de Confirmação de Status ---
+function solicitarConfirmacaoStatus(id, novoStatus) {
+    const modal = document.getElementById('modal-confirm-action');
+    const btnConfirm = document.getElementById('btn-confirm-execute');
+    const txt = novoStatus === 'ativo' ? 'desbloquear' : 'bloquear';
+    
+    document.getElementById('modal-title').textContent = "Confirmar Alteração";
+    document.getElementById('modal-text').textContent = `Deseja realmente ${txt} o produto ${id}?`;
+    
+    modal.style.display = 'flex';
+    
+    btnConfirm.onclick = () => {
+        executarAlteracaoStatus(id, novoStatus);
+        fecharModalConfirmacao();
+    };
+}
+
+function fecharModalConfirmacao() {
+    document.getElementById('modal-confirm-action').style.display = 'none';
+}
+
+function executarAlteracaoStatus(id, novoStatus) {
     const produto = listaProdutos.find(p => p.id_sistema === id);
     if (produto) {
         produto.status_item = novoStatus;
         carregarCatalogoProdutos();
-        const mensagem = novoStatus === 'ativo' ? 'Produto desbloqueado!' : 'Produto bloqueado com sucesso!';
-        mostrarNotificacao(mensagem);
+        
+        if (novoStatus === 'ativo') {
+            mostrarNotificacao('Produto desbloqueado com sucesso!', 'success');
+        } else {
+            mostrarNotificacao('Produto bloqueado com sucesso!', 'danger');
+        }
     }
 }
 
-function verHistorico(id) {
-    mostrarNotificacao(`Carregando histórico do item ${id}...`);
-    // Aqui seria implementada a abertura do modal de histórico real
-}
-
-function mostrarNotificacao(mensagem) {
+// --- Utilitários ---
+function mostrarNotificacao(mensagem, tipo = 'success') {
     const toast = document.getElementById('toast');
     const toastMsg = toast.querySelector('.toast-message');
+    const toastIcon = toast.querySelector('.toast-icon');
+    
     toastMsg.textContent = mensagem;
+    toastIcon.className = 'material-icons-outlined toast-icon';
+    
+    if (tipo === 'danger') {
+        toastIcon.textContent = 'block';
+        toastIcon.classList.add('type-danger');
+    } else if (tipo === 'info') {
+        toastIcon.textContent = 'info';
+        toastIcon.classList.add('type-info');
+    } else {
+        toastIcon.textContent = 'check_circle';
+        toastIcon.classList.add('type-success');
+    }
+
     toast.classList.add('toast-visible');
     setTimeout(() => { toast.classList.remove('toast-visible'); }, 3000);
-}
-
-function editarProduto(id) {
-    localStorage.setItem('controle_modo_edicao', 'true');
-    window.location.href = 'formeprodut.html';
 }
 
 function toggleSidebar() { 

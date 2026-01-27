@@ -6,11 +6,9 @@
     <title>Novo Produto - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
-
     <link rel="stylesheet" href="catalog.css">
     <link rel="stylesheet" href="formeprodut.css">
+    <link rel="stylesheet" href="formequipt.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
@@ -34,14 +32,14 @@
             <span class="material-icons-outlined">arrow_back</span>
         </button>
         <div class="v-separator"></div>
-        <span style="font-weight: 600; color: #555; font-size: 14px;">Cadastro de Produto</span>
+        <span id="page-title" style="font-weight: 600; color: #555; font-size: 14px;">Cadastro de Produto</span>
     </div>
 
     <div class="layout-wrapper-full">
         <main class="content-area-full">
             <div class="form-card-wide">
                 <div class="form-header">
-                    <h2>Dados do Produto</h2>
+                    <h2 id="form-title">Dados do Produto</h2>
                     <p>Preencha as informações para registrar um novo material no catálogo.</p>
                 </div>
                 
@@ -50,7 +48,7 @@
                         
                         <div class="form-group">
                             <label>ID Sistema</label>
-                            <input type="text" id="id_cadastro" class="input-readonly" value="Carregando..." readonly>
+                            <input type="text" id="id_cadastro" class="input-readonly" readonly>
                         </div>
 
                         <div class="form-group">
@@ -72,15 +70,15 @@
                         
                         <div class="form-group span-3">
                             <label>Descrição do Produto *</label>
-                            <input type="text" id="descricao" placeholder="Ex: PAPEL A4 75G REICLADO (PCT 500)" required>
+                            <input type="text" id="descricao" placeholder="Ex: PAPEL A4 75G RECICLADO (PCT 500)" required>
                         </div>
 
                         <div class="form-group">
                             <label>Grupo</label>
                             <select id="grupo" required>
                                 <option value="AX">AX - ALMOXARIFADO</option>
-                                <option value="AXA">AXA - ALMOXARIFADO</option>
-                                <option value="AXM">AXM - ALMOXARIFADO</option>
+                                <option value="AXA">AXA - ALMOXARIFADO A</option>
+                                <option value="AXM">AXM - ALMOXARIFADO M</option>
                             </select>
                         </div>
 
@@ -88,14 +86,13 @@
                             <label>Referência ERP</label>
                             <select id="ref_erp" class="input-readonly">
                                 <option value="ME">Mercado Eletrônico</option>
-                                <option disabled>Sem mais opções</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label>Data Cadastro</label>
                             <div class="date-input-wrapper">
-                                <input type="text" id="data_cadastro" placeholder="Selecione a data..." required>
+                                <input type="text" id="data_cadastro" class="input-readonly" readonly>
                                 <span class="material-icons-outlined calendar-icon">calendar_today</span>
                             </div>
                         </div>
@@ -104,7 +101,7 @@
 
                     <div class="form-actions-bottom">
                         <button type="button" class="btn-cancel" onclick="verificarCancelamento()">Cancelar</button>
-                        <button type="submit" class="btn-save">
+                        <button type="submit" class="btn-save" id="btn-salvar-main">
                             <span class="material-icons-outlined">save</span>
                             Salvar Produto
                         </button>
@@ -131,8 +128,6 @@
         <span class="toast-message">Novo produto cadastrado com sucesso!</span>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
     <script src="formeprodut.js"></script>
 </body>
 </html>

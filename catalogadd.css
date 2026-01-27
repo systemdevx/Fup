@@ -60,8 +60,8 @@
 
 /* Modal Largo (Para o Histórico) */
 .modal-box-large {
-    width: 1000px; /* Mais largo que o padrão */
-    max-width: 90%;
+    width: 700px; /* Mais largo que o padrão */
+    max-width: 95%;
     text-align: left; /* Alinhamento à esquerda */
     padding: 20px;
 }
