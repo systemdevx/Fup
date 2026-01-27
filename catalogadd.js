@@ -1,17 +1,51 @@
+// --- CONFIGURAÇÃO SUPABASE ---
+const SUPABASE_URL = 'COLOQUE_SUA_URL_AQUI';
+const SUPABASE_KEY = 'COLOQUE_SUA_ANON_KEY_AQUI';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// -----------------------------
+
 document.addEventListener('DOMContentLoaded', () => {
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     carregarCatalogoEquipamentos();
 });
 
-let listaEquipamentos = [
-    { id_sistema: 'EQ-8550', data_cadastro: '27/01/2026', codigo: 'EQ-001', descricao_equipamento: 'COMPRESSOR DE AR INDUSTRIAL 10HP', unidade_medida: 'UN', grupo_equipamento: 'AI', referencia_erp: 'MERCADO ELETRÔNICO', status_item: 'ativo' }
-];
+// Helpers de formatação
+const formatData = (dataISO) => {
+    if (!dataISO) return '-';
+    const [ano, mes, dia] = dataISO.split('-');
+    return `${dia}/${mes}/${ano}`;
+};
 
-function carregarCatalogoEquipamentos() {
+const formatDataHora = (isoString) => {
+    const data = new Date(isoString);
+    return data.toLocaleString('pt-BR');
+};
+
+async function carregarCatalogoEquipamentos() {
     const tabelaBody = document.getElementById('corpo-tabela-equipamentos');
     if(!tabelaBody) return;
+    
+    tabelaBody.innerHTML = '<tr><td colspan="9" style="text-align:center">Carregando dados...</td></tr>';
+
+    // SELECT no Supabase
+    const { data: listaEquipamentos, error } = await supabase
+        .from('equipamentos')
+        .select('*')
+        .order('created_at', { ascending: false });
+
     tabelaBody.innerHTML = '';
+
+    if (error) {
+        console.error('Erro Supabase:', error);
+        mostrarNotificacao('Erro ao conectar com banco de dados', 'danger');
+        return;
+    }
+
+    if (!listaEquipamentos || listaEquipamentos.length === 0) {
+        tabelaBody.innerHTML = '<tr><td colspan="9" style="text-align:center">Nenhum equipamento cadastrado.</td></tr>';
+        return;
+    }
 
     listaEquipamentos.forEach(item => {
         const linha = document.createElement('tr');
@@ -22,12 +56,12 @@ function carregarCatalogoEquipamentos() {
 
         linha.innerHTML = `
             <td style="color:#666; font-size:11px;">${item.id_sistema}</td>
-            <td style="font-size:12px;">${item.data_cadastro}</td>
+            <td style="font-size:12px;">${formatData(item.data_cadastro)}</td>
             <td style="font-weight:600; color:#555;">${item.codigo}</td>
-            <td>${item.descricao_equipamento}</td>
-            <td>${item.unidade_medida}</td>
-            <td>${item.grupo_equipamento}</td>
-            <td>${item.referencia_erp}</td>
+            <td>${item.descricao}</td>
+            <td>${item.unidade}</td>
+            <td>${item.grupo || ''}</td>
+            <td>${item.ref_erp || ''}</td>
             <td>${statusBadge}</td>
             <td class="action-col">
                 <div class="dropdown-container">
@@ -55,38 +89,48 @@ function carregarCatalogoEquipamentos() {
 }
 
 // --- Funções de Histórico ---
-function verHistoricoEquipamento(id) {
+async function verHistoricoEquipamento(id) {
     const modalHistory = document.getElementById('modal-history');
     const tbody = document.getElementById('lista-historico');
     document.getElementById('hist-id-display').textContent = `(${id})`;
     
-    tbody.innerHTML = ''; // Limpa tabela antiga
+    tbody.innerHTML = '<tr><td colspan="3">Carregando histórico...</td></tr>';
+    modalHistory.style.display = 'flex';
 
-    // Dados Mockados (Simulação de Backend)
-    const historicoMock = [
-        { data: '27/01/2026 14:30', usuario: 'Admin', acao: 'Edição de Cadastro', tipo: 'edit' },
-        { data: '25/01/2026 09:15', usuario: 'Sup. Almox', acao: 'Desbloqueio de Item', tipo: 'create' },
-        { data: '24/01/2026 18:00', usuario: 'Sistema', acao: 'Bloqueio Automático', tipo: 'block' },
-        { data: '20/01/2026 10:00', usuario: 'Admin', acao: 'Criação do Item', tipo: 'create' }
-    ];
+    // SELECT no Histórico
+    const { data: historico, error } = await supabase
+        .from('historico_equipamentos')
+        .select('*')
+        .eq('equipamento_id', id)
+        .order('data_hora', { ascending: false });
 
-    historicoMock.forEach(log => {
+    tbody.innerHTML = '';
+
+    if (error) {
+        console.error(error);
+        tbody.innerHTML = '<tr><td colspan="3">Erro ao carregar.</td></tr>';
+        return;
+    }
+
+    if (!historico || historico.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">Nenhum histórico encontrado.</td></tr>';
+        return;
+    }
+
+    historico.forEach(log => {
         const tr = document.createElement('tr');
         
-        // Define a classe da tag baseada no tipo
         let tagClass = 'hist-create';
-        if(log.tipo === 'block') tagClass = 'hist-block';
-        if(log.tipo === 'edit') tagClass = 'hist-edit';
+        if(log.tipo_badge === 'block') tagClass = 'hist-block';
+        if(log.tipo_badge === 'edit') tagClass = 'hist-edit';
 
         tr.innerHTML = `
-            <td style="color:#555;">${log.data}</td>
-            <td style="font-weight:600;">${log.usuario}</td>
+            <td style="color:#555;">${formatDataHora(log.data_hora)}</td>
+            <td style="font-weight:600;">${log.usuario || 'Sistema'}</td>
             <td><span class="hist-tag ${tagClass}">${log.acao}</span></td>
         `;
         tbody.appendChild(tr);
     });
-
-    modalHistory.style.display = 'flex';
 }
 
 function fecharModalHistorico() {
@@ -114,17 +158,35 @@ function fecharModalConfirmacao() {
     document.getElementById('modal-confirm-action').style.display = 'none';
 }
 
-function executarAlteracaoStatus(id, novoStatus) {
-    const equipamento = listaEquipamentos.find(e => e.id_sistema === id);
-    if (equipamento) {
-        equipamento.status_item = novoStatus;
-        carregarCatalogoEquipamentos();
-        
-        if (novoStatus === 'ativo') {
-            mostrarNotificacao('Item desbloqueado com sucesso!', 'success');
-        } else {
-            mostrarNotificacao('Item bloqueado com sucesso!', 'danger');
-        }
+async function executarAlteracaoStatus(id, novoStatus) {
+    // 1. Atualiza Status
+    const { error } = await supabase
+        .from('equipamentos')
+        .update({ status_item: novoStatus })
+        .eq('id_sistema', id);
+
+    if (error) {
+        mostrarNotificacao('Erro ao atualizar status', 'danger');
+        return;
+    }
+
+    // 2. Grava Log
+    const acaoTexto = novoStatus === 'ativo' ? 'Desbloqueio de Item' : 'Bloqueio de Item';
+    const tipoBadge = novoStatus === 'ativo' ? 'create' : 'block';
+    
+    await supabase.from('historico_equipamentos').insert([{
+        equipamento_id: id,
+        usuario: 'Admin',
+        acao: acaoTexto,
+        tipo_badge: tipoBadge
+    }]);
+
+    carregarCatalogoEquipamentos();
+    
+    if (novoStatus === 'ativo') {
+        mostrarNotificacao('Item desbloqueado com sucesso!', 'success');
+    } else {
+        mostrarNotificacao('Item bloqueado com sucesso!', 'danger');
     }
 }
 
@@ -161,7 +223,8 @@ function alternarMenuDropdown(event, id) {
     todosMenus.forEach(menu => {
         if(menu.id !== `menu-${id}`) menu.classList.remove('show');
     });
-    document.getElementById(`menu-${id}`).classList.toggle('show');
+    const menuAlvo = document.getElementById(`menu-${id}`);
+    if(menuAlvo) menuAlvo.classList.toggle('show');
 }
 
 function toggleSidebar() { 
@@ -175,10 +238,5 @@ function toggleGroup(header) {
 
 window.onclick = function() {
     document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-    // Fecha o modal se clicar fora (no overlay escuro)
     const modals = document.querySelectorAll('.modal-overlay');
-    modals.forEach(m => {
-        // Isso requer cuidado para não fechar ao clicar dentro da caixa, 
-        // mas por segurança, deixei o fechar apenas no botão X.
-    });
 };
