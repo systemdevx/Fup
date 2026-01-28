@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+    
     <header>
         <div class="logo-area"><h1>FUP ALM</h1></div>
         <nav>
@@ -18,43 +19,87 @@
                 <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
                 <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
                 <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+                <li><a href="users.html"><span class="material-icons-outlined">people</span><span>Usuários</span></a></li>
             </ul>
         </nav>
         <div class="user-profile"><div class="avatar">U</div></div>
     </header>
+    
     <div class="sub-header">
-        <div class="left-actions"><div class="dropdown"><span>Visão Geral</span></div></div>
-        <div class="right-actions"><span id="btn-logout" class="material-icons-outlined icon-action" title="Sair">logout</span></div>
+        <div style="display: flex; align-items: center;">
+            <button class="btn-toggle-menu" onclick="toggleSidebar()">
+                <span class="material-icons-outlined">menu_open</span>
+            </button>
+            <span class="page-title">Visão Geral</span>
+        </div>
+        </div>
+
+    <div class="layout-wrapper">
+        <aside class="sidebar-local" id="sidebar">
+            <div class="sidebar-profile-box">
+                <div class="profile-avatar-large" id="profile-avatar-large">U</div>
+                <div class="profile-name" id="user-greeting">Carregando...</div>
+                <div class="profile-role" id="user-role-display">...</div>
+                
+                <div class="profile-actions">
+                    <button class="btn-profile-action" onclick="verPerfil()">
+                        <span class="material-icons-outlined">person</span> Ver Meu Perfil
+                    </button>
+                    <button class="btn-profile-action" onclick="mudarSenha()">
+                        <span class="material-icons-outlined">lock_reset</span> Alterar Senha
+                    </button>
+                </div>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #EEE; width: 100%; margin-bottom: 20px;">
+            
+            <div style="text-align: left; width: 100%; color: #888; font-size: 12px; padding: 0 10px;">
+                <p><strong>Status do Sistema:</strong></p>
+                <div style="display: flex; align-items: center; gap: 5px; margin-top: 5px; color: #10B981;">
+                    <span class="material-icons-outlined" style="font-size: 14px;">check_circle</span> Operacional
+                </div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="dashboard-grid">
+                
+                <div class="card">
+                    <div class="card-top">
+                        <span class="material-icons-outlined icon-theme">notifications_active</span>
+                        <h3>Avisos</h3>
+                    </div>
+                    <div class="card-value">0</div>
+                    <div class="card-subtext">Novas mensagens</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <span class="material-icons-outlined icon-theme">pending_actions</span>
+                        <h3>Pendências</h3>
+                    </div>
+                    <div class="card-value">0</div>
+                    <div class="card-subtext">Tarefas aguardando</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top">
+                        <span class="material-icons-outlined icon-theme">shopping_cart</span>
+                        <h3>Pedidos</h3>
+                    </div>
+                    <div class="card-value">0</div>
+                    <div class="card-subtext">Em processamento</div>
+                </div>
+
+            </div>
+
+            <div id="dashboard-content" style="text-align: center; padding: 60px; color: #999; border: 2px dashed #E5E7EB; border-radius: 8px;">
+                <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; margin-bottom: 15px;">analytics</span>
+                <p>Gráficos e Indicadores de Desempenho (BI) serão carregados aqui.</p>
+            </div>
+        </main>
     </div>
-    <main>
-        <div class="dashboard-grid-top">
-            <div class="card hero-card">
-                <div class="hero-content">
-                    <h2>Bem-vindo ao Portal</h2>
-                    <p>Selecione um módulo no menu acima para iniciar suas atividades.</p>
-                </div>
-            </div>
-            <div class="card simple-card">
-                <div class="card-top">
-                    <span class="material-icons-outlined icon-theme">notifications_active</span>
-                    <h3>Avisos</h3>
-                </div>
-                <div style="font-size: 13px; color: #999; margin-top: 10px;">Sem notificações novas.</div>
-            </div>
-            <div class="card simple-card">
-                <div class="card-top">
-                    <span class="material-icons-outlined icon-theme">pending_actions</span>
-                    <h3>Pendências</h3>
-                </div>
-                <div style="font-size: 13px; color: #999; margin-top: 10px;">Tudo em dia.</div>
-            </div>
-        </div>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        <div id="dashboard-content" style="text-align: center; padding: 40px; color: #999;">
-            <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; margin-bottom: 15px;">analytics</span>
-            <p>Os indicadores de desempenho serão carregados aqui após a integração com o banco de dados.</p>
-        </div>
-    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="dashboard.js"></script>
 </body>

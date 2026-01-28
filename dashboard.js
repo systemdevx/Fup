@@ -7,51 +7,88 @@ if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
-// Variável para controlar o temporizador
 let inactivityTimer;
-const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+const TEMPO_LIMITE = 30 * 60 * 1000; 
 
 (async function checkSession() {
     if (!supabaseClient) return;
 
     const { data: { session }, error } = await supabaseClient.auth.getSession();
 
-    // Se NÃO houver sessão, manda para o login
     if (!session || error) {
         window.location.href = 'login.html';
         return; 
     }
 
-    // Se houver sessão, libera a visualização e inicia o monitoramento
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     
-    // Inicia a contagem de segurança
     iniciarMonitoramentoInatividade();
 
-    if (session.user && session.user.email) {
-        const email = session.user.email;
-        const initials = email.substring(0, 2).toUpperCase();
-        const avatarEl = document.querySelector('.avatar');
-        if (avatarEl) avatarEl.innerText = initials;
-    }
+    // --- POPULAR PERFIL NA SIDEBAR ---
+    if (session.user) {
+        const user = session.user;
+        const email = user.email;
+        
+        // Nome
+        const metadata = user.user_metadata || {};
+        const nomeCompleto = metadata.full_name || email.split('@')[0];
+        const nomeFormatado = nomeCompleto.charAt(0).toUpperCase() + nomeCompleto.slice(1);
+        
+        // Cargo
+        const cargo = metadata.role || 'Administrador';
 
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) {
-        logoutBtn.onclick = async () => {
-            if (confirm("Tem certeza que deseja sair?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
+        // Iniciais
+        const initials = email.substring(0, 2).toUpperCase();
+
+        // Elementos Header
+        const avatarSmall = document.querySelector('.avatar');
+        if (avatarSmall) avatarSmall.innerText = initials;
+
+        // Elementos Sidebar (Perfil)
+        const greetingEl = document.getElementById('user-greeting');
+        const roleEl = document.getElementById('user-role-display');
+        const avatarLarge = document.getElementById('profile-avatar-large');
+
+        if(greetingEl) greetingEl.innerText = nomeFormatado;
+        if(roleEl) roleEl.innerText = cargo;
+        if(avatarLarge) avatarLarge.innerText = initials;
     }
 })();
 
-// --- FUNÇÃO DE SEGURANÇA (30 Minutos) ---
+// --- AÇÕES DO USUÁRIO ---
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('sidebar-closed');
+    }
+}
+
+function verPerfil() {
+    alert("Funcionalidade em desenvolvimento: Visualizar Perfil Completo.");
+    // Futuro: window.location.href = 'profile.html';
+}
+
+async function mudarSenha() {
+    const email = prompt("Confirme seu e-mail para receber o link de redefinição:");
+    if (email) {
+        const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset-password.html',
+        });
+        
+        if (error) {
+            alert("Erro ao enviar: " + error.message);
+        } else {
+            alert("Link enviado para " + email + ". Verifique sua caixa de entrada.");
+        }
+    }
+}
+
+// --- SEGURANÇA ---
 function iniciarMonitoramentoInatividade() {
     function resetTimer() {
         clearTimeout(inactivityTimer);
-        // Reinicia a contagem para 30 minutos
         inactivityTimer = setTimeout(async () => {
             alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
             if (supabaseClient) {
@@ -60,11 +97,9 @@ function iniciarMonitoramentoInatividade() {
             window.location.href = 'login.html';
         }, TEMPO_LIMITE);
     }
-
-    // Eventos que consideram o usuário "ativo"
     window.onload = resetTimer;
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
     document.onclick = resetTimer;
-    document.onscroll = resetTimer; // Adicionado scroll também
+    document.onscroll = resetTimer;
 }
