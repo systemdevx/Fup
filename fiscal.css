@@ -1,11 +1,11 @@
 /* --- fiscal.css --- */
-/* Estilos específicos para o Módulo Fiscal */
-
 :root {
     --bg-body: #F3F4F6;
     --header-bg: #FFFFFF; 
     --primary-orange: #E67E22; 
     --primary-orange-hover: #D35400;
+    --primary-blue: #1A73E8; 
+    --primary-blue-hover: #1557B0;
     --text-dark: #333333;
     --text-grey: #666666;
     --border-color: #E5E7EB;
@@ -68,16 +68,17 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
 }
-.btn-toggle-menu:hover { background-color: #F3F4F6; color: var(--primary-orange); }
+.btn-toggle-menu:hover { background-color: #F3F4F6; color: #333; }
+.btn-toggle-menu .material-icons-outlined { font-size: 20px; }
 
-.btn-subheader-action {
-    background-color: var(--primary-orange); color: white; border: none; 
+/* Botão Azul */
+.btn-subheader-action.btn-blue {
+    background-color: var(--primary-blue); color: white; border: none; 
     height: 32px; padding: 0 16px; border-radius: 4px;
     cursor: pointer; display: flex; align-items: center; gap: 6px;
     font-size: 13px; transition: background 0.2s;
 }
-.btn-subheader-action:hover { background-color: var(--primary-orange-hover); }
-.btn-subheader-action .material-icons-outlined { font-size: 16px; }
+.btn-subheader-action.btn-blue:hover { background-color: var(--primary-blue-hover); }
 
 .v-separator { width: 1px; height: 20px; background-color: #E5E7EB; margin: 0 5px; }
 .header-right-actions { margin-left: auto; display: flex; align-items: center; gap: 15px; }
@@ -104,14 +105,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     padding: 4px 8px; border-radius: 4px; transition: background 0.1s;
 }
 .btn-filter-inside:hover { background-color: #E8F0FE; }
-
-.view-actions { display: flex; align-items: center; gap: 8px; color: #5F6368; }
-.btn-view-icon {
-    border: none; background: transparent; cursor: pointer; color: #5F6368;
-    display: flex; align-items: center; justify-content: center;
-    padding: 8px; border-radius: 4px;
-}
-.btn-view-icon:hover { background-color: #F1F3F4; color: #202124; }
+.btn-filter-inside .material-icons-outlined { font-size: 16px; }
 
 /* --- SIDEBAR --- */
 .layout-wrapper {
@@ -124,6 +118,14 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     overflow-y: auto; transition: width 0.3s ease;
 }
 .sidebar-local.sidebar-closed { width: 0; border-right: none; overflow: hidden; }
+
+.sidebar-search-container {
+    background-color: #F8F9FA; border-radius: 4px; height: 36px;
+    display: flex; align-items: center; padding: 0 8px; margin-bottom: 10px;
+}
+.sidebar-search-container input {
+    border: none; background: transparent; outline: none; width: 100%; font-size: 13px; margin-left: 5px;
+}
 
 .menu-group {
     display: flex; flex-direction: column; margin-bottom: 10px;
@@ -149,8 +151,8 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .menu-text-icon { display: flex; align-items: center; gap: 12px; }
 .menu-text-icon .material-icons-outlined { font-size: 20px; color: #9CA3AF; }
 
-.group-list li a:hover { background-color: #F9FAFB; color: var(--primary-orange); }
-.group-list li a:hover .menu-text-icon .material-icons-outlined { color: var(--primary-orange); }
+.group-list li a:hover { background-color: #F9FAFB; color: #333; }
+.group-list li a:hover .menu-text-icon .material-icons-outlined { color: #666; }
 
 .group-list li a.active {
     background-color: var(--light-orange-bg); color: var(--primary-orange);
@@ -211,6 +213,5 @@ tr:hover td { background-color: #FAFAFA; }
     .layout-wrapper { flex-direction: column; height: auto; }
     .sidebar-local { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); height: auto; padding-bottom: 10px;}
     .sidebar-local.sidebar-closed { height: 0; padding-bottom: 0; }
-    .group-list { display: none; }
     .table-container { overflow-x: auto; }
 }

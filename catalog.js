@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     carregarCatalogoProdutos();
+    configurarBusca();
 });
 
 // Dados Mockados do Catálogo de Produtos
@@ -75,6 +76,35 @@ function carregarCatalogoProdutos() {
     });
 }
 
+function configurarBusca() {
+    // Busca Lateral (Filtra o menu)
+    const sidebarInput = document.getElementById('sidebar-search');
+    if (sidebarInput) {
+        sidebarInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const menuTexts = document.querySelectorAll('.group-list li a .menu-text-icon span:last-child');
+            
+            menuTexts.forEach(span => {
+                const li = span.closest('li');
+                if (span.innerText.toLowerCase().includes(termo)) {
+                    li.style.display = 'flex';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Busca Global (Log apenas)
+    const globalInput = document.getElementById('global-search');
+    if(globalInput) {
+        globalInput.addEventListener('input', (e) => {
+            console.log("Buscando produto:", e.target.value);
+            // Implementar lógica real de filtro na tabela aqui futuramente
+        });
+    }
+}
+
 // --- Funções de Dropdown ---
 function alternarMenuDropdown(event, id) {
     event.stopPropagation();
@@ -91,7 +121,6 @@ function alternarMenuDropdown(event, id) {
 
 // --- Funções de Edição ---
 function editarProduto(id) {
-    // Redireciona via URL Parameter para manter consistência com formequipt
     window.location.href = `formeprodut.html?id=${id}`;
 }
 
@@ -101,9 +130,8 @@ function verHistoricoProduto(id) {
     const tbody = document.getElementById('lista-historico');
     document.getElementById('hist-id-display').textContent = `(${id})`;
     
-    if(tbody) tbody.innerHTML = ''; // Limpa tabela antiga
+    if(tbody) tbody.innerHTML = ''; 
 
-    // Dados Mockados (Simulação)
     const historicoMock = [
         { data: '27/01/2026 14:30', usuario: 'Admin', acao: 'Edição de Cadastro', tipo: 'edit' },
         { data: '25/01/2026 09:15', usuario: 'Almoxarife', acao: 'Desbloqueio de Item', tipo: 'create' },
@@ -199,12 +227,26 @@ function mostrarNotificacao(mensagem, tipo = 'success') {
 
 function toggleSidebar() { 
     const sidebar = document.getElementById('sidebar');
-    if(sidebar) sidebar.classList.toggle('sidebar-closed'); 
+    const icon = document.querySelector('.btn-toggle-menu .material-icons-outlined');
+    if(sidebar) {
+        sidebar.classList.toggle('sidebar-closed'); 
+        if(icon) {
+            icon.textContent = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left';
+        }
+    }
 }
 
 function toggleGroup(header) {
     const lista = header.parentElement.querySelector('.group-list');
-    lista.style.display = (lista.style.display === 'none' || lista.style.display === '') ? 'flex' : 'none';
+    const arrow = header.querySelector('.arrow-header');
+    
+    if (lista.style.display === 'none' || lista.style.display === '') {
+        lista.style.display = 'flex';
+        arrow.textContent = 'expand_less';
+    } else {
+        lista.style.display = 'none';
+        arrow.textContent = 'expand_more';
+    }
 }
 
 window.onclick = function() {

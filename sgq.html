@@ -26,10 +26,12 @@
     </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined">menu</span></button>
+        <button class="btn-toggle-menu" onclick="toggleSidebar()">
+            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
+        </button>
         <div class="v-separator"></div>
         
-        <button class="btn-subheader-action" onclick="window.location.href='fvy.html'">
+        <button class="btn-subheader-action btn-blue" onclick="window.location.href='fvy.html'">
             <span class="material-icons-outlined">add</span><span>Novo Fvy SGQ</span>
         </button>
 
@@ -38,15 +40,19 @@
                 <span class="material-icons-outlined search-icon-left">search</span>
                 <input type="text" class="search-input-clean" placeholder="Buscar código, equipamento ou setor..." onkeyup="filtrarTabela(this.value)">
             </div>
-            <div class="view-actions">
-                <button class="btn-view-icon" onclick="carregarSgq()" title="Atualizar Lista"><span class="material-icons-outlined">refresh</span></button>
-                <button id="btn-logout" class="btn-view-icon" title="Sair"><span class="material-icons-outlined">logout</span></button>
             </div>
-        </div>
     </div>
 
     <div class="layout-wrapper">
         <aside class="sidebar-local" id="sidebar">
+            
+            <div style="padding: 10px 20px 0 20px;">
+                <div class="sidebar-search-container">
+                    <span class="material-icons-outlined" style="font-size: 18px; color: #999;">search</span>
+                    <input type="text" id="sidebar-search" placeholder="Buscar neste menu">
+                </div>
+            </div>
+
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
                     <span>CONTROLE</span>

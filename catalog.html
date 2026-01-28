@@ -28,15 +28,35 @@
         <button class="btn-toggle-menu" onclick="toggleSidebar()">
             <span class="material-icons-outlined">chevron_left</span>
         </button>
+        
         <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="window.location.href='formeprodut.html'">
+        
+        <button class="btn-subheader-action btn-blue" onclick="window.location.href='formeprodut.html'">
             <span class="material-icons-outlined">add</span>
             <span>Novo Produto</span>
         </button>
+
+        <div class="header-right-actions">
+            <div class="search-styled-container">
+                <span class="material-icons-outlined search-icon-left">search</span>
+                <input type="text" id="global-search" class="search-input-clean" placeholder="Pesquisar Produto">
+                <button class="btn-filter-inside">
+                    <span class="material-icons-outlined">filter_alt</span><span>Filtros</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="layout-wrapper">
         <aside class="sidebar-local" id="sidebar">
+            
+            <div style="padding: 10px 20px 0 20px;">
+                <div class="sidebar-search-container">
+                    <span class="material-icons-outlined" style="font-size: 18px; color: #999;">search</span>
+                    <input type="text" id="sidebar-search" placeholder="Buscar neste menu">
+                </div>
+            </div>
+
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
                     <span>ALMOXARIFADO</span><span class="material-icons-outlined arrow-header">expand_less</span>

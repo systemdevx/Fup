@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     await checkSession();
+    configurarBuscaSidebar();
     carregarSgq(); 
 });
 
@@ -34,17 +35,6 @@ async function checkSession() {
         const avatar = document.querySelector('.avatar');
         if(avatar) avatar.innerText = data.session.user.email.substring(0, 2).toUpperCase();
     }
-
-    // Botão Logout
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) {
-        logoutBtn.onclick = async () => {
-            if (confirm("Deseja realmente sair?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
-    }
 }
 
 function iniciarMonitoramentoInatividade() {
@@ -60,6 +50,8 @@ function iniciarMonitoramentoInatividade() {
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
 }
+
+// --- Funções da Tabela ---
 
 async function carregarSgq() {
     const tbody = document.getElementById('lista-sgq');
@@ -131,12 +123,45 @@ function filtrarTabela(texto) {
     });
 }
 
+// --- Funções de UI Sidebar ---
+
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    if(sidebar) sidebar.classList.toggle('sidebar-closed');
+    const icon = document.getElementById('icon-toggle-menu');
+    if (sidebar) {
+        sidebar.classList.toggle('sidebar-closed');
+        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
+    }
 }
 
 function toggleGroup(header) {
     const list = header.nextElementSibling;
-    if(list) list.style.display = (list.style.display === 'none') ? 'flex' : 'none';
+    const arrow = header.querySelector('.arrow-header');
+    
+    if (list.style.display === 'none') {
+        list.style.display = 'flex'; 
+        arrow.innerText = 'expand_less'; 
+    } else {
+        list.style.display = 'none'; 
+        arrow.innerText = 'expand_more'; 
+    }
+}
+
+function configurarBuscaSidebar() {
+    const sidebarInput = document.getElementById('sidebar-search');
+    if (sidebarInput) {
+        sidebarInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const menuTexts = document.querySelectorAll('.group-list li a .menu-text-icon span:last-child');
+            
+            menuTexts.forEach(span => {
+                const li = span.closest('li');
+                if (span.innerText.toLowerCase().includes(termo)) {
+                    li.style.display = 'flex';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
+    }
 }

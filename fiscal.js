@@ -15,6 +15,7 @@ const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
+    configurarBuscaSidebar();
     // Inicia com lista vazia aguardando integração
     carregarFiscal([]); 
 });
@@ -39,16 +40,6 @@ async function checkSession() {
         const initials = session.user.email.substring(0, 2).toUpperCase();
         const avatarEl = document.querySelector('.avatar');
         if (avatarEl) avatarEl.innerText = initials;
-    }
-
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) {
-        logoutBtn.onclick = async () => {
-            if (confirm("Tem certeza que deseja sair?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
     }
 }
 
@@ -105,6 +96,25 @@ function ativarItem(element) {
         link.classList.remove('active');
     });
     element.classList.add('active');
+}
+
+function configurarBuscaSidebar() {
+    const sidebarInput = document.getElementById('sidebar-search');
+    if (sidebarInput) {
+        sidebarInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const menuTexts = document.querySelectorAll('.group-list li a .menu-text-icon span:last-child');
+            
+            menuTexts.forEach(span => {
+                const li = span.closest('li');
+                if (span.innerText.toLowerCase().includes(termo)) {
+                    li.style.display = 'flex';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
+    }
 }
 
 // Lógica da Tabela

@@ -1,104 +1,65 @@
 // --- transactions.js ---
 
-// 1. Configuração do Supabase (Igual ao Dashboard)
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
 
 let supabaseClient;
 if (typeof supabase !== 'undefined') {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-} else {
-    console.error('ERRO CRÍTICO: Supabase não carregado.');
 }
 
-// Variável para controlar o temporizador
 let inactivityTimer;
-const TEMPO_LIMITE = 30 * 60 * 1000; // 30 minutos em milissegundos
+const TEMPO_LIMITE = 30 * 60 * 1000;
 
-// 2. Verificação de Sessão e Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    // Inicia com lista vazia (aguardando integração real com banco de dados)
+    configurarBusca();
     carregarPedidos([]); 
 });
 
 async function checkSession() {
     if (!supabaseClient) return;
 
-    // Tenta pegar a sessão ativa
     const { data: { session }, error } = await supabaseClient.auth.getSession();
 
-    // Se não houver usuário logado, redireciona
     if (!session || error) {
         window.location.href = 'login.html';
         return; 
     }
 
-    // Mostra a tela e inicia segurança
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
-    
-    // Inicia a contagem de segurança
     iniciarMonitoramentoInatividade();
 
-    // Personaliza Avatar
     if (session.user && session.user.email) {
         const initials = session.user.email.substring(0, 2).toUpperCase();
         const avatarEl = document.querySelector('.avatar');
         if (avatarEl) avatarEl.innerText = initials;
     }
-
-    // Configura o Logout
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) {
-        logoutBtn.onclick = async () => {
-            if (confirm("Tem certeza que deseja sair?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
-    }
 }
 
-// --- FUNÇÃO DE SEGURANÇA (30 Minutos) ---
 function iniciarMonitoramentoInatividade() {
     function resetTimer() {
         clearTimeout(inactivityTimer);
-        // Reinicia a contagem para 30 minutos
         inactivityTimer = setTimeout(async () => {
-            alert("Sessão expirada por inatividade (30 min). Você será desconectado.");
-            if (supabaseClient) {
-                await supabaseClient.auth.signOut();
-            }
+            alert("Sessão expirada por inatividade.");
+            if (supabaseClient) await supabaseClient.auth.signOut();
             window.location.href = 'login.html';
         }, TEMPO_LIMITE);
     }
-
-    // Eventos que consideram o usuário "ativo"
     window.onload = resetTimer;
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
-    document.onscroll = resetTimer;
 }
 
 /* --- LÓGICA DO MENU LATERAL --- */
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const label = document.getElementById('lbl-toggle-menu');
     const icon = document.getElementById('icon-toggle-menu');
-
     if (sidebar) {
         sidebar.classList.toggle('sidebar-closed');
-        
-        if (sidebar.classList.contains('sidebar-closed')) {
-            if(label) label.innerText = 'Mostrar Menu';
-            if(icon) icon.innerText = 'chevron_right'; 
-        } else {
-            if(label) label.innerText = 'Ocultar Menu';
-            if(icon) icon.innerText = 'chevron_left'; 
-        }
+        if (icon) icon.innerText = sidebar.classList.contains('sidebar-closed') ? 'chevron_right' : 'chevron_left'; 
     }
 }
 
@@ -116,27 +77,57 @@ function toggleGroup(header) {
 }
 
 function ativarItem(element) {
-    document.querySelectorAll('.sidebar-local a').forEach(link => {
+    // Remove active de todos
+    document.querySelectorAll('.group-list li a').forEach(link => {
         link.classList.remove('active');
+        // Reseta ícone de pasta se houver
         const icon = link.querySelector('.menu-text-icon .material-icons-outlined');
         if(icon && icon.innerText === 'folder_open') icon.innerText = 'folder';
     });
 
+    // Ativa o clicado
     element.classList.add('active');
 
+    // Troca ícone se for pasta
     const icon = element.querySelector('.menu-text-icon .material-icons-outlined');
     if(icon && icon.innerText === 'folder') {
         icon.innerText = 'folder_open';
     }
+}
 
-    const textoItem = element.querySelector('span:not(.material-icons-outlined)').innerText;
-    const tituloPagina = document.getElementById('titulo-pagina');
-    if(tituloPagina) tituloPagina.innerText = textoItem;
+// --- FUNÇÕES DE BUSCA ---
+
+function configurarBusca() {
+    // Busca Lateral (Filtra o menu)
+    const sidebarInput = document.getElementById('sidebar-search');
+    if (sidebarInput) {
+        sidebarInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const menuTexts = document.querySelectorAll('.group-list li a .menu-text-icon span:last-child');
+            
+            menuTexts.forEach(span => {
+                const li = span.closest('li');
+                if (span.innerText.toLowerCase().includes(termo)) {
+                    li.style.display = 'flex';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Busca Global
+    const globalInput = document.getElementById('global-search');
+    if(globalInput) {
+        globalInput.addEventListener('input', (e) => {
+            console.log("Buscando transação:", e.target.value);
+            // Implementar filtro real quando houver lista de pedidos
+        });
+    }
 }
 
 /* --- LÓGICA DA TABELA DE DADOS --- */
 
-// Função preparada para receber dados reais do Supabase futuramente
 function carregarPedidos(listaDePedidos) {
     const tbody = document.getElementById('lista-pedidos');
     const emptyMsg = document.getElementById('empty-state-msg');
@@ -144,7 +135,6 @@ function carregarPedidos(listaDePedidos) {
     if(!tbody) return;
     tbody.innerHTML = ''; 
 
-    // Verifica se a lista está vazia
     if (!listaDePedidos || listaDePedidos.length === 0) {
         if(emptyMsg) emptyMsg.style.display = 'block';
         return;
@@ -159,7 +149,6 @@ function carregarPedidos(listaDePedidos) {
         else statusClass = 'status-cancelado';
 
         let icone = 'inventory_2';
-        // Lógica de ícones pode ser expandida aqui
         
         const row = `
             <tr>
@@ -173,7 +162,7 @@ function carregarPedidos(listaDePedidos) {
                 <td>${pedido.detalhes}</td>
                 <td>${pedido.data}</td>
                 <td><span class="status-badge ${statusClass}">${pedido.status}</span></td>
-                <td>
+                <td style="text-align: right;">
                     <button class="btn-icon" title="Ver Detalhes"><span class="material-icons-outlined">visibility</span></button>
                     <button class="btn-icon" title="Repetir Pedido"><span class="material-icons-outlined">replay</span></button>
                 </td>
