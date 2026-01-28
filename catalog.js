@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Remove a invisibilidade do body agora que o script carregou
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
     carregarCatalogoProdutos();
@@ -81,7 +82,11 @@ function alternarMenuDropdown(event, id) {
     todosMenus.forEach(menu => {
         if(menu.id !== `menu-${id}`) menu.classList.remove('show');
     });
-    document.getElementById(`menu-${id}`).classList.toggle('show');
+    
+    const menuAlvo = document.getElementById(`menu-${id}`);
+    if (menuAlvo) {
+        menuAlvo.classList.toggle('show');
+    }
 }
 
 // --- Funções de Edição ---
@@ -96,7 +101,7 @@ function verHistoricoProduto(id) {
     const tbody = document.getElementById('lista-historico');
     document.getElementById('hist-id-display').textContent = `(${id})`;
     
-    tbody.innerHTML = ''; // Limpa tabela antiga
+    if(tbody) tbody.innerHTML = ''; // Limpa tabela antiga
 
     // Dados Mockados (Simulação)
     const historicoMock = [
@@ -117,14 +122,15 @@ function verHistoricoProduto(id) {
             <td style="font-weight:600;">${log.usuario}</td>
             <td><span class="hist-tag ${tagClass}">${log.acao}</span></td>
         `;
-        tbody.appendChild(tr);
+        if(tbody) tbody.appendChild(tr);
     });
 
-    modalHistory.style.display = 'flex';
+    if(modalHistory) modalHistory.style.display = 'flex';
 }
 
 function fecharModalHistorico() {
-    document.getElementById('modal-history').style.display = 'none';
+    const modal = document.getElementById('modal-history');
+    if(modal) modal.style.display = 'none';
 }
 
 // --- Funções de Confirmação de Status ---
@@ -136,16 +142,19 @@ function solicitarConfirmacaoStatus(id, novoStatus) {
     document.getElementById('modal-title').textContent = "Confirmar Alteração";
     document.getElementById('modal-text').textContent = `Deseja realmente ${txt} o produto ${id}?`;
     
-    modal.style.display = 'flex';
+    if(modal) modal.style.display = 'flex';
     
-    btnConfirm.onclick = () => {
-        executarAlteracaoStatus(id, novoStatus);
-        fecharModalConfirmacao();
-    };
+    if(btnConfirm) {
+        btnConfirm.onclick = () => {
+            executarAlteracaoStatus(id, novoStatus);
+            fecharModalConfirmacao();
+        };
+    }
 }
 
 function fecharModalConfirmacao() {
-    document.getElementById('modal-confirm-action').style.display = 'none';
+    const modal = document.getElementById('modal-confirm-action');
+    if(modal) modal.style.display = 'none';
 }
 
 function executarAlteracaoStatus(id, novoStatus) {
@@ -165,6 +174,8 @@ function executarAlteracaoStatus(id, novoStatus) {
 // --- Utilitários ---
 function mostrarNotificacao(mensagem, tipo = 'success') {
     const toast = document.getElementById('toast');
+    if(!toast) return;
+
     const toastMsg = toast.querySelector('.toast-message');
     const toastIcon = toast.querySelector('.toast-icon');
     
@@ -187,7 +198,8 @@ function mostrarNotificacao(mensagem, tipo = 'success') {
 }
 
 function toggleSidebar() { 
-    document.getElementById('sidebar').classList.toggle('sidebar-closed'); 
+    const sidebar = document.getElementById('sidebar');
+    if(sidebar) sidebar.classList.toggle('sidebar-closed'); 
 }
 
 function toggleGroup(header) {
