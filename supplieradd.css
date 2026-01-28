@@ -11,6 +11,7 @@
     --text-grey: #666666;
     --border-color: #E5E7EB;
     --input-border: #E0E0E0;
+    --error-color: #D32F2F;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,28 +24,9 @@ body {
     display: flex; flex-direction: column; min-height: 100vh;
 }
 
-/* --- HEADER (Copiado de supplier.css para garantir tamanho exato) --- */
-h1, h2, h3, h4, button { font-family: 'Calibre', 'Calibri', sans-serif; font-weight: 700; }
-
-header {
-    background-color: var(--header-bg); height: 75px;
-    display: flex; align-items: center; padding: 0 30px;
-    border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0; z-index: 10;
-}
-
+.logo-area { display: flex; align-items: center; gap: 15px; }
 .logo-area h1 { font-size: 20px; color: var(--primary-orange); margin: 0; }
-nav { margin-left: auto; margin-right: 30px; height: 100%; }
-nav ul { display: flex; height: 100%; gap: 30px; list-style: none; }
-nav ul li { height: 100%; display: flex; align-items: center; }
-nav ul li a {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-decoration: none; color: var(--text-grey); 
-    font-size: 13px; font-weight: 500;
-    gap: 4px; height: 100%; padding: 0 10px; border-bottom: 3px solid transparent;
-}
-nav ul li a .material-icons-outlined { font-size: 24px; margin-bottom: 2px; }
-nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--primary-orange); }
+
 .user-profile .avatar {
     width: 40px; height: 40px; background-color: #8D6E63; color: white;
     border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
@@ -71,11 +53,12 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     font-size: 16px; font-weight: 700; color: #555;
 }
 
-/* --- LAYOUT --- */
+/* --- LAYOUT WRAPPER --- */
 .layout-wrapper { 
-    display: flex; flex-grow: 1; width: 100%; height: calc(100vh - 135px); overflow: hidden; 
+    display: flex; flex-grow: 1; width: 100%; height: calc(100vh - 135px); overflow: hidden; justify-content: center;
 }
 
+/* --- CONTENT AREA --- */
 .content-area {
     width: 100%; padding: 30px; 
     background-color: var(--bg-body); overflow-y: auto;
@@ -83,7 +66,10 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 }
 
 .registration-card {
-    background-color: #fff; width: 100%; max-width: 1200px;
+    background-color: #fff; 
+    /* ALTERAÇÃO: Largura aumentada para usar mais a tela */
+    width: 96%; 
+    max-width: 100%; 
     border-radius: 8px; padding: 35px 40px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     display: flex; flex-direction: column;
@@ -101,7 +87,7 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     margin-bottom: 25px;
 }
 
-.instruction-text { font-size: 14px; color: #666; margin-bottom: 30px; }
+.instruction-text { font-size: 13px; color: #666; margin-bottom: 30px; }
 
 /* GRID DO FORMULÁRIO */
 .validation-grid {
@@ -109,14 +95,39 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 }
 
 .input-group { display: flex; flex-direction: column; gap: 6px; }
-.input-group label { font-size: 12px; color: #5F6368; font-weight: 600; text-transform: uppercase; }
 
+.input-group label { 
+    font-size: 11px; 
+    color: #5F6368; 
+    font-weight: 500; /* Reduzido de 600 para ficar menos "negrito" */
+    text-transform: uppercase; 
+    letter-spacing: 0.5px;
+}
+
+/* Estilo Base dos Inputs */
 .input-group input, .input-group select, .custom-select-wrapper {
     height: 40px; border: 1px solid var(--input-border);
-    border-radius: 5px; padding: 0 12px; font-size: 14px; color: #333;
+    border-radius: 5px; padding: 0 12px; 
+    font-size: 13px; 
+    color: #333;
     outline: none; background-color: #fff; font-family: inherit; min-width: 180px;
     transition: border 0.2s;
+    text-transform: uppercase; 
+    font-weight: 400; 
 }
+
+.input-group input::placeholder {
+    text-transform: none; color: #999; font-weight: 400; opacity: 1;
+}
+
+/* Tratamento de Erro */
+.input-error {
+    border-color: var(--error-color) !important;
+    background-color: #FFF8F8;
+    text-transform: none !important; 
+}
+.input-error::placeholder { color: var(--error-color); font-weight: 400; opacity: 1; }
+select.input-error { color: var(--error-color); font-weight: 400; }
 
 .custom-select-wrapper { position: relative; padding: 0; display: flex; align-items: center; }
 .custom-select-wrapper select {
@@ -130,29 +141,42 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .input-expanded { flex-grow: 1; min-width: 300px; }
 .input-expanded input { width: 100%; }
 
-/* --- AÇÕES DE RODAPÉ (Estilo Fino) --- */
+/* --- AÇÕES DE RODAPÉ --- */
 .form-actions-footer {
     margin-top: auto; padding-top: 25px;
     border-top: 1px solid #EEE;
     display: flex; justify-content: flex-end; gap: 12px;
 }
 
+/* Botões Padronizados (Tamanho reduzido e sem Negrito) */
+.btn-cancel, .btn-save {
+    height: 32px; 
+    padding: 0 16px; 
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 400; /* ALTERAÇÃO: Sem negrito conforme pedido */
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; 
+    transition: all 0.2s;
+}
+
 .btn-cancel {
-    background-color: white; border: 1px solid #D1D5DB; color: #374151;
-    padding: 9px 22px; border-radius: 5px; cursor: pointer;
-    font-weight: 600; font-size: 13px; transition: 0.2s;
+    background-color: white; 
+    border: 1px solid #D1D5DB; 
+    color: #374151;
 }
 .btn-cancel:hover { background-color: #F3F4F6; }
 
 .btn-save {
-    background-color: var(--primary-blue); border: none; color: white;
-    padding: 9px 25px; border-radius: 5px; cursor: pointer;
-    font-weight: 600; display: flex; align-items: center; gap: 8px;
-    font-size: 13px; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    background-color: var(--primary-blue); 
+    border: none; 
+    color: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 .btn-save:hover { background-color: var(--primary-blue-hover); transform: translateY(-1px); }
 
-/* --- MODAL STYLES (Estilo Formeprodut) --- */
+/* --- MODAL STYLES --- */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.5); z-index: 999;

@@ -11,35 +11,20 @@
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
 
     <header>
-        <div class="logo-area">
-            <h1>FUP ALM</h1>
-        </div>
-        
-        <nav>
-            <ul>
-                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
-                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
-                <li><a href="catalog.html"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
-                <li><a href="supplier.html" class="active"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
-                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
-                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile"><div class="avatar">U</div></div>
-    </header>
+        </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="verificarCancelamento()" title="Voltar">
+        <button class="btn-toggle-menu" onclick="verificarCancelamento()" title="Voltar para Fornecedores">
             <span class="material-icons-outlined">arrow_back</span>
         </button>
+        
         <div class="v-separator"></div>
         <span class="page-title">Novo Fornecedor</span>
     </div>
 
     <div class="layout-wrapper">
+        
         <main class="content-area">
-            
             <div class="registration-card">
                 
                 <div class="card-header-tabs">
@@ -49,30 +34,30 @@
 
                 <p class="instruction-text">Preencha os dados abaixo para iniciar a validação do fornecedor.</p>
 
-                <form id="form-fornecedor" onsubmit="event.preventDefault(); solicitarValidacao();">
+                <form id="form-fornecedor" onsubmit="event.preventDefault(); solicitarValidacao();" novalidate>
                     <div class="validation-grid">
                         
                         <div class="input-group">
                             <label>Localidade *</label>
                             <div class="custom-select-wrapper">
-                                <select id="select-pais" required>
-                                    <option value="" disabled selected>Selecionar País</option>
-                                    <option value="BR">Brasil</option>
-                                    <option value="US">Estados Unidos</option>
-                                    <option value="CN">China</option>
+                                <select id="select-localidade" required>
+                                    <option value="" disabled selected>Selecionar</option>
+                                    <option value="Local">Local</option>
+                                    <option value="Nacional">Nacional</option>
+                                    <option value="Importado">Importado</option>
                                 </select>
                                 <span class="material-icons-outlined chevron-down">expand_more</span>
                             </div>
                         </div>
 
                         <div class="input-group">
-                            <label>CNPJ / Tax ID *</label>
-                            <input type="text" id="input-doc-number" placeholder="00.000.000/0000-00" required>
+                            <label>CNPJ *</label>
+                            <input type="text" id="input-cnpj" placeholder="00.000.000/0000-00" maxlength="18">
                         </div>
 
                         <div class="input-group input-expanded">
                             <label>Razão Social *</label>
-                            <input type="text" id="input-razao-social" placeholder="Digite a Razão Social completa" required>
+                            <input type="text" id="input-razao-social" placeholder="Digitar Razão Social">
                         </div>
 
                     </div>

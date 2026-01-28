@@ -9,13 +9,7 @@ if (typeof supabase !== 'undefined') {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    
-    // Força maiúsculas nos inputs de texto (Padrão formeprodut)
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        input.addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
-    });
+    configurarInputs();
 });
 
 // --- AUTENTICAÇÃO ---
@@ -39,26 +33,97 @@ async function checkSession() {
     }
 }
 
+// --- CONFIGURAÇÃO DE INPUTS ---
+function configurarInputs() {
+    
+    // Todos os inputs de texto viram Maiúsculos ao digitar
+    const textInputs = document.querySelectorAll('input[type="text"]');
+    textInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Garante que o valor digitado fique em maiúsculo
+            const start = this.selectionStart;
+            this.value = this.value.toUpperCase();
+            this.setSelectionRange(start, start);
+            
+            // Remove estado de erro ao digitar e restaura placeholder original
+            if(this.classList.contains('input-error')) {
+                this.classList.remove('input-error');
+                this.placeholder = this.getAttribute('data-original-placeholder') || 'Digitar';
+            }
+        });
+        // Salva placeholder original
+        input.setAttribute('data-original-placeholder', input.placeholder);
+    });
+
+    // MÁSCARA CNPJ (xx.xxx.xxx/xxxx-xx)
+    const cnpjInput = document.getElementById('input-cnpj');
+    if (cnpjInput) {
+        cnpjInput.addEventListener('input', function(e) {
+            let v = e.target.value.replace(/\D/g, ""); // Remove tudo que não é dígito
+            
+            // Aplica a máscara progressivamente
+            if (v.length > 14) v = v.substring(0, 14);
+            
+            v = v.replace(/^(\d{2})(\d)/, "$1.$2");
+            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+            v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
+            v = v.replace(/(\d{4})(\d)/, "$1-$2");
+            
+            e.target.value = v;
+        });
+    }
+
+    // Select - remove erro ao mudar
+    const selectLocal = document.getElementById('select-localidade');
+    if(selectLocal) {
+        selectLocal.addEventListener('change', function() {
+            if(this.classList.contains('input-error')) {
+                this.classList.remove('input-error');
+            }
+        });
+    }
+}
+
+// --- VALIDAÇÃO ---
+function solicitarValidacao() {
+    const localidade = document.getElementById('select-localidade');
+    const cnpj = document.getElementById('input-cnpj');
+    const razao = document.getElementById('input-razao-social');
+    
+    let temErro = false;
+
+    // Valida Localidade
+    if (!localidade.value) {
+        localidade.classList.add('input-error');
+        temErro = true;
+    }
+
+    // Valida CNPJ
+    if (!cnpj.value.trim()) {
+        cnpj.classList.add('input-error');
+        cnpj.placeholder = "Campo Obrigatório"; // Texto normal
+        temErro = true;
+    }
+
+    // Valida Razão Social
+    if (!razao.value.trim()) {
+        razao.classList.add('input-error');
+        razao.placeholder = "Campo Obrigatório"; // Texto normal
+        temErro = true;
+    }
+
+    if (temErro) {
+        return; // Para se houver erro
+    }
+
+    // Se tudo certo, abre modal
+    document.getElementById('modal-confirm').style.display = 'flex';
+}
+
 // --- CONTROLE DE MODAIS ---
 
 function verificarCancelamento() {
-    // Abre modal de cancelamento
     document.getElementById('modal-cancel').style.display = 'flex';
-}
-
-function solicitarValidacao() {
-    // Validação básica
-    const pais = document.getElementById('select-pais').value;
-    const doc = document.getElementById('input-doc-number').value;
-    const razao = document.getElementById('input-razao-social').value;
-
-    if (!pais || !doc || !razao) {
-        alert("Preencha todos os campos obrigatórios.");
-        return;
-    }
-
-    // Abre modal de confirmação de cadastro
-    document.getElementById('modal-confirm').style.display = 'flex';
 }
 
 function fecharModal(modalId) {
@@ -66,28 +131,30 @@ function fecharModal(modalId) {
 }
 
 function confirmarSaida() {
-    // Ação do botão "Sim, Cancelar"
     window.location.href = 'supplier.html';
 }
 
 function executarCadastro() {
-    // Fecha modal
     fecharModal('modal-confirm');
 
-    // Botão loading state
     const btn = document.querySelector('.btn-save');
     const originalText = btn.innerHTML;
     btn.innerHTML = `<span class="material-icons-outlined input-spin">sync</span> Processando...`;
     btn.disabled = true;
 
-    // Simula envio e validação
     setTimeout(() => {
         mostrarNotificacao('Cadastro enviado! Status: Aguardando Liberação');
         
-        // Limpa o formulário para permitir novo cadastro imediato
+        // Limpa formulário
         document.getElementById('form-fornecedor').reset();
         
-        // Restaura botão
+        // Restaura placeholders originais e remove erros
+        document.querySelectorAll('input').forEach(i => {
+            i.placeholder = i.getAttribute('data-original-placeholder') || 'Digitar';
+            i.classList.remove('input-error');
+        });
+        document.querySelectorAll('select').forEach(s => s.classList.remove('input-error'));
+
         btn.innerHTML = originalText;
         btn.disabled = false;
 
