@@ -10,9 +10,13 @@ if (typeof supabase !== 'undefined') {
 let inactivityTimer;
 const TEMPO_LIMITE = 30 * 60 * 1000;
 
+// Array vazio para iniciar sem dados fictícios
+let fornecedoresData = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
     await checkSession();
-    carregarFornecedores([]); 
+    configurarBusca();
+    carregarFornecedores(fornecedoresData); 
 });
 
 async function checkSession() {
@@ -33,16 +37,6 @@ async function checkSession() {
         const initials = session.user.email.substring(0, 2).toUpperCase();
         const avatarEl = document.querySelector('.avatar');
         if (avatarEl) avatarEl.innerText = initials;
-    }
-
-    const logoutBtn = document.getElementById('btn-logout');
-    if (logoutBtn) {
-        logoutBtn.onclick = async () => {
-            if (confirm("Tem certeza que deseja sair?")) {
-                await supabaseClient.auth.signOut();
-                window.location.href = 'login.html';
-            }
-        };
     }
 }
 
@@ -69,6 +63,72 @@ function toggleSidebar() {
     }
 }
 
+function toggleGroup(header) {
+    const list = header.nextElementSibling; 
+    const arrow = header.querySelector('.arrow-header');
+    
+    if (list.style.display === 'none') {
+        list.style.display = 'flex'; 
+        arrow.innerText = 'expand_less'; 
+    } else {
+        list.style.display = 'none'; 
+        arrow.innerText = 'expand_more'; 
+    }
+}
+
+// --- FUNÇÕES DE BUSCA E FILTRO ---
+
+function configurarBusca() {
+    // Busca Global
+    const globalInput = document.getElementById('global-search');
+    if (globalInput) {
+        globalInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const filtrados = fornecedoresData.filter(item => 
+                item.razao.toLowerCase().includes(termo) || 
+                item.cnpj.includes(termo) ||
+                item.localidade.toLowerCase().includes(termo)
+            );
+            carregarFornecedores(filtrados);
+        });
+    }
+
+    // Busca Lateral
+    const sidebarInput = document.getElementById('sidebar-search');
+    if (sidebarInput) {
+        sidebarInput.addEventListener('input', (e) => {
+            const termo = e.target.value.toLowerCase();
+            const menuItems = document.querySelectorAll('.sidebar-link span:last-child');
+            menuItems.forEach(span => {
+                const li = span.closest('li');
+                if (span.innerText.toLowerCase().includes(termo)) {
+                    li.style.display = 'flex';
+                } else {
+                    li.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Filtros de Status (Sidebar)
+    const filterLinks = document.querySelectorAll('.sidebar-link[data-filter]');
+    filterLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            filterLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+
+            const status = link.getAttribute('data-filter');
+            if(status === 'todos') {
+                carregarFornecedores(fornecedoresData);
+            } else {
+                const filtrados = fornecedoresData.filter(item => item.status === status);
+                carregarFornecedores(filtrados);
+            }
+        });
+    });
+}
+
 function carregarFornecedores(lista) {
     const tbody = document.getElementById('lista-fornecedores');
     const emptyMsg = document.getElementById('empty-state-msg');
@@ -83,20 +143,12 @@ function carregarFornecedores(lista) {
     if(emptyMsg) emptyMsg.style.display = 'none';
 
     lista.forEach(item => {
-        let statusClass = item.status === 'Ativo' ? 'status-ativo' : (item.status === 'Em Análise' ? 'status-analise' : 'status-inativo');
         const row = `
             <tr>
-                <td><strong>${item.id}</strong></td>
-                <td>
-                    <div style="font-weight:600; color:#333;">${item.razao_social}</div>
-                    <div style="font-size:11px; color:#888;">${item.nome_fantasia || ''}</div>
-                </td>
+                <td style="text-align:center; cursor:pointer;"><span class="material-icons-outlined" style="font-size:18px; color:#1a73e8;">chevron_right</span></td>
+                <td>${item.localidade}</td>
                 <td>${item.cnpj}</td>
-                <td>${item.categoria}</td>
-                <td><span class="status-badge ${statusClass}">${item.status}</span></td>
-                <td style="text-align: right;">
-                    <button class="btn-icon" title="Editar"><span class="material-icons-outlined">edit</span></button>
-                </td>
+                <td><a class="link-blue">${item.razao}</a></td>
             </tr>`;
         tbody.insertAdjacentHTML('beforeend', row);
     });

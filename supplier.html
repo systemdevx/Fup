@@ -30,32 +30,58 @@
     </header>
 
     <div class="subheader-bar">
-        <button class="btn-toggle-menu" onclick="toggleSidebar()"><span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span></button>
+        <button class="btn-toggle-menu" onclick="toggleSidebar()">
+            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
+        </button>
+        
         <div class="v-separator"></div>
-        <button class="btn-subheader-action" onclick="alert('Em desenvolvimento')"><span class="material-icons-outlined">add_business</span><span>Cadastrar Fornecedor</span></button>
+        
+        <button class="btn-subheader-action btn-blue" onclick="window.location.href='supplieradd.html'">
+            <span class="material-icons-outlined">add</span>
+            <span>Novo Fornecedor</span>
+        </button>
 
         <div class="header-right-actions">
             <div class="search-styled-container">
                 <span class="material-icons-outlined search-icon-left">search</span>
-                <input type="text" class="search-input-clean" placeholder="Pesquisar Nome ou CNPJ">
-                <button class="btn-filter-inside"><span class="material-icons-outlined">filter_alt</span><span>Filtros</span></button>
-            </div>
-            <div class="view-actions">
-                <span id="btn-logout" class="material-icons-outlined btn-view-icon" title="Sair">logout</span>
+                <input type="text" id="global-search" class="search-input-clean" placeholder="Pesquisar Fornecedor">
+                <button class="btn-filter-inside">
+                    <span class="material-icons-outlined">filter_alt</span><span>Filtros</span>
+                </button>
             </div>
         </div>
     </div>
 
     <div class="layout-wrapper">
+        
         <aside class="sidebar-local" id="sidebar">
+            
+            <div style="padding: 10px 20px 0 20px;">
+                <div class="sidebar-search-container">
+                    <span class="material-icons-outlined" style="font-size: 18px; color: #999;">search</span>
+                    <input type="text" id="sidebar-search" placeholder="Buscar neste menu">
+                </div>
+            </div>
+
             <div class="menu-group">
                 <div class="group-header" onclick="toggleGroup(this)">
-                    <span>GESTÃO</span>
+                    <span>PENDÊNCIAS</span>
                     <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
                 <ul class="group-list">
-                    <li><a href="#" onclick="ativarItem(this)" class="active"><div class="menu-text-icon"><span class="material-icons-outlined">list_alt</span><span>Base de Fornecedores</span></div></a></li>
-                    <li><a href="#" onclick="ativarItem(this)"><div class="menu-text-icon"><span class="material-icons-outlined">verified</span><span>Homologação</span></div></a></li>
+                    <li><a href="#" class="sidebar-link" data-filter="pendente"><div class="menu-text-icon"><span class="material-icons-outlined">domain_verification</span><span>Cadastro Pendente</span></div></a></li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>POR STATUS</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
+                <ul class="group-list">
+                    <li><a href="#" class="active sidebar-link" data-filter="todos"><div class="menu-text-icon"><span class="material-icons-outlined">public</span><span>Todos</span></div></a></li>
+                    <li><a href="#" class="sidebar-link" data-filter="liberado"><div class="menu-text-icon"><span class="material-icons-outlined">how_to_reg</span><span>Liberados</span></div></a></li>
+                    <li><a href="#" class="sidebar-link" data-filter="bloqueado"><div class="menu-text-icon"><span class="material-icons-outlined">person_off</span><span>Bloqueados</span></div></a></li>
                 </ul>
             </div>
         </aside>
@@ -65,17 +91,19 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="80">ID</th>
-                            <th>Razão Social / Fantasia</th>
-                            <th width="160">CNPJ</th>
-                            <th width="150">Categoria</th>
-                            <th width="100">Status</th>
-                            <th width="80" style="text-align: right;">Ações</th>
+                            <th width="40"></th> 
+                            <th width="200">Localidade</th>
+                            <th width="180">CNPJ</th>
+                            <th>Razão Social</th>
                         </tr>
                     </thead>
-                    <tbody id="lista-fornecedores"></tbody>
+                    <tbody id="lista-fornecedores">
+                        </tbody>
                 </table>
-                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">Nenhum fornecedor encontrado na base.</div>
+                
+                <div id="empty-state-msg" style="display:none; padding: 40px; text-align: center; color: #999;">
+                    Nenhum fornecedor encontrado.
+                </div>
             </div>
         </main>
     </div>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Fornecedor - Portal de Compras</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="supplieradd.css">
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+
+    <header>
+        <div class="logo-area">
+            <h1>FUP ALM</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
+                <li><a href="supplier.html" class="active"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+            </ul>
+        </nav>
+
+        <div class="user-profile"><div class="avatar">U</div></div>
+    </header>
+
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="verificarCancelamento()" title="Voltar">
+            <span class="material-icons-outlined">arrow_back</span>
+        </button>
+        <div class="v-separator"></div>
+        <span class="page-title">Novo Fornecedor</span>
+    </div>
+
+    <div class="layout-wrapper">
+        <main class="content-area">
+            
+            <div class="registration-card">
+                
+                <div class="card-header-tabs">
+                    <h2 class="tab-active">Cadastro da Empresa</h2>
+                </div>
+                <div class="blue-line"></div>
+
+                <p class="instruction-text">Preencha os dados abaixo para iniciar a validação do fornecedor.</p>
+
+                <form id="form-fornecedor" onsubmit="event.preventDefault(); solicitarValidacao();">
+                    <div class="validation-grid">
+                        
+                        <div class="input-group">
+                            <label>Localidade *</label>
+                            <div class="custom-select-wrapper">
+                                <select id="select-pais" required>
+                                    <option value="" disabled selected>Selecionar País</option>
+                                    <option value="BR">Brasil</option>
+                                    <option value="US">Estados Unidos</option>
+                                    <option value="CN">China</option>
+                                </select>
+                                <span class="material-icons-outlined chevron-down">expand_more</span>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>CNPJ / Tax ID *</label>
+                            <input type="text" id="input-doc-number" placeholder="00.000.000/0000-00" required>
+                        </div>
+
+                        <div class="input-group input-expanded">
+                            <label>Razão Social *</label>
+                            <input type="text" id="input-razao-social" placeholder="Digite a Razão Social completa" required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions-footer">
+                        <button type="button" class="btn-cancel" onclick="verificarCancelamento()">Cancelar</button>
+                        <button type="submit" class="btn-save">
+                            <span class="material-icons-outlined">check_circle</span>
+                            Validar e Finalizar
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-cancel" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <span class="material-icons-outlined modal-icon icon-warning">warning_amber</span>
+            <h3>Cancelar Cadastro?</h3>
+            <p>Se voltar agora, os dados preenchidos serão perdidos.</p>
+            <div class="modal-actions">
+                <button class="btn-modal-back" onclick="fecharModal('modal-cancel')">Continuar Editando</button>
+                <button class="btn-modal-confirm btn-danger" onclick="confirmarSaida()">Sim, Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <span class="material-icons-outlined modal-icon icon-info">help_outline</span>
+            <h3>Finalizar Cadastro?</h3>
+            <p>O fornecedor será enviado para validação com status <strong>Aguardando Liberação</strong>.</p>
+            <div class="modal-actions">
+                <button class="btn-modal-back" onclick="fecharModal('modal-confirm')">Revisar</button>
+                <button class="btn-modal-confirm btn-success" onclick="executarCadastro()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast-notification">
+        <span class="material-icons-outlined toast-icon">check_circle</span>
+        <span class="toast-message">Operação realizada!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supplieradd.js"></script>
+</body>
+</html>
