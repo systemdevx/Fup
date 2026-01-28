@@ -22,45 +22,25 @@
                 <li><a href="users.html"><span class="material-icons-outlined">people</span><span>Usuários</span></a></li>
             </ul>
         </nav>
-        <div class="user-profile"><div class="avatar">U</div></div>
+        
+        <div class="header-profile-wrapper">
+            <div class="avatar-ia" onclick="window.location.href='userdetails.html'">IA</div>
+            
+            <div class="profile-tooltip">
+                <strong id="tooltip-name">Carregando...</strong>
+                <span id="tooltip-role">...</span>
+                <div class="tooltip-arrow"></div>
+            </div>
+        </div>
     </header>
     
     <div class="sub-header">
         <div style="display: flex; align-items: center;">
-            <button class="btn-toggle-menu" onclick="toggleSidebar()">
-                <span class="material-icons-outlined">menu_open</span>
-            </button>
-            <span class="page-title">Visão Geral</span>
+            <span class="page-title" style="margin-left: 0;">Visão Geral</span>
         </div>
-        </div>
+    </div>
 
     <div class="layout-wrapper">
-        <aside class="sidebar-local" id="sidebar">
-            <div class="sidebar-profile-box">
-                <div class="profile-avatar-large" id="profile-avatar-large">U</div>
-                <div class="profile-name" id="user-greeting">Carregando...</div>
-                <div class="profile-role" id="user-role-display">...</div>
-                
-                <div class="profile-actions">
-                    <button class="btn-profile-action" onclick="verPerfil()">
-                        <span class="material-icons-outlined">person</span> Ver Meu Perfil
-                    </button>
-                    <button class="btn-profile-action" onclick="mudarSenha()">
-                        <span class="material-icons-outlined">lock_reset</span> Alterar Senha
-                    </button>
-                </div>
-            </div>
-            
-            <hr style="border: 0; border-top: 1px solid #EEE; width: 100%; margin-bottom: 20px;">
-            
-            <div style="text-align: left; width: 100%; color: #888; font-size: 12px; padding: 0 10px;">
-                <p><strong>Status do Sistema:</strong></p>
-                <div style="display: flex; align-items: center; gap: 5px; margin-top: 5px; color: #10B981;">
-                    <span class="material-icons-outlined" style="font-size: 14px;">check_circle</span> Operacional
-                </div>
-            </div>
-        </aside>
-
         <main class="content-area">
             <div class="dashboard-grid">
                 
@@ -69,7 +49,7 @@
                         <span class="material-icons-outlined icon-theme">notifications_active</span>
                         <h3>Avisos</h3>
                     </div>
-                    <div class="card-value">0</div>
+                    <div class="card-value">3</div>
                     <div class="card-subtext">Novas mensagens</div>
                 </div>
 
@@ -78,7 +58,7 @@
                         <span class="material-icons-outlined icon-theme">pending_actions</span>
                         <h3>Pendências</h3>
                     </div>
-                    <div class="card-value">0</div>
+                    <div class="card-value">12</div>
                     <div class="card-subtext">Tarefas aguardando</div>
                 </div>
 
@@ -87,7 +67,7 @@
                         <span class="material-icons-outlined icon-theme">shopping_cart</span>
                         <h3>Pedidos</h3>
                     </div>
-                    <div class="card-value">0</div>
+                    <div class="card-value">45</div>
                     <div class="card-subtext">Em processamento</div>
                 </div>
 
@@ -95,7 +75,7 @@
 
             <div id="dashboard-content" style="text-align: center; padding: 60px; color: #999; border: 2px dashed #E5E7EB; border-radius: 8px;">
                 <span class="material-icons-outlined" style="font-size: 48px; color: #e0e0e0; margin-bottom: 15px;">analytics</span>
-                <p>Gráficos e Indicadores de Desempenho (BI) serão carregados aqui.</p>
+                <p>Gráficos e Indicadores de Desempenho (BI) carregados via integração.</p>
             </div>
         </main>
     </div>

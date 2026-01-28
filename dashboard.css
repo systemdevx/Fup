@@ -5,11 +5,10 @@
     --primary-orange: #E67E22;
     --primary-orange-hover: #D35400;
     --primary-blue: #1A73E8;
-    --primary-blue-hover: #1557B0;
-    --light-orange-bg: #FFF5E5;
     --text-dark: #333333;
     --text-grey: #666666;
     --border-color: #E5E7EB;
+    --brown-ia: #8D6E63; 
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,16 +26,14 @@ h1, h2, h3, h4, .group-title, th, .logo-area, .btn-cta {
     font-weight: 700;
 }
 
-button, input, select, textarea, span, div, a {
-    font-family: 'Calibri', 'Segoe UI', sans-serif;
-}
-
 /* --- HEADER --- */
 header {
     background-color: var(--header-bg); height: 75px;
     display: flex; align-items: center; padding: 0 30px;
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
+    position: relative; /* Para z-index do tooltip */
+    z-index: 20;
 }
 
 .logo-area h1 { font-size: 20px; color: var(--primary-orange); margin: 0; }
@@ -55,12 +52,53 @@ nav ul li a {
 nav ul li a .material-icons-outlined { font-size: 24px; margin-bottom: 2px; }
 nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--primary-orange); }
 
-.user-profile { display: flex; align-items: center; }
-.avatar {
-    width: 40px; height: 40px; background-color: #8D6E63; color: white;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-    font-weight: bold; font-size: 14px;
+/* --- PERFIL HOVER SYSTEM --- */
+.header-profile-wrapper {
+    position: relative;
+    display: flex; align-items: center;
+    height: 100%;
 }
+
+.avatar-ia {
+    width: 40px; height: 40px; 
+    background-color: var(--brown-ia);
+    color: white; border-radius: 50%; 
+    display: flex; align-items: center; justify-content: center; 
+    font-weight: 700; font-size: 14px; letter-spacing: 0.5px;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+.header-profile-wrapper:hover .avatar-ia { transform: scale(1.05); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+/* Tooltip Escondido por Padrão */
+.profile-tooltip {
+    display: none;
+    position: absolute;
+    top: 55px; right: 0;
+    background-color: #333; color: white;
+    padding: 10px 15px; border-radius: 6px;
+    min-width: 150px; text-align: right;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    z-index: 100;
+    flex-direction: column;
+}
+
+.header-profile-wrapper:hover .profile-tooltip {
+    display: flex; animation: fadeIn 0.2s ease-in-out;
+}
+
+.profile-tooltip strong { font-size: 13px; color: #FFF; display: block; }
+.profile-tooltip span { font-size: 11px; color: #CCC; margin-top: 2px; display: block; }
+
+.tooltip-arrow {
+    position: absolute; top: -6px; right: 14px;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #333;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
 /* --- SUB-HEADER --- */
 .sub-header {
@@ -69,59 +107,17 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
 }
+.page-title { font-size: 16px; font-weight: 700; color: #555; }
 
-.btn-toggle-menu {
-    width: 30px; height: 30px; background: none; border: 1px solid transparent; border-radius: 4px;
-    color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-}
-.btn-toggle-menu:hover { background-color: #F3F4F6; color: #333; }
-
-.page-title { font-size: 16px; font-weight: 700; color: #555; margin-left: 10px; }
-
-/* --- LAYOUT WRAPPER (Igual outras páginas) --- */
+/* --- LAYOUT SEM SIDEBAR --- */
 .layout-wrapper {
     display: flex; flex-grow: 1; width: 100%; height: calc(100vh - 135px); overflow: hidden; 
+    justify-content: center; /* Centraliza o conteúdo já que não tem sidebar */
 }
-
-/* SIDEBAR (PERFIL NO CANTO) */
-.sidebar-local {
-    width: 280px; background-color: #FFFFFF;
-    border-right: 1px solid var(--border-color);
-    display: flex; flex-direction: column; flex-shrink: 0;
-    overflow-y: auto; transition: width 0.3s ease; padding: 25px;
-}
-.sidebar-local.sidebar-closed { width: 0; padding: 0; border-right: none; overflow: hidden; }
-
-/* Estilo do Box de Perfil na Sidebar */
-.sidebar-profile-box {
-    display: flex; flex-direction: column; align-items: center;
-    text-align: center; margin-bottom: 30px;
-}
-
-.profile-avatar-large {
-    width: 80px; height: 80px; background-color: var(--primary-orange); color: white;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 700; margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
-}
-
-.profile-name { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 5px; }
-.profile-role { font-size: 13px; color: #666; background: #F3F4F6; padding: 4px 12px; border-radius: 12px; margin-bottom: 20px; }
-
-.profile-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-
-.btn-profile-action {
-    background: white; border: 1px solid #E5E7EB; color: #555;
-    padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.2s; width: 100%;
-}
-.btn-profile-action:hover { background-color: #F9FAFB; border-color: #D1D5DB; color: var(--primary-orange); }
 
 /* --- CONTENT AREA --- */
 .content-area {
-    flex-grow: 1; padding: 30px; 
+    flex-grow: 1; padding: 30px; width: 100%; max-width: 1400px;
     background-color: var(--bg-body); overflow-y: auto;
 }
 
@@ -146,8 +142,6 @@ nav ul li a:hover, nav ul li a.active { color: #000; border-bottom-color: var(--
 .card-subtext { font-size: 12px; color: #999; margin-top: 5px; }
 
 @media (max-width: 900px) {
-    .layout-wrapper { flex-direction: column; height: auto; }
-    .sidebar-local { width: 100%; border-right: none; border-bottom: 1px solid #eee; }
     header { padding: 0 10px; }
     nav ul { gap: 10px; }
     nav ul li a span:last-child { display: none; }

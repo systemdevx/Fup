@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="userdetails.css">
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+    
+    <header>
+        <div class="logo-area"><h1>FUP ALM</h1></div>
+        
+        <div style="flex-grow: 1;"></div> 
+
+        <div class="avatar-ia">IA</div>
+    </header>
+
+    <div class="subheader-bar">
+        <button class="btn-back" onclick="window.location.href='dashboard.html'" title="Voltar ao Dashboard">
+            <span class="material-icons-outlined">arrow_back</span>
+        </button>
+        <div class="v-separator"></div>
+        <span class="page-title">Detalhes do Usuário</span>
+    </div>
+
+    <main class="content-area">
+        <div class="profile-card">
+            
+            <div class="profile-header">
+                <div class="profile-avatar-big">IA</div>
+                <div class="profile-info-main">
+                    <h2 id="display-name">Carregando...</h2>
+                    <span id="display-role" class="role-badge">...</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <form id="form-profile">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="input-name" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>E-mail</label>
+                        <input type="email" id="input-email" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Departamento</label>
+                        <input type="text" id="input-dept" value="Tecnologia da Informação" readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>ID do Usuário</label>
+                        <input type="text" id="input-uid" readonly style="color: #999;">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-action btn-outline" onclick="alterarSenha()">
+                        <span class="material-icons-outlined">lock_reset</span> Alterar Senha
+                    </button>
+                    <button type="button" id="btn-logout-page" class="btn-action btn-danger">
+                        <span class="material-icons-outlined">logout</span> Sair
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="userdetails.js"></script>
+</body>
+</html>
