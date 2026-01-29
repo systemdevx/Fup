@@ -12,7 +12,6 @@ const TEMPO_LIMITE = 30 * 60 * 1000;
 
 (async function checkSession() {
     if (!supabaseClient) return;
-
     const { data: { session }, error } = await supabaseClient.auth.getSession();
 
     if (!session || error) {
@@ -24,36 +23,63 @@ const TEMPO_LIMITE = 30 * 60 * 1000;
     document.body.style.opacity = '1';
     
     iniciarMonitoramentoInatividade();
+    configurarMenuPerfil();
 
-    // --- POPULAR TOOLTIP DO PERFIL ---
     if (session.user) {
-        const user = session.user;
-        const metadata = user.user_metadata || {};
-        
-        const nomeCompleto = metadata.full_name || user.email.split('@')[0];
+        const metadata = session.user.user_metadata || {};
+        const nomeCompleto = metadata.full_name || session.user.email.split('@')[0];
         const nomeFormatado = nomeCompleto.charAt(0).toUpperCase() + nomeCompleto.slice(1);
-        const cargo = metadata.role || 'System Admin';
-
-        // Preenche o tooltip oculto
-        const tooltipName = document.getElementById('tooltip-name');
-        const tooltipRole = document.getElementById('tooltip-role');
         
-        if(tooltipName) tooltipName.innerText = nomeFormatado;
-        if(tooltipRole) tooltipRole.innerText = cargo;
+        document.getElementById('tooltip-name').innerText = nomeFormatado;
+        document.getElementById('tooltip-role').innerText = metadata.role || 'System Admin';
+
+        const iniciais = extrairIniciais(nomeFormatado);
+        document.getElementById('avatar-trigger').innerText = iniciais;
+        document.getElementById('menu-avatar-iniciais').innerText = iniciais;
     }
 })();
+
+function extrairIniciais(nome) {
+    const partes = nome.trim().split(' ');
+    return partes.length >= 2 ? (partes[0][0] + partes[1][0]).toUpperCase() : partes[0].substring(0, 2).toUpperCase();
+}
+
+function configurarMenuPerfil() {
+    const trigger = document.getElementById('avatar-trigger');
+    const menu = document.getElementById('profile-menu');
+    const wrapper = document.querySelector('.header-profile-wrapper');
+
+    if (trigger && menu) {
+        trigger.onclick = (e) => {
+            e.stopPropagation();
+            menu.classList.add('show');
+            wrapper.classList.add('active'); 
+        };
+
+        document.onclick = (e) => {
+            if (!menu.contains(e.target)) {
+                menu.classList.remove('show');
+                wrapper.classList.remove('active');
+            }
+        };
+    }
+
+    document.getElementById('btn-logout').onclick = async () => {
+        if (confirm("Deseja realmente sair?")) {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'login.html';
+        }
+    };
+}
 
 function iniciarMonitoramentoInatividade() {
     function resetTimer() {
         clearTimeout(inactivityTimer);
         inactivityTimer = setTimeout(async () => {
-            alert("Sessão expirada por inatividade.");
             if (supabaseClient) await supabaseClient.auth.signOut();
             window.location.href = 'login.html';
         }, TEMPO_LIMITE);
     }
-    window.onload = resetTimer;
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
-    document.onclick = resetTimer;
 }

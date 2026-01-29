@@ -24,12 +24,29 @@
         </nav>
         
         <div class="header-profile-wrapper">
-            <div class="avatar-ia" onclick="window.location.href='userdetails.html'">IA</div>
+            <div class="avatar-ia" id="avatar-trigger">IA</div>
             
-            <div class="profile-tooltip">
-                <strong id="tooltip-name">Carregando...</strong>
-                <span id="tooltip-role">...</span>
-                <div class="tooltip-arrow"></div>
+            <div class="profile-tooltip" id="profile-menu">
+                <div class="menu-header">
+                    <div class="menu-user-info">
+                        <strong id="tooltip-name">Carregando...</strong>
+                        <span id="tooltip-role">...</span>
+                    </div>
+                    <div class="menu-avatar-circle" id="menu-avatar-iniciais">IA</div>
+                </div>
+                <hr class="menu-divider">
+                <ul class="menu-list">
+                    <li onclick="window.location.href='userdetails.html'">
+                        <span class="material-icons-outlined">person_outline</span> Ver Perfil
+                    </li>
+                    <li><span class="material-icons-outlined">lock_open</span> Mudar Senha</li>
+                </ul>
+                <hr class="menu-divider">
+                <ul class="menu-list">
+                    <li id="btn-logout" class="logout-item">
+                        <span class="material-icons-outlined">logout</span> Logoff
+                    </li>
+                </ul>
             </div>
         </div>
     </header>
@@ -43,7 +60,6 @@
     <div class="layout-wrapper">
         <main class="content-area">
             <div class="dashboard-grid">
-                
                 <div class="card">
                     <div class="card-top">
                         <span class="material-icons-outlined icon-theme">notifications_active</span>
@@ -52,7 +68,6 @@
                     <div class="card-value">3</div>
                     <div class="card-subtext">Novas mensagens</div>
                 </div>
-
                 <div class="card">
                     <div class="card-top">
                         <span class="material-icons-outlined icon-theme">pending_actions</span>
@@ -61,7 +76,6 @@
                     <div class="card-value">12</div>
                     <div class="card-subtext">Tarefas aguardando</div>
                 </div>
-
                 <div class="card">
                     <div class="card-top">
                         <span class="material-icons-outlined icon-theme">shopping_cart</span>
@@ -70,7 +84,6 @@
                     <div class="card-value">45</div>
                     <div class="card-subtext">Em processamento</div>
                 </div>
-
             </div>
 
             <div id="dashboard-content" style="text-align: center; padding: 60px; color: #999; border: 2px dashed #E5E7EB; border-radius: 8px;">
