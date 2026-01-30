@@ -1,56 +1,20 @@
-(() => {
-    'use strict';
-
-    const CONFIG = {
-        redirectUrl: 'login.html',
-        bgAttr: 'data-bg',
-        autoRedirectDelay: 2000 // Ficou mais rápido: 2 segundos
-    };
-
+document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
-    let isRedirecting = false;
+    const bg = document.getElementById('bg-image');
 
-    function lazyLoadBackground() {
-        const bg = document.querySelector('.bg-image');
-        if (!bg) return;
-        const src = bg.getAttribute(CONFIG.bgAttr);
-        if (src) {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => {
-                bg.style.backgroundImage = `url("${src}")`;
-                bg.classList.add('loaded');
-            };
-        } else {
-            bg.classList.add('loaded');
-        }
-    }
+    // Simula o carregamento rápido do background
+    setTimeout(() => {
+        bg.classList.add('loaded');
+    }, 100);
 
-    function enterSystem() {
-        if (isRedirecting) return;
-        isRedirecting = true;
-        
-        // Ativa apenas o desvanecimento (fade), sem crescer o ícone
+    // Reduzido para 800ms (quase instantâneo, mas mantém a identidade visual)
+    setTimeout(() => {
         body.classList.add('fade-out');
-
-        setTimeout(() => {
-            window.location.href = CONFIG.redirectUrl;
-        }, 300); // Transição rápida de 0.3s
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        lazyLoadBackground();
         
-        const autoTimer = setTimeout(enterSystem, CONFIG.autoRedirectDelay);
-
-        const skip = () => {
-            clearTimeout(autoTimer);
-            enterSystem();
-        };
-
-        document.addEventListener('click', skip);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') skip();
-        });
-    });
-})();
+        // Pequeno atraso para a transição de opacidade completar antes de mudar a página
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 200);
+        
+    }, 800); 
+});

@@ -16,30 +16,24 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    cursor: pointer;
+    transition: opacity 0.2s ease-out; /* Saída ultra rápida */
 }
 
 .bg-image {
     position: fixed; inset: 0; z-index: 0;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: linear-gradient(135deg, #dbe4ea 0%, #cbd5e0 100%);
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.4s ease;
 }
 .bg-image.loaded { opacity: 1; }
 
 #hero-scene { position: relative; z-index: 10; }
 
 .loader-badge {
-    position: relative;
-    width: 100px;
-    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Removido o efeito de mola (bezier) para ser mais direto */
-    transition: opacity 0.3s ease; 
+    transition: transform 0.3s ease;
 }
 
 .circle-f {
@@ -63,7 +57,7 @@ body {
     border-radius: 50%;
     border: 3px solid transparent;
     border-top-color: var(--accent);
-    animation: spinAround 0.8s linear infinite; /* Spinner mais rápido */
+    animation: spinAround 0.6s linear infinite; /* Acelerado */
     z-index: 1;
 }
 
@@ -72,8 +66,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* SAÍDA LIMPA: Apenas desaparece (fade), sem crescer ou distorcer */
 body.fade-out {
     opacity: 0;
-    transition: opacity 0.3s ease-out;
 }

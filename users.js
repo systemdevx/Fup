@@ -55,20 +55,24 @@ function renderTable(data, isInviteMode = false) {
     });
 }
 
-function carregarConvites() {
-    marcarLinkAtivo(event.currentTarget);
+// Recebe o elemento clicado como parâmetro (el)
+function carregarConvites(el) {
+    if(el) marcarLinkAtivo(el);
     // Filtra usuários sem UID (que ainda não aceitaram o convite) ou com status pendente
     const convites = allUsers.filter(u => !u.id || u.status === 'Pendente');
     renderTable(convites, true);
 }
 
-function filterByStatus(status) {
-    marcarLinkAtivo(event.currentTarget);
+// Recebe o elemento clicado como parâmetro (el)
+function filterByStatus(status, el) {
+    if(el) marcarLinkAtivo(el);
     renderTable(allUsers);
 }
 
 function marcarLinkAtivo(elemento) {
+    // Remove a classe active de todos os links dentro das listas
     document.querySelectorAll('.group-list a').forEach(a => a.classList.remove('active'));
+    // Adiciona ao elemento clicado
     elemento.classList.add('active');
 }
 
@@ -83,5 +87,45 @@ function setupFilters() {
             );
             renderTable(filtered);
         });
+    }
+}
+
+/* --- Novas Funções de UI (Correção do Menu Lateral) --- */
+
+function toggleGroup(headerElement) {
+    // Encontra a lista UL irmã do cabeçalho clicado
+    const list = headerElement.nextElementSibling;
+    const arrow = headerElement.querySelector('.arrow-header');
+    
+    // Alterna a visibilidade
+    if (list.style.display === 'none') {
+        list.style.display = 'block';
+        if(arrow) arrow.textContent = 'expand_less';
+    } else {
+        list.style.display = 'none';
+        if(arrow) arrow.textContent = 'expand_more';
+    }
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const icon = document.getElementById('icon-toggle-menu');
+    
+    // Alterna a classe que recolhe a sidebar (assumindo que transactions.css tem essa classe ou similar)
+    // Se não tiver CSS específico, podemos apenas ocultar, mas o ideal é alternar classe
+    sidebar.classList.toggle('sidebar-closed');
+
+    // Se a sidebar tem display none ou width 0, ajusta o ícone
+    if (sidebar.classList.contains('sidebar-closed')) {
+        // Ajuste visual inline caso o CSS não tenha a classe .sidebar-closed definida
+        sidebar.style.width = '0';
+        sidebar.style.padding = '0';
+        sidebar.style.overflow = 'hidden';
+        icon.textContent = 'chevron_right';
+    } else {
+        sidebar.style.width = ''; // Reseta para o CSS original
+        sidebar.style.padding = '';
+        sidebar.style.overflow = '';
+        icon.textContent = 'chevron_left';
     }
 }

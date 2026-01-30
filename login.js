@@ -12,15 +12,46 @@ const btnText = document.querySelector('.btn-text');
 const loader = document.querySelector('.loader');
 const errorMsg = document.getElementById('error-msg');
 
-// NOVO: Impede que o usuário veja o login se já estiver autenticado
+/**
+ * 1. VERIFICAÇÃO DE SESSÃO
+ * Adicionado um delay de 600ms para evitar o "pulo" instantâneo 
+ * e dar tempo da intro terminar suavemente.
+ */
 async function checkActiveSession() {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (session) {
-        window.location.href = "dashboard.html";
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 600); 
     }
 }
 checkActiveSession();
 
+/**
+ * 2. LÓGICA DE INATIVIDADE (30 MINUTOS)
+ * Reseta o timer a cada interação. Se atingir 30min, desloga.
+ */
+let idleTimeout;
+function resetIdleTimer() {
+    clearTimeout(idleTimeout);
+    // 1800000 ms = 30 minutos
+    idleTimeout = setTimeout(async () => {
+        const { error } = await supabaseClient.auth.signOut();
+        if (!error) {
+            alert("Sua sessão expirou por inatividade (30 minutos).");
+            window.location.reload();
+        }
+    }, 1800000); 
+}
+
+// Monitora interações do usuário para manter a sessão ativa
+['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(evt => {
+    document.addEventListener(evt, resetIdleTimer, true);
+});
+
+/**
+ * 3. EVENTO DE LOGIN
+ */
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.classList.add('hidden');
@@ -33,6 +64,8 @@ form.addEventListener('submit', async (e) => {
         });
 
         if (error) throw error;
+        
+        // Redireciona imediatamente após o login manual bem-sucedido
         window.location.href = "dashboard.html";
 
     } catch (err) {

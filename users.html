@@ -60,7 +60,7 @@
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" onclick="carregarConvites()">
+                        <a href="#" onclick="carregarConvites(this)">
                             <div class="menu-text-icon"><span class="material-icons-outlined">mail_outline</span><span>Convites Enviados</span></div>
                         </a>
                     </li>
@@ -74,7 +74,7 @@
                 </div>
                 <ul class="group-list">
                     <li>
-                        <a href="#" class="active" onclick="filterByStatus('todos')">
+                        <a href="#" class="active" onclick="filterByStatus('todos', this)">
                             <div class="menu-text-icon"><span class="material-icons-outlined">groups</span><span>Todos os Usuários</span></div>
                         </a>
                     </li>
@@ -103,7 +103,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="transactions.js"></script>
+    <script src="transactions.js"></script> 
     <script src="users.js"></script>
 </body>
 </html>

@@ -5,95 +5,79 @@
     --text-dark: #333333;
 }
 
-/* Reset Estrito */
 * { 
     margin: 0; padding: 0; box-sizing: border-box; 
-    font-family: 'Inter', sans-serif; font-weight: 400 !important; 
+    font-family: 'Inter', sans-serif; 
 }
 
-*:not(.app-logo):not(.loader) { border-radius: 0 !important; }
-
 body, html { height: 100%; overflow: hidden; background: var(--white); }
+
 .split-screen-container { display: flex; height: 100vh; width: 100vw; }
 
-/* LADO LARANJA (MAIOR) */
 .brand-side {
-    flex: 2.5; /* Aumentado para dar mais palco aos fios */
+    flex: 2.5;
     background: linear-gradient(135deg, #E67E22 0%, #D35400 100%);
     color: var(--white); padding: 60px;
     display: flex; flex-direction: column; justify-content: space-between;
     position: relative; overflow: hidden;
 }
 
-/* FIOS GRACIOSOS E LENTOS */
 .threads-container { position: absolute; inset: 0; pointer-events: none; }
 .threads-container svg { width: 100%; height: 100%; }
 
 .thread {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.5); 
+    stroke: rgba(255, 255, 255, 0.4); 
     stroke-width: 0.8px;
-    stroke-linecap: round;
-    /* Brilho etéreo */
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
-    /* Movimento ultra lento e suave */
     animation: gracefulFlow 25s ease-in-out infinite alternate;
 }
 
-/* Movimentos individuais para cada fio */
-.t1 { animation-duration: 22s; animation-delay: 0s; opacity: 0.4; }
-.t2 { animation-duration: 30s; animation-delay: -5s; opacity: 0.6; }
-.t3 { animation-duration: 35s; animation-delay: -2s; opacity: 0.3; }
-.t4 { animation-duration: 28s; animation-delay: -10s; opacity: 0.5; }
-.t5 { animation-duration: 40s; animation-delay: -15s; opacity: 0.4; }
-.t6 { animation-duration: 26s; animation-delay: -7s; opacity: 0.6; }
-
 @keyframes gracefulFlow {
-    0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.2; }
-    50% { transform: translate(60px, -50px) rotate(1.5deg) scale(1.02); opacity: 0.6; }
-    100% { transform: translate(-30px, 40px) rotate(-1deg) scale(0.98); opacity: 0.2; }
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
+    100% { transform: translate(40px, -30px) rotate(1deg); opacity: 0.5; }
 }
 
-/* LOGO E CABEÇALHO */
 .brand-header { display: flex; align-items: center; gap: 20px; z-index: 2; }
 .app-logo {
     width: 50px; height: 50px; background: var(--primary-orange); color: var(--white);
-    border-radius: 50% !important; display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 800 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.brand-hero-text h1 { font-size: 42px; line-height: 1.1; margin-bottom: 20px; z-index: 2; }
-.brand-hero-text p { font-size: 16px; opacity: 0.85; z-index: 2; }
+.brand-hero-text h1 { font-size: 42px; line-height: 1.1; margin-bottom: 20px; z-index: 2; font-weight: 700; }
+.brand-hero-text p { font-size: 16px; opacity: 0.9; z-index: 2; }
 
-/* LADO LOGIN (COMPACTO) */
 .form-side { flex: 1; display: flex; align-items: center; justify-content: center; }
 .form-container { width: 100%; max-width: 280px; }
-h2 { font-size: 18px; margin-bottom: 40px; color: var(--text-dark); }
+h2 { font-size: 18px; margin-bottom: 40px; color: var(--text-dark); font-weight: 600; }
 
 .input-group { position: relative; margin-bottom: 30px; }
 label { display: block; font-size: 12px; color: #999; margin-bottom: 8px; }
 input {
     width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #eee;
-    background: transparent; font-size: 14px; outline: none;
+    background: transparent; font-size: 14px; outline: none; transition: 0.3s;
 }
 
 .bar { position: relative; display: block; width: 100%; }
 .bar:before {
     content: ''; height: 2px; width: 0; bottom: 0px; position: absolute;
-    background: var(--primary-orange); transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--primary-orange); transition: 0.4s ease;
     left: 0;
 }
 input:focus ~ .bar:before { width: 100%; }
 
 button {
     width: 100%; padding: 14px; background: var(--primary-orange); color: white;
-    border: none; cursor: pointer; transition: 0.3s; margin-top: 10px;
+    border: none; cursor: pointer; transition: 0.3s; margin-top: 10px; font-weight: 600;
 }
 button:hover { background: var(--primary-hover); }
 
 .error-box { color: #d63031; font-size: 12px; margin-top: 15px; text-align: center; }
 .hidden { display: none; }
-.loader { width: 18px; height: 18px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+.loader { 
+    width: 18px; height: 18px; border: 2px solid #fff; border-top-color: transparent; 
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto;
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 900px) { .brand-side { display: none; } }
