@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuários - FUP ALM</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="transactions.css"> <link rel="stylesheet" href="users.css">
+    <link rel="stylesheet" href="transactions.css"> 
+    <link rel="stylesheet" href="users.css">
 </head>
 <body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
     
@@ -23,85 +23,87 @@
                 <li><a href="users.html" class="active"><span class="material-icons-outlined">people</span><span>Usuários</span></a></li>
             </ul>
         </nav>
-        
-        <div class="header-profile-wrapper">
-            <div class="avatar-ia" id="avatar-trigger">IA</div>
-            <div class="profile-tooltip" id="profile-menu">
-                <div class="menu-header">
-                    <div class="menu-user-info">
-                        <strong id="tooltip-name">Carregando...</strong>
-                        <span id="tooltip-role">...</span>
-                    </div>
-                    <div class="menu-avatar-circle" id="menu-avatar-iniciais">IA</div>
-                </div>
-                <hr class="menu-divider">
-                <ul class="menu-list">
-                    <li><span class="material-icons-outlined">person_outline</span> Ver Perfil</li>
-                    <li><span class="material-icons-outlined">lock_open</span> Mudar Senha</li>
-                </ul>
-                <hr class="menu-divider">
-                <ul class="menu-list"><li id="btn-logout" class="logout-item"><span class="material-icons-outlined">logout</span> Logoff</li></ul>
-            </div>
-        </div>
+        <div class="user-profile"><div class="avatar">U</div></div>
     </header>
 
+    <div class="subheader-bar">
+        <button class="btn-toggle-menu" onclick="toggleSidebar()">
+            <span class="material-icons-outlined" id="icon-toggle-menu">chevron_left</span>
+        </button>
+        <div class="v-separator"></div>
+        <button class="btn-subheader-action">
+            <span class="material-icons-outlined">person_add</span>
+            <span>Novo Usuário</span>
+        </button>
+
+        <div class="header-right-actions">
+            <div class="search-styled-container">
+                <span class="material-icons-outlined search-icon-left">search</span>
+                <input type="text" id="main-user-search" class="search-input-clean" placeholder="Buscar usuários...">
+            </div>
+        </div>
+    </div>
+
     <div class="layout-wrapper">
-        <aside class="sidebar">
-            <div class="search-sidebar">
-                <input type="text" id="sidebar-search" placeholder="Buscar no menu...">
-                <span class="material-icons-outlined">search</span>
+        <aside class="sidebar-local" id="sidebar">
+            <div style="padding: 10px 20px 0 20px;">
+                <div class="sidebar-search-container">
+                    <span class="material-icons-outlined" style="font-size: 18px; color: #999;">search</span>
+                    <input type="text" id="sidebar-search" placeholder="Filtrar menu">
+                </div>
             </div>
 
             <div class="menu-group">
-                <h4 class="group-title">USUÁRIOS <span class="material-icons-outlined">expand_more</span></h4>
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>PENDÊNCIAS</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
+                </div>
                 <ul class="group-list">
-                    <li><a href="#" class="active" onclick="filterByStatus('todos')"><div class="menu-text-icon"><span class="material-icons-outlined">people</span><span>Todos Usuários</span></div></a></li>
-                    <li><a href="#" onclick="filterByStatus('Bloqueado')"><div class="menu-text-icon"><span class="material-icons-outlined">block</span><span>Bloqueados</span></div></a></li>
+                    <li>
+                        <a href="#" onclick="carregarConvites()">
+                            <div class="menu-text-icon"><span class="material-icons-outlined">mail_outline</span><span>Convites Enviados</span></div>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
             <div class="menu-group">
-                <h4 class="group-title">FILTRAR POR CARGO <span class="material-icons-outlined">expand_more</span></h4>
-                <div class="filter-checkbox-group" id="cargo-filters">
-                    <label class="check-container">DIRETOR (A) <input type="checkbox" value="DIRETOR (A)"><span class="checkmark"></span></label>
-                    <label class="check-container">GERENTE <input type="checkbox" value="GERENTE"><span class="checkmark"></span></label>
-                    <label class="check-container">ANALISTA <input type="checkbox" value="ANALISTA"><span class="checkmark"></span></label>
+                <div class="group-header" onclick="toggleGroup(this)">
+                    <span>GESTÃO</span>
+                    <span class="material-icons-outlined arrow-header">expand_less</span>
                 </div>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" class="active" onclick="filterByStatus('todos')">
+                            <div class="menu-text-icon"><span class="material-icons-outlined">groups</span><span>Todos os Usuários</span></div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </aside>
 
         <main class="content-area">
-            <div class="table-actions-bar">
-                <div class="search-main">
-                    <span class="material-icons-outlined">search</span>
-                    <input type="text" id="main-user-search" placeholder="Pesquisar por nome, email ou login...">
-                </div>
-                <button class="btn-refresh" onclick="fetchUsersData()"><span class="material-icons-outlined">refresh</span></button>
-            </div>
-
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Perfil</th>
+                            <th>Nome Completo</th>
+                            <th>Tipo</th>
                             <th>Cargo</th>
-                            <th>Permissão</th>
-                            <th>Login</th>
+                            <th>Unidade</th>
+                            <th>UID</th>
                             <th>E-mail</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody id="users-tbody">
-                        </tbody>
+                    <tbody id="users-tbody"></tbody>
                 </table>
-                <div id="loading-msg" class="empty-state">Carregando usuários...</div>
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="dashboard.js"></script>
+    <script src="transactions.js"></script>
     <script src="users.js"></script>
 </body>
 </html>
