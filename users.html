@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - FUP ALM</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="transactions.css"> <link rel="stylesheet" href="users.css">
+</head>
+<body style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease-in;">
+    
+    <header>
+        <div class="logo-area"><h1>FUP ALM</h1></div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><span class="material-icons-outlined">dashboard</span><span>Dashboard</span></a></li>
+                <li><a href="transactions.html"><span class="material-icons-outlined">receipt_long</span><span>Transações</span></a></li>
+                <li><a href="catalog.html"><span class="material-icons-outlined">folder_shared</span><span>Cadastros</span></a></li>
+                <li><a href="supplier.html"><span class="material-icons-outlined">storefront</span><span>Fornecedores</span></a></li>
+                <li><a href="fiscal.html"><span class="material-icons-outlined">description</span><span>Reg. Fiscais</span></a></li>
+                <li><a href="sgq.html"><span class="material-icons-outlined">verified_user</span><span>Ativos SGQ</span></a></li>
+                <li><a href="users.html" class="active"><span class="material-icons-outlined">people</span><span>Usuários</span></a></li>
+            </ul>
+        </nav>
+        
+        <div class="header-profile-wrapper">
+            <div class="avatar-ia" id="avatar-trigger">IA</div>
+            <div class="profile-tooltip" id="profile-menu">
+                <div class="menu-header">
+                    <div class="menu-user-info">
+                        <strong id="tooltip-name">Carregando...</strong>
+                        <span id="tooltip-role">...</span>
+                    </div>
+                    <div class="menu-avatar-circle" id="menu-avatar-iniciais">IA</div>
+                </div>
+                <hr class="menu-divider">
+                <ul class="menu-list">
+                    <li><span class="material-icons-outlined">person_outline</span> Ver Perfil</li>
+                    <li><span class="material-icons-outlined">lock_open</span> Mudar Senha</li>
+                </ul>
+                <hr class="menu-divider">
+                <ul class="menu-list"><li id="btn-logout" class="logout-item"><span class="material-icons-outlined">logout</span> Logoff</li></ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout-wrapper">
+        <aside class="sidebar">
+            <div class="search-sidebar">
+                <input type="text" id="sidebar-search" placeholder="Buscar no menu...">
+                <span class="material-icons-outlined">search</span>
+            </div>
+
+            <div class="menu-group">
+                <h4 class="group-title">USUÁRIOS <span class="material-icons-outlined">expand_more</span></h4>
+                <ul class="group-list">
+                    <li><a href="#" class="active" onclick="filterByStatus('todos')"><div class="menu-text-icon"><span class="material-icons-outlined">people</span><span>Todos Usuários</span></div></a></li>
+                    <li><a href="#" onclick="filterByStatus('Bloqueado')"><div class="menu-text-icon"><span class="material-icons-outlined">block</span><span>Bloqueados</span></div></a></li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <h4 class="group-title">FILTRAR POR CARGO <span class="material-icons-outlined">expand_more</span></h4>
+                <div class="filter-checkbox-group" id="cargo-filters">
+                    <label class="check-container">DIRETOR (A) <input type="checkbox" value="DIRETOR (A)"><span class="checkmark"></span></label>
+                    <label class="check-container">GERENTE <input type="checkbox" value="GERENTE"><span class="checkmark"></span></label>
+                    <label class="check-container">ANALISTA <input type="checkbox" value="ANALISTA"><span class="checkmark"></span></label>
+                </div>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <div class="table-actions-bar">
+                <div class="search-main">
+                    <span class="material-icons-outlined">search</span>
+                    <input type="text" id="main-user-search" placeholder="Pesquisar por nome, email ou login...">
+                </div>
+                <button class="btn-refresh" onclick="fetchUsersData()"><span class="material-icons-outlined">refresh</span></button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Perfil</th>
+                            <th>Cargo</th>
+                            <th>Permissão</th>
+                            <th>Login</th>
+                            <th>E-mail</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        </tbody>
+                </table>
+                <div id="loading-msg" class="empty-state">Carregando usuários...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="dashboard.js"></script>
+    <script src="users.js"></script>
+</body>
+</html>

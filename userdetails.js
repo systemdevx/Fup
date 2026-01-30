@@ -1,6 +1,5 @@
-/* --- userdetails.js --- */
 const SUPABASE_URL = 'https://qolqfidcvvinetdkxeim.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFvbHFmaWRjdnZpbmV0ZGt4ZWltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDQ3ODgsImV4cCI6MjA4NDA4MDc4OH0.zdpL4AAypVH8iWchfaMEob3LMi6q8YrfY5WQbECti4E';
+const SUPABASE_KEY = 'SUA_KEY_AQUI'; 
 
 let supabaseClient;
 if (typeof supabase !== 'undefined') {
@@ -29,15 +28,18 @@ async function checkSession() {
         const metadata = user.user_metadata || {};
         
         const nome = metadata.full_name || 'Usuário do Sistema';
-        const email = user.email;
-        const uid = user.id;
+        const cargo = metadata.role || 'Não Informado';
+        const perfil = metadata.profile_type || 'Aprovador';
 
+        // Atualiza textos do cabeçalho
         document.getElementById('display-name').innerText = nome;
-        document.getElementById('display-role').innerText = metadata.role || 'System Admin';
+        document.getElementById('display-role').innerText = cargo;
         
+        // Preenche os inputs (Nome, E-mail, Cargo, Perfil)
         document.getElementById('input-name').value = nome;
-        document.getElementById('input-email').value = email;
-        document.getElementById('input-uid').value = uid;
+        document.getElementById('input-email').value = user.email;
+        document.getElementById('input-role').value = cargo;
+        document.getElementById('input-profile').value = perfil;
     }
 
     const btnLogout = document.getElementById('btn-logout-page');
@@ -56,14 +58,7 @@ async function alterarSenha() {
     if(!email) return;
 
     if(confirm(`Enviar link de redefinição de senha para ${email}?`)) {
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/reset-password.html',
-        });
-        
-        if (error) {
-            alert("Erro: " + error.message);
-        } else {
-            alert("E-mail de redefinição enviado!");
-        }
+        await supabaseClient.auth.resetPasswordForEmail(email);
+        alert("Link enviado para o seu e-mail!");
     }
 }

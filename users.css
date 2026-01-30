@@ -1,0 +1,57 @@
+/* Customização específica para Users mantendo padrão de Transactions */
+.filter-checkbox-group {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.check-container {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-grey);
+    user-select: none;
+}
+
+.check-container input { position: absolute; opacity: 0; cursor: pointer; }
+
+.checkmark {
+    position: absolute; top: 0; left: 0;
+    height: 16px; width: 16px;
+    background-color: #eee; border-radius: 3px;
+}
+
+.check-container:hover input ~ .checkmark { background-color: #ccc; }
+.check-container input:checked ~ .checkmark { background-color: var(--primary-orange); }
+
+.table-actions-bar {
+    display: flex;
+    padding: 15px 0;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-main {
+    position: relative;
+    flex-grow: 1;
+}
+
+.search-main input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.search-main .material-icons-outlined {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%); color: #999;
+}
+
+.status-badge.bloqueado { background-color: #FCE8E6; color: #C5221F; border: 1px solid #FAD2CF; }
+.user-name-bold { font-weight: 600; color: var(--primary-blue); }
+
+.empty-state { padding: 40px; text-align: center; color: #999; }

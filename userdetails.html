@@ -11,9 +11,7 @@
     
     <header>
         <div class="logo-area"><h1>FUP ALM</h1></div>
-        
         <div style="flex-grow: 1;"></div> 
-
         <div class="avatar-ia">IA</div>
     </header>
 
@@ -27,18 +25,17 @@
 
     <main class="content-area">
         <div class="profile-card">
-            
             <div class="profile-header">
                 <div class="profile-avatar-big">IA</div>
                 <div class="profile-info-main">
                     <h2 id="display-name">Carregando...</h2>
-                    <span id="display-role" class="role-badge">...</span>
+                    <span class="role-badge" id="display-role">...</span>
                 </div>
             </div>
 
             <div class="divider"></div>
 
-            <form id="form-profile">
+            <form id="profile-form">
                 <div class="form-grid">
                     <div class="input-group">
                         <label>Nome Completo</label>
@@ -51,13 +48,13 @@
                     </div>
 
                     <div class="input-group">
-                        <label>Departamento</label>
-                        <input type="text" id="input-dept" value="Tecnologia da Informação" readonly>
+                        <label>Cargo</label>
+                        <input type="text" id="input-role" readonly>
                     </div>
 
                     <div class="input-group">
-                        <label>ID do Usuário</label>
-                        <input type="text" id="input-uid" readonly style="color: #999;">
+                        <label>Perfil</label>
+                        <input type="text" id="input-profile" readonly>
                     </div>
                 </div>
 
